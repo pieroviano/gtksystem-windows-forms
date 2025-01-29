@@ -290,3 +290,5 @@ __pycache__/
 obfuscar.xml
 /Directory.Nuget.json
 /Libs
+/VisualStudio plug-in/VisualStudioPlugIn
+/VisualStudio plug-in/VisualStudio development plug-in
