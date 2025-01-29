@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
-    <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Source\Gtk.Windows.FormsDesigner\Gtk.Windows.FormsDesigner.csproj" />
     <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\Gtk.Windows.Forms.csproj" />
   </ItemGroup>
 
