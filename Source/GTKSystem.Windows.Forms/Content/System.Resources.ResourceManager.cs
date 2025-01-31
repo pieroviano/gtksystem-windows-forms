@@ -10,7 +10,7 @@ using System.Xml;
 namespace System.Resources
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ResourceManager : GTKSystem.Resources.ResourceManager
+    internal class ResourceManager : GTKSystem.Resources.ResourceManager
     {
         public ResourceManager(System.Type resourceSource) : base(null, null, resourceSource)
         {

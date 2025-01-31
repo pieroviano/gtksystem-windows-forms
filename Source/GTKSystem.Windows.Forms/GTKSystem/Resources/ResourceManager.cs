@@ -15,7 +15,7 @@ namespace GTKSystem.Resources
     public class ResourceManager : System.Resources.ResourceManager
     {
         internal const string ResFileExtension = ".resources";
-        private System.Type _resourceSource;
+        private Type? _resourceSource;
         private Assembly _assembly;
         private string _baseName;
         public ResourceInfo GetResourceInfo = new ResourceInfo();
@@ -31,7 +31,7 @@ namespace GTKSystem.Resources
         {
         }
 
-        public ResourceManager(string baseName, Assembly assembly,
+        public ResourceManager(string? baseName, Assembly? assembly,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
                                         DynamicallyAccessedMemberTypes.NonPublicConstructors)]
             Type? usingResourceSet) : base(baseName, assembly, usingResourceSet)
