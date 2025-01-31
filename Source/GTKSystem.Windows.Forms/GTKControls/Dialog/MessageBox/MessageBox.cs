@@ -309,10 +309,23 @@ namespace System.Windows.Forms
             return dia.Run();
         }
 
+        public class DialogEventArgs : EventArgs
+        {
+            public DialogEventArgs(Dialog dia)
+            {
+                Dialog = dia;
+            }
+
+            public Dialog Dialog { get; }
+        }
+
+        public static event EventHandler<DialogEventArgs>? DialogAvailable;
+
         private static int ShowCore(Window? owner, Gtk.WindowPosition position, string text, string caption,
             MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
         {
             Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent);
+            DialogAvailable?.Invoke(typeof(MessageBox), new DialogEventArgs(dia));
             dia.KeepAbove = true;
             dia.KeepBelow = false;
             dia.TypeHint = Gdk.WindowTypeHint.Dialog;
