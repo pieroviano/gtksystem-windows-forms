@@ -292,7 +292,7 @@ namespace System.Windows.Forms.GtkRender
                 return -1;
         }
 
-        public int CompareTo([AllowNull] CellValue other)
+        public int CompareTo(CellValue? other)
         {
             if (other != null)
             {
@@ -303,7 +303,7 @@ namespace System.Windows.Forms.GtkRender
             return -1;
         }
 
-        public bool Equals([AllowNull] CellValue other)
+        public bool Equals(CellValue? other)
         {
             return CompareTo(other) == 0;
         }

@@ -88,8 +88,8 @@ namespace GTKWinFormsApp
             //fontDialog.ShowDialog();
 
             //Graphics g = CreateGraphics();
-            //// g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 0, 0);
-            //g.DrawRectangle(new Pen(new SolidBrush(Color.Red),2), new Rectangle(110, 110, 200, 200));
+            //// g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(ColorExtension.Red), 0, 0);
+            //g.DrawRectangle(new Pen(new SolidBrush(ColorExtension.Red),2), new Rectangle(110, 110, 200, 200));
 
         }
 

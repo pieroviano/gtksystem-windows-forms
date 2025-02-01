@@ -101,9 +101,9 @@ namespace System.Drawing.Imaging
         /// <param name="o">The object to test.</param>
         /// <returns>
         ///   <see langword="true" /> if <paramref name="o" /> is an <see cref="T:System.Drawing.Imaging.ImageFormat" /> object that is equivalent to this <see cref="T:System.Drawing.Imaging.ImageFormat" /> object; otherwise, <see langword="false" />.</returns>
-        public override bool Equals([NotNullWhen(true)] object o)
+        public override bool Equals(object? o)
         {
-            ImageFormat imageFormat = o as ImageFormat;
+            ImageFormat? imageFormat = o as ImageFormat;
             if (imageFormat == null)
             {
                 return false;

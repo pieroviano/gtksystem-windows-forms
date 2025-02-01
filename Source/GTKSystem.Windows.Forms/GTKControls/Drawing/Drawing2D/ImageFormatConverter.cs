@@ -19,7 +19,7 @@ namespace System.Drawing
             return true;
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, [NotNullWhen(true)] Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(string) || destinationType == typeof(InstanceDescriptor))
             {
@@ -37,7 +37,7 @@ namespace System.Drawing
                 return base.ConvertFrom(context, culture, value);
             }
 
-            if (text[0] == '[' && text.Length >= 50 && Guid.TryParse(text.AsSpan(14, 36), out var result))
+            if (text[0] == '[' && text.Length >= 50 && Guid.TryParse(text.Substring(14, 36), out var result))
             {
                 return new ImageFormat(result);
             }

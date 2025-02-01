@@ -662,7 +662,7 @@ namespace System.Drawing
             return true;
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, [NotNullWhen(true)] Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (!(destinationType == typeof(byte[])))
             {

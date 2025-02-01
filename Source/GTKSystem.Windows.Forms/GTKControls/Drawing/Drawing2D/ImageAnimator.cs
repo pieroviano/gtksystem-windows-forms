@@ -124,7 +124,7 @@ namespace System.Drawing
                     if (propertyItem2 != null)
                     {
                         byte[] value2 = propertyItem2.Value;
-                        _loopCount = BitConverter.ToInt16(value2);
+                        _loopCount = BitConverter.ToInt16(value2, 0);
                     }
                     else
                     {
@@ -350,7 +350,7 @@ namespace System.Drawing
         /// <summary>Returns a Boolean value indicating whether the specified image contains time-based frames.</summary>
         /// <param name="image">The <see cref="T:System.Drawing.Image" /> object to test.</param>
         /// <returns>This method returns <see langword="true" /> if the specified image contains time-based frames; otherwise, <see langword="false" />.</returns>
-        public static bool CanAnimate([NotNullWhen(true)] Image image)
+        public static bool CanAnimate(Image image)
         {
             if (image == null)
             {

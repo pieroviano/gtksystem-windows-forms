@@ -21,8 +21,10 @@ namespace GTKSystem.Resources
         public ResourceInfo GetResourceInfo = new ResourceInfo();
 
         public ResourceManager(
+#if NET5_0_OR_GREAGER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
                                         DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
             Type? usingResourceSet) : this(null, null, usingResourceSet)
         {
         }
@@ -32,8 +34,10 @@ namespace GTKSystem.Resources
         }
 
         public ResourceManager(string? baseName, Assembly? assembly,
+#if NET5_0_OR_GREAGER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
                                         DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
             Type? usingResourceSet) : base(baseName, assembly, usingResourceSet)
         {
             this._baseName = baseName;

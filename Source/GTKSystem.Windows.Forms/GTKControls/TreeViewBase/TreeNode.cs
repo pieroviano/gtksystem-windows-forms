@@ -176,7 +176,7 @@ namespace System.Windows.Forms
             //throw new NotImplementedException();
         }
 
-        public bool Equals([AllowNull] TreeNode other)
+        public bool Equals(TreeNode? other)
         {
             return other != null && other.Index == this.Index && other.Name == this.Name && other.Text == this.Text &&
                    other.Level == this.Level;

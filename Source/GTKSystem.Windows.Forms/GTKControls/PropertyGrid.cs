@@ -356,10 +356,6 @@ namespace System.Windows.Forms
         {
         }
 
-        public void SaveState(RegistryKey key)
-        {
-            throw new NotImplementedException();
-        }
         // protected override AccessibleObject CreateAccessibilityInstance()
         //{ 
         //}
@@ -456,7 +452,12 @@ namespace System.Windows.Forms
             throw new NotImplementedException();
         }
 
-        void IComPropertyBrowser.LoadState(RegistryKey key)
+        public void LoadState(RegistryKey? key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveState(RegistryKey? key)
         {
             throw new NotImplementedException();
         }

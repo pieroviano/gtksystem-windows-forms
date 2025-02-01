@@ -46,7 +46,7 @@ namespace System.Drawing.Printing
                     (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points),
                     (int)value.GetBottomMargin(Unit.Points));
                 pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(
-                    Enum.Parse<PaperKind>(value.PaperSize.DisplayName), value.PaperSize.Name,
+                    ((PaperKind)Enum.Parse(typeof(PaperKind),value.PaperSize.DisplayName)), value.PaperSize.Name,
                     (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
                 _userSetPageSettings = true;
             }

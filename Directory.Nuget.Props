@@ -62,6 +62,7 @@
     <EntityFramework6Version>6.4.4</EntityFramework6Version>
     <EntityFrameworkLibVersion>1.5.0</EntityFrameworkLibVersion>
     <EntityFrameworkVersion>6.4.4</EntityFrameworkVersion>
+    <EnvironmentLibraryVersion>1.0.0</EnvironmentLibraryVersion>
     <ExcelLibraryVersion>1.18.0</ExcelLibraryVersion>
     <FatturaElettronicaVersion>3.2.1</FatturaElettronicaVersion>
     <FluentAssertionsVersion>6.12.2</FluentAssertionsVersion>
@@ -242,6 +243,7 @@
     <WhenTheVersionVersion>1.2.0</WhenTheVersionVersion>
     <WiaScannerLibraryVersion>1.26.0</WiaScannerLibraryVersion>
     <Win32InteropVersion>1.1.0</Win32InteropVersion>
+    <Win32LibraryVersion>1.5.0</Win32LibraryVersion>
     <WindowsAPICodePackVersion>1.2.0</WindowsAPICodePackVersion>
     <WindowsFormsApp1Version>1.0.0</WindowsFormsApp1Version>
     <WindowsLibraryVersion>1.1.0</WindowsLibraryVersion>

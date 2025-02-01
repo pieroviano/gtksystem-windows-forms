@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using static GTKSystem.Resources.ResourceManager;
 
@@ -168,7 +169,7 @@ namespace System.Windows.Forms
             //    throw new InvalidOperationException(SR.ImageListStreamerSaveFailed);
             //}
 
-            ReadOnlySpan<byte> buffer = stream.GetBuffer().AsSpan()[..(int)stream.Length];
+            var buffer = stream.GetBuffer().Take((int)stream.Length).ToArray();
             return Compress(buffer);
         }
 

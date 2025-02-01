@@ -28,7 +28,7 @@ GTKSystem.ComponentModel.ComponentResourceManagerÊµÏÖÁËÏîÄ¿×ÊÔ´ÎÄ¼şºÍÍ¼ÏñÎÄ¼ş¶ÁÈ
 ```
 Form2.Designer.csµÄÅäÖÃ³ÌĞòÈçÏÂ£º
  imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
- imageList1.TransparentColor = System.Drawing.Color.Transparent;
+ imageList1.TransparentColor = System.Drawing.ColorExtension.Transparent;
  imageList1.Images.SetKeyName(0, "010.jpg");
  imageList1.Images.SetKeyName(1, "timg2.jpg");
 
