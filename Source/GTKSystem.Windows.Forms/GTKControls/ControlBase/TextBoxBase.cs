@@ -12,6 +12,34 @@
             base.Valign = Gtk.Align.Start;
         }
 
+        public int SelectionStart
+        {
+            get
+            {
+                GetSelectionBounds(out int start, out _);
+                return start;
+            }
+            set
+            {
+                GetSelectionBounds(out int start, out int end);
+                SelectRegion(value, end);
+            }
+        }
+
+        public int SelectionLength
+        {
+            get
+            {
+                GetSelectionBounds(out int start, out int end);
+                return end - start;
+            }
+            set
+            {
+                GetSelectionBounds(out int start, out int end);
+                SelectRegion(start, start + value);
+            }
+        }
+
         public void AddClass(string cssClass)
         {
             this.Override.AddClass(cssClass);

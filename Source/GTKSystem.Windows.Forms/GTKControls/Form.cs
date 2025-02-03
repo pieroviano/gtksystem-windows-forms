@@ -350,11 +350,22 @@ namespace System.Windows.Forms
         public FormStartPosition StartPosition { get; set; }
         private FormWindowState _WindowState = FormWindowState.Normal;
 
+        public event EventHandler<WindowStateArgs> WindowStateChanging;
+
         public FormWindowState WindowState
         {
             get { return _WindowState; }
             set
             {
+                if (_WindowState != value)
+                {
+                    var windowStateArgs = new WindowStateArgs(value);
+                    WindowStateChanging?.Invoke(this, windowStateArgs);
+                    if (windowStateArgs.Cancel)
+                    {
+                        return;
+                    }
+                }
                 _WindowState = value;
                 if (self.IsMapped)
                 {
@@ -461,6 +472,16 @@ namespace System.Windows.Forms
 
         public class MdiLayout
         {
+        }
+    }
+
+    public class WindowStateArgs : CancelEventArgs
+    {
+        public FormWindowState State { get; }
+
+        public WindowStateArgs(FormWindowState state)
+        {
+            State = state;
         }
     }
 

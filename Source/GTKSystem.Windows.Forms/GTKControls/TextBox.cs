@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -16,6 +17,7 @@ namespace System.Windows.Forms
     public partial class TextBox : Control
     {
         public readonly TextBoxBase self = new TextBoxBase();
+        private bool _shortcutsEnabled = true;
         public override object GtkControl => self;
 
         public TextBox() : base()
@@ -28,7 +30,77 @@ namespace System.Windows.Forms
             self.Changed += Self_Changed;
             self.TextInserted += Self_TextInserted;
             self.KeyPressEvent += Self_KeyPressEvent;
+            self.ClipboardPasted += (o, args) =>
+            {
+                OnPasted(args);
+            };
         }
+
+        public bool ShortcutEnabled
+        {
+            get
+            {
+                return _shortcutsEnabled;
+            }
+            set
+            {
+                _shortcutsEnabled = value;
+                if (!_shortcutsEnabled)
+                {
+                    self.KeyPressEvent += OnSelfOnKeyPressEvent;
+                }
+                else
+                {
+                    self.KeyPressEvent -= OnSelfOnKeyPressEvent;
+                }
+            }
+        }
+
+        protected virtual void OnSelfOnKeyPressEvent(object s, Gtk.KeyPressEventArgs args)
+        {
+            // Detect Ctrl + C, Ctrl + V, Ctrl + X, Ctrl + Ins, Shift + Ins, Shift + Delete
+            bool isCtrl = (args.Event.State & Gdk.ModifierType.ControlMask) != 0;
+            bool isShift = (args.Event.State & Gdk.ModifierType.ShiftMask) != 0;
+            if ((isCtrl && (args.Event.Key == Gdk.Key.c || args.Event.Key == Gdk.Key.C /* Copy */ || 
+                            args.Event.Key == Gdk.Key.v || args.Event.Key == Gdk.Key.V /* Paste */ || 
+                            args.Event.Key == Gdk.Key.x || args.Event.Key == Gdk.Key.X /* Cut */)) || 
+                (isCtrl && args.Event.Key == Gdk.Key.Insert) || // Ctrl + Ins (Copy)
+                (isShift && args.Event.Key == Gdk.Key.Delete) || // Shift + Del (Cut)
+                (isShift && args.Event.Key == Gdk.Key.Insert)) // Shift + Ins (Paste)
+            {
+                args.RetVal = true; // Block the event
+            }
+        }
+
+        protected virtual void OnPasted(EventArgs e)
+        {
+
+        }
+
+        public int SelectionStart
+        {
+            get
+            {
+                return self.SelectionStart;
+            }
+            set
+            {
+                self.SelectionStart = value;
+            }
+        }
+
+        public int SelectionLength
+        {
+            get
+            {
+                return self.SelectionLength;
+            }
+            set
+            {
+                self.SelectionLength = value;
+            }
+        }
+
 
         private void Self_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
         {
