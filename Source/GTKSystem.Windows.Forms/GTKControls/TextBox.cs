@@ -32,11 +32,11 @@ namespace System.Windows.Forms
             self.KeyPressEvent += Self_KeyPressEvent;
             self.ClipboardPasted += (o, args) =>
             {
-                OnPasted(args);
+                OnPaste(args);
             };
         }
 
-        public bool ShortcutEnabled
+        public bool ShortcutsEnabled
         {
             get
             {
@@ -72,7 +72,7 @@ namespace System.Windows.Forms
             }
         }
 
-        protected virtual void OnPasted(EventArgs e)
+        protected virtual void OnPaste(EventArgs e)
         {
 
         }
