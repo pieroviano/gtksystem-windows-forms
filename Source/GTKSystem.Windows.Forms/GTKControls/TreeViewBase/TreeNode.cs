@@ -76,6 +76,10 @@ namespace System.Windows.Forms
             get { return parent; }
             internal set { parent = value; }
         }
+        public string Text
+        {
+            get;set;
+        }
 
         public string Text { get; set; }
 
@@ -86,12 +90,7 @@ namespace System.Windows.Forms
 
         public bool Checked
         {
-            get => _IsChecked;
-            set
-            {
-                _IsChecked = value;
-                TreeView?.SetChecked(this, value);
-            }
+            get => _IsChecked; set { _IsChecked = value; TreeView?.SetChecked(this, value); }
         }
 
         public string FullPath
@@ -118,12 +117,7 @@ namespace System.Windows.Forms
 
         public bool IsSelected
         {
-            get => _IsSelected;
-            set
-            {
-                _IsSelected = value;
-                TreeView?.SetSelected(this, value);
-            }
+            get=> _IsSelected; set { _IsSelected = value; TreeView?.SetSelected(this, value); }
         }
 
         public bool IsExpanded
@@ -143,7 +137,16 @@ namespace System.Windows.Forms
                     return parent.Level + 1;
             }
         }
-
+        private int _imageIndex;
+        public int ImageIndex { 
+            get=>_imageIndex; 
+            set { _imageIndex = value; TreeView?.NativeNodeImage(this, value); }
+        }
+        private string _imageKey;
+        public string ImageKey { 
+            get => _imageKey; 
+            set { _imageKey = value; TreeView?.NativeNodeImage(this, value); }
+        }
         public int ImageIndex { get; set; }
         public string ImageKey { get; set; }
         public int SelectedImageIndex { get; set; }

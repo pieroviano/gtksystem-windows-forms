@@ -1,93 +1,77 @@
 ## Update Log
 
-#### 2025/1/22 V1.3.24.59
-1. Updated the default display type for `ToolStripButton`.
-2. Updated `ToolStrip` to support the right border for the last menu item.
-3. Improved the appearance of `ListView`.
-
-#### 2025/1/2 V1.3.24.58
-1. Updated the sorting functionality of container controls.
-2. Updated the value assignment functionality for `DataGridView`.
-3. Improved the `close` function for forms.
-
-#### 2024/12/20 V1.3.24.57
-1. Updated the functionality of `ListView`, `ListBox`, `CheckedListBox`, and `DataGridView`.
-
-#### 2024/12/14 V1.3.24.56
-1. Implemented the `SizeChange` event for controls.
-2. Updated the content switching functionality for message boxes and the auto-switching feature for `DataGridView`.
-3. Improved add/delete functionality for `ListView`.
-4. Fixed some discovered issues.
-
-#### 2024/11/7 V1.3.24.53
-1. Fixed the functionality of container controls.
-2. Completed the functionality of `TreeView`.
-3. Implemented basic configuration and image retrieval for the `ImageList` component.
-4. Fixed some discovered issues.
-
-#### 2024/10/23 V1.3.24.51
-1. **[Major Update]** Completed and fixed errors in the functionality of container controls.
-2. Completed the drawing functionality for `Graphics/Image`.
-3. Fixed some discovered issues.
-
-#### 2024/10/19 V1.3.24.50
-1. **[Major Update]** Redesigned container layouts, enhanced dock/anchor functionality, and improved stability and performance across multiple levels.
-2. Implemented auto-switching functionality and properties for `DataGridView`.
-3. Added functionality for setting, minimizing, and retrieving open forms.
-4. Fixed some discovered issues.
-
-#### 2024/9/28 V1.3.24.49
-1. Fixed issues with the `Paint` event and `CreateGraphics` method for forms.
-2. Added `ScrollBar` and `FontDialog` controls.
-3. Fixed issues with `SelectedIndexChanged`, `SelectedValueChanged`, and `SelectedItemChanged` events.
-
-#### 2024/8/28 V1.3.24.48
-1. Implemented context menus for all controls.
-2. Added theme and style configuration features.
-
-#### 2024/8/28 V1.3.24.47
-1. Adjusted and improved the precision alignment of control properties.
-2. Enhanced the handling of some control events.
-
-#### 2024/8/27 V1.3.24.46
-1. Refined and unified the behavior of form closures for Windows and Linux platforms, improving the stability of reopening forms after closing.
-2. Implemented styling features for `DataGridView` cells, updated image loading processes, optimized performance, and fixed bugs.
-3. Optimized basic database program libraries.
-4. Improved printing components, adding a print preview control and a print preview window.
-
-#### 2024/7/16 V1.3.24.45
-1. Refined and optimized control event handling.
-
-#### 2024/7/16
-1. Fixed issues with opening file dialogs and message boxes.
-
-#### 2024/7/12
-1. Added printing components.
-2. Fixed some identified issues.
-
-#### 2024/7/7
-1. Made improvements to some control styles.
-
-#### 2024/6/28
-1. Refined styles for borders and cursor events on controls.
-2. Fixed some property value or error issues in controls.
-3. Redesigned container navigation layout structures.
-
-#### 2024/6/22
-1. Fixed some bugs.
-2. Enhanced the resize functionality for windows and controls.
-
-#### 2024/6/20
-1. Fixed some bugs.
-2. Enhanced the resize functionality for windows and controls.
-3. Added mouse events to `UserControl`.
-
-#### 2024/6/19
-1. Adjusted styles.
-2. Fixed some bugs.
-3. Optimized the resize functionality for windows and controls.
-4. Implemented properties for control positions and size adjustments.
-5. Added mouse style properties for some controls.
+## 更新日志
+ #### 2025/2/5 V1.3.24.59
+	1. 更新ToolStripButton的默认显示类型
+	2. 更新ToolStrip，支持最后一个菜单项右边靠
+	3. ListView更新很大，实现方法增加、优化界面
+	4. 更新Form，修正bug
+ #### 2025/1/2 V1.3.24.58
+	1. 更新容器控件排版功能。
+	2. 更新datagridview数据赋值功能。
+	3. 更新窗体close关闭功能。
+ #### 2024/12/20 V1.3.24.57
+	1. 更新listview、listbox、checkedlistbox、datagridview功能。
+ #### 2024/12/14 V1.3.24.56
+	1. 实现控件SizeChange事件。
+	2. 更新消息框内容换行、datagridview自动换行
+	3. 更新listview增删功能
+	4. 修正了一些发现的问题
+ #### 2024/11/7 V1.3.24.53
+	1. 容器控件功能修正。
+	2. 完善treeview功能
+	3. 实现ImageList组件基本配置和取图功能
+	4. 修正了一些发现的问题
+ #### 2024/10/23 V1.3.24.51
+	1. [重大更新] 容器控件功能完善和错误修正。
+	2. Graphics/Image绘图功能完善
+	3. 修正了一些发现的问题
+ #### 2024/10/19 V1.3.24.50
+	1. [重大更新] 容器布局重构，提升dock/Anchor功能，有更好的性能、多层嵌套更稳定。
+	2. 实现datagridview自动换行功能和属性
+	3. 增加Form置顶、激活、获取已开窗体的操作功能
+	4. 修正了一些发现的问题
+ #### 2024/9/28 V1.3.24.49
+   1. 修正窗体paint事件，creategraphics方法
+   2. 新增scrollbar、fontdailog控件
+   3. 修正selectindexchanged\selectvaluechanged\selectitemchanged事件
+ #### 2024/8/28 V1.3.24.48
+   1. 实现所有控件右键菜单
+   2. 增加主题配置、样式配置功能
+ #### 2024/8/28 V1.3.24.47
+   1. 调整优化控件位置边框属性精准对齐。
+   2. 补充部分控件事件
+ #### 2024/8/27 V1.3.24.46
+   1. 修改优化窗体关闭方式，统一windows和linux窗体标题栏，提高与原生窗体关闭后重开的兼容性。
+   2. DataGridView实现表格cellstyle样式功能，修改表格图片加载程序，优化性能和修正bug
+   3. 优化基础数据集程序库
+   4. 优化打印组件程序，增加打印预览控件和打印预览窗口
+ #### 2024/7/16 V1.3.24.45
+   1. 修改优化控件事件程序
+ #### 2024/7/16
+   1. 修正打开文件对话窗、消息弹窗
+ #### 2024/7/12
+   1. 增加打印组件
+   2. 修复一些问题
+ #### 2024/7/7
+   1. 修改一些控件样式
+ #### 2024/6/28
+   1. 修改一些边框样式、控件鼠标事件
+   2. 修改一些控件的属性值\错误
+   3. 重构容器滚动窗体架构
+ #### 2024/6/22
+   1. 修改一些bug
+   2. 修改优化窗口和控件的resize功能
+ #### 2024/6/20
+   1. 修改一些bug
+   2. 修改优化窗口和控件的resize功能
+   3. usercontrol增加鼠标事件 
+ #### 2024/6/19
+   1. 样式调整
+   2. 修改一些bug
+   3. 优化窗口和控件的resize功能
+   4. 实现控件的位置属性、大小可调
+   5. 实现部分控件鼠标样式属性
 
 #### 2024/6/10
 1. Improved the background image display mode for controls, adding circular and transparent background image support (important).

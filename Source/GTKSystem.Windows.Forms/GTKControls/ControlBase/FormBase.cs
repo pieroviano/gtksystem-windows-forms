@@ -1,6 +1,8 @@
 ﻿using Gtk;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -94,7 +96,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             {
                 if (CloseWindowEvent(this, EventArgs.Empty))
                 {
-                    this.Dispose();
+                    this.OnClose();
+                    if (this.Group.CurrentGrab != null)
+                    {
+                        this.Group.CurrentGrab.Destroy();
+                    }
                     this.Destroy();
                 }
                 else
@@ -128,8 +134,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 
         public void CloseWindow()
         {
-            this.OnClose();
-            ((Gtk.Window)this).Close();
+            this.Respond(ResponseType.DeleteEvent);
         }
 
         public void AddClass(string cssClass)
