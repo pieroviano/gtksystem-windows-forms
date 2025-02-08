@@ -1,25 +1,24 @@
 ﻿using Gtk;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase;
+
+public sealed class TreeViewBase : ScrollableBoxBase
 {
-    public sealed class TreeViewBase : ScrollableBoxBase
+    internal Gtk.TreeView TreeView = new Gtk.TreeView();
+
+    public TreeViewBase() : base()
     {
-        internal Gtk.TreeView TreeView = new Gtk.TreeView();
+        this.Override.AddClass("TreeView");
+        this.TreeView.Valign = Align.Fill;
+        this.TreeView.Halign = Align.Fill;
+        this.TreeView.BorderWidth = 1;
+        this.TreeView.Margin = 0;
+        this.TreeView.EnableGridLines = Gtk.TreeViewGridLines.None;
+        this.TreeView.EnableTreeLines = true;
+        this.TreeView.HeadersVisible = false;
+        this.TreeView.ActivateOnSingleClick = true;
 
-        public TreeViewBase() : base()
-        {
-            this.Override.AddClass("TreeView");
-            this.TreeView.Valign = Align.Fill;
-            this.TreeView.Halign = Align.Fill;
-            this.TreeView.BorderWidth = 1;
-            this.TreeView.Margin = 0;
-            this.TreeView.EnableGridLines = Gtk.TreeViewGridLines.None;
-            this.TreeView.EnableTreeLines = true;
-            this.TreeView.HeadersVisible = false;
-            this.TreeView.ActivateOnSingleClick = true;
-
-            this.AutoScroll = true;
-            this.Add(this.TreeView);
-        }
+        this.AutoScroll = true;
+        this.Add(this.TreeView);
     }
 }

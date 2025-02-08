@@ -3,71 +3,70 @@
 
 using System.Collections;
 
-namespace System.ComponentModel.Design
+namespace System.ComponentModel.Design;
+
+/// <summary>
+///  The default designer for all components.
+/// </summary>
+public partial class ComponentDesigner : ITreeDesigner, IDesignerFilter, IComponentInitializer
 {
-    /// <summary>
-    ///  The default designer for all components.
-    /// </summary>
-    public partial class ComponentDesigner : ITreeDesigner, IDesignerFilter, IComponentInitializer
+    private InheritanceAttribute? _inheritanceAttribute;
+
+    private DesignerVerbCollection? _verbs;
+    private bool _settingsKeyExplicitlySet;
+    private IComponent? _component;
+
+    private protected const string SettingsKeyName = "SettingsKey";
+
+    public ICollection Children => throw new NotImplementedException();
+
+    public IDesigner Parent => throw new NotImplementedException();
+
+    public IComponent Component => throw new NotImplementedException();
+
+    public DesignerVerbCollection Verbs => throw new NotImplementedException();
+
+    public void DoDefaultAction()
     {
-        private InheritanceAttribute? _inheritanceAttribute;
+    }
 
-        private DesignerVerbCollection? _verbs;
-        private bool _settingsKeyExplicitlySet;
-        private IComponent? _component;
+    public void Initialize(IComponent component)
+    {
+    }
 
-        private protected const string SettingsKeyName = "SettingsKey";
+    public void Dispose()
+    {
+    }
 
-        public ICollection Children => throw new NotImplementedException();
+    public void PostFilterAttributes(IDictionary attributes)
+    {
+    }
 
-        public IDesigner Parent => throw new NotImplementedException();
+    public void PostFilterEvents(IDictionary events)
+    {
+    }
 
-        public IComponent Component => throw new NotImplementedException();
+    public void PostFilterProperties(IDictionary properties)
+    {
+    }
 
-        public DesignerVerbCollection Verbs => throw new NotImplementedException();
+    public void PreFilterAttributes(IDictionary attributes)
+    {
+    }
 
-        public void DoDefaultAction()
-        {
-        }
+    public void PreFilterEvents(IDictionary events)
+    {
+    }
 
-        public void Initialize(IComponent component)
-        {
-        }
+    public void PreFilterProperties(IDictionary properties)
+    {
+    }
 
-        public void Dispose()
-        {
-        }
+    public void InitializeExistingComponent(IDictionary defaultValues)
+    {
+    }
 
-        public void PostFilterAttributes(IDictionary attributes)
-        {
-        }
-
-        public void PostFilterEvents(IDictionary events)
-        {
-        }
-
-        public void PostFilterProperties(IDictionary properties)
-        {
-        }
-
-        public void PreFilterAttributes(IDictionary attributes)
-        {
-        }
-
-        public void PreFilterEvents(IDictionary events)
-        {
-        }
-
-        public void PreFilterProperties(IDictionary properties)
-        {
-        }
-
-        public void InitializeExistingComponent(IDictionary defaultValues)
-        {
-        }
-
-        public void InitializeNewComponent(IDictionary defaultValues)
-        {
-        }
+    public void InitializeNewComponent(IDictionary defaultValues)
+    {
     }
 }

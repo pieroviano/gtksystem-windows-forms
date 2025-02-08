@@ -1,148 +1,147 @@
 using System.Collections;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public abstract class BindingManagerBase
 {
-    public abstract class BindingManagerBase
+    protected EventHandler onCurrentChangedHandler;
+
+    protected EventHandler onPositionChangedHandler;
+
+    private protected EventHandler _onCurrentItemChangedHandler;
+
+    public BindingsCollection Bindings
     {
-        protected EventHandler onCurrentChangedHandler;
+        get { throw null; }
+    }
 
-        protected EventHandler onPositionChangedHandler;
+    public abstract object Current { get; }
 
-        private protected EventHandler _onCurrentItemChangedHandler;
+    internal abstract Type BindType { get; }
 
-        public BindingsCollection Bindings
-        {
-            get { throw null; }
-        }
+    public abstract int Position { get; set; }
 
-        public abstract object Current { get; }
+    internal abstract object DataSource { get; }
 
-        internal abstract Type BindType { get; }
+    internal abstract bool IsBinding { get; }
 
-        public abstract int Position { get; set; }
+    public bool IsBindingSuspended
+    {
+        get { throw null; }
+    }
 
-        internal abstract object DataSource { get; }
+    public abstract int Count { get; }
 
-        internal abstract bool IsBinding { get; }
+    public event BindingCompleteEventHandler BindingComplete
+    {
+        add { throw null; }
+        remove { throw null; }
+    }
 
-        public bool IsBindingSuspended
-        {
-            get { throw null; }
-        }
+    public event EventHandler CurrentChanged
+    {
+        add { throw null; }
+        remove { throw null; }
+    }
 
-        public abstract int Count { get; }
+    public event EventHandler CurrentItemChanged
+    {
+        add { throw null; }
+        remove { throw null; }
+    }
 
-        public event BindingCompleteEventHandler BindingComplete
-        {
-            add { throw null; }
-            remove { throw null; }
-        }
+    public event BindingManagerDataErrorEventHandler DataError
+    {
+        add { throw null; }
+        remove { throw null; }
+    }
 
-        public event EventHandler CurrentChanged
-        {
-            add { throw null; }
-            remove { throw null; }
-        }
+    public event EventHandler PositionChanged
+    {
+        add { throw null; }
+        remove { throw null; }
+    }
 
-        public event EventHandler CurrentItemChanged
-        {
-            add { throw null; }
-            remove { throw null; }
-        }
+    protected internal void OnBindingComplete(BindingCompleteEventArgs args)
+    {
+        throw null;
+    }
 
-        public event BindingManagerDataErrorEventHandler DataError
-        {
-            add { throw null; }
-            remove { throw null; }
-        }
+    protected internal abstract void OnCurrentChanged(EventArgs e);
 
-        public event EventHandler PositionChanged
-        {
-            add { throw null; }
-            remove { throw null; }
-        }
+    protected internal abstract void OnCurrentItemChanged(EventArgs e);
 
-        protected internal void OnBindingComplete(BindingCompleteEventArgs args)
-        {
-            throw null;
-        }
+    protected internal void OnDataError(Exception e)
+    {
+        throw null;
+    }
 
-        protected internal abstract void OnCurrentChanged(EventArgs e);
+    private protected abstract void SetDataSource(object dataSource);
 
-        protected internal abstract void OnCurrentItemChanged(EventArgs e);
+    public BindingManagerBase()
+    {
+        throw null;
+    }
 
-        protected internal void OnDataError(Exception e)
-        {
-            throw null;
-        }
+    internal BindingManagerBase(object dataSource)
+    {
+        throw null;
+    }
 
-        private protected abstract void SetDataSource(object dataSource);
+    internal abstract PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors);
 
-        public BindingManagerBase()
-        {
-            throw null;
-        }
+    public virtual PropertyDescriptorCollection GetItemProperties()
+    {
+        throw null;
+    }
 
-        internal BindingManagerBase(object dataSource)
-        {
-            throw null;
-        }
+    protected internal virtual PropertyDescriptorCollection GetItemProperties(ArrayList dataSources,
+        ArrayList listAccessors)
+    {
+        throw null;
+    }
 
-        internal abstract PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors);
+    //protected virtual PropertyDescriptorCollection GetItemProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type listType, int offset, ArrayList dataSources, ArrayList listAccessors)
+    //{
+    //	throw null;
+    //}
+    protected virtual PropertyDescriptorCollection GetItemProperties(Type listType, int offset,
+        ArrayList dataSources, ArrayList listAccessors)
+    {
+        throw null;
+    }
 
-        public virtual PropertyDescriptorCollection GetItemProperties()
-        {
-            throw null;
-        }
+    internal abstract string GetListName();
 
-        protected internal virtual PropertyDescriptorCollection GetItemProperties(ArrayList dataSources,
-            ArrayList listAccessors)
-        {
-            throw null;
-        }
+    public abstract void CancelCurrentEdit();
 
-        //protected virtual PropertyDescriptorCollection GetItemProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type listType, int offset, ArrayList dataSources, ArrayList listAccessors)
-        //{
-        //	throw null;
-        //}
-        protected virtual PropertyDescriptorCollection GetItemProperties(Type listType, int offset,
-            ArrayList dataSources, ArrayList listAccessors)
-        {
-            throw null;
-        }
+    public abstract void EndCurrentEdit();
 
-        internal abstract string GetListName();
+    public abstract void AddNew();
 
-        public abstract void CancelCurrentEdit();
+    public abstract void RemoveAt(int index);
 
-        public abstract void EndCurrentEdit();
+    protected abstract void UpdateIsBinding();
 
-        public abstract void AddNew();
+    protected internal abstract string GetListName(ArrayList listAccessors);
 
-        public abstract void RemoveAt(int index);
+    public abstract void SuspendBinding();
 
-        protected abstract void UpdateIsBinding();
+    public abstract void ResumeBinding();
 
-        protected internal abstract string GetListName(ArrayList listAccessors);
+    protected void PullData()
+    {
+        throw null;
+    }
 
-        public abstract void SuspendBinding();
+    internal void PullData(out bool success)
+    {
+        throw null;
+    }
 
-        public abstract void ResumeBinding();
-
-        protected void PullData()
-        {
-            throw null;
-        }
-
-        internal void PullData(out bool success)
-        {
-            throw null;
-        }
-
-        protected void PushData()
-        {
-            throw null;
-        }
+    protected void PushData()
+    {
+        throw null;
     }
 }

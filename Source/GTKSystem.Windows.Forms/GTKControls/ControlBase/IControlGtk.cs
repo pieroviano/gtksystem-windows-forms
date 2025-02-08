@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase;
+
+public interface IControlGtk : IDisposable
 {
-    public interface IControlGtk : IDisposable
-    {
-        GtkControlOverride Override { get; set; }
-    }
+    GtkControlOverride Override { get; set; }
 }

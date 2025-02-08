@@ -1,6 +1,5 @@
-﻿namespace System.ComponentModel
+﻿namespace System.ComponentModel;
+
+public class TypeConverte
 {
-    public class TypeConverte
-    {
-    }
 }

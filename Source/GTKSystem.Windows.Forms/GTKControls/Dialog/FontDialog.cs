@@ -1,101 +1,100 @@
 ﻿using System.Drawing;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class FontDialog : CommonDialog
 {
-    public class FontDialog : CommonDialog
+    public Gtk.FontChooserDialog fontChooserDialog;
+
+    public FontDialog() : base()
     {
-        public Gtk.FontChooserDialog fontChooserDialog;
+        this.Reset();
+    }
 
-        public FontDialog() : base()
+    [DefaultValue(true)] public virtual bool AllowFullOpen { get; set; }
+
+    private Font? _font;
+
+    public Font? Font
+    {
+        get => _font;
+        set => _font = value;
+    }
+
+    [DefaultValue(false)] public virtual bool FullOpen { get; set; }
+
+    [DefaultValue(false)] public virtual bool ShowHelp { get; set; }
+
+    protected virtual IntPtr Instance { get; }
+
+    protected virtual int Options { get; }
+
+    public override void Reset()
+    {
+        _font = null;
+    }
+
+    private static Gtk.Window ActiveWindow = null;
+
+    protected override bool RunDialog(IWin32Window owner)
+    {
+        if (owner != null && owner is Form ownerform)
         {
-            this.Reset();
+            fontChooserDialog =
+                new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font,
+                    ownerform.self);
+            fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+        }
+        else
+        {
+            fontChooserDialog =
+                new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font,
+                    null);
+            fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
         }
 
-        [DefaultValue(true)] public virtual bool AllowFullOpen { get; set; }
-
-        private Font? _font;
-
-        public Font? Font
+        fontChooserDialog.KeepAbove = true;
+        if (null != _font)
+            fontChooserDialog.Font = _font.Name + " " + (int)_font.Size;
+        if (FullOpen && AllowFullOpen)
+            fontChooserDialog.Fullscreen();
+        int res = fontChooserDialog.Run();
+        FontStyle fontStyle = FontStyle.Regular;
+        switch (fontChooserDialog.FontDesc.Weight)
         {
-            get => _font;
-            set => _font = value;
+            case Pango.Weight.Bold:
+            case Pango.Weight.Ultrabold:
+            case Pango.Weight.Semibold:
+                fontStyle |= FontStyle.Bold;
+                break;
         }
 
-        [DefaultValue(false)] public virtual bool FullOpen { get; set; }
-
-        [DefaultValue(false)] public virtual bool ShowHelp { get; set; }
-
-        protected virtual IntPtr Instance { get; }
-
-        protected virtual int Options { get; }
-
-        public override void Reset()
+        switch (fontChooserDialog.FontDesc.Style)
         {
-            _font = null;
+            case Pango.Style.Italic:
+            case Pango.Style.Oblique:
+                fontStyle |= FontStyle.Italic;
+                break;
         }
 
-        private static Gtk.Window ActiveWindow = null;
+        _font = new Font(fontChooserDialog.FontDesc.Family,
+            (int)(fontChooserDialog.FontDesc.Size / Pango.Scale.PangoScale), fontStyle);
 
-        protected override bool RunDialog(IWin32Window owner)
+        fontChooserDialog.HideOnDelete();
+        return res == -5;
+    }
+
+    public override string ToString() => $"{_font.Name} {_font.Size}";
+
+    protected override void Dispose(bool disposing)
+    {
+        if (fontChooserDialog != null)
         {
-            if (owner != null && owner is Form ownerform)
-            {
-                fontChooserDialog =
-                    new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font,
-                        ownerform.self);
-                fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-            }
-            else
-            {
-                fontChooserDialog =
-                    new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font,
-                        null);
-                fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
-            }
-
-            fontChooserDialog.KeepAbove = true;
-            if (null != _font)
-                fontChooserDialog.Font = _font.Name + " " + (int)_font.Size;
-            if (FullOpen && AllowFullOpen)
-                fontChooserDialog.Fullscreen();
-            int res = fontChooserDialog.Run();
-            FontStyle fontStyle = FontStyle.Regular;
-            switch (fontChooserDialog.FontDesc.Weight)
-            {
-                case Pango.Weight.Bold:
-                case Pango.Weight.Ultrabold:
-                case Pango.Weight.Semibold:
-                    fontStyle |= FontStyle.Bold;
-                    break;
-            }
-
-            switch (fontChooserDialog.FontDesc.Style)
-            {
-                case Pango.Style.Italic:
-                case Pango.Style.Oblique:
-                    fontStyle |= FontStyle.Italic;
-                    break;
-            }
-
-            _font = new Font(fontChooserDialog.FontDesc.Family,
-                (int)(fontChooserDialog.FontDesc.Size / Pango.Scale.PangoScale), fontStyle);
-
-            fontChooserDialog.HideOnDelete();
-            return res == -5;
+            fontChooserDialog.Dispose();
+            fontChooserDialog = null;
         }
 
-        public override string ToString() => $"{_font.Name} {_font.Size}";
-
-        protected override void Dispose(bool disposing)
-        {
-            if (fontChooserDialog != null)
-            {
-                fontChooserDialog.Dispose();
-                fontChooserDialog = null;
-            }
-
-            base.Dispose(disposing);
-        }
+        base.Dispose(disposing);
     }
 }

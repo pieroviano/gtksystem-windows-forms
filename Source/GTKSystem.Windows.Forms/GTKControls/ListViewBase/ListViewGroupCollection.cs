@@ -1,78 +1,77 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[ListBindable(false)]
+public class ListViewGroupCollection : List<ListViewGroup>
 {
-    [ListBindable(false)]
-    public class ListViewGroupCollection : List<ListViewGroup>
+    ListView _listView;
+
+    public ListViewGroup this[string key]
     {
-        ListView _listView;
-
-        public ListViewGroup this[string key]
+        get { return base.Find(w => w.Name == key); }
+        set
         {
-            get { return base.Find(w => w.Name == key); }
-            set
+            if (base.FindIndex(w => w.Name == key) > -1)
             {
-                if (base.FindIndex(w => w.Name == key) > -1)
-                {
-                    base[FindIndex(w => w.Name == key)] = value;
-                }
+                base[FindIndex(w => w.Name == key)] = value;
             }
         }
+    }
 
-        internal ListViewGroupCollection(ListView listView)
+    internal ListViewGroupCollection(ListView listView)
+    {
+        _listView = listView;
+    }
+
+    public ListViewGroup Add(string key, string headerText)
+    {
+        ListViewGroup group = new ListViewGroup(key, headerText);
+
+        AddCore(group);
+        return group;
+    }
+
+    public void AddRange(ListViewGroup[] groups)
+    {
+        foreach (ListViewGroup group in groups)
         {
-            _listView = listView;
-        }
-
-        public ListViewGroup Add(string key, string headerText)
-        {
-            ListViewGroup group = new ListViewGroup(key, headerText);
-
             AddCore(group);
-            return group;
         }
+    }
 
-        public void AddRange(ListViewGroup[] groups)
+    public void AddRange(ListViewGroupCollection groups)
+    {
+        foreach (ListViewGroup group in groups)
         {
-            foreach (ListViewGroup group in groups)
-            {
-                AddCore(group);
-            }
+            AddCore(group);
         }
+    }
 
-        public void AddRange(ListViewGroupCollection groups)
+    private void AddCore(ListViewGroup group)
+    {
+        if (this.Exists(m => m.Name == group.Name))
         {
-            foreach (ListViewGroup group in groups)
-            {
-                AddCore(group);
-            }
+            //Console.WriteLine("新增Group.Name重复");
+            // throw new ArgumentException("Group.Name重复");
+            return;
         }
 
-        private void AddCore(ListViewGroup group)
-        {
-            if (this.Exists(m => m.Name == group.Name))
-            {
-                //Console.WriteLine("新增Group.Name重复");
-                // throw new ArgumentException("Group.Name重复");
-                return;
-            }
+        group.ListView = _listView;
+        base.Add(group);
 
-            group.ListView = _listView;
-            base.Add(group);
+        _listView.NativeGroupAdd(group, -1);
+    }
 
-            _listView.NativeGroupAdd(group, -1);
-        }
+    public new void Clear()
+    {
+        _listView.NativeGroupsClear();
+        base.Clear();
+    }
 
-        public new void Clear()
-        {
-            _listView.NativeGroupsClear();
-            base.Clear();
-        }
-
-        public bool Contains(string name)
-        {
-            return base.FindIndex(w => w.Name == name) > -1;
-        }
+    public bool Contains(string name)
+    {
+        return base.FindIndex(w => w.Name == name) > -1;
     }
 }

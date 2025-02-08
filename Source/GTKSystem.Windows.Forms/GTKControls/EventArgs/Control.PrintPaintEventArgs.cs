@@ -4,24 +4,23 @@
 
 using System.Drawing;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public partial class Control
 {
-    public partial class Control
+    private sealed class PrintPaintEventArgs : PaintEventArgs
     {
-        private sealed class PrintPaintEventArgs : PaintEventArgs
+        private Message _m;
+
+        internal PrintPaintEventArgs(Message m, IntPtr dc, Rectangle clipRect)
+            : base(dc, clipRect)
         {
-            private Message _m;
+            _m = m;
+        }
 
-            internal PrintPaintEventArgs(Message m, IntPtr dc, Rectangle clipRect)
-                : base(dc, clipRect)
-            {
-                _m = m;
-            }
-
-            internal Message Message
-            {
-                get { return _m; }
-            }
+        internal Message Message
+        {
+            get { return _m; }
         }
     }
 }

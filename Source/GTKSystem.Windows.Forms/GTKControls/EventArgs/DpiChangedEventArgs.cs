@@ -5,26 +5,25 @@
 using System.ComponentModel;
 using System.Drawing;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Provides information about a DpiChanged event.
+/// </summary>
+public sealed class DpiChangedEventArgs : CancelEventArgs
 {
-    /// <summary>
-    ///  Provides information about a DpiChanged event.
+    /// <devdov>
+    ///  Parameter units are pixels(dots) per inch.
     /// </summary>
-    public sealed class DpiChangedEventArgs : CancelEventArgs
+    internal DpiChangedEventArgs(int old, Message m)
     {
-        /// <devdov>
-        ///  Parameter units are pixels(dots) per inch.
-        /// </summary>
-        internal DpiChangedEventArgs(int old, Message m)
-        {
-        }
-
-        public int DeviceDpiOld { get; }
-
-        public int DeviceDpiNew { get; }
-
-        public Rectangle SuggestedRectangle { get; }
-
-        public override string ToString() => $"was: {DeviceDpiOld}, now: {DeviceDpiNew}";
     }
+
+    public int DeviceDpiOld { get; }
+
+    public int DeviceDpiNew { get; }
+
+    public Rectangle SuggestedRectangle { get; }
+
+    public override string ToString() => $"was: {DeviceDpiOld}, now: {DeviceDpiNew}";
 }

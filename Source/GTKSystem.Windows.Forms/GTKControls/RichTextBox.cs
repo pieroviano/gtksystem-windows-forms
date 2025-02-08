@@ -9,56 +9,55 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public partial class RichTextBox : ScrollableControl
 {
-    [DesignerCategory("Component")]
-    public partial class RichTextBox : ScrollableControl
+    public readonly RichTextBoxBase self = new RichTextBoxBase();
+    public override object GtkControl => self;
+
+    protected override void SetStyle(Widget widget)
     {
-        public readonly RichTextBoxBase self = new RichTextBoxBase();
-        public override object GtkControl => self;
+        base.SetStyle(self.TextView);
+    }
 
-        protected override void SetStyle(Widget widget)
+    public RichTextBox() : base()
+    {
+        self.TextView.Buffer.Changed += Buffer_Changed;
+        this.BorderStyle = BorderStyle.Fixed3D;
+    }
+
+    private void Buffer_Changed(object sender, EventArgs e)
+    {
+        if (TextChanged != null && self.IsVisible)
         {
-            base.SetStyle(self.TextView);
+            TextChanged(this, e);
         }
+    }
 
-        public RichTextBox() : base()
-        {
-            self.TextView.Buffer.Changed += Buffer_Changed;
-            this.BorderStyle = BorderStyle.Fixed3D;
-        }
+    public override string Text
+    {
+        get => self.TextView.Buffer.Text;
+        set => self.TextView.Buffer.Text = value;
+    }
 
-        private void Buffer_Changed(object sender, EventArgs e)
-        {
-            if (TextChanged != null && self.IsVisible)
-            {
-                TextChanged(this, e);
-            }
-        }
+    public virtual bool ReadOnly
+    {
+        get { return self.TextView.CanFocus; }
+        set { self.TextView.CanFocus = value; }
+    }
 
-        public override string Text
-        {
-            get => self.TextView.Buffer.Text;
-            set => self.TextView.Buffer.Text = value;
-        }
+    public override event EventHandler TextChanged;
 
-        public virtual bool ReadOnly
-        {
-            get { return self.TextView.CanFocus; }
-            set { self.TextView.CanFocus = value; }
-        }
+    public void AppendText(string text)
+    {
+        var enditer = self.TextView.Buffer.EndIter;
+        self.TextView.Buffer.Insert(ref enditer, text);
+    }
 
-        public override event EventHandler TextChanged;
-
-        public void AppendText(string text)
-        {
-            var enditer = self.TextView.Buffer.EndIter;
-            self.TextView.Buffer.Insert(ref enditer, text);
-        }
-
-        public string[] Lines
-        {
-            get { return self.TextView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
-        }
+    public string[] Lines
+    {
+        get { return self.TextView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
     }
 }

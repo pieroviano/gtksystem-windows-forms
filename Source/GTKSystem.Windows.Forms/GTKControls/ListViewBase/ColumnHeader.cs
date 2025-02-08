@@ -2,83 +2,82 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DefaultProperty("Text")]
+public class ColumnHeader : Component, ICloneable
 {
-    [DefaultProperty("Text")]
-    public class ColumnHeader : Component, ICloneable
+    internal int _index;
+
+    internal string _text;
+
+    internal string _name;
+
+    internal int _width = 120;
+
+    [Localizable(true)] public int DisplayIndex { get; set; }
+
+    [Browsable(false)]
+    public int Index
     {
-        internal int _index;
+        get { return _index; }
+    }
 
-        internal string _text;
+    [DefaultValue(-1)] public int ImageIndex { get; set; } = -1;
 
-        internal string _name;
+    [Browsable(false)]
+    public ImageList ImageList
+    {
+        get { throw null; }
+    }
 
-        internal int _width = 120;
+    public string ImageKey { get; set; }
 
-        [Localizable(true)] public int DisplayIndex { get; set; }
+    [Browsable(false)] public ListView ListView { [CompilerGenerated] get; }
 
-        [Browsable(false)]
-        public int Index
-        {
-            get { return _index; }
-        }
+    [Browsable(false)] public string Name { get; set; }
 
-        [DefaultValue(-1)] public int ImageIndex { get; set; } = -1;
+    [Localizable(true)] public string Text { get; set; }
 
-        [Browsable(false)]
-        public ImageList ImageList
-        {
-            get { throw null; }
-        }
+    [Localizable(true)]
+    [DefaultValue(HorizontalAlignment.Left)]
+    public HorizontalAlignment TextAlign { get; set; }
 
-        public string ImageKey { get; set; }
+    [Localizable(false)]
+    [Bindable(true)]
+    [DefaultValue(null)]
 
-        [Browsable(false)] public ListView ListView { [CompilerGenerated] get; }
+    public object Tag { get; set; }
 
-        [Browsable(false)] public string Name { get; set; }
+    [Localizable(true)] [DefaultValue(60)] public int Width { get; set; } = 100;
 
-        [Localizable(true)] public string Text { get; set; }
+    public ColumnHeader()
+    {
+    }
 
-        [Localizable(true)]
-        [DefaultValue(HorizontalAlignment.Left)]
-        public HorizontalAlignment TextAlign { get; set; }
+    public ColumnHeader(int imageIndex)
+    {
+        ImageIndex = imageIndex;
+    }
 
-        [Localizable(false)]
-        [Bindable(true)]
-        [DefaultValue(null)]
+    public ColumnHeader(string imageKey)
+    {
+        ImageKey = imageKey;
+    }
 
-        public object Tag { get; set; }
+    //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
+    //{
+    //	throw null;
+    //}
 
-        [Localizable(true)] [DefaultValue(60)] public int Width { get; set; } = 100;
+    public object Clone()
+    {
+        return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+        //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
+        //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
+    }
 
-        public ColumnHeader()
-        {
-        }
-
-        public ColumnHeader(int imageIndex)
-        {
-            ImageIndex = imageIndex;
-        }
-
-        public ColumnHeader(string imageKey)
-        {
-            ImageKey = imageKey;
-        }
-
-        //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
-        //{
-        //	throw null;
-        //}
-
-        public object Clone()
-        {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
-            //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
-            //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-        }
+    protected override void Dispose(bool disposing)
+    {
     }
 }

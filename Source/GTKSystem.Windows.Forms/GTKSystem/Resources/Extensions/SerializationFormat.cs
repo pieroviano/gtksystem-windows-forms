@@ -1,10 +1,9 @@
-namespace GTKSystem.Resources.Extensions
+namespace GTKSystem.Resources.Extensions;
+
+internal enum SerializationFormat
 {
-    internal enum SerializationFormat
-    {
-        BinaryFormatter = 1,
-        TypeConverterByteArray,
-        TypeConverterString,
-        ActivatorStream
-    }
+    BinaryFormatter = 1,
+    TypeConverterByteArray,
+    TypeConverterString,
+    ActivatorStream
 }

@@ -7,37 +7,36 @@
 
 using System.IO;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public sealed class SaveFileDialog : FileDialog
 {
-    public sealed class SaveFileDialog : FileDialog
+    public SaveFileDialog()
     {
-        public SaveFileDialog()
+    }
+
+    private new string Description => base.Description;
+
+    public bool CheckWriteAccess
+    {
+        get => true;
+        set { }
+    }
+
+    public Stream OpenFile()
+    {
+        string filename = FileName;
+        if (string.IsNullOrEmpty(filename))
         {
+            throw new ArgumentNullException("filename");
         }
 
-        private new string Description => base.Description;
+        return new FileStream(filename, FileMode.Create, FileAccess.ReadWrite);
+    }
 
-        public bool CheckWriteAccess
-        {
-            get => true;
-            set { }
-        }
-
-        public Stream OpenFile()
-        {
-            string filename = FileName;
-            if (string.IsNullOrEmpty(filename))
-            {
-                throw new ArgumentNullException("filename");
-            }
-
-            return new FileStream(filename, FileMode.Create, FileAccess.ReadWrite);
-        }
-
-        public override DialogResult ShowDialog(IWin32Window owner)
-        {
-            ActionType = Gtk.FileChooserAction.Save;
-            return base.ShowDialog(owner);
-        }
+    public override DialogResult ShowDialog(IWin32Window owner)
+    {
+        ActionType = Gtk.FileChooserAction.Save;
+        return base.ShowDialog(owner);
     }
 }

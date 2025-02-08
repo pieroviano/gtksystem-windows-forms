@@ -10,90 +10,100 @@ using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Linq;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public partial class TextBox : Control
 {
-    [DesignerCategory("Component")]
-    public partial class TextBox : Control
+    public readonly TextBoxBase self = new TextBoxBase();
+    public override object GtkControl => self;
+
+    public TextBox() : base()
     {
-        public readonly TextBoxBase self = new TextBoxBase();
-        public override object GtkControl => self;
+        self.MaxWidthChars = 1;
+        self.WidthChars = 0;
 
-        public TextBox() : base()
+        self.Valign = Gtk.Align.Start;
+        self.Halign = Gtk.Align.Start;
+        self.Changed += Self_Changed;
+        self.TextInserted += Self_TextInserted;
+        self.KeyPressEvent += Self_KeyPressEvent;
+    }
+
+    private void Self_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
+    {
+        if (KeyDown != null)
         {
-            self.MaxWidthChars = 1;
-            self.WidthChars = 0;
-
-            self.Valign = Gtk.Align.Start;
-            self.Halign = Gtk.Align.Start;
-            self.Changed += Self_Changed;
-            self.TextInserted += Self_TextInserted;
-            self.KeyPressEvent += Self_KeyPressEvent;
-        }
-
-        private void Self_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
-        {
-            if (KeyDown != null)
+            if (args.Event is Gdk.EventKey eventkey)
             {
-                if (args.Event is Gdk.EventKey eventkey)
-                {
-                    Keys keys = (Keys)eventkey.HardwareKeycode;
-                    KeyDown(this, new KeyEventArgs(keys));
-                }
+                Keys keys = (Keys)eventkey.HardwareKeycode;
+                KeyDown(this, new KeyEventArgs(keys));
             }
         }
+    }
 
-        public override event KeyEventHandler KeyDown;
+    public override event KeyEventHandler KeyDown;
 
-        private void Self_TextInserted(object o, TextInsertedArgs args)
+    private void Self_TextInserted(object o, TextInsertedArgs args)
+    {
+        if (KeyDown != null && this.GetType().Name == "TextBox")
         {
-            if (KeyDown != null && this.GetType().Name == "TextBox")
-            {
-                string keytext = args.NewText.ToUpper();
-                if (char.IsNumber(args.NewText[0]))
-                    keytext = "D" + keytext;
-                var keyv = Enum.GetValues<Keys>().Where(k => { return Enum.GetName(k) == keytext; });
-                foreach (var key in keyv)
-                    KeyDown(this, new KeyEventArgs(key));
-            }
+            string keytext = args.NewText.ToUpper();
+            if (char.IsNumber(args.NewText[0]))
+                keytext = "D" + keytext;
+            var keyv = Enum.GetValues<Keys>().Where(k => { return Enum.GetName(k) == keytext; });
+            foreach (var key in keyv)
+                KeyDown(this, new KeyEventArgs(key));
         }
+    }
 
-        private void Self_Changed(object sender, EventArgs e)
+    private void Self_Changed(object sender, EventArgs e)
+    {
+        if (TextChanged != null && self.IsVisible)
         {
-            if (TextChanged != null && self.IsVisible)
-            {
-                TextChanged(this, EventArgs.Empty);
-            }
+            TextChanged(this, EventArgs.Empty);
         }
+    }
 
-        public string PlaceholderText
+    public string PlaceholderText
+    {
+        get { return self.PlaceholderText; }
+        set { self.PlaceholderText = value ?? ""; }
+    }
+
+    public override string Text
+    {
+        get { return self.Text; }
+        set { self.Text = value ?? ""; }
+    }
+
+    public virtual char PasswordChar
+    {
+        get => self.InvisibleChar;
+        set
         {
-            get { return self.PlaceholderText; }
-            set { self.PlaceholderText = value ?? ""; }
+            self.InvisibleChar = value;
+            self.Visibility = false;
         }
+    }
 
-        public override string Text
-        {
-            get { return self.Text; }
-            set { self.Text = value ?? ""; }
-        }
+    public virtual bool ReadOnly
+    {
+        get { return self.IsEditable == false; }
+        set { self.IsEditable = value == false; }
+    }
 
-        public virtual char PasswordChar
-        {
-            get => self.InvisibleChar;
-            set
-            {
-                self.InvisibleChar = value;
-                self.Visibility = false;
-            }
-        }
+    public override event EventHandler TextChanged;
+    public bool Multiline { get; set; }
+    public string[] Lines => Text?.Replace("\r\n", "\n").Split("\n")?? [];
 
-        public virtual bool ReadOnly
-        {
-            get { return self.IsEditable == false; }
-            set { self.IsEditable = value == false; }
-        }
+    public void AppendText(string s)
+    {
+        Text += s;
+    }
 
-        public override event EventHandler TextChanged;
-        public bool Multiline { get; set; }
+    public void Clear()
+    {
+        Text = string.Empty;
     }
 }

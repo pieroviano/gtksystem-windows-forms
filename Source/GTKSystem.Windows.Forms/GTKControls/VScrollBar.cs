@@ -8,21 +8,20 @@
 using System.ComponentModel;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public class VScrollBar : ScrollBar
 {
-    [DesignerCategory("Component")]
-    public class VScrollBar : ScrollBar
+    public ScrollbarBase<Gtk.VScrollbar> self = new ScrollbarBase<Gtk.VScrollbar>(Gtk.Orientation.Vertical);
+    public override object GtkControl => self;
+
+    public override Gtk.Adjustment Adjustment
     {
-        public ScrollbarBase<Gtk.VScrollbar> self = new ScrollbarBase<Gtk.VScrollbar>(Gtk.Orientation.Vertical);
-        public override object GtkControl => self;
+        get => self.Adjustment;
+    }
 
-        public override Gtk.Adjustment Adjustment
-        {
-            get => self.Adjustment;
-        }
-
-        public VScrollBar() : base()
-        {
-        }
+    public VScrollBar() : base()
+    {
     }
 }

@@ -7,164 +7,163 @@
 
 using System.Text.RegularExpressions;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class MaskedTextBox : TextBox
 {
-    public class MaskedTextBox : TextBox
+    public MaskedTextBox() : base()
     {
-        public MaskedTextBox() : base()
-        {
-            self.AddClass("MaskedTextBox");
-            self.Backspace += Control_Backspace;
-            self.TextInserted += Control_TextInserted;
-            self.Shown += Control_Shown;
-        }
+        self.AddClass("MaskedTextBox");
+        self.Backspace += Control_Backspace;
+        self.TextInserted += Control_TextInserted;
+        self.Shown += Control_Shown;
+    }
 
-        internal MaskedTextBox(string cssClass) : base()
-        {
-            self.AddClass(cssClass);
-            self.Backspace += Control_Backspace;
-            self.TextInserted += Control_TextInserted;
-            self.Shown += Control_Shown;
-        }
+    internal MaskedTextBox(string cssClass) : base()
+    {
+        self.AddClass(cssClass);
+        self.Backspace += Control_Backspace;
+        self.TextInserted += Control_TextInserted;
+        self.Shown += Control_Shown;
+    }
 
-        public override string Text
+    public override string Text
+    {
+        get { return self.Text; }
+        set
         {
-            get { return self.Text; }
-            set
-            {
-                IsMasking = false;
-                self.Text = value ?? "";
-                IsMasking = true;
-            }
+            IsMasking = false;
+            self.Text = value ?? "";
+            IsMasking = true;
         }
+    }
 
-        private void Control_Shown(object sender, EventArgs e)
+    private void Control_Shown(object sender, EventArgs e)
+    {
+        if (_PasswordChar != '\0')
         {
-            if (_PasswordChar != '\0')
+            self.Visibility = false;
+        }
+        else if (!string.IsNullOrWhiteSpace(Mask))
+        {
+            // Assign value according to format
+            string txt = Regex.Match(Text, "\\d").Value;
+            int windex = -1;
+            Text = Regex.Replace(Mask, "\\d", (Match m) =>
             {
-                self.Visibility = false;
-            }
-            else if (!string.IsNullOrWhiteSpace(Mask))
-            {
-                // Assign value according to format
-                string txt = Regex.Match(Text, "\\d").Value;
-                int windex = -1;
-                Text = Regex.Replace(Mask, "\\d", (Match m) =>
+                windex++;
+                if (txt.Length > windex)
                 {
-                    windex++;
-                    if (txt.Length > windex)
-                    {
-                        return txt[windex].ToString();
-                    }
-                    else
-                    {
-                        return "_";
-                    }
-                });
-            }
-        }
-
-        string correctText;
-
-        private void Control_TextInserted(object o, Gtk.TextInsertedArgs args)
-        {
-            if (self.IsRealized && isBackspace == false)
-            {
-                int position = args.Position;
-                string new_text = args.NewText;
-                if (IsMaskPassword == true)
-                {
-                    if (new_text.Length > 1 || self.Text.Length != correctText.Length + 1)
-                    {
-                        if (correctText != null)
-                            self.Text = correctText;
-                    }
-                    else if (correctText.Length > position && new_text.Length == 1)
-                    {
-                        if (IsNumberText(correctText.Substring(position - 1, 1)) && IsNumberText(new_text))
-                        {
-                            // normal
-                            self.DeleteText(position, position + 1);
-                        }
-                        else
-                        {
-                            self.Text = correctText;
-                        }
-                    }
-                    else
-                    {
-                        self.DeleteText(position - 1, position);
-                    }
+                    return txt[windex].ToString();
                 }
-            }
-
-            isBackspace = false;
-            correctText = self.Text;
+                else
+                {
+                    return "_";
+                }
+            });
         }
+    }
 
-        bool isBackspace = false;
+    string correctText;
 
-        private void Control_Backspace(object sender, EventArgs e)
+    private void Control_TextInserted(object o, Gtk.TextInsertedArgs args)
+    {
+        if (self.IsRealized && isBackspace == false)
         {
+            int position = args.Position;
+            string new_text = args.NewText;
             if (IsMaskPassword == true)
             {
-                // Format mask, only change numbers
-                int position = self.CursorPosition;
-                if (self.Text.Length + 1 == correctText.Length) // delete a character
+                if (new_text.Length > 1 || self.Text.Length != correctText.Length + 1)
                 {
-                    isBackspace = true;
-                    if (IsNumberChar(correctText[position]))
+                    if (correctText != null)
+                        self.Text = correctText;
+                }
+                else if (correctText.Length > position && new_text.Length == 1)
+                {
+                    if (IsNumberText(correctText.Substring(position - 1, 1)) && IsNumberText(new_text))
                     {
-                        self.InsertText("_", ref position);
+                        // normal
+                        self.DeleteText(position, position + 1);
                     }
                     else
                     {
-                        self.InsertText(correctText[position].ToString(), ref position);
+                        self.Text = correctText;
                     }
                 }
-                else if (self.Text.Length + 1 < correctText.Length) // Select multiple characters to delete
+                else
                 {
-                    self.Text = correctText;
+                    self.DeleteText(position - 1, position);
                 }
             }
         }
 
-        private bool IsNumberText(string text)
+        isBackspace = false;
+        correctText = self.Text;
+    }
+
+    bool isBackspace = false;
+
+    private void Control_Backspace(object sender, EventArgs e)
+    {
+        if (IsMaskPassword == true)
         {
-            foreach (char w in text)
+            // Format mask, only change numbers
+            int position = self.CursorPosition;
+            if (self.Text.Length + 1 == correctText.Length) // delete a character
             {
-                if (!IsNumberChar(w))
-                    return false;
+                isBackspace = true;
+                if (IsNumberChar(correctText[position]))
+                {
+                    self.InsertText("_", ref position);
+                }
+                else
+                {
+                    self.InsertText(correctText[position].ToString(), ref position);
+                }
             }
-
-            return true;
-        }
-
-        private bool IsNumberChar(char w)
-        {
-            return (char.IsNumber(w) || w == '_');
-        }
-
-        public string Mask { get; set; }
-        private char _PasswordChar;
-
-        public override char PasswordChar
-        {
-            get => _PasswordChar;
-            set
+            else if (self.Text.Length + 1 < correctText.Length) // Select multiple characters to delete
             {
-                _PasswordChar = value;
-                self.InvisibleChar = value;
+                self.Text = correctText;
             }
         }
+    }
 
-        public Type ValidatingType { get; set; }
-        public MaskFormat TextMaskFormat { get; set; }
-        internal bool IsMasking = true;
-
-        private bool IsMaskPassword
+    private bool IsNumberText(string text)
+    {
+        foreach (char w in text)
         {
-            get { return !string.IsNullOrWhiteSpace(Mask) && IsMasking; }
+            if (!IsNumberChar(w))
+                return false;
         }
+
+        return true;
+    }
+
+    private bool IsNumberChar(char w)
+    {
+        return (char.IsNumber(w) || w == '_');
+    }
+
+    public string Mask { get; set; }
+    private char _PasswordChar;
+
+    public override char PasswordChar
+    {
+        get => _PasswordChar;
+        set
+        {
+            _PasswordChar = value;
+            self.InvisibleChar = value;
+        }
+    }
+
+    public Type ValidatingType { get; set; }
+    public MaskFormat TextMaskFormat { get; set; }
+    internal bool IsMasking = true;
+
+    private bool IsMaskPassword
+    {
+        get { return !string.IsNullOrWhiteSpace(Mask) && IsMasking; }
     }
 }

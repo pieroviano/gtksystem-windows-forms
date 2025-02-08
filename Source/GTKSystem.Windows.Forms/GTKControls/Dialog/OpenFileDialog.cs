@@ -7,58 +7,57 @@
 
 using System.IO;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public sealed class OpenFileDialog : FileDialog
 {
-    public sealed class OpenFileDialog : FileDialog
+    public OpenFileDialog()
     {
-        public OpenFileDialog()
+    }
+
+    private new string Description => base.Description;
+    public bool ReadOnlyChecked { get; set; }
+    public bool ShowReadOnly { get; set; }
+
+    public new bool Multiselect
+    {
+        get => base.Multiselect;
+        set => base.Multiselect = value;
+    }
+
+    public string SafeFileName => Path.GetFileName(FileName) ?? string.Empty;
+
+    public string[] SafeFileNames
+    {
+        get
         {
-        }
-
-        private new string Description => base.Description;
-        public bool ReadOnlyChecked { get; set; }
-        public bool ShowReadOnly { get; set; }
-
-        public new bool Multiselect
-        {
-            get => base.Multiselect;
-            set => base.Multiselect = value;
-        }
-
-        public string SafeFileName => Path.GetFileName(FileName) ?? string.Empty;
-
-        public string[] SafeFileNames
-        {
-            get
+            string[] fullPaths = FileNames;
+            if (fullPaths is null || fullPaths.Length == 0)
             {
-                string[] fullPaths = FileNames;
-                if (fullPaths is null || fullPaths.Length == 0)
-                {
-                    return Array.Empty<string>();
-                }
-
-                string[] safePaths = new string[fullPaths.Length];
-                for (int i = 0; i < safePaths.Length; ++i)
-                {
-                    safePaths[i] = Path.GetFileName(fullPaths[i]);
-                }
-
-                return safePaths;
+                return Array.Empty<string>();
             }
-        }
 
-        public Stream OpenFile()
-        {
-            if (System.IO.File.Exists(base.FileName))
-                return System.IO.File.OpenRead(base.FileName);
-            else
-                return null;
-        }
+            string[] safePaths = new string[fullPaths.Length];
+            for (int i = 0; i < safePaths.Length; ++i)
+            {
+                safePaths[i] = Path.GetFileName(fullPaths[i]);
+            }
 
-        public override DialogResult ShowDialog(IWin32Window owner)
-        {
-            ActionType = Gtk.FileChooserAction.Open;
-            return base.ShowDialog(owner);
+            return safePaths;
         }
+    }
+
+    public Stream OpenFile()
+    {
+        if (System.IO.File.Exists(base.FileName))
+            return System.IO.File.OpenRead(base.FileName);
+        else
+            return null;
+    }
+
+    public override DialogResult ShowDialog(IWin32Window owner)
+    {
+        ActionType = Gtk.FileChooserAction.Open;
+        return base.ShowDialog(owner);
     }
 }

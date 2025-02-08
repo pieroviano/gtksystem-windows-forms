@@ -3,59 +3,58 @@
 
 using System.Collections;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Represents a linked list of <see cref="DataGridViewCell"/> objects
+/// </summary>
+internal class DataGridViewCellLinkedList : IEnumerable
 {
-    /// <summary>
-    ///  Represents a linked list of <see cref="DataGridViewCell"/> objects
-    /// </summary>
-    internal class DataGridViewCellLinkedList : IEnumerable
+    private int _count;
+
+    public DataGridViewCellLinkedList()
     {
-        private int _count;
+    }
 
-        public DataGridViewCellLinkedList()
-        {
-        }
+    public DataGridViewCell this[int index]
+    {
+        get { return null; }
+    }
 
-        public DataGridViewCell this[int index]
-        {
-            get { return null; }
-        }
+    public int Count => _count;
 
-        public int Count => _count;
+    public DataGridViewCell HeadCell
+    {
+        get { return null; }
+    }
 
-        public DataGridViewCell HeadCell
-        {
-            get { return null; }
-        }
+    public void Add(DataGridViewCell dataGridViewCell)
+    {
+    }
 
-        public void Add(DataGridViewCell dataGridViewCell)
-        {
-        }
+    public void Clear()
+    {
+    }
 
-        public void Clear()
-        {
-        }
+    public bool Contains(DataGridViewCell dataGridViewCell)
+    {
+        return false;
+    }
 
-        public bool Contains(DataGridViewCell dataGridViewCell)
-        {
-            return false;
-        }
+    public IEnumerator GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
 
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+    public bool Remove(DataGridViewCell dataGridViewCell)
+    {
+        return false;
+    }
 
-        public bool Remove(DataGridViewCell dataGridViewCell)
-        {
-            return false;
-        }
+    public int RemoveAllCellsAtBand(bool column, int bandIndex)
+    {
+        int removedCount = 0;
 
-        public int RemoveAllCellsAtBand(bool column, int bandIndex)
-        {
-            int removedCount = 0;
-
-            return removedCount;
-        }
+        return removedCount;
     }
 }

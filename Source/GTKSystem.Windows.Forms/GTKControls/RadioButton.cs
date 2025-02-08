@@ -8,60 +8,59 @@
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public partial class RadioButton : Control
 {
-    [DesignerCategory("Component")]
-    public partial class RadioButton : Control
+    public readonly RadioButtonBase self = new RadioButtonBase();
+    public override object GtkControl => self;
+
+    public RadioButton() : base()
     {
-        public readonly RadioButtonBase self = new RadioButtonBase();
-        public override object GtkControl => self;
-
-        public RadioButton() : base()
-        {
-            self.Realized += Control_Realized;
-        }
-
-        private void Self_Toggled(object sender, EventArgs e)
-        {
-            if (CheckedChanged != null && self.IsVisible)
-                CheckedChanged(this, e);
-        }
-
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            Gtk.Container con = self.Parent as Gtk.Container;
-            foreach (var widget in con.AllChildren)
-            {
-                if (widget is Gtk.RadioButton)
-                {
-                    // Add the first radio group in the container
-                    ((Gtk.RadioButton)sender).JoinGroup((Gtk.RadioButton)widget);
-                    break;
-                }
-            }
-
-            self.Active = _Checked;
-            self.Toggled += Self_Toggled;
-        }
-
-        public event EventHandler CheckedChanged;
-
-        public override string Text
-        {
-            get { return self.Label; }
-            set { self.Label = value; }
-        }
-
-        public bool Checked
-        {
-            get { return self.Active; }
-            set
-            {
-                _Checked = true;
-                self.Active = true;
-            }
-        }
-
-        private bool _Checked;
+        self.Realized += Control_Realized;
     }
+
+    private void Self_Toggled(object sender, EventArgs e)
+    {
+        if (CheckedChanged != null && self.IsVisible)
+            CheckedChanged(this, e);
+    }
+
+    private void Control_Realized(object sender, EventArgs e)
+    {
+        Gtk.Container con = self.Parent as Gtk.Container;
+        foreach (var widget in con.AllChildren)
+        {
+            if (widget is Gtk.RadioButton)
+            {
+                // Add the first radio group in the container
+                ((Gtk.RadioButton)sender).JoinGroup((Gtk.RadioButton)widget);
+                break;
+            }
+        }
+
+        self.Active = _Checked;
+        self.Toggled += Self_Toggled;
+    }
+
+    public event EventHandler CheckedChanged;
+
+    public override string Text
+    {
+        get { return self.Label; }
+        set { self.Label = value; }
+    }
+
+    public bool Checked
+    {
+        get { return self.Active; }
+        set
+        {
+            _Checked = true;
+            self.Active = true;
+        }
+    }
+
+    private bool _Checked;
 }

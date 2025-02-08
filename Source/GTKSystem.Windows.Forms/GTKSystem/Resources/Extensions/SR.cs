@@ -1,6 +1,5 @@
-namespace FxResources.System.Resources.Extensions
+namespace FxResources.System.Resources.Extensions;
+
+internal static class SR
 {
-    internal static class SR
-    {
-    }
 }

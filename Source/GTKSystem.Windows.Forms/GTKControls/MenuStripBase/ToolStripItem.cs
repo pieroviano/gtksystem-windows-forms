@@ -2,187 +2,205 @@
 using System.Drawing;
 using System.Windows.Forms.Layout;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  A non selectable ToolStrip item
+/// </summary>
+public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IComponent,
+    IDisposable, IKeyboardToolTip
 {
-    /// <summary>
-    ///  A non selectable ToolStrip item
-    /// </summary>
-    public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IComponent,
-        IDisposable, IKeyboardToolTip
+    public bool IsDisposed { get; private set; }
+    protected override void Dispose(bool disp)
     {
-        public virtual string unique_key { get; protected set; }
-        public virtual Gtk.Widget Widget { get; }
-        public virtual Gtk.MenuItem MenuItem { get; set; }
-        public virtual bool Created { get; set; }
-        public virtual bool Checked { get; set; }
-        public virtual CheckState CheckState { get; set; }
-        internal Gtk.Image DefaultImage = new Gtk.Image("image-missing", Gtk.IconSize.Menu);
-        public virtual System.Drawing.Image Image { get; set; }
+        base.Dispose(disp);
+        IsDisposed = true;
+    }
 
-        public ToolStripItem()
-        {
-            dropDownItems = new ToolStripItemCollection(this);
-        }
+    public virtual string unique_key { get; protected set; }
+    public virtual Gtk.Widget Widget { get; }
+    public virtual Gtk.MenuItem MenuItem { get; set; }
+    public virtual bool Created { get; set; }
+    public virtual bool Checked { get; set; }
+    public virtual CheckState CheckState { get; set; }
+    internal Gtk.Image DefaultImage = new Gtk.Image("image-missing", Gtk.IconSize.Menu);
+    public virtual System.Drawing.Image Image { get; set; }
 
-        protected ToolStripItem(string text, Image image, EventHandler onClick) : this(text, image, onClick, "")
-        {
-        }
+    public ToolStripItem()
+    {
+        dropDownItems = new ToolStripItemCollection(this);
+    }
 
-        protected ToolStripItem(string text, Image image, EventHandler onClick, string name) : this()
-        {
-            this.Name = name;
-            this.Text = text;
-            if (image != null && image.PixbufData != null)
-                this.Image = image;
+    protected ToolStripItem(string text, Image image, EventHandler onClick) : this(text, image, onClick, "")
+    {
+    }
 
-            if (onClick != null)
-                Click += onClick;
-        }
+    protected ToolStripItem(string text, Image image, EventHandler onClick, string name) : this()
+    {
+        this.Name = name;
+        this.Text = text;
+        if (image != null && image.PixbufData != null)
+            this.Image = image;
 
-        public virtual void CreateControl()
-        {
-        }
+        if (onClick != null)
+            Click += onClick;
+    }
 
-        public virtual ToolStripItemCollection Items
-        {
-            get { return dropDownItems; }
-        }
+    public virtual void CreateControl()
+    {
+    }
 
-        private ToolStripItemCollection dropDownItems;
+    public virtual ToolStripItemCollection Items
+    {
+        get { return dropDownItems; }
+    }
 
-        //public virtual event EventHandler Disposed;
+    private ToolStripItemCollection dropDownItems;
 
-        public virtual ToolStripItemCollection DropDownItems
-        {
-            get { return dropDownItems; }
-        }
+    //public virtual event EventHandler Disposed;
 
-        public virtual string Name { get; set; }
+    public virtual ToolStripItemCollection DropDownItems
+    {
+        get { return dropDownItems; }
+    }
 
-        //public virtual string Text { get { return base.Label; } set { base.Label = value; } }
-        public virtual string Text { get; set; }
-        public virtual Color ImageTransparentColor { get; set; }
+    public virtual string Name { get; set; }
 
-        public virtual ToolStripItemDisplayStyle DisplayStyle { get; set; }
+    //public virtual string Text { get { return base.Label; } set { base.Label = value; } }
+    public virtual string Text { get; set; }
+    public virtual Color ImageTransparentColor { get; set; }
 
-        //public virtual Size Size { get; set; }
-        public virtual bool AutoToolTip { get; set; }
+    public virtual ToolStripItemDisplayStyle DisplayStyle { get; set; }
 
-        public virtual Image BackgroundImage { get; set; }
+    //public virtual Size Size { get; set; }
+    public virtual bool AutoToolTip { get; set; }
 
-        public virtual ImageLayout BackgroundImageLayout { get; set; }
+    public virtual Image BackgroundImage { get; set; }
 
-        //public virtual bool Enabled { get; set; }
-        public virtual string ToolTipText { get; set; }
-        public virtual ContentAlignment ImageAlign { get; set; }
-        public virtual int ImageIndex { get; set; }
-        public virtual string ImageKey { get; set; }
-        public virtual ToolStripItemImageScaling ImageScaling { get; set; }
+    public virtual ImageLayout BackgroundImageLayout { get; set; }
 
-        public virtual TextImageRelation TextImageRelation { get; set; }
+    //public virtual bool Enabled { get; set; }
+    public virtual string ToolTipText { get; set; }
+    public virtual ContentAlignment ImageAlign { get; set; }
+    public virtual int ImageIndex { get; set; }
+    public virtual string ImageKey { get; set; }
+    public virtual ToolStripItemImageScaling ImageScaling { get; set; }
 
-        public virtual ToolStripTextDirection TextDirection { get; set; }
+    public virtual TextImageRelation TextImageRelation { get; set; }
 
-        public virtual ContentAlignment TextAlign { get; set; }
+    public virtual ToolStripTextDirection TextDirection { get; set; }
 
-        // public virtual bool Selected { get; }
+    public virtual ContentAlignment TextAlign { get; set; }
 
-        public virtual bool RightToLeftAutoMirrorImage { get; set; }
+    // public virtual bool Selected { get; }
 
-        public virtual bool Pressed { get; }
-        public virtual ToolStripItemPlacement Placement { get; }
-        public virtual ToolStripItemOverflow Overflow { get; set; }
-        public virtual ToolStripItem OwnerItem { get; }
+    public virtual bool RightToLeftAutoMirrorImage { get; set; }
 
-        public virtual ToolStrip Owner { get; set; }
+    public virtual bool Pressed { get; }
+    public virtual ToolStripItemPlacement Placement { get; }
+    public virtual ToolStripItemOverflow Overflow { get; set; }
+    public virtual ToolStripItem OwnerItem { get; }
 
-        public virtual int MergeIndex { get; set; }
-        public virtual MergeAction MergeAction { get; set; }
+    public virtual ToolStrip Owner { get; set; }
 
-        public virtual bool Enabled { get; set; }
+    public virtual int MergeIndex { get; set; }
+    public virtual MergeAction MergeAction { get; set; }
 
-        //  public virtual bool Focused { get { return this.IsFocus; } }
+    public virtual bool Enabled { get; set; }
 
-        public virtual Font Font { get; set; }
+    //  public virtual bool Focused { get { return this.IsFocus; } }
 
-        public virtual Color ForeColor { get; set; }
-        public virtual Color BackColor { get; set; }
-        public virtual bool HasChildren { get; }
+    public virtual Font Font { get; set; }
 
-        public virtual int Height { get; set; }
-        public virtual ImeMode ImeMode { get; set; }
+    public virtual Color ForeColor { get; set; }
+    public virtual Color BackColor { get; set; }
+    public virtual bool HasChildren { get; }
 
-        public virtual int Left { get; set; }
+    public virtual int Height { get; set; }
+    public virtual ImeMode ImeMode { get; set; }
 
-        //public override Padding Margin { get; set; }
-        //public override Size MaximumSize { get; set; }
-        //public override Size MinimumSize { get; set; }
-        public virtual Padding Padding { get; set; }
-        public virtual ToolStripItem Parent { get; set; }
-        public virtual System.Drawing.Region Region { get; set; }
-        public virtual int Right { get; }
+    public virtual int Left { get; set; }
 
-        public virtual RightToLeft RightToLeft { get; set; }
+    //public override Padding Margin { get; set; }
+    //public override Size MaximumSize { get; set; }
+    //public override Size MinimumSize { get; set; }
+    public virtual Padding Padding { get; set; }
+    public virtual ToolStripItem Parent { get; set; }
+    public virtual System.Drawing.Region Region { get; set; }
+    public virtual int Right { get; }
 
-        //public virtual ISite Site { get; set; }
-        public virtual Size Size { get; set; }
+    public virtual RightToLeft RightToLeft { get; set; }
 
-        public virtual object Tag { get; set; }
-        public virtual int Top { get; set; }
+    //public virtual ISite Site { get; set; }
+    public virtual Size Size { get; set; }
 
-        public virtual void ResumeLayout()
-        {
-        }
+    public virtual object Tag { get; set; }
+    public virtual int Top { get; set; }
 
-        public virtual void ResumeLayout(bool performLayout)
-        {
-        }
+    public virtual void ResumeLayout()
+    {
+    }
 
-        public virtual void SuspendLayout()
-        {
-        }
+    public virtual void ResumeLayout(bool performLayout)
+    {
+    }
 
-        public virtual void PerformLayout()
-        {
-        }
+    public virtual void SuspendLayout()
+    {
+    }
 
-        public virtual void PerformLayout(Control affectedControl, string affectedProperty)
-        {
-        }
+    public virtual void PerformLayout()
+    {
+    }
 
-        public void SetBounds(Rectangle bounds, BoundsSpecified specified)
-        {
-            throw new NotImplementedException();
-        }
+    public virtual void PerformLayout(Control affectedControl, string affectedProperty)
+    {
+    }
 
-        public Size GetPreferredSize(Size proposedSize)
-        {
-            throw new NotImplementedException();
-        }
+    public void SetBounds(Rectangle bounds, BoundsSpecified specified)
+    {
+        throw new NotImplementedException();
+    }
 
-        void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)
-        {
-            throw new NotImplementedException();
-        }
+    public virtual Size GetPreferredSize(Size proposedSize)
+    {
+        throw new NotImplementedException();
+    }
 
-        public virtual bool UseWaitCursor { get; set; }
-        public virtual int Width { get; set; }
+    void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)
+    {
+        throw new NotImplementedException();
+    }
 
-        public Rectangle Bounds => throw new NotImplementedException();
+    public virtual bool UseWaitCursor { get; set; }
+    public virtual int Width { get; set; }
 
-        public Rectangle DisplayRectangle => throw new NotImplementedException();
+    public Rectangle Bounds => throw new NotImplementedException();
 
-        public bool ParticipatesInLayout => throw new NotImplementedException();
+    public Rectangle DisplayRectangle => throw new NotImplementedException();
 
-        PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
+    public bool ParticipatesInLayout => throw new NotImplementedException();
 
-        IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
+    PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
 
-        public ArrangedElementCollection Children => throw new NotImplementedException();
+    IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-        public virtual event EventHandler Click;
-        public virtual event EventHandler CheckedChanged;
-        public virtual event EventHandler CheckStateChanged;
-        public virtual event ToolStripItemClickedEventHandler DropDownItemClicked;
+    public ArrangedElementCollection Children => throw new NotImplementedException();
+    public bool DefaultAutoToolTip { get; set; }
+    public ToolStripItemDisplayStyle DefaultDisplayStyle { get; set; }
+    public Padding DefaultMargin { get; set; }
+    public Padding DefaultPadding { get; set; }
+    public virtual Size DefaultSize { get; set; }
+    public bool DismissWhenClicked { get; set; }
+    public bool ShowKeyboardCues { get; set; }
+
+    public virtual event EventHandler Click;
+    public virtual event EventHandler CheckedChanged;
+    public virtual event EventHandler CheckStateChanged;
+    public virtual event ToolStripItemClickedEventHandler DropDownItemClicked;
+
+    protected bool ProcessMnemonic(char charCode)
+    {
+        return default;
     }
 }

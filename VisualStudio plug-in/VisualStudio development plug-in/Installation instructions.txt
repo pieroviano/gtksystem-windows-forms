@@ -1,0 +1,6 @@
+Close visual studio and directly double-click the GTKWinformVSIX.vsix file to install
+
+The plug-in will install two functions, both of which are added to the right-click menu and tool menu:
+1. New items (Form form template, UserControl form, GTKWinform project project)
+2. Repair form designer
+3. Open the project website

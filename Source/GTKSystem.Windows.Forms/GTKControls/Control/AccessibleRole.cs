@@ -1,7 +1,6 @@
-﻿namespace System.Windows.Forms
+﻿namespace System.Windows.Forms;
+
+public enum AccessibleRole
 {
-    public enum AccessibleRole
-    {
-        Default
-    }
+    Default
 }

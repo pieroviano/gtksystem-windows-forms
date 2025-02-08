@@ -1,29 +1,28 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase;
+
+public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
 {
-    public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
+    public GtkControlOverride Override { get; set; }
+
+    public ToolStripBase() : base()
     {
-        public GtkControlOverride Override { get; set; }
+        this.Override = new GtkControlOverride(this);
+        this.Override.AddClass("ToolStrip");
+        this.Hexpand = true;
+        this.Vexpand = false;
+        this.Valign = Gtk.Align.Start;
+        this.Halign = Gtk.Align.Fill;
+        this.HeightRequest = 20;
+    }
 
-        public ToolStripBase() : base()
-        {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("ToolStrip");
-            this.Hexpand = true;
-            this.Vexpand = false;
-            this.Valign = Gtk.Align.Start;
-            this.Halign = Gtk.Align.Fill;
-            this.HeightRequest = 20;
-        }
+    public void AddClass(string cssClass)
+    {
+        this.Override.AddClass(cssClass);
+    }
 
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
-
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
     }
 }

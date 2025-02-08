@@ -1,0 +1,6 @@
+关闭visual studio，直接双击GTKWinformVSIX.vsix文件安装
+
+插件会安装两个功能，都是在右键菜单和工具菜单上添加：
+1、新建项（Form窗体模板、UserControl窗体、GTKWinform项目工程）
+2、修复窗体设计器
+3、打开项目网站

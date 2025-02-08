@@ -1,12 +1,11 @@
-﻿namespace System.Windows.Forms
-{
-    public class ToolStripItemClickedEventArgs : EventArgs
-    {
-        public ToolStripItemClickedEventArgs(ToolStripItem clickedItem)
-        {
-            this.ClickedItem = clickedItem;
-        }
+﻿namespace System.Windows.Forms;
 
-        public ToolStripItem ClickedItem { get; }
+public class ToolStripItemClickedEventArgs : EventArgs
+{
+    public ToolStripItemClickedEventArgs(ToolStripItem clickedItem)
+    {
+        this.ClickedItem = clickedItem;
     }
+
+    public ToolStripItem ClickedItem { get; }
 }

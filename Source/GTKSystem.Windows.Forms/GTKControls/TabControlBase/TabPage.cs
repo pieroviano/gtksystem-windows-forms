@@ -9,70 +9,69 @@ using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class TabPage : ContainerControl
 {
-    public class TabPage : ContainerControl
+    public readonly TabPageBase self = new TabPageBase();
+    public override object GtkControl => self;
+    internal Gtk.Label _tabLabel = new Gtk.Label();
+    private ControlCollection _controls;
+
+    public TabPage() : base()
     {
-        public readonly TabPageBase self = new TabPageBase();
-        public override object GtkControl => self;
-        internal Gtk.Label _tabLabel = new Gtk.Label();
-        private ControlCollection _controls;
+        _controls = new ControlCollection(this, self.Content);
+        this.Dock = DockStyle.Fill;
+    }
 
-        public TabPage() : base()
+    public TabPage(string text) : this()
+    {
+        _tabLabel.Text = text;
+    }
+
+    public override Point Location
+    {
+        get { return new Point(self.MarginStart, self.MarginTop); }
+        set
         {
-            _controls = new ControlCollection(this, self.Content);
-            this.Dock = DockStyle.Fill;
+            self.MarginStart = 0;
+            self.MarginTop = 0;
         }
+    }
 
-        public TabPage(string text) : this()
+    public new DockStyle Dock
+    {
+        get { return DockStyle.Fill; }
+        set { base.Dock = DockStyle.Fill; }
+    }
+
+    public override string Text
+    {
+        get { return _tabLabel.Text; }
+        set { _tabLabel.Text = value; }
+    }
+
+    public Gtk.Label TabLabel
+    {
+        get { return _tabLabel; }
+    }
+
+    public new ControlCollection Controls => _controls;
+
+    public int ImageIndex { get; set; }
+    public string ImageKey { get; set; }
+    public List<object> ImageList { get; set; }
+
+    public override Padding Padding
+    {
+        get => base.Padding;
+        set
         {
-            _tabLabel.Text = text;
-        }
-
-        public override Point Location
-        {
-            get { return new Point(self.MarginStart, self.MarginTop); }
-            set
-            {
-                self.MarginStart = 0;
-                self.MarginTop = 0;
-            }
-        }
-
-        public new DockStyle Dock
-        {
-            get { return DockStyle.Fill; }
-            set { base.Dock = DockStyle.Fill; }
-        }
-
-        public override string Text
-        {
-            get { return _tabLabel.Text; }
-            set { _tabLabel.Text = value; }
-        }
-
-        public Gtk.Label TabLabel
-        {
-            get { return _tabLabel; }
-        }
-
-        public new ControlCollection Controls => _controls;
-
-        public int ImageIndex { get; set; }
-        public string ImageKey { get; set; }
-        public List<object> ImageList { get; set; }
-
-        public override Padding Padding
-        {
-            get => base.Padding;
-            set
-            {
-                base.Padding = value;
-                self.Content.MarginStart = value.Left;
-                self.Content.MarginTop = value.Top;
-                self.Content.MarginEnd = value.Right;
-                self.Content.MarginBottom = value.Bottom;
-            }
+            base.Padding = value;
+            self.Content.MarginStart = value.Left;
+            self.Content.MarginTop = value.Top;
+            self.Content.MarginEnd = value.Right;
+            self.Content.MarginBottom = value.Bottom;
         }
     }
 }
