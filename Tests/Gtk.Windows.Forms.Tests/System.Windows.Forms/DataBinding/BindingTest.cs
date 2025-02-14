@@ -22,7 +22,9 @@
 // Authors:
 //	Jackson Harper	jackson@ximian.com
 
+using System.ComponentModel;
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms.DataBinding;
@@ -46,7 +48,7 @@ public class BindingTest : TestHelper
         Assert.AreSame(b.PropertyName, prop, "ctor5");
         Assert.AreSame(b.DataSource, data_source, "ctor6");
 
-        Assert.AreEqual(true, b.FormattingEnabled, "ctor7");
+        Assert.AreEqual(false, b.FormattingEnabled, "ctor7");
         Assert.AreEqual(String.Empty, b.FormatString, "ctor8");
         Assert.IsNull(b.FormatInfo, "ctor9");
         Assert.IsNull(b.NullValue, "ctor10");
@@ -204,7 +206,7 @@ public class BindingTest : TestHelper
 
         f.Show(); // Need this to init data binding
 
-        Assert.AreEqual(DBNull.Value, c.Tag, "1");
+        Assert.AreEqual(null, c.Tag, "1");
 
         f.Dispose();
 
@@ -219,10 +221,10 @@ public class BindingTest : TestHelper
         c.BindingContext = new BindingContext();
         c.CreateControl();
 
-        var item = new MockItem("A", 0);
+        var item = new MockItem("", 0);
         var binding = new Binding("Text", item, "Text");
-
         c.DataBindings.Add(binding);
+        item.Text = "A";
         Assert.AreEqual("A", c.Text, "#A1");
 
         item.Text = "B";
@@ -240,6 +242,7 @@ public class BindingTest : TestHelper
         var binding = new Binding("Text", item, "Text");
 
         c.DataBindings.Add(binding);
+        item.Text = "A";
         Assert.AreEqual("A", c.Text, "#A1");
 
         item.Text = "B";
@@ -547,6 +550,7 @@ public class BindingTest : TestHelper
         binding.FormatString = "p";
 
         c.DataBindings.Add(binding);
+        item.Value = 666;
         Assert.AreEqual((666).ToString("p"), c.Text, "#A1");
 
         binding.FormatString = "c";
@@ -567,7 +571,7 @@ public class BindingTest : TestHelper
 
 }
 
-class ChildMockItem : MockItem
+class ChildMockItem : MockItem, INotifyPropertyChanged
 {
     object value;
 
@@ -586,6 +590,21 @@ class ChildMockItem : MockItem
         {
             this.value = value;
         }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }
 

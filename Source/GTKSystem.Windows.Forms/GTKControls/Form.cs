@@ -6,8 +6,10 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 
 namespace System.Windows.Forms
 {
@@ -431,6 +433,198 @@ namespace System.Windows.Forms
 
     public class BindingContext : ContextBoundObject
     {
+        internal class HashKey
+        {
+            private WeakReference wRef;
+
+            private int dataSourceHashCode;
+
+            private string dataMember;
+
+            internal HashKey(object dataSource, string dataMember)
+            {
+                if (dataSource == null)
+                {
+                    throw new ArgumentNullException("dataSource");
+                }
+                if (dataMember == null)
+                {
+                    dataMember = "";
+                }
+                this.wRef = new WeakReference(dataSource, false);
+                this.dataSourceHashCode = dataSource.GetHashCode();
+                this.dataMember = dataMember.ToLower(CultureInfo.InvariantCulture);
+            }
+
+            public override bool Equals(object target)
+            {
+                if (!(target is BindingContext.HashKey))
+                {
+                    return false;
+                }
+                BindingContext.HashKey hashKey = (BindingContext.HashKey)target;
+                if (this.wRef.Target != hashKey.wRef.Target)
+                {
+                    return false;
+                }
+                return this.dataMember == hashKey.dataMember;
+            }
+
+            public override int GetHashCode()
+            {
+                return this.dataSourceHashCode * this.dataMember.GetHashCode();
+            }
+        }
+
+
+        public static void UpdateBinding(BindingContext newBindingContext, Binding binding)
+        {
+            BindingManagerBase bindingManagerBase = binding.BindingManagerBase;
+            if (bindingManagerBase != null)
+            {
+                bindingManagerBase.Bindings.Remove(binding);
+            }
+            if (newBindingContext != null)
+            {
+                if (binding.BindToObject.BindingManagerBase is PropertyManager)
+                {
+                    BindingContext.CheckPropertyBindingCycles(newBindingContext, binding);
+                }
+                BindToObject bindToObject = binding.BindToObject;
+                BindingManagerBase bindingManagerBase1 = newBindingContext.EnsureListManager(bindToObject.DataSource, bindToObject.BindingMemberInfo.BindingPath);
+                bindingManagerBase1.Bindings.Add(binding);
+            }
+        }
+
+        internal BindingManagerBase EnsureListManager(object dataSource, string dataMember)
+        {
+            BindingManagerBase relatedCurrencyManager = null;
+            if (dataMember == null)
+            {
+                dataMember = "";
+            }
+            if (dataSource is ICurrencyManagerProvider)
+            {
+                relatedCurrencyManager = (dataSource as ICurrencyManagerProvider).GetRelatedCurrencyManager(dataMember);
+                if (relatedCurrencyManager != null)
+                {
+                    return relatedCurrencyManager;
+                }
+            }
+            BindingContext.HashKey key = this.GetKey(dataSource, dataMember);
+            WeakReference item = this.listManagers[key] as WeakReference;
+            if (item != null)
+            {
+                relatedCurrencyManager = (BindingManagerBase)item.Target;
+            }
+            if (relatedCurrencyManager != null)
+            {
+                return relatedCurrencyManager;
+            }
+            if (dataMember.Length != 0)
+            {
+                int num = dataMember.LastIndexOf(".");
+                string str = (num == -1 ? "" : dataMember.Substring(0, num));
+                string str1 = dataMember.Substring(num + 1);
+                BindingManagerBase bindingManagerBase = this.EnsureListManager(dataSource, str);
+                PropertyDescriptor propertyDescriptor = bindingManagerBase.GetItemProperties().Find(str1, true);
+                if (propertyDescriptor == null)
+                {
+                    throw new ArgumentException("RelatedListManagerChild");
+                }
+                if (!typeof(IList).IsAssignableFrom(propertyDescriptor.PropertyType))
+                {
+                    relatedCurrencyManager = new RelatedPropertyManager(bindingManagerBase, str1);
+                }
+                else
+                {
+                    relatedCurrencyManager = new RelatedCurrencyManager(bindingManagerBase, str1);
+                }
+            }
+            else if (dataSource is IList || dataSource is IListSource)
+            {
+                relatedCurrencyManager = new CurrencyManager(dataSource);
+            }
+            else
+            {
+                relatedCurrencyManager = new PropertyManager(dataSource);
+            }
+            if (item != null)
+            {
+                item.Target = relatedCurrencyManager;
+            }
+            else
+            {
+                this.listManagers.Add(key, new WeakReference(relatedCurrencyManager, false));
+            }
+            this.ScrubWeakRefs();
+            return relatedCurrencyManager;
+        }
+
+        private void ScrubWeakRefs()
+        {
+            ArrayList arrayLists = null;
+            foreach (DictionaryEntry listManager in this.listManagers)
+            {
+                if (((WeakReference)listManager.Value).Target != null)
+                {
+                    continue;
+                }
+                if (arrayLists == null)
+                {
+                    arrayLists = new ArrayList();
+                }
+                arrayLists.Add(listManager.Key);
+            }
+            if (arrayLists != null)
+            {
+                foreach (object arrayList in arrayLists)
+                {
+                    this.listManagers.Remove(arrayList);
+                }
+            }
+        }
+
+        private Hashtable listManagers= new Hashtable();
+
+        public bool Contains(object dataSource, string dataMember)
+        {
+            return this.listManagers.ContainsKey(this.GetKey(dataSource, dataMember));
+        }
+
+        internal BindingContext.HashKey GetKey(object dataSource, string dataMember)
+        {
+            return new BindingContext.HashKey(dataSource, dataMember);
+        }
+
+
+        private static void CheckPropertyBindingCycles(BindingContext newBindingContext, Binding propBinding)
+        {
+            if (newBindingContext == null || propBinding == null)
+            {
+                return;
+            }
+            if (newBindingContext.Contains(propBinding.BindableComponent, ""))
+            {
+                BindingManagerBase bindingManagerBase = newBindingContext.EnsureListManager(propBinding.BindableComponent, "");
+                for (int i = 0; i < bindingManagerBase.Bindings.Count; i++)
+                {
+                    Binding item = bindingManagerBase.Bindings[i];
+                    if (item.DataSource == propBinding.BindableComponent)
+                    {
+                        if (propBinding.BindToObject.BindingMemberInfo.BindingMember.Equals(item.PropertyName))
+                        {
+                            throw new ArgumentException("DataBindingCycle", "propBinding");
+                        }
+                    }
+                    else if (propBinding.BindToObject.BindingManagerBase is PropertyManager)
+                    {
+                        BindingContext.CheckPropertyBindingCycles(newBindingContext, item);
+                    }
+                }
+            }
+        }
+
     }
 }
 

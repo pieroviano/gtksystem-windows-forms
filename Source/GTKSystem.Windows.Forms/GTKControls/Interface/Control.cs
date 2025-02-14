@@ -814,19 +814,30 @@ namespace System.Windows.Forms
                     AnchorChanged(this, EventArgs.Empty);
             }
         }
+
+        protected int _width;
         public virtual int Width
         {
             get
             {
-                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
+                var widget = this.Widget;
+                if (widget != null && widget.IsMapped == false && widget is Gtk.Window wnd)
                 {
                     return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
                 }
-                return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
+                return widget?.WidthRequest == -1 ? widget.AllocatedWidth : widget?.WidthRequest??_width;
             }
             set
             {
-                this.Widget.WidthRequest = Math.Max(-1, value);
+                var widget = this.Widget;
+                if (widget != null)
+                {
+                    widget.WidthRequest = Math.Max(-1, value);
+                }
+                else
+                {
+                    _width = value;
+                }
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -836,7 +847,22 @@ namespace System.Windows.Forms
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }
         public virtual object Tag { get; set; }
-        public virtual string Text { get; set; } = string.Empty;
+
+        public virtual string Text
+        {
+            get => text;
+            set
+            {
+                var oltText = text;
+                text = value;
+                if (oltText != value)
+                {
+                    TextChanged?.Invoke(this, EventArgs.Empty);
+                    PropertyChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
         public virtual Control TopLevelControl { get; }
         public virtual bool UseWaitCursor { get; set; }
         public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.Visible = value; this.Widget.NoShowAll = value == false; } }
@@ -934,6 +960,7 @@ namespace System.Windows.Forms
         public virtual event EventHandler TabIndexChanged;
         public virtual event EventHandler TabStopChanged;
         public virtual event EventHandler TextChanged;
+        public virtual event EventHandler PropertyChanged;
 
         CancelEventArgs cancelEventArgs = new CancelEventArgs(false);
         public virtual event EventHandler Validated;
@@ -981,8 +1008,9 @@ namespace System.Windows.Forms
 
         public virtual void CreateControl()
         {
-
+            _Created = true;
         }
+
         Cairo.ImageSurface image;
         Cairo.Surface surface;
         Cairo.Context context;
@@ -1398,6 +1426,7 @@ namespace System.Windows.Forms
         public virtual Size MinimumSize { get; set; }
         private BorderStyle _BorderStyle;
         private BindingContext bindingContext;
+        private string text = string.Empty;
 
         public virtual BorderStyle BorderStyle
         {

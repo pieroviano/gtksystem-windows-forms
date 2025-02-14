@@ -27,6 +27,8 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 	  <LangVersion>latest</LangVersion>
 	  <SignAssembly>true</SignAssembly>
 	  <AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
+	  <NoWarn>$(NoWarn);NUnit2015;NUnit2017</NoWarn>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
