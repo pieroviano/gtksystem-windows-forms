@@ -1,5 +1,4 @@
 using System.Windows.Forms;
-using Sys_Threading=System.Threading;
 
 namespace GtkTests.System.Windows.Forms;
 

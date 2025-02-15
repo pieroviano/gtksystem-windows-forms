@@ -1255,7 +1255,7 @@ public class ListViewCollectionsTest : TestHelper
         lv.Items.Add ("B");
         lv.Items.Add ("C");
 			
-        foreach (var lvi in lv.Items)
+        foreach (ListViewItem lvi in lv.Items)
             if (lvi.Text == "B")
                 lv.Items.Remove (lvi);
 					

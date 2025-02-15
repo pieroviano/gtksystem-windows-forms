@@ -28,12 +28,8 @@
 
 using System.Reflection;
 using System.Resources;
-using System.Collections;
-using System.Text;
 using System.ComponentModel.Design;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Internals.Resources;
-using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
 

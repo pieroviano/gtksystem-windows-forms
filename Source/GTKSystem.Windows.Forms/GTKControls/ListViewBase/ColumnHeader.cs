@@ -8,7 +8,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     public class ColumnHeader : Component, ICloneable
     {
-        internal int _index;
+        internal int _index=-1;
 
         internal string _text;
 
@@ -16,8 +16,22 @@ namespace System.Windows.Forms
 
         internal int _width = 120;
 
+        public event EventHandler DisplayIndexChanged;
+
         [Localizable(true)]
-        public int DisplayIndex { get; set; }
+        public int DisplayIndex
+        {
+            get => displayIndex;
+            set
+            {
+                var index = displayIndex;
+                displayIndex = value;
+                if (index != value)
+                {
+                    DisplayIndexChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         [Browsable(false)]
         public int Index
@@ -32,16 +46,13 @@ namespace System.Windows.Forms
 
         public int ImageIndex { get; set; } = -1;
 
-        [Browsable(false)]
-        public ImageList ImageList
-        {
-            get
-            {
-                throw null;
-            }
-        }
+        private ImageList? _imageList;
+        private int displayIndex = -1;
 
-        public string ImageKey { get; set; }
+        [Browsable(false)]
+        public ImageList? ImageList => _imageList;
+
+        public string ImageKey { get; set; } = string.Empty;
 
         [Browsable(false)]
         public ListView ListView
@@ -51,20 +62,18 @@ namespace System.Windows.Forms
         }
 
         [Browsable(false)]
-
         public string Name
         {
             get;
             set;
-        }
+        } = string.Empty;
 
         [Localizable(true)]
-
         public string Text
         {
             get;
             set;
-        }
+        } = "ColumnHeader";
 
 
         [Localizable(true)]
@@ -73,7 +82,7 @@ namespace System.Windows.Forms
         {
             get;
             set;
-        }
+        } = HorizontalAlignment.Left;
 
 
         [Localizable(false)]
@@ -97,7 +106,6 @@ namespace System.Windows.Forms
 
         public ColumnHeader()
         {
-            
         }
 
         public ColumnHeader(int imageIndex)

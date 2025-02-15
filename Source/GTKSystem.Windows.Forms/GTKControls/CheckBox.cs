@@ -14,21 +14,37 @@ namespace System.Windows.Forms
     {
         public readonly CheckBoxBase self = new CheckBoxBase();
         public override object GtkControl => self;
-        public CheckBox() {
+        public CheckBox()
+        {
             self.Toggled += Self_Toggled;
         }
 
         private void Self_Toggled(object sender, EventArgs e)
         {
-            if(CheckedChanged!= null && self.IsVisible)
+            if (CheckedChanged != null && self.IsVisible)
                 CheckedChanged(this, EventArgs.Empty);
             if (CheckStateChanged != null && self.IsVisible)
                 CheckStateChanged(this, EventArgs.Empty);
         }
 
         public override string Text { get { return self.Label; } set { self.Label = value; } }
-        public  bool Checked { get { return self.Active; } set { self.Active = value; } }
-        public CheckState CheckState { get { return self.Active ? CheckState.Checked : CheckState.Unchecked; } set { self.Active = value != CheckState.Unchecked; } }
+        public bool Checked { get { return self.Active; } set { self.Active = value; } }
+
+        private CheckState _checkState = CheckState.Unchecked;
+        public CheckState CheckState
+        {
+            get { return _checkState == CheckState.Indeterminate ? _checkState : self.Active ? CheckState.Checked : CheckState.Unchecked; }
+            set
+            {
+                if (_checkState != value)
+                {
+                    CheckedChanged?.Invoke(this, EventArgs.Empty);
+                    CheckStateChanged?.Invoke(this, EventArgs.Empty);
+                    _checkState = value;
+                }
+                self.Active = value != CheckState.Unchecked;
+            }
+        }
         public event EventHandler CheckedChanged;
         public virtual event EventHandler CheckStateChanged;
     }

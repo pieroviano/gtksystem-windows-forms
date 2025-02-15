@@ -27,11 +27,8 @@
 
 using System.Resources;
 using System.ComponentModel.Design;
-using System.Reflection;
-using System.Drawing;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Internals.Resources;
-using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
 

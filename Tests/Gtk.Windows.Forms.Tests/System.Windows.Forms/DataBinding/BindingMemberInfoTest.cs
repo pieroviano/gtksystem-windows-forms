@@ -22,7 +22,6 @@
 // Authors:
 //	Jackson Harper	jackson@ximian.com
 
-using GtkTests.System.Windows.Forms;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms.DataBinding;

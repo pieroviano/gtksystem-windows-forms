@@ -8,8 +8,6 @@
 //
 
 using System.Windows.Forms;
-using GtkTests.System.Windows.Forms;
-using CategoryAttribute=NUnit.Framework.CategoryAttribute;
 
 namespace GtkTests.System.Windows.Forms;
 

@@ -7,7 +7,6 @@
 // (C) 2005 Novell, Inc. (http://www.novell.com)
 //
 
-using GtkTests.System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;

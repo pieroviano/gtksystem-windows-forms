@@ -5,7 +5,6 @@
 //     Robert Jordan <robertj@gmx.net>
 //
 
-using System.Collections;
 using System.Globalization;
 using System.Drawing;
 using System.Resources;

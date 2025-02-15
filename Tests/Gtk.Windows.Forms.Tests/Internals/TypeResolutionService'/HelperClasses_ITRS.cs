@@ -28,7 +28,6 @@
 
 using System.ComponentModel.Design;
 using System.Reflection;
-using GtkTests.Internals.Resources;
 using GtkTests.Resources;
 
 namespace GtkTests.TypeResolutionService_;

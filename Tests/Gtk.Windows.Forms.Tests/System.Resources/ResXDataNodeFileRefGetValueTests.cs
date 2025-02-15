@@ -26,10 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Reflection;
-using System.Drawing;
 using System.Resources;
-using System.ComponentModel.Design;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Internals.Resources;
 using GtkTests.Resources;
 
