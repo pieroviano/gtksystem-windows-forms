@@ -39,7 +39,18 @@ namespace System.Windows.Forms
         public virtual bool Enabled { get => TimersTimer.Enabled; set => TimersTimer.Enabled = value; }
 
         [DefaultValue(100)]
-        public int Interval { get => (int)TimersTimer.Interval; set => TimersTimer.Interval = value; }
+        public int Interval
+        {
+            get => (int)TimersTimer.Interval;
+            set
+            {
+                if (value <= 0 || value== int.MaxValue)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                TimersTimer.Interval = value;
+            }
+        }
 
         public event EventHandler Tick;
         public void Start()
