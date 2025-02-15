@@ -20,9 +20,10 @@ namespace System.Windows.Forms
         {
 
         }
-        public bool ValidateNames { get; set; }
 
-        public string Title { get; set; }
+        public bool ValidateNames { get; set; } = true;
+
+        public string Title { get; set; } = string.Empty;
 
         public bool SupportMultiDottedExtensions { get; set; }
 
@@ -30,8 +31,8 @@ namespace System.Windows.Forms
 
         public bool RestoreDirectory { get; set; }
 
-        public string InitialDirectory { get; set; }
-        public string Description { get; set; }
+        public string InitialDirectory { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         internal bool Multiselect { get; set; }
         internal string SelectedPath
         {
@@ -40,10 +41,14 @@ namespace System.Windows.Forms
         }
         internal string[] SelectedPaths => FileNames != null && FileNames.Length > 0 ? (string[])FileNames.Clone() : Array.Empty<string>();
 
-        public int FilterIndex { get; set; }
+        public int FilterIndex { get; set; } = 1;
 
-        private string _filter;
-        public string Filter
+        private string? _filter;
+        private string defaultExt = string.Empty;
+        private string[] fileNames = new string[0];
+        private string fileName = string.Empty;
+
+        public string? Filter
         {
             get
             {
@@ -53,6 +58,12 @@ namespace System.Windows.Forms
             {
                 if (value == _filter)
                 {
+                    return;
+                }
+
+                if (value == null)
+                {
+                    _filter = string.Empty;
                     return;
                 }
                 string[] filters = value?.Split(';');
@@ -79,26 +90,48 @@ namespace System.Windows.Forms
 
         public bool AutoUpgradeEnabled { get; set; }
 
-        public string FileName { get; set; }
-        public string[] FileNames { get; internal set; }
-        public bool DereferenceLinks { get; set; }
+        public string FileName
+        {
+            get => fileName;
+            set => fileName = value??string.Empty;
+        }
 
-        public string DefaultExt { get; set; }
+        public string[] FileNames
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(FileName))
+                {
+                    return new[] { FileName };
+                }
+                return fileNames;
+            }
+            internal set => fileNames = value;
+        }
 
-        public bool CheckPathExists { get; set; }
+        public bool DereferenceLinks { get; set; } = true;
 
-        public virtual bool CheckFileExists { get; set; }
+        public string DefaultExt
+        {
+            get => defaultExt;
+            set => defaultExt = value?.TrimStart('.')??string.Empty;
+        }
 
-        public bool AddExtension { get; set; }
+        public bool CheckPathExists { get; set; } = true;
+
+        public virtual bool CheckFileExists { get; set; } = true;
+
+        public bool AddExtension { get; set; } = true;
 
         public event CancelEventHandler FileOk;
         internal Gtk.FileChooserAction ActionType { get; set; }
         public override void Reset() {
             AddExtension = true;
-            Title = null;
-            InitialDirectory = null;
-            FileName = null;
-            _filter = null;
+            Title = string.Empty;
+            InitialDirectory = string.Empty;
+            FileName = string.Empty;
+            _filter = string.Empty;
+            DefaultExt = string.Empty;
             FilterIndex = 1;
             SupportMultiDottedExtensions = false;
         }

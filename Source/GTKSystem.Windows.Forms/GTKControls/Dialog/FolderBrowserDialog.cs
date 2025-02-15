@@ -7,11 +7,14 @@
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
     public sealed class FolderBrowserDialog : FileDialog
     {
+        private Environment.SpecialFolder rootFolder = Environment.SpecialFolder.Desktop;
+
         public FolderBrowserDialog()
         {
             
@@ -24,7 +27,23 @@ namespace System.Windows.Forms
             SelectedPathNeedsCheck = false;
             ShowNewFolderButton = true;
         }
-        public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
+
+        public Environment.SpecialFolder RootFolder
+        {
+            get => rootFolder;
+            set
+            {
+                if (Enum.GetValues(typeof(Environment.SpecialFolder)).Cast<Environment.SpecialFolder>().ToArray()
+                    .Any(i => value == i))
+                {
+                    rootFolder = value;
+                    return;
+                }
+
+                throw new InvalidEnumArgumentException(nameof(value));
+            }
+        }
+
         public new string SelectedPath
         {
             get => base.SelectedPath;
@@ -33,7 +52,7 @@ namespace System.Windows.Forms
         private new string[] SelectedPaths => base.SelectedPaths;
         private new bool Multiselect => base.Multiselect;
         private new string Title => base.Title;
-        public bool ShowNewFolderButton { get; set; }
+        public bool ShowNewFolderButton { get; set; } = true;
         public bool SelectedPathNeedsCheck { get; set; }
         public override DialogResult ShowDialog(IWin32Window owner)
         {

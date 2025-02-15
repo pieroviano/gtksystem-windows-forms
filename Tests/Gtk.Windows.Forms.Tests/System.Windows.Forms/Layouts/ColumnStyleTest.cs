@@ -23,39 +23,40 @@
 
 using System.Windows.Forms;
 
-namespace GtkTests.System.Windows.Forms;
+namespace GtkTests.System.Windows.Forms.Layouts;
 
 [TestFixture]
-public class ColumnStyleTest : TestHelper {
+public class ColumnStyleTest : TestHelper
+{
 
     [Test]
-    public void CtorTest1 ()
+    public void CtorTest1()
     {
-        var cs = new ColumnStyle ();
-        Assert.AreEqual (0.0f, cs.Width, "1");
-        Assert.AreEqual (SizeType.AutoSize, cs.SizeType, "2");
+        var cs = new ColumnStyle();
+        Assert.AreEqual(0.0f, cs.Width, "1");
+        Assert.AreEqual(SizeType.AutoSize, cs.SizeType, "2");
     }
 
     [Test]
-    public void CtorTest2 ()
+    public void CtorTest2()
     {
-        var cs = new ColumnStyle (SizeType.Absolute);
-			
-        Assert.AreEqual (0.0f, cs.Width, "1");
-        Assert.AreEqual (SizeType.Absolute, cs.SizeType, "2");
+        var cs = new ColumnStyle(SizeType.Absolute);
+
+        Assert.AreEqual(0.0f, cs.Width, "1");
+        Assert.AreEqual(SizeType.Absolute, cs.SizeType, "2");
     }
 
     [Test]
-    public void CtorTest3 ()
+    public void CtorTest3()
     {
-        var cs = new ColumnStyle (SizeType.Absolute, 5.0f);
-			
-        Assert.AreEqual (5.0, cs.Width, "1");
-        Assert.AreEqual (SizeType.Absolute, cs.SizeType, "2");
+        var cs = new ColumnStyle(SizeType.Absolute, 5.0f);
+
+        Assert.AreEqual(5.0, cs.Width, "1");
+        Assert.AreEqual(SizeType.Absolute, cs.SizeType, "2");
     }
 
     [Test]
-    public void CtorTest4 ()
+    public void CtorTest4()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
@@ -66,15 +67,15 @@ public class ColumnStyleTest : TestHelper {
     }
 
     [Test]
-    public void WidthTest1 ()
+    public void WidthTest1()
     {
-        var cs = new ColumnStyle ();
+        var cs = new ColumnStyle();
         cs.Width = 1.0f;
-        Assert.AreEqual (1.0f, cs.Width, "1");
+        Assert.AreEqual(1.0f, cs.Width, "1");
     }
 
     [Test]
-    public void WidthTest2 ()
+    public void WidthTest2()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {

@@ -15,6 +15,12 @@ namespace System.Windows.Forms
         {
             
         }
+
+        public override string ToString()
+        {
+            return $"System.Windows.Forms.OpenFileDialog: Title: {Title}, FileName: {FileName}";
+        }
+
         private new string Description => base.Description;
         public bool ReadOnlyChecked { get; set; }
         public bool ShowReadOnly { get; set; }

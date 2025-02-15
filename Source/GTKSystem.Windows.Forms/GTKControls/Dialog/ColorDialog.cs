@@ -16,20 +16,34 @@ namespace System.Windows.Forms
     public class ColorDialog : CommonDialog
     {
         public Gtk.ColorChooserDialog colorChooserDialog;
+        private int[] customColors = new int[0];
+
         public ColorDialog() : base()
         {
 
         }
 
-        [DefaultValue(true)]
-        public virtual bool AllowFullOpen { get; set; }
+        [DefaultValue(true)] public virtual bool AllowFullOpen { get; set; } = true;
 
         [DefaultValue(false)]
         public virtual bool AnyColor { get; set; }
-        public Color Color { get; set; }
+
+        public Color Color { get; set; } = Color.Black;
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int[] CustomColors { get; set; }
+        public int[] CustomColors
+        {
+            get => customColors;
+            set
+            {
+                if (value == null)
+                {
+                    value = new int[0];
+                }
+                customColors = value;
+            }
+        }
 
         [DefaultValue(false)]
         public virtual bool FullOpen { get; set; }
@@ -74,7 +88,7 @@ namespace System.Windows.Forms
             return res == -5;
         }
  
-        public override string ToString() { return this.Color.Name; }
+        public override string ToString() { return $"System.Windows.Forms.ColorDialog,  Color: Color [{this.Color.Name}]"; }
         protected override void Dispose(bool disposing)
         {
             if (colorChooserDialog != null)

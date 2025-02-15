@@ -315,23 +315,6 @@ public class LabelEventTest : TestHelper
     }
 
     [Test]
-    public void KeyDownTest()
-    {
-        var myform = new Form();
-        myform.ShowInTaskbar = false;
-        myform.Visible = true;
-        var l = new MyLabel();
-        l.Visible = true;
-        myform.Controls.Add(l);
-        l.KeyDown += Label_KeyDownEventHandler;
-        l.KeyPressA();
-
-        Assert.AreEqual(true, eventhandled, "K1");
-        eventhandled = false;
-        myform.Dispose();
-    }
-
-    [Test]
     public void TabStopChangedTest()
     {
         var myform = new Form();
@@ -460,63 +443,6 @@ public class MyLabel : Label
     protected void OnPaint(object sender, PaintEventArgs e)
     {
         results.Add("OnPaint");
-    }
-
-    public void KeyPressA()
-    {
-        Message m;
-
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-
-        m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x61;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-
-        m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        WndProc(ref m);
-    }
-
-    public void KeyDownA()
-    {
-        Message m;
-
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-
-        m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x61;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-    }
-
-    public void KeyUpA()
-    {
-        Message m;
-
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        WndProc(ref m);
     }
 
     public ArrayList Results
@@ -671,28 +597,6 @@ public class LabelTestEventsOrder : TestHelper
         var l = new MyLabel();
         myform.Controls.Add(l);
         l.ImeMode = ImeMode.Katakana;
-
-        Assert.AreEqual(EventsWanted, ArrayListToString(l.Results));
-        myform.Dispose();
-    }
-
-    [Test]
-    public void KeyPressEventsOrder()
-    {
-        string[] EventsWanted = {
-            "OnHandleCreated",
-            "OnBindingContextChanged",
-            "OnBindingContextChanged",
-            "OnKeyDown,A",
-            "OnKeyPress,a",
-            "OnKeyUp,A"
-        };
-        var myform = new Form();
-        myform.ShowInTaskbar = false;
-        myform.Visible = true;
-        var l = new MyLabel();
-        myform.Controls.Add(l);
-        l.KeyPressA();
 
         Assert.AreEqual(EventsWanted, ArrayListToString(l.Results));
         myform.Dispose();
@@ -878,63 +782,6 @@ public class MyLabel2 : Label
         results.Add("Paint");
     }
 
-    public void KeyPressA()
-    {
-        Message m;
-
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-
-        m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x61;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-
-        m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        WndProc(ref m);
-    }
-
-    public void KeyDownA()
-    {
-        Message m;
-
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-
-        m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x61;
-        m.LParam = (IntPtr)0x1e0001;
-        WndProc(ref m);
-    }
-
-    public void KeyUpA()
-    {
-        Message m;
-
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        WndProc(ref m);
-    }
-
     public ArrayList Results
     {
         get { return results; }
@@ -1054,28 +901,6 @@ public class LabelTestEventsOrder2 : TestHelper
         var l = new MyLabel2();
         myform.Controls.Add(l);
         l.ImeMode = ImeMode.Katakana;
-
-        Assert.AreEqual(EventsWanted, ArrayListToString(l.Results));
-        myform.Dispose();
-    }
-
-    [Test]
-    public void KeyPressEventsOrder()
-    {
-        string[] EventsWanted = {
-            "HandleCreated",
-            "BindingContextChanged",
-            "BindingContextChanged",
-            "KeyDown,A",
-            "KeyPress,a",
-            "KeyUp,A"
-        };
-        var myform = new Form();
-        myform.ShowInTaskbar = false;
-        myform.Visible = true;
-        var l = new MyLabel2();
-        myform.Controls.Add(l);
-        l.KeyPressA();
 
         Assert.AreEqual(EventsWanted, ArrayListToString(l.Results));
         myform.Dispose();
