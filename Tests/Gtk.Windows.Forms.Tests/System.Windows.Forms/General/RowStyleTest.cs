@@ -23,39 +23,40 @@
 
 using System.Windows.Forms;
 
-namespace GtkTests.System.Windows.Forms;
+namespace GtkTests.System.Windows.Forms.General;
 
 [TestFixture]
-public class RowStyleTest : TestHelper {
+public class RowStyleTest : TestHelper
+{
 
     [Test]
-    public void CtorTest1 ()
+    public void CtorTest1()
     {
-        var rs = new RowStyle ();
-        Assert.AreEqual (0.0f, rs.Height, "1");
-        Assert.AreEqual (SizeType.AutoSize, rs.SizeType, "2");
+        var rs = new RowStyle();
+        Assert.AreEqual(0.0f, rs.Height, "1");
+        Assert.AreEqual(SizeType.AutoSize, rs.SizeType, "2");
     }
 
     [Test]
-    public void CtorTest2 ()
+    public void CtorTest2()
     {
-        var rs = new RowStyle (SizeType.Absolute);
-			
-        Assert.AreEqual (0.0f, rs.Height, "1");
-        Assert.AreEqual (SizeType.Absolute, rs.SizeType, "2");
+        var rs = new RowStyle(SizeType.Absolute);
+
+        Assert.AreEqual(0.0f, rs.Height, "1");
+        Assert.AreEqual(SizeType.Absolute, rs.SizeType, "2");
     }
 
     [Test]
-    public void CtorTest3 ()
+    public void CtorTest3()
     {
-        var rs = new RowStyle (SizeType.Absolute, 5.0f);
-			
-        Assert.AreEqual (5.0, rs.Height, "1");
-        Assert.AreEqual (SizeType.Absolute, rs.SizeType, "2");
+        var rs = new RowStyle(SizeType.Absolute, 5.0f);
+
+        Assert.AreEqual(5.0, rs.Height, "1");
+        Assert.AreEqual(SizeType.Absolute, rs.SizeType, "2");
     }
 
     [Test]
-    public void CtorTest4 ()
+    public void CtorTest4()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
@@ -66,15 +67,15 @@ public class RowStyleTest : TestHelper {
     }
 
     [Test]
-    public void HeightTest1 ()
+    public void HeightTest1()
     {
-        var rs = new RowStyle ();
+        var rs = new RowStyle();
         rs.Height = 1.0f;
-        Assert.AreEqual (1.0f, rs.Height, "1");
+        Assert.AreEqual(1.0f, rs.Height, "1");
     }
 
     [Test]
-    public void HeightTest2 ()
+    public void HeightTest2()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {

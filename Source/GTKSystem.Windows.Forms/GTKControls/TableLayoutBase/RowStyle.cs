@@ -2,13 +2,22 @@ namespace System.Windows.Forms
 {
 	public class RowStyle : TableLayoutStyle
 	{
-		public float Height
-		{
-			get;
-			set;
-		}
+        private float height;
 
-		public RowStyle()
+        public float Height
+        {
+            get => height;
+            set
+            {
+                if (value < 0.0f)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(height));
+                }
+                height = value;
+            }
+        }
+
+        public RowStyle()
 		{
 			
 		}
@@ -21,6 +30,10 @@ namespace System.Windows.Forms
 		public RowStyle(SizeType sizeType, float height)
 		{
             this.SizeType = sizeType;
+            if (height < 0.0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(height));
+            }
             this.Height = height;
         }
 	}
