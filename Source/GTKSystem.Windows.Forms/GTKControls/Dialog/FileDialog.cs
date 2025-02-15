@@ -32,7 +32,13 @@ namespace System.Windows.Forms
         public bool RestoreDirectory { get; set; }
 
         public string InitialDirectory { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+
+        public string Description
+        {
+            get => description;
+            set => description = value??string.Empty;
+        }
+
         internal bool Multiselect { get; set; }
         internal string SelectedPath
         {
@@ -47,6 +53,7 @@ namespace System.Windows.Forms
         private string defaultExt = string.Empty;
         private string[] fileNames = new string[0];
         private string fileName = string.Empty;
+        private string description = string.Empty;
 
         public string? Filter
         {

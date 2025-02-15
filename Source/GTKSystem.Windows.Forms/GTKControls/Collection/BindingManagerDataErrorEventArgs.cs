@@ -4,18 +4,20 @@ namespace System.Windows.Forms
 {
 	public class BindingManagerDataErrorEventArgs : EventArgs
 	{
-		public Exception Exception
+        private readonly Exception exception;
+
+        public Exception Exception
 		{
 			[CompilerGenerated]
 			get
-			{
-				throw null;
-			}
+            {
+                return exception;
+            }
 		}
 
 		public BindingManagerDataErrorEventArgs(Exception exception)
-		{
-			throw null;
-		}
+        {
+            this.exception = exception;
+        }
 	}
 }
