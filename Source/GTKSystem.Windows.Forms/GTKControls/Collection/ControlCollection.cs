@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
@@ -326,22 +327,40 @@ namespace System.Windows.Forms
 
             public Control[] Find(string key, bool searchAllChildren)
             {
+                if(string.IsNullOrEmpty(key))
+                {
+                    throw new ArgumentNullException(nameof(key));
+                };
                 List<IArrangedElement> foundControls = InnerList.FindAll(o =>
                 {
                     if (o is Control con)
                     {
-                        return con.Name == key;
+                        return string.Equals(con.Name, key, StringComparison.InvariantCultureIgnoreCase);
                     }
                     else if (o is ArrangedElementWidget widget)
                     {
-                        return widget.GetWidget?.Name == key;
+                        return string.Equals(widget.GetWidget?.Name, key, StringComparison.InvariantCultureIgnoreCase);
                     }
                     else { return false; }
                 });
-                if (foundControls == null)
-                    return new Control[0];
-                else
-                    return foundControls.ConvertAll(o => o as Control).ToArray();
+                List<Control?> controls= new List<Control?>();
+                if (foundControls != null)
+                {
+                    controls = foundControls.ConvertAll(o => o as Control).ToList();
+                }
+
+                if (searchAllChildren)
+                {
+                    foreach (var arrangedElement in InnerList)
+                    {
+                        var element = arrangedElement as Control;
+                        if (element != null)
+                        {
+                            controls.AddRange(element.Controls.Find(key, true));
+                        }
+                    }
+                }
+                return controls.ToArray();
             }
 
             public override IEnumerator GetEnumerator()
@@ -361,11 +380,11 @@ namespace System.Windows.Forms
                 {
                     if (o is Control con)
                     {
-                        return con.Name == key;
+                        return string.Equals(con.Name, key, StringComparison.InvariantCultureIgnoreCase);
                     }
                     else if (o is ArrangedElementWidget widget)
                     {
-                        return widget.GetWidget?.Name == key;
+                        return string.Equals(widget.GetWidget?.Name, key, StringComparison.InvariantCultureIgnoreCase);
                     }
                     else { return false; }
                 });
@@ -385,7 +404,7 @@ namespace System.Windows.Forms
                     return;
                 }
                 InnerList.Remove(value);
-                __ownerControl.Remove(value.Widget);
+                __ownerControl?.Remove(value.Widget);
             }
 
             void IList.Remove(object? element)

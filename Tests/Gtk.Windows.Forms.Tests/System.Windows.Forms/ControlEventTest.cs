@@ -1,6 +1,9 @@
 using System.Windows.Forms;
 using System.Drawing;
 using GtkTests.Helpers;
+using System.Resources;
+using System.Collections;
+using System.Drawing.Imaging;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -30,9 +33,9 @@ public class EventClass : TestHelper
         var c = new Control ();
         // Test BackgroundImageChanged Event
         c.BackgroundImageChanged += Event_Handler1;
-        var abc = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
         eventhandled = false;
-        c.BackgroundImage = Image.FromFile (abc);
+        c.BackgroundImage = Image.FromStream(new MemoryStream(Properties.Resources.a));
+        
         Assert.AreEqual (true, eventhandled, "#A2");
     }
 
@@ -112,6 +115,7 @@ public class EventClass : TestHelper
         // Test FontChanged Event
         c.FontChanged += Event_Handler1;
         eventhandled = false;
+        c.Font = new Font(FontFamily.GenericSerif, 10.0f);
         c.Font = new Font (c.Font, FontStyle.Bold);
         Assert.AreEqual (true, eventhandled, "#A11");
     }

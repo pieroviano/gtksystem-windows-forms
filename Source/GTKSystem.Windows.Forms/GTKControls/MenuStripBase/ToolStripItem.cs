@@ -16,10 +16,12 @@ namespace System.Windows.Forms
         public virtual bool Created { get; set; }
         public virtual bool Checked { get; set; }
         public virtual CheckState CheckState { get; set; }
-        internal Gtk.Image DefaultImage = new Gtk.Image("image-missing", Gtk.IconSize.Menu);
+        internal Gtk.Image DefaultImage;
         public virtual System.Drawing.Image Image { get; set; }
         public ToolStripItem()
         {
+            Application.Init();
+            DefaultImage = new Gtk.Image("image-missing", Gtk.IconSize.Menu);
             dropDownItems = new ToolStripItemCollection(this);
         }
 

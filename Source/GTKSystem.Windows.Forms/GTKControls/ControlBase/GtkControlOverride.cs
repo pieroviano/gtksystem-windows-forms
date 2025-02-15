@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public delegate void PaintGraphicsEventHandler(Cairo.Context cr, Rectangle rec);
-    public sealed class GtkControlOverride: IControlOverride
+    public class GtkControlOverride: IControlOverride
     {
         private Widget container;
         public GtkControlOverride(Widget container)

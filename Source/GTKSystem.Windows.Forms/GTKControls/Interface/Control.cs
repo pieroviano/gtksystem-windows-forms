@@ -13,6 +13,12 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
+using Cairo;
+using Color = System.Drawing.Color;
+using Graphics = System.Drawing.Graphics;
+using Image = System.Drawing.Image;
+using Point = System.Drawing.Point;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace System.Windows.Forms
 {
@@ -22,15 +28,65 @@ namespace System.Windows.Forms
     [ToolboxItemFilter("System.Windows.Forms")]
     public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement, IBindableComponent
     {
+        private class MockControlGtk : IControlGtk
+        {
+            private GtkControlOverride _override = new MockControlOverride();
+
+            public void Dispose()
+            {
+            }
+
+            public GtkControlOverride Override
+            {
+                get => _override;
+                set => _override = value;
+            }
+        }
+
+        private class MockWidget : Widget
+        {
+
+        }
+
+        private class MockControlOverride : GtkControlOverride
+        {
+            public MockControlOverride() : base(new MockWidget())
+            {
+            }
+
+            public event DrawnHandler? DrawnBackground;
+            public event PaintEventHandler? Paint;
+            public event PaintGraphicsEventHandler? PaintGraphics;
+            public Color? BackColor { get; set; }
+            public Image BackgroundImage { get; set; }
+            public ImageLayout BackgroundImageLayout { get; set; }
+            public void AddClass(string cssClass)
+            {
+            }
+
+            public void OnAddClass()
+            {
+            }
+
+            public void OnDrawnBackground(Context cr, Gdk.Rectangle area)
+            {
+            }
+
+            public void OnPaint(Context cr, Gdk.Rectangle area)
+            {
+            }
+        }
+
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
 
         public virtual Gtk.Widget Widget { get => GtkControl as Gtk.Widget; }
         public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
         public virtual IControlGtk ISelf { get => GtkControl as IControlGtk; }
-        public virtual object GtkControl { get; set; }
+        public virtual object GtkControl { get; set; } = new MockControlGtk();
         public Control()
         {
+            Disposed += Control_Disposed;
             Controls = new ControlCollection(this);
             DataBindings = new ControlBindingsCollection(this);
             this.unique_key = Guid.NewGuid().ToString().ToLower();
@@ -66,6 +122,15 @@ namespace System.Windows.Forms
                 widget.SizeAllocated += Widget_SizeAllocated;
             }
         }
+
+        private void Control_Disposed(object sender, EventArgs e)
+        {
+            if (!IsDisposed)
+            {
+                Disposed?.Invoke(this, e);
+            }
+        }
+
         private int size_width = 0;
         private int size_height = 0;
         private int location_x = 0;
@@ -501,7 +566,23 @@ namespace System.Windows.Forms
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
         public virtual ImageLayout BackgroundImageLayout { get => ISelf == null ? ImageLayout.None : ISelf.Override.BackgroundImageLayout; set { if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
-        public virtual Drawing.Image BackgroundImage { get => ISelf == null ? null : ISelf.Override.BackgroundImage; set { if (ISelf != null) { ISelf.Override.BackgroundImage = value; Refresh(); } } }
+        public virtual Drawing.Image BackgroundImage
+        {
+            get => ISelf == null ? null : ISelf.Override.BackgroundImage;
+            set
+            {
+                if (ISelf != null)
+                {
+                    var overrideBackgroundImage = ISelf.Override.BackgroundImage;
+                    ISelf.Override.BackgroundImage = value;
+                    Refresh();
+                    if (overrideBackgroundImage != value)
+                    {
+                        BackgroundImageChanged?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+            }
+        }
         public virtual Color BackColor
         {
             get
@@ -517,7 +598,12 @@ namespace System.Windows.Forms
             }
             set
             {
+                var overrideBackColor = ISelf.Override.BackColor;
                 ISelf.Override.BackColor = value;
+                if (overrideBackColor != value)
+                {
+                    BackColorChanged?.Invoke(this, EventArgs.Empty);
+                }
                 ISelf.Override.OnAddClass();
                 UpdateStyle();
                 Refresh();
@@ -611,7 +697,21 @@ namespace System.Windows.Forms
         public virtual bool CanSelect { get; }
 
         public virtual bool Capture { get; set; }
-        public virtual bool CausesValidation { get; set; }
+
+        public virtual bool CausesValidation
+        {
+            get => causesValidation;
+            set
+            {
+                var validation = causesValidation;
+                causesValidation = value;
+                if (validation != value)
+                {
+                    CausesValidationChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
         public virtual string CompanyName { get; }
 
         public virtual bool ContainsFocus { get; }
@@ -623,7 +723,19 @@ namespace System.Windows.Forms
         public virtual bool Created => _Created;
         internal bool _Created;
 
-        public virtual Cursor Cursor { get; set; }
+        public virtual Cursor Cursor
+        {
+            get => cursor;
+            set
+            {
+                var c = cursor;
+                cursor = value;
+                if (c != value)
+                {
+                    CursorChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public virtual ControlBindingsCollection DataBindings { get; }
 
@@ -641,42 +753,65 @@ namespace System.Windows.Forms
             }
             set
             {
+                var dockStyle = _dock;
                 _dock = value;
-                if (value == DockStyle.Fill)
+                var widget = this.Widget;
+                if (widget != null)
                 {
-                    this.Widget.Halign = Align.Fill;
-                    this.Widget.Valign = Align.Fill;
+                    if (value == DockStyle.Fill)
+                    {
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.Fill;
+                    }
+                    else if (value == DockStyle.Left)
+                    {
+                        widget.Halign = Align.Start;
+                        widget.Valign = Align.Fill;
+                    }
+                    else if (value == DockStyle.Top)
+                    {
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.Start;
+                    }
+                    else if (value == DockStyle.Right)
+                    {
+                        widget.Halign = Align.End;
+                        widget.Valign = Align.Fill;
+                    }
+                    else if (value == DockStyle.Bottom)
+                    {
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.End;
+                    }
+                    else if (value == DockStyle.None)
+                    {
+                        widget.Halign = Align.Start;
+                        widget.Valign = Align.Start;
+                    }
                 }
-                else if (value == DockStyle.Left)
-                {
-                    this.Widget.Halign = Align.Start;
-                    this.Widget.Valign = Align.Fill;
-                }
-                else if (value == DockStyle.Top)
-                {
-                    this.Widget.Halign = Align.Fill;
-                    this.Widget.Valign = Align.Start;
-                }
-                else if (value == DockStyle.Right)
-                {
-                    this.Widget.Halign = Align.End;
-                    this.Widget.Valign = Align.Fill;
-                }
-                else if (value == DockStyle.Bottom)
-                {
-                    this.Widget.Halign = Align.Fill;
-                    this.Widget.Valign = Align.End;
-                }
-                else if (value == DockStyle.None)
-                {
-                    this.Widget.Halign = Align.Start;
-                    this.Widget.Valign = Align.Start;
-                }
-                if (DockChanged != null)
+                if (dockStyle != value && DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
             }
         }
-        public virtual bool Enabled { get { return this.Widget.Sensitive; } set { this.Widget.Sensitive = value; } }
+
+        public virtual bool Enabled
+        {
+            get => this.Widget?.Sensitive??true;
+            set
+            {
+                var widget = this.Widget;
+                var sensitive = widget?.Sensitive??true;
+                if (widget != null)
+                {
+                    widget.Sensitive = value;
+                }
+
+                if (sensitive != value)
+                {
+                    EnabledChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public virtual bool Focused { get { return this.Widget.IsFocus; } }
         private Font _Font;
@@ -693,18 +828,44 @@ namespace System.Windows.Forms
                 else
                     return _Font;
             }
-            set { _Font = value; UpdateStyle(); }
+            set {
+                var font = _Font;
+                _Font = value; UpdateStyle();
+                if (font != value)
+                {
+                    FontChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
         private Color _ForeColor;
         public virtual Color ForeColor
         {
             get { return _ForeColor; }
-            set { _ForeColor = value; UpdateStyle(); }
+            set {
+                var foreColor = _ForeColor;
+                _ForeColor = value; UpdateStyle();
+                if (foreColor != value)
+                {
+                    ForeColorChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
 
         public virtual bool HasChildren { get; }
 
-        public virtual ImeMode ImeMode { get; set; }
+        public virtual ImeMode ImeMode
+        {
+            get => imeMode;
+            set
+            {
+                var mode = imeMode;
+                imeMode = value;
+                if (mode != value)
+                {
+                    ImeModeChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public virtual bool InvokeRequired { get; }
 
@@ -722,7 +883,17 @@ namespace System.Windows.Forms
             get => this.Widget.MarginTop;
             set
             {
-                this.Widget.MarginTop = value;
+                var widget = this.Widget;
+                var marginTop = widget?.MarginTop ?? 0;
+                if (widget != null)
+                {
+                    widget.MarginTop = value;
+                }
+                if (marginTop != value)
+                {
+                    LocationChanged?.Invoke(this, EventArgs.Empty);
+                }
+
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -734,7 +905,17 @@ namespace System.Windows.Forms
             get => this.Widget.MarginStart;
             set
             {
-                this.Widget.MarginStart = value;
+                var widget = this.Widget;
+                var marginStart = widget?.MarginStart ?? 0;
+                if (widget != null)
+                {
+                    widget.MarginStart = value;
+                }
+
+                if (marginStart != value)
+                {
+                    LocationChanged?.Invoke(this, EventArgs.Empty);
+                }
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -765,7 +946,19 @@ namespace System.Windows.Forms
                 }
             }
         }
-        public virtual string Name { get { return this.Widget.Name; } set { this.Widget.Name = value; } }
+        public virtual string Name
+        {
+            get { return this.Widget?.Name ?? _name; }
+            set
+            {
+                var widget = this.Widget;
+                if (widget != null)
+                {
+                    widget.Name = value;
+                }
+                _name = value;
+            }
+        }
         public virtual Padding Padding { get; set; }
         public virtual Control Parent { get; set; }
         public virtual Size PreferredSize { get; }
@@ -774,7 +967,20 @@ namespace System.Windows.Forms
         public virtual bool RecreatingHandle { get; }
         public virtual Drawing.Region Region { get; set; }
 
-        public virtual RightToLeft RightToLeft { get; set; }
+        public virtual RightToLeft RightToLeft
+        {
+            get => rightToLeft;
+            set
+            {
+                var toLeft = rightToLeft;
+                rightToLeft = value;
+                if (toLeft != value)
+                {
+                    RightToLeftChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
         public virtual Size Size
         {
             get
@@ -807,7 +1013,18 @@ namespace System.Windows.Forms
             }
             set
             {
-                this.Widget.HeightRequest = Math.Max(-1, value);
+                var widget = this.Widget;
+                var heightRequest = widget?.HeightRequest??0;
+                if (widget != null)
+                {
+                    widget.HeightRequest = Math.Max(-1, value);
+                }
+
+                if (heightRequest != value)
+                {
+                    SizeChanged?.Invoke(this, EventArgs.Empty);
+                    Resize?.Invoke(this, EventArgs.Empty);
+                }
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -825,11 +1042,12 @@ namespace System.Windows.Forms
                 {
                     return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
                 }
-                return widget?.WidthRequest == -1 ? widget.AllocatedWidth : widget?.WidthRequest??_width;
+                return widget?.WidthRequest == -1 ? widget.AllocatedWidth : widget?.WidthRequest ?? _width;
             }
             set
             {
                 var widget = this.Widget;
+                var widthRequest = widget?.WidthRequest??0;
                 if (widget != null)
                 {
                     widget.WidthRequest = Math.Max(-1, value);
@@ -838,15 +1056,62 @@ namespace System.Windows.Forms
                 {
                     _width = value;
                 }
+
+                if (widthRequest != value)
+                {
+                    SizeChanged?.Invoke(this, EventArgs.Empty);
+                    Resize?.Invoke(this, EventArgs.Empty);
+                }
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
             }
         }
-        public virtual int TabIndex { get; set; }
-        public virtual bool TabStop { get; set; }
-        public virtual object Tag { get; set; }
+
+        public virtual int TabIndex
+        {
+            get => tabIndex;
+            set
+            {
+                var index = tabIndex;
+                tabIndex = value;
+                if (index != value)
+                {
+                    TabIndexChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public virtual bool TabStop
+        {
+            get => tabStop;
+            set
+            {
+                var stop = tabStop;
+                tabStop = value;
+                if (stop != value)
+                {
+                    TabStopChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public event EventHandler? TagChanged;
+
+        public virtual object Tag
+        {
+            get => tag;
+            set
+            {
+                var o = tag;
+                tag = value;
+                if (o != value)
+                {
+                    TagChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public virtual string Text
         {
@@ -865,7 +1130,29 @@ namespace System.Windows.Forms
 
         public virtual Control TopLevelControl { get; }
         public virtual bool UseWaitCursor { get; set; }
-        public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.Visible = value; this.Widget.NoShowAll = value == false; } }
+
+        public virtual bool Visible
+        {
+            get
+            {
+                return this.Widget?.Visible ?? true;
+            }
+            set
+            {
+                var widget = this.Widget;
+                var visible = widget?.Visible ?? true;
+                if (widget != null)
+                {
+                    widget.Visible = value;
+                    widget.NoShowAll = value == false;
+                }
+
+                if (visible != value)
+                {
+                    VisibleChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         protected virtual Size DefaultSize { get; }
         protected virtual Padding DefaultPadding { get; }
@@ -1420,13 +1707,36 @@ namespace System.Windows.Forms
 
         public virtual Size ClientSize { get { return new Size(Widget.AllocatedWidth, this.Widget.AllocatedHeight); } set { this.Widget.SetSizeRequest(value.Width, value.Height); } }
 
-        public virtual IntPtr Handle { get => this.Widget == null ? IntPtr.Zero : this.Widget.Handle; }
+        public virtual IntPtr Handle
+        {
+            get
+            {
+                if (this.Widget == null)
+                {
+                    HandleCreated?.Invoke(this, EventArgs.Empty);
+                    return IntPtr.Zero;
+                }
+                else
+                {
+                    return this.Widget.Handle;
+                }
+            }
+        }
+
         public virtual Padding Margin { get; set; }
         public virtual Size MaximumSize { get; set; }
         public virtual Size MinimumSize { get; set; }
         private BorderStyle _BorderStyle;
         private BindingContext bindingContext;
         private string text = string.Empty;
+        private string _name;
+        private bool causesValidation = true;
+        private Cursor cursor;
+        private bool tabStop = true;
+        private object tag;
+        private int tabIndex;
+        private RightToLeft rightToLeft;
+        private ImeMode imeMode;
 
         public virtual BorderStyle BorderStyle
         {
@@ -1506,10 +1816,13 @@ namespace System.Windows.Forms
 
         }
 
+        public new virtual event EventHandler? Disposed;
+
         public new virtual void Dispose()
         {
             Dispose(true);
             base.Dispose();
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void Dispose(bool disposing)
