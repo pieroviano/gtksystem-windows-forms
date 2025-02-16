@@ -315,7 +315,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event AddingNewEventHandler AddingNew
+		public event AddingNewEventHandler? AddingNew
 		{
 			add
 			{
@@ -327,7 +327,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event BindingCompleteEventHandler BindingComplete
+		public event BindingCompleteEventHandler? BindingComplete
 		{
 			add
 			{
@@ -339,7 +339,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event BindingManagerDataErrorEventHandler DataError
+		public event BindingManagerDataErrorEventHandler? DataError
 		{
 			add
 			{
@@ -351,7 +351,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event EventHandler DataSourceChanged
+		public event EventHandler? DataSourceChanged
 		{
 			add
 			{
@@ -363,7 +363,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event EventHandler DataMemberChanged
+		public event EventHandler? DataMemberChanged
 		{
 			add
 			{
@@ -375,7 +375,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event EventHandler CurrentChanged
+		public event EventHandler? CurrentChanged
 		{
 			add
 			{
@@ -388,7 +388,7 @@ namespace System.Windows.Forms
 		}
 
 
-		public event EventHandler CurrentItemChanged
+		public event EventHandler? CurrentItemChanged
 		{
 			add
 			{
@@ -400,7 +400,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event ListChangedEventHandler ListChanged
+		public event ListChangedEventHandler? ListChanged
 		{
 			add
 			{
@@ -412,7 +412,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public event EventHandler PositionChanged
+		public event EventHandler? PositionChanged
 		{
 			add
 			{

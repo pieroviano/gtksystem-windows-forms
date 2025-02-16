@@ -74,11 +74,11 @@ namespace System.Windows.Forms
                 control.Location=new Drawing.Point(0, 0);
                 control.LockLocation = true;
                 control.Parent = _owner;
-                Gtk.Widget widg = control.Widget;
+                var widg = control.Widget;
                 widg.Valign = Align.Start;
                 widg.Halign = Align.Start;
                 widg.Expand = false;
-                box.Add(widg);
+                if (widg is Widget widget) box.Add(widget);
                 _owner.self.Add(box);
                 base.AddWidget(box, control);
             }

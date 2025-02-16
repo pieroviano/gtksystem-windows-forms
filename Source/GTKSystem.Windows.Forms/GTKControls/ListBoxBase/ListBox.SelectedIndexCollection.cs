@@ -184,30 +184,24 @@ namespace System.Windows.Forms
 
             public void Add(int index)
             {
-                if (_owner != null)
+                ObjectCollection items = _owner?.Items;
+                if (items != null)
                 {
-                    ObjectCollection items = _owner.Items;
-                    if (items != null)
+                    if (index != -1 && !Contains(index))
                     {
-                        if (index != -1 && !Contains(index))
-                        {
-                            _owner.SetSelected(index, true);
-                        }
+                        _owner.SetSelected(index, true);
                     }
                 }
             }
 
             public void Remove(int index)
             {
-                if (_owner != null)
+                ObjectCollection items = _owner?.Items;
+                if (items != null)
                 {
-                    ObjectCollection items = _owner.Items;
-                    if (items != null)
+                    if (index != -1 && Contains(index))
                     {
-                        if (index != -1 && Contains(index))
-                        {
-                            _owner.SetSelected(index, false);
-                        }
+                        _owner.SetSelected(index, false);
                     }
                 }
             }

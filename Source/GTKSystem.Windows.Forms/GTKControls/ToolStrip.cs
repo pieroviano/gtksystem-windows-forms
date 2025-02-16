@@ -33,22 +33,10 @@ namespace System.Windows.Forms
         }
         private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
         {
-            if (DropDownItemClicked != null)
-            {
-                DropDownItemClicked(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
-            }
-            if (Click != null)
-            {
-                Click(sender, e);
-            }
-            if (CheckedChanged != null)
-            {
-                CheckedChanged(this, e);
-            }
-            if (CheckStateChanged != null)
-            {
-                CheckStateChanged(this, e);
-            }
+            DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
+            Click?.Invoke(sender, e);
+            CheckedChanged?.Invoke(this, e);
+            CheckStateChanged?.Invoke(this, e);
         }
         public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, 30); }
         public ToolStripItemCollection Items
@@ -62,8 +50,8 @@ namespace System.Windows.Forms
         public Size ImageScalingSize { get; set; }
         public ToolStripLayoutStyle LayoutStyle { get; set; }
         public override event EventHandler Click;
-        public event EventHandler CheckedChanged;
-        public event EventHandler CheckStateChanged;
-        public event ToolStripItemClickedEventHandler DropDownItemClicked;
+        public event EventHandler? CheckedChanged;
+        public event EventHandler? CheckStateChanged;
+        public event ToolStripItemClickedEventHandler? DropDownItemClicked;
     }
 }

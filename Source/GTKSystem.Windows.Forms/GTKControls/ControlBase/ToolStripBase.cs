@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
+    public sealed class ToolStripBase : Gtk.MenuBar, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public ToolStripBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("ToolStrip");
             this.Hexpand = true;
             this.Vexpand = false;

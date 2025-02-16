@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class ToolStripDropDownBase : Gtk.Menu, IControlGtk
+    public sealed class ToolStripDropDownBase : Gtk.Menu, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public ToolStripDropDownBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             base.Halign = Gtk.Align.Start;
             base.Valign = Gtk.Align.Start;
         }

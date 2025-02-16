@@ -21,9 +21,9 @@ namespace System.Windows.Forms
         private PrintPreviewControl _previewControl;
         private Form previewForm;
         private Gtk.Box box;
-        public PrintPreviewDialog():base()
+        public PrintPreviewDialog() : base()
         {
-            
+
         }
         private void Printbutton_ButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
         {
@@ -55,7 +55,8 @@ namespace System.Windows.Forms
             printbutton.ButtonReleaseEvent += Printbutton_ButtonReleaseEvent;
             header.PackEnd(printbutton, false, false, 0);
             box.PackStart(header, false, true, 0);
-            box.PackStart(_previewControl.Widget, false, true, 0);
+            var widget = _previewControl.Widget as Widget;
+            if (widget != null) box.PackStart(widget, false, true, 0);
             box.MarginTop = 20;
             box.MarginStart = (previewForm.Width - _previewControl.Width) / 2;
             previewForm.Controls.Add(box);
@@ -109,8 +110,8 @@ namespace System.Windows.Forms
             get;
             set;
         }
-         
-         
+
+
         public bool AutoScale
         {
             get;
@@ -123,13 +124,13 @@ namespace System.Windows.Forms
             set;
         }
 
-         
-         
+
+
         public bool ControlBox
         {
             get;
             set;
-        } 
+        }
         public bool HelpButton
         {
             get;
@@ -148,10 +149,10 @@ namespace System.Windows.Forms
             set;
         }
 
-        
-        public event EventHandler MaximumSizeChanged;
-         
-        public event EventHandler MinimumSizeChanged;
+
+        public event EventHandler? MaximumSizeChanged;
+
+        public event EventHandler? MinimumSizeChanged;
 
         public FormStartPosition StartPosition
         {
@@ -183,6 +184,6 @@ namespace System.Windows.Forms
             get;
             set;
         }
- 
+
     }
 }

@@ -54,12 +54,9 @@ namespace System.Windows.Forms
             int rowIndex = args.Child.Index;
             ObjectCollection.CheckedListBoxItem sender = this.Items.GetCheckedListBoxItem(rowIndex);
             sender.Selected = args.Child.IsSelected;
-            if (SelectedIndexChanged != null)
-                SelectedIndexChanged(this, args);
-            if (SelectedValueChanged != null)
-                SelectedValueChanged(this, args);
-            if (SelectedItemChanged != null)
-                SelectedItemChanged(this, args);
+            SelectedIndexChanged?.Invoke(this, args);
+            SelectedValueChanged?.Invoke(this, args);
+            SelectedItemChanged?.Invoke(this, args);
         }
 
         public int ColumnWidth { get; set; }
@@ -131,10 +128,10 @@ namespace System.Windows.Forms
             }
         }
 
-        public event ItemCheckEventHandler ItemCheck;
-        public event EventHandler SelectedIndexChanged;
-        public event EventHandler SelectedValueChanged;
-        public event EventHandler SelectedItemChanged;
+        public event ItemCheckEventHandler? ItemCheck;
+        public event EventHandler? SelectedIndexChanged;
+        public event EventHandler? SelectedValueChanged;
+        public event EventHandler? SelectedItemChanged;
         internal void NativeAdd(object item, bool isChecked, int position)
         {
             if (_flow.IsRealized)
@@ -150,8 +147,7 @@ namespace System.Windows.Forms
                     Gtk.CheckButton box = (Gtk.CheckButton)sender;
                     Gtk.FlowBoxChild item = box.Parent as Gtk.FlowBoxChild;
                     Items.GetCheckedListBoxItem(item.Index).Checked = box.Active;
-                    if (this.ItemCheck != null)
-                        this.ItemCheck(this, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
+                    this.ItemCheck?.Invoke(this, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
                     if (this.CheckOnClick == true)
                         this._flow.SelectChild(item);
                 };

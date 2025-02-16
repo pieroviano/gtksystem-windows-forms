@@ -139,7 +139,7 @@ namespace System.Windows.Forms
 
         object IList.this[int index] { get => items[index]; set => throw new NotSupportedException(); }
         
-        public event CollectionChangeEventHandler CollectionChanged;
+        public event CollectionChangeEventHandler? CollectionChanged;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int Add()
@@ -431,8 +431,7 @@ namespace System.Windows.Forms
         //**************************************
         protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
         {
-            if (CollectionChanged != null)
-                CollectionChanged(dataGridView, e);
+            CollectionChanged?.Invoke(dataGridView, e);
         }
 
         int IList.Add(object value)

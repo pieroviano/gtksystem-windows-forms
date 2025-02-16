@@ -1,17 +1,19 @@
 ﻿using Gtk;
+using GTKSystem.Windows.Forms.Interfaces;
 using System;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class TabControlBase : Gtk.Notebook, IControlGtk
+    public sealed class TabControlBase : Gtk.Notebook, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public TabControlBase() : base()
         {
             this.Scrollable = true;
             this.EnablePopup = false;
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("TabControl");
             base.Halign = Gtk.Align.Start;
             base.Valign = Gtk.Align.Start;

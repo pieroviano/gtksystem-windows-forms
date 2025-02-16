@@ -25,7 +25,7 @@ namespace System.Windows.Forms
                 ValueChanged(this, e);
         }
 
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
         public int DecimalPlaces { get => Convert.ToInt32(self.Digits); set => self.Digits = Convert.ToUInt32(value); }
         public decimal Increment
         {

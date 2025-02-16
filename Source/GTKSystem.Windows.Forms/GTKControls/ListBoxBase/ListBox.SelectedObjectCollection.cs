@@ -258,32 +258,26 @@ namespace System.Windows.Forms
 
             public void Add(object value)
             {
-                if (_owner != null)
+                ObjectCollection items = _owner?.Items;
+                if (items != null && value != null)
                 {
-                    ObjectCollection items = _owner.Items;
-                    if (items != null && value != null)
+                    int index = items.IndexOf(value);
+                    if (index != -1 && !GetSelected(index))
                     {
-                        int index = items.IndexOf(value);
-                        if (index != -1 && !GetSelected(index))
-                        {
-                            _owner.SelectedIndex = index;
-                        }
+                        _owner.SelectedIndex = index;
                     }
                 }
             }
 
             public void Remove(object value)
             {
-                if (_owner != null)
+                ObjectCollection items = _owner?.Items;
+                if (items != null && value != null)
                 {
-                    ObjectCollection items = _owner.Items;
-                    if (items != null && value != null)
+                    int index = items.IndexOf(value);
+                    if (index != -1 && GetSelected(index))
                     {
-                        int index = items.IndexOf(value);
-                        if (index != -1 && GetSelected(index))
-                        {
-                            _owner.SetSelected(index, false);
-                        }
+                        _owner.SetSelected(index, false);
                     }
                 }
             }

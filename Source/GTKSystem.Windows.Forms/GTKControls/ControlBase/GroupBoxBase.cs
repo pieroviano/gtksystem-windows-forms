@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using GTKSystem.Windows.Forms.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +9,23 @@ using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class GroupBoxBase : Gtk.Frame, IControlGtk, IScrollableBoxBase
+    public sealed class GroupBoxBase : Gtk.Frame, IGtkControl, IScrollableBoxBase
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public bool AutoScroll { get; set; }
         public bool HScroll { get; set; } = false;
         public bool VScroll { get; set; } = false;
 
         public GroupBoxBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("GroupBox");
             this.LabelXalign = 0.03f;
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }
 
-        public event System.Windows.Forms.ScrollEventHandler Scroll;
+        public event System.Windows.Forms.ScrollEventHandler? Scroll;
 
         protected override void OnShown()
         {

@@ -46,14 +46,14 @@ namespace System.Windows.Forms
        
         protected internal virtual Point DropDownLocation { get; }
 
-        public event EventHandler DropDownOpening;
+        public event EventHandler? DropDownOpening;
 
-        public event EventHandler DropDownClosed;
+        public event EventHandler? DropDownClosed;
 
-        public event EventHandler DropDownOpened;
+        public event EventHandler? DropDownOpened;
 
 
-        //public event ToolStripItemClickedEventHandler DropDownItemClicked;
+        //public event ToolStripItemClickedEventHandler? DropDownItemClicked;
 
         public void HideDropDown() { }
 

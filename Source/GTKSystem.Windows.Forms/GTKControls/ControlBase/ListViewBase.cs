@@ -1,12 +1,15 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class ListViewBase : Gtk.Viewport, IControlGtk
+    public sealed class ListViewBase : Gtk.Viewport, IGtkControl
     {
         public Gtk.Box box = new Gtk.Box(Gtk.Orientation.Vertical, 0);
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public ListViewBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.StyleContext.AddClass("view");
             this.Override.AddClass("ListView");
             this.BorderWidth = 1;

@@ -27,7 +27,7 @@ namespace System.Windows.Forms
         public int Maximum { get => (int)Adjustment.Upper; set => Adjustment.Upper = value; }
         public int Minimum { get => (int)Adjustment.Lower; set => Adjustment.Lower = value; }
         public int Value { get => (int)Adjustment.Value; set { Adjustment.Value = value; } }
-        public event ScrollEventHandler Scroll;
-        public event EventHandler ValueChanged;
+        public event ScrollEventHandler? Scroll;
+        public event EventHandler? ValueChanged;
     }
 }

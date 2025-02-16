@@ -536,11 +536,7 @@ namespace System.Windows.Forms
         internal bool ControlAtDesignTime()
         {
             IComponent component = this.control;
-            if (component == null)
-            {
-                return false;
-            }
-            ISite site = component.Site;
+            ISite site = component?.Site;
             if (site == null)
             {
                 return false;
@@ -667,10 +663,7 @@ namespace System.Windows.Forms
                     try
                     {
                         this.inOnBindingComplete = true;
-                        if (this.onComplete != null)
-                        {
-                            this.onComplete(this, e);
-                        }
+                        this.onComplete?.Invoke(this, e);
                     }
                     catch (Exception exception)
                     {
@@ -692,10 +685,7 @@ namespace System.Windows.Forms
         /// <param name="cevent">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
         protected virtual void OnFormat(ConvertEventArgs cevent)
         {
-            if (this.onFormat != null)
-            {
-                this.onFormat(this, cevent);
-            }
+            this.onFormat?.Invoke(this, cevent);
             if (!this.formattingEnabled && !(cevent.Value is DBNull) && cevent.DesiredType != null && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
             {
                 cevent.Value = Convert.ChangeType(cevent.Value, cevent.DesiredType, CultureInfo.CurrentCulture);
@@ -706,10 +696,7 @@ namespace System.Windows.Forms
         /// <param name="cevent">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
         protected virtual void OnParse(ConvertEventArgs cevent)
         {
-            if (this.onParse != null)
-            {
-                this.onParse(this, cevent);
-            }
+            this.onParse?.Invoke(this, cevent);
             if (!this.formattingEnabled && !(cevent.Value is DBNull) && cevent.Value != null && cevent.DesiredType != null && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
             {
                 cevent.Value = Convert.ChangeType(cevent.Value, cevent.DesiredType, CultureInfo.CurrentCulture);
@@ -1078,7 +1065,7 @@ namespace System.Windows.Forms
         }
 
         /// <summary>Occurs when the <see cref="P:System.Windows.Forms.Binding.FormattingEnabled" /> property is set to true and a binding operation is complete, such as when data is pushed from the control to the data source or vice versa</summary>
-        public event BindingCompleteEventHandler BindingComplete
+        public event BindingCompleteEventHandler? BindingComplete
         {
             add
             {
@@ -1092,7 +1079,7 @@ namespace System.Windows.Forms
 
         /// <summary>Occurs when the property of a control is bound to a data value.</summary>
         /// <filterpriority>1</filterpriority>
-        public event ConvertEventHandler Format
+        public event ConvertEventHandler? Format
         {
             add
             {
@@ -1106,7 +1093,7 @@ namespace System.Windows.Forms
 
         /// <summary>Occurs when the value of a data-bound control changes.</summary>
         /// <filterpriority>1</filterpriority>
-        public event ConvertEventHandler Parse
+        public event ConvertEventHandler? Parse
         {
             add
             {

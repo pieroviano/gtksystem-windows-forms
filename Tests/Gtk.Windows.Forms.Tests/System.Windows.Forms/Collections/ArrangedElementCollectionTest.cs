@@ -27,14 +27,14 @@ using System.Collections;
 using System.Windows.Forms.Layout;
 using System.Reflection;
 
-namespace GtkTests.System.Windows.Forms.Layout;
+namespace GtkTests.System.Windows.Forms.Collections;
 
 [TestFixture]
 public class ArrangedElementCollectionTest : TestHelper
 {
-		
+
     [Test]
-    public void IList_InsertTest ()
+    public void IList_InsertTest()
     {
         Assert.Throws<NotSupportedException>(() =>
         {

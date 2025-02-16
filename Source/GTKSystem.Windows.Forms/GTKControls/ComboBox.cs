@@ -65,13 +65,10 @@ namespace System.Windows.Forms
                 ws.Drawn += Ws_Drawn;
             }
         }
-        public event EventHandler DropDown;
+        public event EventHandler? DropDown;
         private void Ws_Toggled(object sender, EventArgs e)
         {
-            if (DropDown != null)
-            {
-                DropDown(this, e);
-            }
+            DropDown?.Invoke(this, e);
         }
         private void Ws_Drawn(object o, Gtk.DrawnArgs args)
         {

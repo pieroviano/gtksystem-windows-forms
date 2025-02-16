@@ -48,17 +48,11 @@ namespace System.Windows.Forms
             set
             {
                 EventHandler onClose = OnMainFormDestroy;
-                if (_mainForm != null)
-                {
-                    _mainForm.HandleDestroyed -= onClose;
-                }
+                _mainForm.HandleDestroyed -= onClose;
 
                 _mainForm = value;
 
-                if (_mainForm != null)
-                {
-                    _mainForm.HandleDestroyed += onClose;
-                }
+                _mainForm.HandleDestroyed += onClose;
             }
         }
 
@@ -72,7 +66,7 @@ namespace System.Windows.Forms
         ///  Is raised when the thread's message loop should be terminated.
         ///  This is raised by calling ExitThread.
         /// </summary>
-        public event EventHandler ThreadExit;
+        public event EventHandler? ThreadExit;
 
         /// <summary>
         ///  Disposes the context. This should dispose the mainForm. This is

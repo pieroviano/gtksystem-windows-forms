@@ -178,7 +178,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public event EventHandler StartPageChanged
+        public event EventHandler? StartPageChanged
         {
             add => Events.AddHandler(s_startPageChangedEvent, value);
             remove => Events.RemoveHandler(s_startPageChangedEvent, value);

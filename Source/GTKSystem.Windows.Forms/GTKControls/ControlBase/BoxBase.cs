@@ -1,16 +1,18 @@
-﻿using Gtk;
+﻿using GTKSystem.Windows.Forms.Interfaces;
 using System;
 using System.Drawing;
+using System.Windows.Forms;
+using Orientation = Gtk.Orientation;
 
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class BoxBase: Gtk.Box, IControlGtk
+    public sealed class BoxBase: Gtk.Box, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public BoxBase(Orientation orientation, int spacing) : base(orientation, spacing)
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }

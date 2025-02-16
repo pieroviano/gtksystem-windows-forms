@@ -1,18 +1,21 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class RadioButtonBase : Gtk.RadioButton, IControlGtk
+    public sealed class RadioButtonBase : Gtk.RadioButton, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public RadioButtonBase() : base(new Gtk.RadioButton("baseradio"))
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("RadioButton");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }
         public RadioButtonBase(Gtk.RadioButton radio_group_member) : base(radio_group_member)
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("RadioButton");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;

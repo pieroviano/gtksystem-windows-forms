@@ -16,8 +16,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.container = container;
         }
-        public event DrawnHandler DrawnBackground;
-        public event PaintEventHandler Paint;
+        public event DrawnHandler? DrawnBackground;
+        public event PaintEventHandler? Paint;
         public System.Drawing.Color? BackColor { get; set; }
         private System.Drawing.Image _BackgroundImage;
         public System.Drawing.Image BackgroundImage { get { return _BackgroundImage; } set { _BackgroundImage = value; backgroundPixbuf = null; } }
@@ -96,14 +96,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
         }
         
-        public event PaintGraphicsEventHandler PaintGraphics;
+        public event PaintGraphicsEventHandler? PaintGraphics;
         public void OnPaint(Cairo.Context cr, Gdk.Rectangle area)
         {
-            if (PaintGraphics != null) {
-                PaintGraphics(cr, new Rectangle(area.X, area.Y, area.Width, area.Height));
-            }
-            if (Paint != null)
-                Paint(this.container, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
+            PaintGraphics?.Invoke(cr, new Rectangle(area.X, area.Y, area.Width, area.Height));
+            Paint?.Invoke(this.container, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
         }
     }
 }

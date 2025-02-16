@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class LinkLabelBase : Gtk.LinkButton, IControlGtk
+    public sealed class LinkLabelBase : Gtk.LinkButton, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public LinkLabelBase() : base("")
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("LinkLabel");
             this.BorderWidth = 0;
             base.Valign = Gtk.Align.Start;

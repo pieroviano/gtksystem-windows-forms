@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class CheckBoxBase : Gtk.CheckButton, IControlGtk
+    public sealed class CheckBoxBase : Gtk.CheckButton, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public CheckBoxBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("CheckBox");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;

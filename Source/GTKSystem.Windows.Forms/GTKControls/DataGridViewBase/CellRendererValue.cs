@@ -23,10 +23,7 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
-                if (value != null)
-                {
-                    value.SetTextWithStyle(Column, this);
-                }
+                value?.SetTextWithStyle(Column, this);
             }
         }
     }
@@ -62,10 +59,7 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
-                if (value != null)
-                {
-                    value.SetTextWithStyle(Column, this);
-                }
+                value?.SetTextWithStyle(Column, this);
             }
         }
     }
@@ -121,10 +115,7 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
-                if (value != null)
-                {
-                    value.SetTextWithStyle(Column, this);
-                }
+                value?.SetTextWithStyle(Column, this);
             }
         }
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)

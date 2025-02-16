@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using GTKSystem.Windows.Forms.Interfaces;
 
 namespace System.Windows.Forms
 {
     public interface IControl
     {
         //widget含有的方法注销
-        Gtk.Widget Widget { get; }
+        IWidget? Widget { get; }
         AccessibleObject AccessibilityObject { get; }
         string AccessibleDefaultActionDescription { get; set; }
         string AccessibleDescription { get; set; }

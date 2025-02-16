@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class FlowLayoutPanelBase : Gtk.FlowBox, IControlGtk
+    public sealed class FlowLayoutPanelBase : Gtk.FlowBox, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public FlowLayoutPanelBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("FlowLayoutPanel");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;

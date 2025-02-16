@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class PictureBoxBase : Gtk.Image, IControlGtk
+    public sealed class PictureBoxBase : Gtk.Image, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public PictureBoxBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("PictureBox");
             base.Valign = Gtk.Align.Fill;
             base.Halign = Gtk.Align.Fill;

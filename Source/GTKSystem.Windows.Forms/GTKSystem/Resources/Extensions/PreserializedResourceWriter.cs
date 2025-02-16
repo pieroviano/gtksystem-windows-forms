@@ -299,11 +299,9 @@ namespace GTKSystem.Resources.Extensions
 				{
 					Generate();
 				}
-				if (_output != null)
-				{
-					_output.Dispose();
-				}
-			}
+
+                _output?.Dispose();
+            }
 			_output = null;
 			_caseInsensitiveDups = null;
 		}

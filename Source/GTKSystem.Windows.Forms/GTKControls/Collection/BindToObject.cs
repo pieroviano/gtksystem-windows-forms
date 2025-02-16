@@ -43,11 +43,7 @@ namespace System.Windows.Forms
             {
                 if (this.dataMember.BindingField.Length != 0)
                 {
-                    if (this.fieldInfo == null)
-                    {
-                        return null;
-                    }
-                    return this.fieldInfo.PropertyType;
+                    return this.fieldInfo?.PropertyType;
                 }
                 Type bindType = this.bindingManager.BindType;
                 if (typeof(Array).IsAssignableFrom(bindType))
@@ -180,10 +176,7 @@ namespace System.Windows.Forms
 
         private void PropValueChanged(object sender, EventArgs e)
         {
-            if (this.bindingManager != null)
-            {
-                this.bindingManager.OnCurrentChanged(EventArgs.Empty);
-            }
+            this.bindingManager?.OnCurrentChanged(EventArgs.Empty);
         }
 
         internal void SetBindingManagerBase(BindingManagerBase lManager)
@@ -216,10 +209,7 @@ namespace System.Windows.Forms
             else
             {
                 current = this.bindingManager.Current;
-                if (current is IEditableObject)
-                {
-                    ((IEditableObject)current).BeginEdit();
-                }
+                (current as IEditableObject)?.BeginEdit();
                 if (!this.fieldInfo.IsReadOnly)
                 {
                     this.fieldInfo.SetValue(current, value);

@@ -16,7 +16,7 @@ namespace System.Windows.Forms
 
         internal int _width = 120;
 
-        public event EventHandler DisplayIndexChanged;
+        public event EventHandler? DisplayIndexChanged;
 
         [Localizable(true)]
         public int DisplayIndex

@@ -59,36 +59,36 @@ namespace System.Windows.Forms
             get; set;
         }
 
-		public event EventHandler DataSourceChanged
+		public event EventHandler? DataSourceChanged
         {
             add { Events.AddHandler("DataSourceChanged", value); }
             remove { Events.RemoveHandler("DataSourceChanged", value); }
         }
 
-        public event EventHandler DisplayMemberChanged;
+        public event EventHandler? DisplayMemberChanged;
 
-		public event ListControlConvertEventHandler Format;
+		public event ListControlConvertEventHandler? Format;
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public event EventHandler FormatInfoChanged;
+		public event EventHandler? FormatInfoChanged;
 
-		public event EventHandler FormatStringChanged;
+		public event EventHandler? FormatStringChanged;
 
-        public event EventHandler FormattingEnabledChanged;
+        public event EventHandler? FormattingEnabledChanged;
 
-        public event EventHandler ValueMemberChanged;
-        public event EventHandler SelectedItemChanged
+        public event EventHandler? ValueMemberChanged;
+        public event EventHandler? SelectedItemChanged
         {
             add { Events.AddHandler("SelectedItemChanged", value); }
             remove { Events.RemoveHandler("SelectedItemChanged", value); }
         }
-        public event EventHandler SelectedValueChanged
+        public event EventHandler? SelectedValueChanged
         {
             add { Events.AddHandler("SelectedValueChanged", value); }
             remove { Events.RemoveHandler("SelectedValueChanged", value); }
         }
-        public event EventHandler SelectedIndexChanged
+        public event EventHandler? SelectedIndexChanged
         {
             add { Events.AddHandler("SelectedIndexChanged", value); }
             remove { Events.RemoveHandler("SelectedIndexChanged", value); }

@@ -52,20 +52,17 @@ namespace System.Windows.Forms
 
         private void Self_ResizeChecked(object sender, EventArgs e)
         {
-            if (SizeChanged != null)
-                SizeChanged(this, EventArgs.Empty);
+            SizeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private bool Self_CloseWindowEvent(object sender, EventArgs e)
         {
             FormClosingEventArgs closing = new FormClosingEventArgs(CloseReason.UserClosing, false);
-            if (FormClosing != null)
-                FormClosing(this, closing);
+            FormClosing?.Invoke(this, closing);
 
             if (closing.Cancel == false)
             {
-                if (FormClosed != null)
-                    FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
+                FormClosed?.Invoke(this, new FormClosedEventArgs(CloseReason.UserClosing));
             }
             return closing.Cancel == false;
         }
@@ -287,9 +284,9 @@ namespace System.Windows.Forms
             return this.DialogResult;
         }
 
-        public event EventHandler Shown;
-        public event FormClosingEventHandler FormClosing;
-        public event FormClosedEventHandler FormClosed;
+        public event EventHandler? Shown;
+        public event FormClosingEventHandler? FormClosing;
+        public event FormClosedEventHandler? FormClosed;
         public override event EventHandler Load;
         public override string Text { get { return self.Title; } set { self.Title = value; } }
         public override Size ClientSize
@@ -363,17 +360,11 @@ namespace System.Windows.Forms
         public DialogResult DialogResult { get; set; }
         public void Close()
         {
-            if (self != null)
-            {
-                self.CloseWindow();
-            }
+            self?.CloseWindow();
         }
         public override void Hide()
         {
-            if (self != null)
-            {
-                self.Hide();
-            }
+            self?.Hide();
         }
 
         public new ObjectCollection Controls { get { return _ObjectCollection; } }
@@ -480,10 +471,7 @@ namespace System.Windows.Forms
         public static void UpdateBinding(BindingContext newBindingContext, Binding binding)
         {
             BindingManagerBase bindingManagerBase = binding.BindingManagerBase;
-            if (bindingManagerBase != null)
-            {
-                bindingManagerBase.Bindings.Remove(binding);
-            }
+            bindingManagerBase?.Bindings.Remove(binding);
             if (newBindingContext != null)
             {
                 if (binding.BindToObject.BindingManagerBase is PropertyManager)

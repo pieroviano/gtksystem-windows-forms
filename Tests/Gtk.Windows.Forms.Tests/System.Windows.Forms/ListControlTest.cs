@@ -416,7 +416,7 @@ public class ListControlTest : TestHelper
             }
         }
 
-        public event EventHandler RefreshingItems;
+        public event EventHandler? RefreshingItems;
     }
 }
 
@@ -459,18 +459,16 @@ public class MockItem: INotifyPropertyChanged
 
     protected virtual void OnTextChanged (EventArgs args)
     {
-        if (TextChanged != null)
-            TextChanged (this, args);
+        TextChanged?.Invoke (this, args);
     }
 
     protected virtual void OnValueChanged (EventArgs args)
     {
-        if (ValueChanged != null)
-            ValueChanged (this, args);
+        ValueChanged?.Invoke (this, args);
     }
 
-    public event EventHandler TextChanged;
-    public event EventHandler ValueChanged;
+    public event EventHandler? TextChanged;
+    public event EventHandler? ValueChanged;
 
     private string _text;
     private int _value;

@@ -210,6 +210,6 @@ namespace System.Windows.Forms
         public Color CalendarTitleForeColor { get; set; }
         public Color CalendarTrailingForeColor { get; set; }
 
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
     }
 }

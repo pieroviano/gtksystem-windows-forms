@@ -8,7 +8,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public Gtk.Overlay Content = new Gtk.Overlay();
         public TabPageBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("TabPage");
             this.BorderWidth = 0;
             this.Content.Margin = 0;

@@ -239,15 +239,9 @@ namespace System.Windows.Forms
             if (this.Count > 0)
             {
                 IEditableObject editableObject = (this.Position < 0 || this.Position >= this.list.Count ? null : this.list[this.Position]) as IEditableObject;
-                if (editableObject != null)
-                {
-                    editableObject.CancelEdit();
-                }
+                editableObject?.CancelEdit();
                 ICancelAddNew cancelAddNew = this.list as ICancelAddNew;
-                if (cancelAddNew != null)
-                {
-                    cancelAddNew.CancelNew(this.Position);
-                }
+                cancelAddNew?.CancelNew(this.Position);
                 this.OnItemChanged(new ItemChangedEventArgs(this.Position));
                 if (this.Position != -1)
                 {
@@ -368,15 +362,9 @@ namespace System.Windows.Forms
             if (this.Count > 0 && this.CurrencyManager_PullData())
             {
                 IEditableObject editableObject = (this.Position < 0 || this.Position >= this.list.Count ? null : this.list[this.Position]) as IEditableObject;
-                if (editableObject != null)
-                {
-                    editableObject.EndEdit();
-                }
+                editableObject?.EndEdit();
                 ICancelAddNew cancelAddNew = this.list as ICancelAddNew;
-                if (cancelAddNew != null)
-                {
-                    cancelAddNew.EndNew(this.Position);
-                }
+                cancelAddNew?.EndNew(this.Position);
             }
         }
 
@@ -644,23 +632,14 @@ namespace System.Windows.Forms
                 if (this.Count > 0)
                 {
                     object item = this.list[this.Position];
-                    if (item is IEditableObject)
-                    {
-                        ((IEditableObject)item).BeginEdit();
-                    }
+                    (item as IEditableObject)?.BeginEdit();
                 }
                 try
                 {
                     if (!flag || flag && num != -1)
                     {
-                        if (this.onCurrentChangedHandler != null)
-                        {
-                            this.onCurrentChangedHandler(this, e);
-                        }
-                        if (this.onCurrentItemChangedHandler != null)
-                        {
-                            this.onCurrentItemChangedHandler(this, e);
-                        }
+                        this.onCurrentChangedHandler?.Invoke(this, e);
+                        this.onCurrentItemChangedHandler?.Invoke(this, e);
                     }
                 }
                 catch (Exception exception)
@@ -673,10 +652,7 @@ namespace System.Windows.Forms
         /// <param name="e">The <see cref="T:System.EventArgs" /> that contains the event data.</param>
         protected internal override void OnCurrentItemChanged(EventArgs e)
         {
-            if (this.onCurrentItemChangedHandler != null)
-            {
-                this.onCurrentItemChangedHandler(this, e);
-            }
+            this.onCurrentItemChangedHandler?.Invoke(this, e);
         }
 
         /// <summary>Raises the <see cref="E:System.Windows.Forms.CurrencyManager.ItemChanged" /> event.</summary>
@@ -690,10 +666,7 @@ namespace System.Windows.Forms
             }
             try
             {
-                if (this.onItemChanged != null)
-                {
-                    this.onItemChanged(this, e);
-                }
+                this.onItemChanged?.Invoke(this, e);
             }
             catch (Exception exception)
             {
@@ -707,20 +680,14 @@ namespace System.Windows.Forms
 
         private void OnListChanged(ListChangedEventArgs e)
         {
-            if (this.onListChanged != null)
-            {
-                this.onListChanged(this, e);
-            }
+            this.onListChanged?.Invoke(this, e);
         }
 
         /// <summary>Raises the <see cref="E:System.Windows.Forms.CurrencyManager.MetaDataChanged" /> event.</summary>
         /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
         protected internal void OnMetaDataChanged(EventArgs e)
         {
-            if (this.onMetaDataChangedHandler != null)
-            {
-                this.onMetaDataChangedHandler(this, e);
-            }
+            this.onMetaDataChangedHandler?.Invoke(this, e);
         }
 
         /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.PositionChanged" /> event.</summary>
@@ -729,10 +696,7 @@ namespace System.Windows.Forms
         {
             try
             {
-                if (this.onPositionChangedHandler != null)
-                {
-                    this.onPositionChangedHandler(this, e);
-                }
+                this.onPositionChangedHandler?.Invoke(this, e);
             }
             catch (Exception exception)
             {
@@ -955,7 +919,7 @@ namespace System.Windows.Forms
 
         /// <summary>Occurs when the current item has been altered.</summary>
         /// <filterpriority>1</filterpriority>
-        public event ItemChangedEventHandler ItemChanged
+        public event ItemChangedEventHandler? ItemChanged
         {
             add
             {
@@ -969,7 +933,7 @@ namespace System.Windows.Forms
 
         /// <summary>Occurs when the list changes or an item in the list changes.</summary>
         /// <filterpriority>1</filterpriority>
-        public event ListChangedEventHandler ListChanged
+        public event ListChangedEventHandler? ListChanged
         {
             add
             {
@@ -983,7 +947,7 @@ namespace System.Windows.Forms
 
         /// <summary>Occurs when the metadata of the <see cref="P:System.Windows.Forms.CurrencyManager.List" /> has changed.</summary>
         /// <filterpriority>1</filterpriority>
-        public event EventHandler MetaDataChanged
+        public event EventHandler? MetaDataChanged
         {
             add
             {

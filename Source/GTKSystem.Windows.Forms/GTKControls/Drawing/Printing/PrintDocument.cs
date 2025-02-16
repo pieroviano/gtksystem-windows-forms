@@ -97,25 +97,25 @@ namespace System.Drawing.Printing
             }
         }
 
-        public event PrintEventHandler BeginPrint
+        public event PrintEventHandler? BeginPrint
         {
             add => _beginPrintHandler += value;
             remove => _beginPrintHandler -= value;
         }
 
-        public event PrintEventHandler EndPrint
+        public event PrintEventHandler? EndPrint
         {
             add => _endPrintHandler += value;
             remove => _endPrintHandler -= value;
         }
 
-        public event PrintPageEventHandler PrintPage
+        public event PrintPageEventHandler? PrintPage
         {
             add => _printPageHandler += value;
             remove => _printPageHandler -= value;
         }
 
-        public event QueryPageSettingsEventHandler QueryPageSettings
+        public event QueryPageSettingsEventHandler? QueryPageSettings
         {
             add => _queryHandler += value;
             remove => _queryHandler -= value;

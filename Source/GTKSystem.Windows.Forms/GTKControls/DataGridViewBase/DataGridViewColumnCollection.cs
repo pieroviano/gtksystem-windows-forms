@@ -20,7 +20,7 @@ namespace System.Windows.Forms
 
         protected DataGridView DataGridView { get { return __owner; } }
         [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
-        public event CollectionChangeEventHandler CollectionChanged;
+        public event CollectionChangeEventHandler? CollectionChanged;
 
         public void Add(string columnName, string headerText)
         {
@@ -167,8 +167,7 @@ namespace System.Windows.Forms
 
         protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
         {
-            if (CollectionChanged != null)
-                CollectionChanged(__owner, e);
+            CollectionChanged?.Invoke(__owner, e);
         }
     }
 }

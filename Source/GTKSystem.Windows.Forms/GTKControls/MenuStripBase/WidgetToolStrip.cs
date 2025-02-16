@@ -120,11 +120,9 @@ namespace System.Windows.Forms
 
         private void MenuItem_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
         {
-            if (DropDownItemClicked != null)
-                DropDownItemClicked(this, new ToolStripItemClickedEventArgs(this));
+            DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(this));
 
-            if (Click != null)
-                Click(this, args);
+            Click?.Invoke(this, args);
 
         }
 
@@ -235,8 +233,7 @@ namespace System.Windows.Forms
 
         private void Checkbutton_Toggled(object sender, EventArgs e)
         {
-            if (CheckedChanged != null)
-                CheckedChanged(this, e);
+            CheckedChanged?.Invoke(this, e);
         }
 
         internal void UpdateStyle()

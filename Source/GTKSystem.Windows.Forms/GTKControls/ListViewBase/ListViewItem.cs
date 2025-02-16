@@ -202,8 +202,7 @@ namespace System.Windows.Forms
 
             set {
 				_checked = value;
-                if (_listView != null)
-                    _listView.NativeCheckItem(this, value);
+                _listView?.NativeCheckItem(this, value);
             }
         }
 
@@ -315,8 +314,7 @@ namespace System.Windows.Forms
             get => _selected;
 			set { 
 				_selected = value;
-                if (_listView != null)
-                    _listView.NativeSelectItem(this, value);
+                _listView?.NativeSelectItem(this, value);
             }
         }
 
@@ -374,8 +372,7 @@ namespace System.Windows.Forms
             set
             {
                 _text = value;
-                if (_listView != null)
-                    _listView.NativeUpdateText(this, value);
+                _listView?.NativeUpdateText(this, value);
 
             }
         }

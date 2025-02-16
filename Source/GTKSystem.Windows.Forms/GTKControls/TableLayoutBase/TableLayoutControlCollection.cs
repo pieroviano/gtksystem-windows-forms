@@ -28,14 +28,16 @@ namespace System.Windows.Forms
             control.Widget.WidthRequest = 100;
             if (Container.self.GetChildAt(column, row) is Gtk.Viewport view)
             {
-                view.Child = control.Widget;
+                var widget = control.Widget as Widget;
+                if (widget != null) view.Child = widget;
             }
             else
             {
                 Gtk.Viewport viewport = new Gtk.Viewport() { Vexpand = false, Hexpand = false };
                 viewport.Valign = Align.Fill;
                 viewport.Halign = Align.Fill;
-                viewport.Add(control.Widget);
+                var widget = control.Widget as Widget;
+                if (widget != null) viewport.Add(widget);
                 Container.self.Attach(viewport, column, row, 1, 1);
             }
             base.Add(control);

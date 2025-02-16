@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -13,12 +14,13 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
-using Cairo;
+using GTKSystem.Windows.Forms.Interfaces;
 using Color = System.Drawing.Color;
+using Font = System.Drawing.Font;
 using Graphics = System.Drawing.Graphics;
-using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
+using Size = System.Drawing.Size;
 
 namespace System.Windows.Forms
 {
@@ -28,99 +30,48 @@ namespace System.Windows.Forms
     [ToolboxItemFilter("System.Windows.Forms")]
     public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement, IBindableComponent
     {
-        private class MockControlGtk : IControlGtk
-        {
-            private GtkControlOverride _override = new MockControlOverride();
-
-            public void Dispose()
-            {
-            }
-
-            public GtkControlOverride Override
-            {
-                get => _override;
-                set => _override = value;
-            }
-        }
-
-        private class MockWidget : Widget
-        {
-
-        }
-
-        private class MockControlOverride : GtkControlOverride
-        {
-            public MockControlOverride() : base(new MockWidget())
-            {
-            }
-
-            public event DrawnHandler? DrawnBackground;
-            public event PaintEventHandler? Paint;
-            public event PaintGraphicsEventHandler? PaintGraphics;
-            public Color? BackColor { get; set; }
-            public Image BackgroundImage { get; set; }
-            public ImageLayout BackgroundImageLayout { get; set; }
-            public void AddClass(string cssClass)
-            {
-            }
-
-            public void OnAddClass()
-            {
-            }
-
-            public void OnDrawnBackground(Context cr, Gdk.Rectangle area)
-            {
-            }
-
-            public void OnPaint(Context cr, Gdk.Rectangle area)
-            {
-            }
-        }
-
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
 
-        public virtual Gtk.Widget Widget { get => GtkControl as Gtk.Widget; }
-        public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
-        public virtual IControlGtk ISelf { get => GtkControl as IControlGtk; }
-        public virtual object GtkControl { get; set; } = new MockControlGtk();
+        public virtual IWidget Widget => (IWidget)GtkControl;
+        public virtual IGtkControl Self => (IGtkControl)GtkControl;
+
+        public virtual object GtkControl { get; set; } = new GtkFormsControl();
+
         public Control()
         {
             Disposed += Control_Disposed;
             Controls = new ControlCollection(this);
             DataBindings = new ControlBindingsCollection(this);
+            Enabled = true;
             this.unique_key = Guid.NewGuid().ToString().ToLower();
-            Gtk.Widget widget = this.Widget;
-            if (widget != null)
+            if (this.Widget is Gtk.Window win)
             {
-                if (widget is Gtk.Window win)
-                {
-                    widget.Halign = Align.Fill;
-                    widget.Valign = Align.Fill;
-                }
-                else
-                {
-                    widget.Halign = Align.Start;
-                    widget.Valign = Align.Start;
-                    widget.Expand = false;
-                }
-                widget.Data["Control"] = this;
-                widget.StyleContext.AddClass("DefaultThemeStyle");
-                widget.ButtonPressEvent += Widget_ButtonPressEvent;
-                widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
-                widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
-                widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
-                widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
-                widget.ScrollEvent += Widget_ScrollEvent;
-                widget.FocusInEvent += Widget_FocusInEvent;
-                widget.FocusOutEvent += Widget_FocusOutEvent;
-                widget.KeyPressEvent += Widget_KeyPressEvent;
-                widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
-                widget.Realized += Widget_Realized;
-                widget.ConfigureEvent += Widget_ConfigureEvent;
-                ISelf.Override.PaintGraphics += Override_PaintGraphics;
-                widget.SizeAllocated += Widget_SizeAllocated;
+                this.Widget.Halign = Align.Fill;
+                this.Widget.Valign = Align.Fill;
             }
+            else
+            {
+                this.Widget.Halign = Align.Start;
+                this.Widget.Valign = Align.Start;
+                this.Widget.Expand = false;
+            }
+            this.Widget.Data["Control"] = this;
+            this.Widget.StyleContext.AddClass("DefaultThemeStyle");
+            this.Widget.ButtonPressEvent += Widget_ButtonPressEvent;
+            this.Widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
+            this.Widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
+            this.Widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
+            this.Widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
+            this.Widget.ScrollEvent += Widget_ScrollEvent;
+            this.Widget.FocusInEvent += Widget_FocusInEvent;
+            this.Widget.FocusOutEvent += Widget_FocusOutEvent;
+            this.Widget.KeyPressEvent += Widget_KeyPressEvent;
+            this.Widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
+            this.Widget.Realized += Widget_Realized;
+            this.Widget.ConfigureEvent += Widget_ConfigureEvent;
+            Self.Override.PaintGraphics += Override_PaintGraphics;
+            this.Widget.SizeAllocated += Widget_SizeAllocated;
         }
 
         private void Control_Disposed(object sender, EventArgs e)
@@ -141,21 +92,18 @@ namespace System.Windows.Forms
             {
                 size_width = args.Allocation.Width;
                 size_height = args.Allocation.Height;
-                if (SizeChanged != null)
-                    SizeChanged(this, EventArgs.Empty);
+                SizeChanged?.Invoke(this, EventArgs.Empty);
             }
             if (args.Allocation.X != location_x || args.Allocation.Y != location_y)
             {
                 location_x = args.Allocation.X;
                 location_y = args.Allocation.Y;
-                if (LocationChanged != null)
-                    LocationChanged(this, EventArgs.Empty);
+                LocationChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private void Widget_ConfigureEvent(object o, ConfigureEventArgs args)
         {
-            if (Move != null)
-                Move(this, args);
+            Move?.Invoke(this, args);
         }
         #region events
         private bool WidgetRealized = false;
@@ -205,25 +153,21 @@ namespace System.Windows.Forms
             else if (args.Event.Button == 3)
                 result = MouseButtons.Right;
 
-            Gtk.Widget owidget = (Gtk.Widget)o;
-            owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
-            if (MouseDown != null)
+            Gtk.Widget owidget = o as Gtk.Widget;
+            if (owidget != null)
             {
-                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            }
-            if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-            {
-                if (MouseDoubleClick != null)
-                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                if (DoubleClick != null)
-                    DoubleClick(this, EventArgs.Empty);
-            }
-            else
-            {
-                if (Click != null)
-                    Click(this, EventArgs.Empty);
-                if (MouseClick != null)
-                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                owidget.Window.GetOrigin(out int x, out int y); //避免事件穿透错误
+                MouseDown?.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                {
+                    MouseDoubleClick?.Invoke(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                    DoubleClick?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    Click?.Invoke(this, EventArgs.Empty);
+                    MouseClick?.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                }
             }
 
         }
@@ -240,7 +184,7 @@ namespace System.Windows.Forms
                     result = MouseButtons.Right;
                 Gtk.Widget owidget = (Gtk.Widget)o;
                 owidget.Window.GetOrigin(out int x, out int y);
-                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                MouseUp?.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
 
             if (ContextMenuStrip != null)
@@ -266,18 +210,15 @@ namespace System.Windows.Forms
                     this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorType);
                 }
             }
-            if (Enter != null)
-                Enter(this, args);
-            if (MouseEnter != null)
-                MouseEnter(this, args);
 
-            if (MouseHover != null)
-                MouseHover(this, args);
+            Enter?.Invoke(this, args);
+            MouseEnter?.Invoke(this, args);
+
+            MouseHover?.Invoke(this, args);
         }
         private void Widget_MotionNotifyEvent(object o, MotionNotifyEventArgs args)
         {
-            if (MouseMove != null)
-                MouseMove(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+            MouseMove?.Invoke(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0));
         }
         private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
         {
@@ -285,32 +226,27 @@ namespace System.Windows.Forms
             {
                 this.Widget.Window.Cursor = null;
             }
-            if (Leave != null)
-                Leave(this, args);
-            if (MouseLeave != null)
-                MouseLeave(this, args);
+
+            Leave?.Invoke(this, args);
+            MouseLeave?.Invoke(this, args);
 
 
         }
         private void Widget_ScrollEvent(object o, Gtk.ScrollEventArgs args)
         {
-            if (MouseWheel != null)
-                MouseWheel(this, new MouseEventArgs(MouseButtons.None, 0, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY));
+            MouseWheel?.Invoke(this, new MouseEventArgs(MouseButtons.None, 0, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY));
         }
         private void Widget_FocusInEvent(object o, FocusInEventArgs args)
         {
-            if (GotFocus != null)
-                GotFocus(this, args);
+            GotFocus?.Invoke(this, args);
         }
         private void Widget_FocusOutEvent(object o, FocusOutEventArgs args)
         {
-            if (LostFocus != null)
-                LostFocus(this, args);
+            LostFocus?.Invoke(this, args);
 
-            if (Validating != null)
-                Validating(this, cancelEventArgs);
+            Validating?.Invoke(this, cancelEventArgs);
             if (Validated != null && cancelEventArgs.Cancel == false)
-                Validated(this, cancelEventArgs);
+                Validated?.Invoke(this, cancelEventArgs);
         }
         private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
         {
@@ -328,7 +264,7 @@ namespace System.Windows.Forms
                     if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
                         keys |= Keys.CapsLock;
 
-                    KeyDown(this, new KeyEventArgs(keys));
+                    KeyDown?.Invoke(this, new KeyEventArgs(keys));
                 }
             }
         }
@@ -337,12 +273,12 @@ namespace System.Windows.Forms
             if (KeyUp != null)
             {
                 Keys keys = (Keys)args.Event.HardwareKeycode;
-                KeyUp(this, new KeyEventArgs(keys));
+                KeyUp?.Invoke(this, new KeyEventArgs(keys));
             }
             if (KeyPress != null)
             {
                 Keys keys = (Keys)args.Event.HardwareKeycode;
-                KeyPress(this, new KeyPressEventArgs(Convert.ToChar(keys)));
+                KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keys)));
             }
         }
 
@@ -356,12 +292,15 @@ namespace System.Windows.Forms
         protected virtual void UpdateStyle()
         {
             if (this.Widget != null && this.Widget.IsMapped)
-                SetStyle(this.Widget);
+            {
+                var widget = this.Widget as Gtk.Widget;
+                if (widget != null) SetStyle(widget);
+            }
         }
         protected virtual void UpdateBackgroundStyle()
         {
             if (this.Widget != null && this.Widget.IsMapped)
-                ISelf.Override.OnAddClass();
+                Self.Override.OnAddClass();
         }
         protected virtual void SetStyle(Gtk.Widget widget)
         {
@@ -565,16 +504,33 @@ namespace System.Windows.Forms
 
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
-        public virtual ImageLayout BackgroundImageLayout { get => ISelf == null ? ImageLayout.None : ISelf.Override.BackgroundImageLayout; set { if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
-        public virtual Drawing.Image BackgroundImage
+
+        public virtual ImageLayout BackgroundImageLayout
         {
-            get => ISelf == null ? null : ISelf.Override.BackgroundImage;
+            get => Self == null ? ImageLayout.None : Self.Override.BackgroundImageLayout;
             set
             {
-                if (ISelf != null)
+                if (Self != null)
                 {
-                    var overrideBackgroundImage = ISelf.Override.BackgroundImage;
-                    ISelf.Override.BackgroundImage = value;
+                    var layout = Self.Override.BackgroundImageLayout;
+                    Self.Override.BackgroundImageLayout = value;
+                    if (layout != value)
+                    {
+                        BackgroundImageLayoutChanged?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+            }
+        }
+
+        public virtual Drawing.Image BackgroundImage
+        {
+            get => Self == null ? null : Self.Override.BackgroundImage;
+            set
+            {
+                if (Self != null)
+                {
+                    var overrideBackgroundImage = Self.Override.BackgroundImage;
+                    Self.Override.BackgroundImage = value;
                     Refresh();
                     if (overrideBackgroundImage != value)
                     {
@@ -587,8 +543,8 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (ISelf.Override.BackColor.HasValue)
-                    return ISelf.Override.BackColor.Value;
+                if (Self.Override.BackColor.HasValue)
+                    return Self.Override.BackColor.Value;
                 //else if (UseVisualStyleBackColor)
                 //    return Color.FromName("0");
                 //else
@@ -598,21 +554,21 @@ namespace System.Windows.Forms
             }
             set
             {
-                var overrideBackColor = ISelf.Override.BackColor;
-                ISelf.Override.BackColor = value;
+                var overrideBackColor = Self.Override.BackColor;
+                Self.Override.BackColor = value;
                 if (overrideBackColor != value)
                 {
                     BackColorChanged?.Invoke(this, EventArgs.Empty);
                 }
-                ISelf.Override.OnAddClass();
+                Self.Override.OnAddClass();
                 UpdateStyle();
                 Refresh();
             }
         }
         public virtual event PaintEventHandler Paint
         {
-            add { ISelf.Override.Paint += value; }
-            remove { ISelf.Override.Paint -= value; }
+            add { Self.Override.Paint += value; }
+            remove { Self.Override.Paint -= value; }
         }
         #endregion
         public virtual AccessibleObject AccessibilityObject { get; }
@@ -629,9 +585,9 @@ namespace System.Windows.Forms
             set
             {
                 _anchor = value;
-                SetAnchorStyles(Widget, _anchor);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
+                if (Widget is Widget widget) SetAnchorStyles(widget, _anchor);
+
+                AnchorChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private void SetAnchorStyles(Gtk.Widget widget, AnchorStyles anchorStyles)
@@ -671,7 +627,20 @@ namespace System.Windows.Forms
             }
         }
         public virtual Point AutoScrollOffset { get; set; }
-        public virtual bool AutoSize { get; set; }
+
+        public virtual bool AutoSize
+        {
+            get => _autoSize;
+            set
+            {
+                var autoSize = _autoSize;
+                _autoSize = value;
+                if (autoSize != value)
+                {
+                    AutoSizeChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         internal bool BindingContextSet;
 
@@ -690,13 +659,37 @@ namespace System.Windows.Forms
             }
         }
 
-        public virtual Rectangle Bounds { get => new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
+        public virtual Rectangle Bounds
+        {
+            get => new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height);
+            set
+            {
+                var r = new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width,
+                    this.Widget.Clip.Height);
+                SetBounds(value.X, value.Y, value.Width, value.Height);
+                if (r != value)
+                {
+                    Layout?.Invoke(this, new LayoutEventArgs(this, nameof(Bounds)));
+                    Resize?.Invoke(this, EventArgs.Empty);
+                    SizeChanged?.Invoke(this, EventArgs.Empty);
+                    ClientSizeChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public virtual bool CanFocus { get { return this.Widget.CanFocus; } }
 
         public virtual bool CanSelect { get; }
 
-        public virtual bool Capture { get; set; }
+        public virtual bool Capture
+        {
+            get => _capture;
+            set
+            {
+                _capture = value;
+                Handle = IntPtr.Zero;
+            }
+        }
 
         public virtual bool CausesValidation
         {
@@ -716,7 +709,19 @@ namespace System.Windows.Forms
 
         public virtual bool ContainsFocus { get; }
 
-        public virtual ContextMenuStrip ContextMenuStrip { get; set; }
+        public virtual ContextMenuStrip ContextMenuStrip
+        {
+            get => _contextMenuStrip;
+            set
+            {
+                var menuStrip = _contextMenuStrip;
+                _contextMenuStrip = value;
+                if (menuStrip != value)
+                {
+                    ContextMenuStripChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public virtual ControlCollection Controls { get; }
 
@@ -756,54 +761,50 @@ namespace System.Windows.Forms
                 var dockStyle = _dock;
                 _dock = value;
                 var widget = this.Widget;
-                if (widget != null)
+                if (value == DockStyle.Fill)
                 {
-                    if (value == DockStyle.Fill)
-                    {
-                        widget.Halign = Align.Fill;
-                        widget.Valign = Align.Fill;
-                    }
-                    else if (value == DockStyle.Left)
-                    {
-                        widget.Halign = Align.Start;
-                        widget.Valign = Align.Fill;
-                    }
-                    else if (value == DockStyle.Top)
-                    {
-                        widget.Halign = Align.Fill;
-                        widget.Valign = Align.Start;
-                    }
-                    else if (value == DockStyle.Right)
-                    {
-                        widget.Halign = Align.End;
-                        widget.Valign = Align.Fill;
-                    }
-                    else if (value == DockStyle.Bottom)
-                    {
-                        widget.Halign = Align.Fill;
-                        widget.Valign = Align.End;
-                    }
-                    else if (value == DockStyle.None)
-                    {
-                        widget.Halign = Align.Start;
-                        widget.Valign = Align.Start;
-                    }
+                    widget.Halign = Align.Fill;
+                    widget.Valign = Align.Fill;
+                }
+                else if (value == DockStyle.Left)
+                {
+                    widget.Halign = Align.Start;
+                    widget.Valign = Align.Fill;
+                }
+                else if (value == DockStyle.Top)
+                {
+                    widget.Halign = Align.Fill;
+                    widget.Valign = Align.Start;
+                }
+                else if (value == DockStyle.Right)
+                {
+                    widget.Halign = Align.End;
+                    widget.Valign = Align.Fill;
+                }
+                else if (value == DockStyle.Bottom)
+                {
+                    widget.Halign = Align.Fill;
+                    widget.Valign = Align.End;
+                }
+                else if (value == DockStyle.None)
+                {
+                    widget.Halign = Align.Start;
+                    widget.Valign = Align.Start;
                 }
                 if (dockStyle != value && DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
+                    DockChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public virtual bool Enabled
         {
-            get => this.Widget?.Sensitive??true;
+            get => this.Widget.Sensitive;
             set
             {
-                var widget = this.Widget;
-                var sensitive = widget?.Sensitive??true;
-                if (widget != null)
+                var sensitive = this.Widget.Sensitive;
+                if (this.Widget != null)
                 {
-                    widget.Sensitive = value;
+                    this.Widget.Sensitive = value;
                 }
 
                 if (sensitive != value)
@@ -828,12 +829,14 @@ namespace System.Windows.Forms
                 else
                     return _Font;
             }
-            set {
+            set
+            {
                 var font = _Font;
                 _Font = value; UpdateStyle();
                 if (font != value)
                 {
                     FontChanged?.Invoke(this, EventArgs.Empty);
+                    Layout?.Invoke(this, new LayoutEventArgs(this, nameof(Font)));
                 }
             }
         }
@@ -841,7 +844,8 @@ namespace System.Windows.Forms
         public virtual Color ForeColor
         {
             get { return _ForeColor; }
-            set {
+            set
+            {
                 var foreColor = _ForeColor;
                 _ForeColor = value; UpdateStyle();
                 if (foreColor != value)
@@ -894,10 +898,8 @@ namespace System.Windows.Forms
                     LocationChanged?.Invoke(this, EventArgs.Empty);
                 }
 
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
+                DockChanged?.Invoke(this, EventArgs.Empty);
+                AnchorChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public virtual int Left
@@ -916,10 +918,9 @@ namespace System.Windows.Forms
                 {
                     LocationChanged?.Invoke(this, EventArgs.Empty);
                 }
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
+
+                DockChanged?.Invoke(this, EventArgs.Empty);
+                AnchorChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public virtual int Right
@@ -948,7 +949,7 @@ namespace System.Windows.Forms
         }
         public virtual string Name
         {
-            get { return this.Widget?.Name ?? _name; }
+            get { return this.Widget.Name ?? _name; }
             set
             {
                 var widget = this.Widget;
@@ -1014,7 +1015,7 @@ namespace System.Windows.Forms
             set
             {
                 var widget = this.Widget;
-                var heightRequest = widget?.HeightRequest??0;
+                var heightRequest = widget?.HeightRequest ?? 0;
                 if (widget != null)
                 {
                     widget.HeightRequest = Math.Max(-1, value);
@@ -1022,13 +1023,13 @@ namespace System.Windows.Forms
 
                 if (heightRequest != value)
                 {
-                    SizeChanged?.Invoke(this, EventArgs.Empty);
                     Resize?.Invoke(this, EventArgs.Empty);
+                    SizeChanged?.Invoke(this, EventArgs.Empty);
+                    ClientSizeChanged?.Invoke(this, EventArgs.Empty);
                 }
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
+
+                DockChanged?.Invoke(this, EventArgs.Empty);
+                AnchorChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -1047,7 +1048,7 @@ namespace System.Windows.Forms
             set
             {
                 var widget = this.Widget;
-                var widthRequest = widget?.WidthRequest??0;
+                var widthRequest = widget?.WidthRequest ?? 0;
                 if (widget != null)
                 {
                     widget.WidthRequest = Math.Max(-1, value);
@@ -1062,10 +1063,9 @@ namespace System.Windows.Forms
                     SizeChanged?.Invoke(this, EventArgs.Empty);
                     Resize?.Invoke(this, EventArgs.Empty);
                 }
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
+
+                DockChanged?.Invoke(this, EventArgs.Empty);
+                AnchorChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -1135,7 +1135,7 @@ namespace System.Windows.Forms
         {
             get
             {
-                return this.Widget?.Visible ?? true;
+                return this.Widget.Visible;
             }
             set
             {
@@ -1180,81 +1180,81 @@ namespace System.Windows.Forms
 
 
         public virtual IWindowTarget WindowTarget { get; set; }
-        public virtual event EventHandler AutoSizeChanged;
-        public virtual event EventHandler BackColorChanged;
-        public virtual event EventHandler BackgroundImageChanged;
-        public virtual event EventHandler BackgroundImageLayoutChanged;
-        public virtual event EventHandler BindingContextChanged;
-        public virtual event EventHandler CausesValidationChanged;
-        public virtual event UICuesEventHandler ChangeUICues;
-        public virtual event EventHandler Click;
-        public virtual event EventHandler ClientSizeChanged;
-        public virtual event EventHandler ContextMenuStripChanged;
-        public virtual event ControlEventHandler ControlAdded;
-        public virtual event ControlEventHandler ControlRemoved;
-        public virtual event EventHandler CursorChanged;
-        public virtual event EventHandler DockChanged;
-        public virtual event EventHandler AnchorChanged;
-        public virtual event EventHandler DoubleClick;
-        public virtual event EventHandler DpiChangedAfterParent;
-        public virtual event EventHandler DpiChangedBeforeParent;
-        public virtual event DragEventHandler DragDrop;
-        public virtual event DragEventHandler DragEnter;
-        public virtual event EventHandler DragLeave;
-        public virtual event DragEventHandler DragOver;
-        public virtual event EventHandler EnabledChanged;
-        public virtual event EventHandler Enter;
-        public virtual event EventHandler FontChanged;
-        public virtual event EventHandler ForeColorChanged;
-        public virtual event GiveFeedbackEventHandler GiveFeedback;
-        public virtual event EventHandler GotFocus;
-        public virtual event EventHandler HandleCreated;
-        public virtual event EventHandler HandleDestroyed;
-        public virtual event HelpEventHandler HelpRequested;
-        public virtual event EventHandler ImeModeChanged;
-        public virtual event InvalidateEventHandler Invalidated;
-        public virtual event KeyEventHandler KeyDown;
-        public virtual event KeyPressEventHandler KeyPress;
-        public virtual event KeyEventHandler KeyUp;
-        public virtual event LayoutEventHandler Layout;
-        public virtual event EventHandler Leave;
-        public virtual event EventHandler LocationChanged;
-        public virtual event EventHandler LostFocus;
-        public virtual event EventHandler MarginChanged;
-        public virtual event EventHandler MouseCaptureChanged;
-        public virtual event MouseEventHandler MouseClick;
-        public virtual event MouseEventHandler MouseDoubleClick;
-        public virtual event MouseEventHandler MouseDown;
-        public virtual event EventHandler MouseEnter;
-        public virtual event EventHandler MouseHover;
-        public virtual event EventHandler MouseLeave;
-        public virtual event MouseEventHandler MouseMove;
-        public virtual event MouseEventHandler MouseUp;
-        public virtual event MouseEventHandler MouseWheel;
-        public virtual event EventHandler Move;
-        public virtual event EventHandler PaddingChanged;
+        public virtual event EventHandler? AutoSizeChanged;
+        public virtual event EventHandler? BackColorChanged;
+        public virtual event EventHandler? BackgroundImageChanged;
+        public virtual event EventHandler? BackgroundImageLayoutChanged;
+        public virtual event EventHandler? BindingContextChanged;
+        public virtual event EventHandler? CausesValidationChanged;
+        public virtual event UICuesEventHandler? ChangeUICues;
+        public virtual event EventHandler? Click;
+        public virtual event EventHandler? ClientSizeChanged;
+        public virtual event EventHandler? ContextMenuStripChanged;
+        public virtual event ControlEventHandler? ControlAdded;
+        public virtual event ControlEventHandler? ControlRemoved;
+        public virtual event EventHandler? CursorChanged;
+        public virtual event EventHandler? DockChanged;
+        public virtual event EventHandler? AnchorChanged;
+        public virtual event EventHandler? DoubleClick;
+        public virtual event EventHandler? DpiChangedAfterParent;
+        public virtual event EventHandler? DpiChangedBeforeParent;
+        public virtual event DragEventHandler? DragDrop;
+        public virtual event DragEventHandler? DragEnter;
+        public virtual event EventHandler? DragLeave;
+        public virtual event DragEventHandler? DragOver;
+        public virtual event EventHandler? EnabledChanged;
+        public virtual event EventHandler? Enter;
+        public virtual event EventHandler? FontChanged;
+        public virtual event EventHandler? ForeColorChanged;
+        public virtual event GiveFeedbackEventHandler? GiveFeedback;
+        public virtual event EventHandler? GotFocus;
+        public virtual event EventHandler? HandleCreated;
+        public virtual event EventHandler? HandleDestroyed;
+        public virtual event HelpEventHandler? HelpRequested;
+        public virtual event EventHandler? ImeModeChanged;
+        public virtual event InvalidateEventHandler? Invalidated;
+        public virtual event KeyEventHandler? KeyDown;
+        public virtual event KeyPressEventHandler? KeyPress;
+        public virtual event KeyEventHandler? KeyUp;
+        public virtual event LayoutEventHandler? Layout;
+        public virtual event EventHandler? Leave;
+        public virtual event EventHandler? LocationChanged;
+        public virtual event EventHandler? LostFocus;
+        public virtual event EventHandler? MarginChanged;
+        public virtual event EventHandler? MouseCaptureChanged;
+        public virtual event MouseEventHandler? MouseClick;
+        public virtual event MouseEventHandler? MouseDoubleClick;
+        public virtual event MouseEventHandler? MouseDown;
+        public virtual event EventHandler? MouseEnter;
+        public virtual event EventHandler? MouseHover;
+        public virtual event EventHandler? MouseLeave;
+        public virtual event MouseEventHandler? MouseMove;
+        public virtual event MouseEventHandler? MouseUp;
+        public virtual event MouseEventHandler? MouseWheel;
+        public virtual event EventHandler? Move;
+        public virtual event EventHandler? PaddingChanged;
         //public virtual event PaintEventHandler Paint;
-        public virtual event EventHandler ParentChanged;
-        public virtual event PreviewKeyDownEventHandler PreviewKeyDown;
-        public virtual event QueryAccessibilityHelpEventHandler QueryAccessibilityHelp;
-        public virtual event QueryContinueDragEventHandler QueryContinueDrag;
-        public virtual event EventHandler RegionChanged;
-        public virtual event EventHandler Resize;
-        public virtual event EventHandler RightToLeftChanged;
-        public virtual event EventHandler SizeChanged;
-        public virtual event EventHandler StyleChanged;
-        public virtual event EventHandler SystemColorsChanged;
-        public virtual event EventHandler TabIndexChanged;
-        public virtual event EventHandler TabStopChanged;
-        public virtual event EventHandler TextChanged;
-        public virtual event EventHandler PropertyChanged;
+        public virtual event EventHandler? ParentChanged;
+        public virtual event PreviewKeyDownEventHandler? PreviewKeyDown;
+        public virtual event QueryAccessibilityHelpEventHandler? QueryAccessibilityHelp;
+        public virtual event QueryContinueDragEventHandler? QueryContinueDrag;
+        public virtual event EventHandler? RegionChanged;
+        public virtual event EventHandler? Resize;
+        public virtual event EventHandler? RightToLeftChanged;
+        public virtual event EventHandler? SizeChanged;
+        public virtual event EventHandler? StyleChanged;
+        public virtual event EventHandler? SystemColorsChanged;
+        public virtual event EventHandler? TabIndexChanged;
+        public virtual event EventHandler? TabStopChanged;
+        public virtual event EventHandler? TextChanged;
+        public virtual event EventHandler? PropertyChanged;
 
         CancelEventArgs cancelEventArgs = new CancelEventArgs(false);
-        public virtual event EventHandler Validated;
-        public virtual event CancelEventHandler Validating;
-        public virtual event EventHandler VisibleChanged;
-        //public event EventHandler Disposed;
-        public virtual event EventHandler Load;
+        public virtual event EventHandler? Validated;
+        public virtual event CancelEventHandler? Validating;
+        public virtual event EventHandler? VisibleChanged;
+        //public event EventHandler? Disposed;
+        public virtual event EventHandler? Load;
         public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
         {
             System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(state =>
@@ -1301,7 +1301,7 @@ namespace System.Windows.Forms
         Cairo.ImageSurface image;
         Cairo.Surface surface;
         Cairo.Context context;
-        public virtual Graphics CreateGraphics()
+        public virtual Graphics? CreateGraphics()
         {
             try
             {
@@ -1313,7 +1313,9 @@ namespace System.Windows.Forms
                 context?.Dispose();
                 context = new Cairo.Context(surface);
 
-                return new Drawing.Graphics(this.Widget, context, this.Widget.Allocation);
+                var widget = this.Widget as Widget;
+                if (widget != null) return new Drawing.Graphics(widget, context, this.Widget.Allocation);
+                return null;
             }
             finally
             {
@@ -1452,8 +1454,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                if (ISelf != null)
-                    ISelf.Override.OnAddClass();
+                Self?.Override.OnAddClass();
                 this.Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
             }
         }
@@ -1467,8 +1468,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                if (ISelf != null)
-                    ISelf.Override.OnAddClass();
+                Self?.Override.OnAddClass();
                 this.Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
             }
         }
@@ -1574,8 +1574,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
-                if (ISelf != null)
-                    ISelf.Override.ClearNativeBackground();
+                Self?.Override.ClearNativeBackground();
                 this.Widget.QueueDraw();
             }
         }
@@ -1651,8 +1650,7 @@ namespace System.Windows.Forms
 
         public virtual void Select()
         {
-            if (this.Widget != null)
-                this.Widget.SetStateFlags(StateFlags.Selected, true);
+            this.Widget?.SetStateFlags(StateFlags.Selected, true);
         }
 
         public virtual bool SelectNextControl(Control ctl, bool forward, bool tabStopOnly, bool nested, bool wrap)
@@ -1705,7 +1703,25 @@ namespace System.Windows.Forms
         }
         public virtual Rectangle ClientRectangle { get { this.Widget.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } }
 
-        public virtual Size ClientSize { get { return new Size(Widget.AllocatedWidth, this.Widget.AllocatedHeight); } set { this.Widget.SetSizeRequest(value.Width, value.Height); } }
+        public virtual Size ClientSize
+        {
+            get
+            {
+                return new Size(Widget.AllocatedWidth, this.Widget.AllocatedHeight);
+            }
+            set
+            {
+                var size = new Size(Widget.AllocatedWidth, this.Widget.AllocatedHeight);
+                this.Widget.SetSizeRequest(value.Width, value.Height);
+                if (size != value)
+                {
+                    Layout?.Invoke(this, new LayoutEventArgs(this, nameof(ClientSize)));
+                    Resize?.Invoke(this, EventArgs.Empty);
+                    SizeChanged?.Invoke(this, EventArgs.Empty);
+                }
+                ClientSizeChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public virtual IntPtr Handle
         {
@@ -1713,13 +1729,24 @@ namespace System.Windows.Forms
             {
                 if (this.Widget == null)
                 {
-                    HandleCreated?.Invoke(this, EventArgs.Empty);
+                    OnHandleCreated(EventArgs.Empty);
                     return IntPtr.Zero;
                 }
                 else
                 {
                     return this.Widget.Handle;
                 }
+            }
+            set => OnHandleCreated(EventArgs.Empty);
+        }
+
+
+        protected virtual void OnHandleCreated(EventArgs eventArgs)
+        {
+            if (!_handleCreated)
+            {
+                _handleCreated = true;
+                HandleCreated?.Invoke(this, eventArgs);
             }
         }
 
@@ -1737,6 +1764,10 @@ namespace System.Windows.Forms
         private int tabIndex;
         private RightToLeft rightToLeft;
         private ImeMode imeMode;
+        private bool _autoSize;
+        private bool _capture;
+        private bool _handleCreated;
+        private ContextMenuStrip _contextMenuStrip;
 
         public virtual BorderStyle BorderStyle
         {
@@ -1769,10 +1800,7 @@ namespace System.Windows.Forms
 
         public virtual void Show()
         {
-            if (this.Widget != null)
-            {
-                this.Widget.ShowAll();
-            }
+            this.Widget?.ShowAll();
         }
         protected virtual void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
@@ -1834,12 +1862,9 @@ namespace System.Windows.Forms
             IsDisposed = true;
             try
             {
-                if (image != null)
-                    image.Dispose();
-                if (surface != null)
-                    surface.Dispose();
-                if (context != null)
-                    context.Dispose();
+                image?.Dispose();
+                surface?.Dispose();
+                context?.Dispose();
 
                 if (this.Widget != null)
                 {
@@ -1901,12 +1926,10 @@ namespace System.Windows.Forms
 
         public void SetBounds(Rectangle bounds, BoundsSpecified specified)
         {
-            throw new NotImplementedException();
         }
 
         void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)
         {
-            throw new NotImplementedException();
         }
     }
 }

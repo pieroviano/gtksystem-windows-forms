@@ -1,14 +1,16 @@
 ﻿using GLib;
-using Gtk;
+using GTKSystem.Windows.Forms.Interfaces;
 using System;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Orientation = Gtk.Orientation;
 
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class ScrollbarBase<T>: Gtk.Scrollbar, IControlGtk
+    public sealed class ScrollbarBase<T>: Gtk.Scrollbar, IGtkControl
     {
         public new static GType GType
         {
@@ -18,10 +20,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
         }
         
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         internal ScrollbarBase(Orientation orientation): base(orientation, new Gtk.Adjustment(0, 0, 100, 1, 10, 0))
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
         }
     }
 }

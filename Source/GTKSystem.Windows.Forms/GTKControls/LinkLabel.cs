@@ -24,25 +24,19 @@ namespace System.Windows.Forms
 
         private void LinkLabel_ActivateLink(object o, Gtk.ActivateLinkArgs args)
         {
-            if (LinkClicked != null)
-            {
-                LinkClicked(this, new LinkLabelLinkClickedEventArgs(new Link() { Description = self.Label, LinkData = self.Uri }));
-            }
+            LinkClicked?.Invoke(this, new LinkLabelLinkClickedEventArgs(new Link() { Description = self.Label, LinkData = self.Uri }));
         }
 
         private void LinkLabel_Click(object sender, EventArgs e)
         {
             //Console.WriteLine("LinkLabel_Click");
-            if (Click != null)
-            {
-                Click(this, e);
-            }
+            Click?.Invoke(this, e);
         }
         public override event EventHandler Click;
         public override string Text { get { return string.IsNullOrEmpty(self.Label)? self.Uri : self.Label; } set { self.Label = value; self.Uri = value; } }
          
 
-        public event LinkLabelLinkClickedEventHandler LinkClicked;
+        public event LinkLabelLinkClickedEventHandler? LinkClicked;
 
         public bool LinkVisited { get; set; }
 

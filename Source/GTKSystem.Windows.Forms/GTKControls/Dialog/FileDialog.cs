@@ -130,7 +130,7 @@ namespace System.Windows.Forms
 
         public bool AddExtension { get; set; } = true;
 
-        public event CancelEventHandler FileOk;
+        public event CancelEventHandler? FileOk;
         internal Gtk.FileChooserAction ActionType { get; set; }
         public override void Reset() {
             AddExtension = true;

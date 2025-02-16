@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using GTKSystem.Windows.Forms.Interfaces;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,10 +9,10 @@ using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
+    public sealed class FormBase : Gtk.Dialog, IGtkControl, IScrollableBoxBase, IWin32Window
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public bool AutoScroll
         {
             get => ScrollView.VscrollbarPolicy == Gtk.PolicyType.Automatic;
@@ -31,16 +32,17 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 }
             }
         }
+
         public bool VScroll { get; set; } = true;
         public bool HScroll { get; set; } = true;
 
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
-        public event CloseWindowHandler CloseWindowEvent;
-        public event System.Windows.Forms.ScrollEventHandler Scroll;
+        public event CloseWindowHandler? CloseWindowEvent;
+        public event System.Windows.Forms.ScrollEventHandler? Scroll;
         public FormBase(Gtk.Window parent = null) : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
         {
             this.DestroyWithParent = true;
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
@@ -92,10 +94,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 if (CloseWindowEvent(this, EventArgs.Empty))
                 {
                     this.OnClose();
-                    if (this.Group.CurrentGrab != null)
-                    {
-                        this.Group.CurrentGrab.Destroy();
-                    }
+                    this.Group.CurrentGrab?.Destroy();
                     this.Destroy();
                 }
                 else

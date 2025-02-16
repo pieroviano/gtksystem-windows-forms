@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class SplitContainerBase : Gtk.Paned, IControlGtk
+    public sealed class SplitContainerBase : Gtk.Paned, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public SplitContainerBase() : base(Gtk.Orientation.Vertical)
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("SplitContainer");
             this.BorderWidth = 0;
             this.WideHandle = true;

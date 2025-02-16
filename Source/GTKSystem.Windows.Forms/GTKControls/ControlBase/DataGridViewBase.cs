@@ -5,7 +5,7 @@
         internal Gtk.TreeView GridView = new Gtk.TreeView();
         public DataGridViewBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("DataGridView");
             this.Override.BackColor = System.Drawing.Color.White;
             this.BorderWidth = 0;

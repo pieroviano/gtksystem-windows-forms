@@ -336,9 +336,7 @@ namespace System.Drawing
 		///   <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
 		protected virtual void Dispose(bool disposing)
 		{
-
-            if (_Pixbuf != null)
-                _Pixbuf.Dispose();
+            _Pixbuf?.Dispose();
             if (_PixbufData != null)
                 _PixbufData = null;
         }
@@ -431,9 +429,8 @@ namespace System.Drawing
 		/// -or-
 		/// The image was saved to the same file it was created from.</exception>
 		public void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
-		{
-            if(Pixbuf != null)
-				Pixbuf.Save(filename, encoder.MimeType.Trim('.').ToLower());
+        {
+            Pixbuf?.Save(filename, encoder.MimeType.Trim('.').ToLower());
         }
 
 		private void Save(MemoryStream stream)

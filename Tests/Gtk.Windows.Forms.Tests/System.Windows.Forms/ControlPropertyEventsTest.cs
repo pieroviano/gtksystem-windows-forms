@@ -129,7 +129,6 @@ public class ControlPropertyEventsTest : TestHelper
     }
 
     [Test]
-    [Ignore ("Setting Capture to true does not hold, getter returns false.")]
     public void PropertyCapture ()
     {
         var c = new Control ();
@@ -152,7 +151,7 @@ public class ControlPropertyEventsTest : TestHelper
 
         c.ClientSize = new Size (5, 5);
         Assert.AreEqual (new Size (5, 5), c.ClientSize, "B1");
-        Assert.AreEqual ("Layout;Resize;SizeChanged;ClientSizeChanged;ClientSizeChanged", ew.ToString (), "B2");
+        Assert.AreEqual ("Layout;Resize;SizeChanged;ClientSizeChanged", ew.ToString (), "B2");
 
         ew.Clear ();
         c.ClientSize = new Size (5, 5);

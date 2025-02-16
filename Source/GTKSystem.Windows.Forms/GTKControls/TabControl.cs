@@ -90,9 +90,9 @@ namespace System.Windows.Forms
         }
 
         public new TabControl.ControlCollection Controls => _controls;
-        public event EventHandler SelectedIndexChanged;
+        public event EventHandler? SelectedIndexChanged;
 
-        public event DrawItemEventHandler DrawItem;
+        public event DrawItemEventHandler? DrawItem;
 
         public new class ControlCollection : List<TabPage>
         {
@@ -161,7 +161,7 @@ namespace System.Windows.Forms
             public new void Remove(TabPage value)
             {
                 base.Remove(value);
-                _owner.self.Remove(((TabPage)value).Widget);
+                if (value.Widget is Widget widget) _owner.self.Remove(widget);
             }
         }
 

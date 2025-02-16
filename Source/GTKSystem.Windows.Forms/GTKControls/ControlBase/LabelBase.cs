@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class LabelBase : Gtk.Label, IControlGtk
+    public sealed class LabelBase : Gtk.Label, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public LabelBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;
@@ -18,7 +21,7 @@
 
         public LabelBase(string text) : base(text)
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;

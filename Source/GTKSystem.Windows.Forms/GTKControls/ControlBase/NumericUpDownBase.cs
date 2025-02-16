@@ -1,11 +1,14 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using System.Windows.Forms;
+using GTKSystem.Windows.Forms.Interfaces;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class NumericUpDownBase : Gtk.SpinButton, IControlGtk
+    public sealed class NumericUpDownBase : Gtk.SpinButton, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public NumericUpDownBase() : base(0, 100, 1)
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.Override.AddClass("NumericUpDown");
             this.Value = 0;
             this.Orientation = Gtk.Orientation.Horizontal;

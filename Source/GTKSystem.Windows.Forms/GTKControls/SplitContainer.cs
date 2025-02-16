@@ -23,8 +23,10 @@ namespace System.Windows.Forms
             _panel1.contaner.Name = "Child1";
             _panel2 = new SplitterPanel(this);
             _panel2.contaner.Name = "Child2";
-            self.Pack1(_panel1.Widget, false, true);
-            self.Pack2(_panel2.Widget, true, true);
+            var panel1Widget = _panel1.Widget as Widget;
+            if (panel1Widget != null) self.Pack1(panel1Widget, false, true);
+            var panel2Widget = _panel2.Widget as Widget;
+            if (panel2Widget != null) self.Pack2(panel2Widget, true, true);
         }
         private SplitterPanel _panel1;
         private SplitterPanel _panel2;
@@ -66,8 +68,8 @@ namespace System.Windows.Forms
             set {
                 _fixedPanel = value;
                 bool resize = value == FixedPanel.Panel2;
-                ((Paned.PanedChild)self[_panel1.Widget]).Resize = resize;
-                ((Paned.PanedChild)self[_panel2.Widget]).Resize = !resize;
+                if (_panel1.Widget is Widget panel1Widget) ((Paned.PanedChild)self[panel1Widget]).Resize = resize;
+                if (_panel2.Widget is Widget panel2Widget) ((Paned.PanedChild)self[panel2Widget]).Resize = !resize;
             } 
         }
     }

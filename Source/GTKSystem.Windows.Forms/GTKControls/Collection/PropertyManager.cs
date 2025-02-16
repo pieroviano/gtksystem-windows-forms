@@ -98,10 +98,7 @@ public class PropertyManager : BindingManagerBase
     public override void CancelCurrentEdit()
     {
         IEditableObject current = this.Current as IEditableObject;
-        if (current != null)
-        {
-            current.CancelEdit();
-        }
+        current?.CancelEdit();
         base.PushData();
     }
 
@@ -113,10 +110,7 @@ public class PropertyManager : BindingManagerBase
         if (flag)
         {
             IEditableObject current = this.Current as IEditableObject;
-            if (current != null)
-            {
-                current.EndEdit();
-            }
+            current?.EndEdit();
         }
     }
 
@@ -142,14 +136,8 @@ public class PropertyManager : BindingManagerBase
     protected internal override void OnCurrentChanged(EventArgs ea)
     {
         base.PushData();
-        if (this.onCurrentChangedHandler != null)
-        {
-            this.onCurrentChangedHandler(this, ea);
-        }
-        if (this.onCurrentItemChangedHandler != null)
-        {
-            this.onCurrentItemChangedHandler(this, ea);
-        }
+        this.onCurrentChangedHandler?.Invoke(this, ea);
+        this.onCurrentItemChangedHandler?.Invoke(this, ea);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.CurrentItemChanged" /> event.</summary>
@@ -157,10 +145,7 @@ public class PropertyManager : BindingManagerBase
     protected internal override void OnCurrentItemChanged(EventArgs ea)
     {
         base.PushData();
-        if (this.onCurrentItemChangedHandler != null)
-        {
-            this.onCurrentItemChangedHandler(this, ea);
-        }
+        this.onCurrentItemChangedHandler?.Invoke(this, ea);
     }
 
     private void PropertyChanged(object sender, EventArgs ea)

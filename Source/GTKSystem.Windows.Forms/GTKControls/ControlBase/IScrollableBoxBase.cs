@@ -1,4 +1,5 @@
-﻿using Gtk;
+﻿using System.Windows.Forms;
+using Gtk;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
@@ -9,7 +10,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         bool AutoScroll { get; set; }
         Widget Child { get; }
         bool HScroll { get; set; }
-        GtkControlOverride Override { get; set; }
+        IGtkControlOverride Override { get; set; }
         bool VScroll { get; set; }
         event System.Windows.Forms.ScrollEventHandler Scroll;
         void Add(Widget child);

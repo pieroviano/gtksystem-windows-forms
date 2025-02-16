@@ -21,7 +21,7 @@ namespace System.Windows.Forms
         }
         public object Tag { get; set; }
 
-        public event EventHandler HelpRequest
+        public event EventHandler? HelpRequest
         {
             add => Events.AddHandler(s_helpRequestEvent, value);
             remove => Events.RemoveHandler(s_helpRequestEvent, value);

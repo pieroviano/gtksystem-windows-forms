@@ -188,25 +188,25 @@ public abstract class BindingManagerBase
         return null;
     }
 
-    public event BindingCompleteEventHandler BindingComplete
+    public event BindingCompleteEventHandler? BindingComplete
     {
         add => _onBindingCompleteHandler += value;
         remove => _onBindingCompleteHandler -= value;
     }
 
-    public event EventHandler CurrentChanged
+    public event EventHandler? CurrentChanged
     {
         add => onCurrentChangedHandler += value;
         remove => onCurrentChangedHandler -= value;
     }
 
-    public event EventHandler CurrentItemChanged
+    public event EventHandler? CurrentItemChanged
     {
         add => _onCurrentItemChangedHandler += value;
         remove => _onCurrentItemChangedHandler -= value;
     }
 
-    public event BindingManagerDataErrorEventHandler DataError
+    public event BindingManagerDataErrorEventHandler? DataError
     {
         add => _onDataErrorHandler += value;
         remove => _onDataErrorHandler -= value;
@@ -221,7 +221,7 @@ public abstract class BindingManagerBase
 
     public abstract int Position { get; set; }
 
-    public event EventHandler PositionChanged
+    public event EventHandler? PositionChanged
     {
         add => onPositionChangedHandler += value;
         remove => onPositionChangedHandler -= value;

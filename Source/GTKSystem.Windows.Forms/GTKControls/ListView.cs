@@ -145,13 +145,12 @@ namespace System.Windows.Forms
                     }
                     this.Sort();
 
-                    if (ColumnReordered != null)
-                        ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
+                    ColumnReordered?.Invoke(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
 
                     SortingColumnIndex = actioncolumn;
                 }
-                if (ColumnClick != null)
-                    ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
+
+                ColumnClick?.Invoke(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
             }
         }
 
@@ -458,14 +457,8 @@ namespace System.Windows.Forms
                             if (thisitem != null)
                             {
                                 thisitem.Checked = box.self.Active;
-                                if (ItemCheck != null)
-                                {
-                                    ItemCheck(sender, new ItemCheckEventArgs(checkitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
-                                }
-                                if (ItemChecked != null)
-                                {
-                                    ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
-                                }
+                                ItemCheck?.Invoke(sender, new ItemCheckEventArgs(checkitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
+                                ItemChecked?.Invoke(sender, new ItemCheckedEventArgs(thisitem));
                             }
                         };
 
@@ -578,14 +571,8 @@ namespace System.Windows.Forms
                             if (thisitem != null)
                             {
                                 thisitem.Checked = box.self.Active;
-                                if (ItemCheck != null)
-                                {
-                                    ItemCheck(sender, new ItemCheckEventArgs(checkitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
-                                }
-                                if (ItemChecked != null)
-                                {
-                                    ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
-                                }
+                                ItemCheck?.Invoke(sender, new ItemCheckEventArgs(checkitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
+                                ItemChecked?.Invoke(sender, new ItemCheckedEventArgs(thisitem));
                             }
                         };
                         hBox.PackStart(checkBox.self, false, true, 5);
@@ -828,8 +815,7 @@ namespace System.Windows.Forms
             Gtk.FlowBox widget = (Gtk.FlowBox)sender;
             if (MultiSelect == true)
             {
-                if (ItemActivate != null)
-                    ItemActivate(this, e);
+                ItemActivate?.Invoke(this, e);
 
                 List<int> selecteds = new List<int>();
                 foreach (var group in GetAllGroups())
@@ -850,21 +836,18 @@ namespace System.Windows.Forms
                         if (item.Selected == false)
                         {
                             item.Selected = true;
-                            if (ItemSelectionChanged != null)
-                                ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+                            ItemSelectionChanged?.Invoke(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
                         }
                     }
                     else if (item.Selected == true)
                     {
                         item.Selected = false;
-                        if (ItemSelectionChanged != null)
-                            ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+                        ItemSelectionChanged?.Invoke(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
                     }
                 }
             }
 
-            if (SelectedIndexChanged != null)
-                SelectedIndexChanged(this, e);
+            SelectedIndexChanged?.Invoke(this, e);
         }
         private void _flow_ChildActivated(object o, Gtk.ChildActivatedArgs args)
         {
@@ -880,10 +863,9 @@ namespace System.Windows.Forms
                         group.FlowBox.UnselectAll();
                     }
                 }
-                if (ItemActivate != null)
-                    ItemActivate(this, args);
-                if (ItemSelectionChanged != null)
-                    ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+
+                ItemActivate?.Invoke(this, args);
+                ItemSelectionChanged?.Invoke(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
             }
         }
         public void Sort()
@@ -1255,8 +1237,7 @@ namespace System.Windows.Forms
             }
             public new void Clear()
             {
-                if (_owner != null)
-                    _owner.NativeItemsClear();
+                _owner?.NativeItemsClear();
                 base.Clear();
             }
         }
@@ -1412,13 +1393,13 @@ namespace System.Windows.Forms
             throw null;
         }
 
-        public event ColumnClickEventHandler ColumnClick;
-        public event ColumnReorderedEventHandler ColumnReordered;
-        public event ItemCheckEventHandler ItemCheck;
-        public event ItemCheckedEventHandler ItemChecked;
-        public event ListViewItemSelectionChangedEventHandler ItemSelectionChanged;
-        public event EventHandler SelectedIndexChanged;
+        public event ColumnClickEventHandler? ColumnClick;
+        public event ColumnReorderedEventHandler? ColumnReordered;
+        public event ItemCheckEventHandler? ItemCheck;
+        public event ItemCheckedEventHandler? ItemChecked;
+        public event ListViewItemSelectionChangedEventHandler? ItemSelectionChanged;
+        public event EventHandler? SelectedIndexChanged;
         //public override event EventHandler Click;
-        public event EventHandler ItemActivate;
+        public event EventHandler? ItemActivate;
     }
 }

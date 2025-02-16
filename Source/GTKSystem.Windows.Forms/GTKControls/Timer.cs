@@ -52,7 +52,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public event EventHandler Tick;
+        public event EventHandler? Tick;
         public void Start()
         {
             TimersTimer.Start();

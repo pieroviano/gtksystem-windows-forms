@@ -45,7 +45,7 @@ namespace System.Windows.Forms
                 self.Active = value != CheckState.Unchecked;
             }
         }
-        public event EventHandler CheckedChanged;
+        public event EventHandler? CheckedChanged;
         public virtual event EventHandler CheckStateChanged;
     }
 }

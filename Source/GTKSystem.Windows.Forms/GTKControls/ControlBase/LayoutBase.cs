@@ -1,14 +1,16 @@
-﻿using Gtk;
+﻿using System.Windows.Forms;
+using Gtk;
+using GTKSystem.Windows.Forms.Interfaces;
 
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class LayoutBase: Gtk.Layout, IControlGtk
+    public sealed class LayoutBase: Gtk.Layout, IGtkControl
     {
-        public GtkControlOverride Override { get; set; }
+        public IGtkControlOverride Override { get; set; }
         public LayoutBase(Adjustment hadjustment, Adjustment vadjustment) : base(hadjustment, vadjustment)
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }

@@ -1,16 +1,17 @@
 ﻿using Gdk;
+using GTKSystem.Windows.Forms.Interfaces;
 using System;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScrollableBoxBase
+    public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IGtkControl, IScrollableBoxBase
     {
-        public event ScrollEventHandler Scroll;
-        public GtkControlOverride Override { get; set; }
+        public event ScrollEventHandler? Scroll;
+        public IGtkControlOverride Override { get; set; }
         public ScrollableBoxBase() : base()
         {
-            this.Override = new GtkControlOverride(this);
+            this.Override = new GtkFormsControlOverride(this);
             this.ShadowType = Gtk.ShadowType.None;
             this.BorderWidth = 1;
             this.Events = Gdk.EventMask.AllEventsMask;

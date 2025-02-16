@@ -51,9 +51,9 @@ namespace System.Windows.Forms
             set { self.Date = value; }
         }
         public bool ShowWeekNumbers { get; set; }
-        public event DateRangeEventHandler DateChanged;
+        public event DateRangeEventHandler? DateChanged;
 
-        public event DateRangeEventHandler DateSelected;
+        public event DateRangeEventHandler? DateSelected;
 
     }
 }

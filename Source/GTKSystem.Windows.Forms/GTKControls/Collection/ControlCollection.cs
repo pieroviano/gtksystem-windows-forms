@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms.Layout;
+using Gtk;
 
 namespace System.Windows.Forms
 {
@@ -115,7 +116,7 @@ namespace System.Windows.Forms
                         }
                         else if (item is Control control)
                         {
-                            lay.AddOverlay(control.Widget);
+                            if (control.Widget is Widget widget) lay.AddOverlay(widget);
                             control.DockChanged += Control_DockChanged;
                             control.AnchorChanged += Control_AnchorChanged;
                             SetMarginEnd(lay, control);
@@ -129,7 +130,7 @@ namespace System.Windows.Forms
                     {
                         if (item is Control con)
                         {
-                            lay2.Put(con.Widget, Offset.X, Offset.Y);
+                            if (con.Widget is Widget widget) lay2.Put(widget, Offset.X, Offset.Y);
                         }
                         else if (item is Gtk.Widget widget)
                         {
@@ -140,7 +141,7 @@ namespace System.Windows.Forms
                     {
                         if (item is Control con)
                         {
-                            lay3.Put(con.Widget, Offset.X, Offset.Y);
+                            if (con.Widget is Widget widget) lay3.Put(widget, Offset.X, Offset.Y);
                         }
                         else if (item is Gtk.Widget widget)
                         {
@@ -198,7 +199,7 @@ namespace System.Windows.Forms
             {
                 if (lay.IsMapped == true)
                 {
-                    Gtk.Widget widget = control.Widget;
+                    Gtk.Widget? widget = control.Widget as Widget;
                     if (widget != null && widget.Halign == Gtk.Align.End)
                     {
                         if (widget.WidthRequest > 0)
@@ -238,7 +239,7 @@ namespace System.Windows.Forms
                 Gtk.Widget parent = widget.Parent;
                 while (parent != null)
                 {
-                    if (parent is GTKSystem.Windows.Forms.GTKControls.ControlBase.IControlGtk)
+                    if (parent is GTKSystem.Windows.Forms.GTKControls.ControlBase.IGtkControl)
                     {
                         return parent;
                     }
@@ -404,7 +405,8 @@ namespace System.Windows.Forms
                     return;
                 }
                 InnerList.Remove(value);
-                __ownerControl?.Remove(value.Widget);
+                if (value.Widget is Widget widget)
+                    __ownerControl.Remove(widget);
             }
 
             void IList.Remove(object? element)
@@ -522,7 +524,7 @@ namespace System.Windows.Forms
 
             public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-            public event EventHandler Disposed;
+            public event EventHandler? Disposed;
 
             public void Dispose()
             {

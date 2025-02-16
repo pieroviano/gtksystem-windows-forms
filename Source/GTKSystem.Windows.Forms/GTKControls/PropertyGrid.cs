@@ -188,44 +188,44 @@ namespace System.Windows.Forms
         protected virtual Type DefaultTabType { get; }
         protected override Size DefaultSize { get; }
         protected internal override bool ShowFocusCues { get; }
-        public event ComponentRenameEventHandler ComComponentNameChanged;
-        public event EventHandler SelectedObjectsChanged
+        public event ComponentRenameEventHandler? ComComponentNameChanged;
+        public event EventHandler? SelectedObjectsChanged
         {
             add => Events.AddHandler(s_selectedObjectsChangedEvent, value);
             remove => Events.RemoveHandler(s_selectedObjectsChangedEvent, value);
         }
         //[Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler BackgroundImageChanged
+        //public event EventHandler? BackgroundImageChanged
         //{ 
         //}
         //[Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler BackgroundImageLayoutChanged
+        //public event EventHandler? BackgroundImageLayoutChanged
         //{ 
         //}
         //[Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler ForeColorChanged
+        //public event EventHandler? ForeColorChanged
         //{ 
         //}
         // [Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler PaddingChanged
+        //public event EventHandler? PaddingChanged
         //{ 
         //}
         // [Browsable(false)]
-        //public event EventHandler TextChanged
-        //{ 
-        //}
-        // [Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public event KeyPressEventHandler KeyPress
+        //public event EventHandler? TextChanged
         //{ 
         //}
         // [Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public event KeyEventHandler KeyUp
+        //public event KeyPressEventHandler? KeyPress
+        //{ 
+        //}
+        // [Browsable(false)]
+        //[EditorBrowsable(EditorBrowsableState.Advanced)]
+        //public event KeyEventHandler? KeyUp
         //{ 
         //}
         // [Browsable(false)]
@@ -249,12 +249,12 @@ namespace System.Windows.Forms
         //    add => base.MouseMove += value;
         //    remove => base.MouseMove -= value;
         //}
-        public event SelectedGridItemChangedEventHandler SelectedGridItemChanged
+        public event SelectedGridItemChangedEventHandler? SelectedGridItemChanged
         {
             add => Events.AddHandler(s_selectedGridItemChangedEvent, value);
             remove => Events.RemoveHandler(s_selectedGridItemChangedEvent, value);
         }
-        public event EventHandler PropertySortChanged
+        public event EventHandler? PropertySortChanged
         {
             add => Events.AddHandler(s_propertySortChangedEvent, value);
             remove => Events.RemoveHandler(s_propertySortChangedEvent, value);
@@ -266,12 +266,12 @@ namespace System.Windows.Forms
         //    add => base.MouseUp += value;
         //    remove => base.MouseUp -= value;
         //}
-        public event PropertyValueChangedEventHandler PropertyValueChanged
+        public event PropertyValueChangedEventHandler? PropertyValueChanged
         {
             add => Events.AddHandler(s_propertyValueChangedEvent, value);
             remove => Events.RemoveHandler(s_propertyValueChangedEvent, value);
         }
-        public event PropertyTabChangedEventHandler PropertyTabChanged
+        public event PropertyTabChangedEventHandler? PropertyTabChanged
         {
             add => Events.AddHandler(s_propertyTabChangedEvent, value);
             remove => Events.RemoveHandler(s_propertyTabChangedEvent, value);

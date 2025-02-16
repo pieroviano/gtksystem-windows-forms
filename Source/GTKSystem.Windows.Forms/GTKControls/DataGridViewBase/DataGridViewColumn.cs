@@ -444,7 +444,7 @@ namespace System.Windows.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public event EventHandler Disposed;
+        public event EventHandler? Disposed;
 
         public object Clone()
         {

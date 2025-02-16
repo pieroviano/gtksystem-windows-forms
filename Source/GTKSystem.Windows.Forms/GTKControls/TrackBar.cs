@@ -39,8 +39,7 @@ namespace System.Windows.Forms
         private void Control_ValueChanged(object sender, EventArgs e)
         {
             Value = (int)adjustment.Value;
-            if (Scroll != null)
-                Scroll(this, e);
+            Scroll?.Invoke(this, e);
         }
 
         public int LargeChange { get; set; } = 5;
@@ -50,6 +49,6 @@ namespace System.Windows.Forms
         public System.Windows.Forms.Orientation Orientation { get; set; }
         public int TickFrequency { get; set; }
         public System.Windows.Forms.TickStyle TickStyle { get; set; }
-        public event EventHandler Scroll;
+        public event EventHandler? Scroll;
     }
 }
