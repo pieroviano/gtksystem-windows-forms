@@ -791,7 +791,7 @@ namespace System.Windows.Forms
                     widget.Halign = Align.Start;
                     widget.Valign = Align.Start;
                 }
-                if (dockStyle != value && DockChanged != null)
+                if (dockStyle != value)
                     DockChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -916,6 +916,7 @@ namespace System.Windows.Forms
 
                 if (marginStart != value)
                 {
+                    Move?.Invoke(this, EventArgs.Empty);
                     LocationChanged?.Invoke(this, EventArgs.Empty);
                 }
 
@@ -1023,12 +1024,16 @@ namespace System.Windows.Forms
 
                 if (heightRequest != value)
                 {
+                    Layout?.Invoke(this, new LayoutEventArgs(this, nameof(Height)));
                     Resize?.Invoke(this, EventArgs.Empty);
                     SizeChanged?.Invoke(this, EventArgs.Empty);
                     ClientSizeChanged?.Invoke(this, EventArgs.Empty);
                 }
 
-                DockChanged?.Invoke(this, EventArgs.Empty);
+                if (Dock!=DockStyle.None)
+                {
+                    Dock = DockStyle.None;
+                }
                 AnchorChanged?.Invoke(this, EventArgs.Empty);
             }
         }
