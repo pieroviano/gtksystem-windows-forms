@@ -25,49 +25,50 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Resources;
 using System.ComponentModel.Design;
-using GtkTests.TypeResolutionService_;
+using System.Resources;
 using GtkTests.Internals.Resources;
+using GtkTests.TypeResolutionService_;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.System.Windows.Forms.Resources;
 
 [TestFixture]
-public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelper {
+public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelper
+{
     [Test]
-    public void ITRSUsedWithNodeFromReader ()
+    public void ITRSUsedWithNodeFromReader()
     {
         ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        originalNode = new ResXDataNode("aNumber", 23L);
+        returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
-        var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual ((typeof (Int32)).AssemblyQualifiedName, returnedType, "#A2");
+        Assert.IsNotNull(returnedNode, "#A1");
+        var returnedType = returnedNode.GetValueTypeName(new ReturnIntITRS());
+        Assert.AreEqual(typeof(int).AssemblyQualifiedName, returnedType, "#A2");
     }
 
     [Test]
-    public void ITRSUsedEachTimeWhenNodeFromReader ()
+    public void ITRSUsedEachTimeWhenNodeFromReader()
     {
         ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        originalNode = new ResXDataNode("aNumber", 23L);
+        returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
-        var newType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual (typeof (int).AssemblyQualifiedName, newType, "#A2");
-        var origType = returnedNode.GetValueTypeName ((ITypeResolutionService) null);
-        Assert.AreEqual (typeof (long).AssemblyQualifiedName, origType, "#A3");				
+        Assert.IsNotNull(returnedNode, "#A1");
+        var newType = returnedNode.GetValueTypeName(new ReturnIntITRS());
+        Assert.AreEqual(typeof(int).AssemblyQualifiedName, newType, "#A2");
+        var origType = returnedNode.GetValueTypeName((ITypeResolutionService)null);
+        Assert.AreEqual(typeof(long).AssemblyQualifiedName, origType, "#A3");
     }
 
     [Test]
-    public void ITRSNotUsedWhenNodeCreatedNew ()
+    public void ITRSNotUsedWhenNodeCreatedNew()
     {
         ResXDataNode node;
-        node = new ResXDataNode ("along", 34L);
+        node = new ResXDataNode("along", 34L);
 
-        var returnedType = node.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual ((typeof (long)).AssemblyQualifiedName, returnedType, "#A1");
+        var returnedType = node.GetValueTypeName(new ReturnIntITRS());
+        Assert.AreEqual(typeof(long).AssemblyQualifiedName, returnedType, "#A1");
     }
 
 }

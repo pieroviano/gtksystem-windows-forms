@@ -8,15 +8,15 @@ public class ControlCollectionTest : TestHelper
     [Test]
     public void ControlCollectionTests()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.Name = "A";
-        var c2 = new Control();
+        var c2 = new MockControl();
         c2.Name = "B";
-        var c3 = new Control();
+        var c3 = new MockControl();
         c3.Name = "a";
-        var c4 = new Control();
+        var c4 = new MockControl();
         c4.Name = "B";
-        var c5 = new Control();
+        var c5 = new MockControl();
         c5.Name = "a";
 
         c.Controls.Add(c2);
@@ -66,7 +66,7 @@ public class ControlCollectionTest : TestHelper
     {
         Assert.Throws<ArgumentNullException>(() =>
         {
-            var c = new Control();
+            var c = new MockControl();
             c.Controls.Find("", false);
         });
     }

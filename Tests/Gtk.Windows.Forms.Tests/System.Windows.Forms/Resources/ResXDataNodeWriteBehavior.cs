@@ -26,27 +26,28 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.ComponentModel.Design;
 using System.Reflection;
 using System.Resources;
-using System.ComponentModel.Design;
 using GtkTests.Internals.Resources;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.System.Windows.Forms.Resources;
 
 [TestFixture]
-public class ResXDataNodeWriteBehavior : ResourcesTestHelper {
-		
+public class ResXDataNodeWriteBehavior : ResourcesTestHelper
+{
+
     [Test]
-    public void SerializedObjectNotLoaded ()
+    public void SerializedObjectNotLoaded()
     {
-        var node = GetNodeFromResXReader (serializedResXCorruped);
-        Assert.IsNotNull (node, "#A1");
+        var node = GetNodeFromResXReader(serializedResXCorruped);
+        Assert.IsNotNull(node, "#A1");
         // would cause error if object loaded
-        GetNodeFromResXReader (node);
+        GetNodeFromResXReader(node);
     }
 
     [Test]
-    public void FileRefIsLoaded ()
+    public void FileRefIsLoaded()
     {
         Assert.Throws<ArgumentException>(() =>
         {
@@ -59,94 +60,94 @@ public class ResXDataNodeWriteBehavior : ResourcesTestHelper {
     }
 
     [Test]
-    public void ResXNullRef_WriteBack ()
+    public void ResXNullRef_WriteBack()
     {
-        var node = new ResXDataNode ("NullRef", (object) null);
+        var node = new ResXDataNode("NullRef", (object)null);
         node.Comment = "acomment";
-        var returnedNode = GetNodeFromResXReader (node);
-        Assert.IsNotNull (returnedNode, "#A1");
-        Assert.IsNull (returnedNode.GetValue ((AssemblyName []) null), "#A2");
-        Assert.AreEqual ("acomment", returnedNode.Comment,"#A3");
-        var finalNode = GetNodeFromResXReader (returnedNode);
-        Assert.IsNotNull (finalNode, "#A4");
-        Assert.IsNull (finalNode.GetValue ((AssemblyName []) null), "#A5");
-        Assert.AreEqual ("acomment", finalNode.Comment,"#A6");
+        var returnedNode = GetNodeFromResXReader(node);
+        Assert.IsNotNull(returnedNode, "#A1");
+        Assert.IsNull(returnedNode.GetValue((AssemblyName[])null), "#A2");
+        Assert.AreEqual("acomment", returnedNode.Comment, "#A3");
+        var finalNode = GetNodeFromResXReader(returnedNode);
+        Assert.IsNotNull(finalNode, "#A4");
+        Assert.IsNull(finalNode.GetValue((AssemblyName[])null), "#A5");
+        Assert.AreEqual("acomment", finalNode.Comment, "#A6");
     }
 
     [Test]
-    public void InvalidMimeType_WriteBack ()
+    public void InvalidMimeType_WriteBack()
     {
         //FIXME: should check the ResX output to ensure mime type / value info still there
-        var node = GetNodeFromResXReader (serializedResXInvalidMimeType);
-        Assert.IsNotNull (node, "#A1");
-        var returnedNode = GetNodeFromResXReader (node);
-        Assert.IsNotNull (returnedNode, "#A2");
-        var obj = returnedNode.GetValue ((AssemblyName []) null);
-        Assert.IsNull (obj, "#A3");
+        var node = GetNodeFromResXReader(serializedResXInvalidMimeType);
+        Assert.IsNotNull(node, "#A1");
+        var returnedNode = GetNodeFromResXReader(node);
+        Assert.IsNotNull(returnedNode, "#A2");
+        var obj = returnedNode.GetValue((AssemblyName[])null);
+        Assert.IsNull(obj, "#A3");
     }
 
     [Test]
-    public void BinTypeConverter_WriteBack ()
+    public void BinTypeConverter_WriteBack()
     {
-        var mb = new MyBinType ("contents");
-        var node = new ResXDataNode ("aname", mb);
+        var mb = new MyBinType("contents");
+        var node = new ResXDataNode("aname", mb);
         node.Comment = "acomment";
-        var returnedNode = GetNodeFromResXReader (node);
-        Assert.IsNotNull (returnedNode, "#A1");
-        var returnedMB = (MyBinType) returnedNode.GetValue ((AssemblyName []) null);
-        Assert.AreEqual ("contents", returnedMB.Value, "#A2");
-        Assert.AreEqual ("acomment", returnedNode.Comment, "#A3");
-        var finalNode = GetNodeFromResXReader (returnedNode);
-        Assert.IsNotNull (finalNode, "#A4");
-        var finalMB = (MyBinType) finalNode.GetValue ((AssemblyName []) null);
-        Assert.AreEqual ("contents", finalMB.Value, "#A5");
-        Assert.AreEqual ("acomment", finalNode.Comment, "#A6");
+        var returnedNode = GetNodeFromResXReader(node);
+        Assert.IsNotNull(returnedNode, "#A1");
+        var returnedMB = (MyBinType)returnedNode.GetValue((AssemblyName[])null);
+        Assert.AreEqual("contents", returnedMB.Value, "#A2");
+        Assert.AreEqual("acomment", returnedNode.Comment, "#A3");
+        var finalNode = GetNodeFromResXReader(returnedNode);
+        Assert.IsNotNull(finalNode, "#A4");
+        var finalMB = (MyBinType)finalNode.GetValue((AssemblyName[])null);
+        Assert.AreEqual("contents", finalMB.Value, "#A5");
+        Assert.AreEqual("acomment", finalNode.Comment, "#A6");
     }
 
     [Test]
-    public void ByteArray_WriteBack ()
+    public void ByteArray_WriteBack()
     {
-        var testBytes = new byte [] { 1,2,3,4,5,6,7,8,9,10 };
-        var node = new ResXDataNode ("aname", testBytes);
+        var testBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        var node = new ResXDataNode("aname", testBytes);
         node.Comment = "acomment";
-        var returnedNode = GetNodeFromResXReader (node);
-        Assert.IsNotNull (returnedNode, "#A1");
-        Assert.AreEqual (testBytes, returnedNode.GetValue ((AssemblyName []) null), "#A2");
-        Assert.AreEqual ("acomment", returnedNode.Comment, "#A3");
-        var finalNode = GetNodeFromResXReader (returnedNode);
-        Assert.IsNotNull (finalNode,"#A4");
-        Assert.AreEqual (testBytes, finalNode.GetValue ((AssemblyName []) null), "#A5");
-        Assert.AreEqual ("acomment", finalNode.Comment, "#A6");
+        var returnedNode = GetNodeFromResXReader(node);
+        Assert.IsNotNull(returnedNode, "#A1");
+        Assert.AreEqual(testBytes, returnedNode.GetValue((AssemblyName[])null), "#A2");
+        Assert.AreEqual("acomment", returnedNode.Comment, "#A3");
+        var finalNode = GetNodeFromResXReader(returnedNode);
+        Assert.IsNotNull(finalNode, "#A4");
+        Assert.AreEqual(testBytes, finalNode.GetValue((AssemblyName[])null), "#A5");
+        Assert.AreEqual("acomment", finalNode.Comment, "#A6");
     }
 
     [Test]
-    public void ChangesToReturnedByteArrayNotLaterWrittenBack ()
+    public void ChangesToReturnedByteArrayNotLaterWrittenBack()
     {
         ResXDataNode originalNode, returnedNode, finalNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+        originalNode = GetNodeEmdeddedBytes1To10();
+        returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
+        Assert.IsNotNull(returnedNode, "#A1");
 
-        var val = returnedNode.GetValue ((ITypeResolutionService) null);
-        Assert.True (typeof (byte [])== val.GetType(), "#A2");
+        var val = returnedNode.GetValue((ITypeResolutionService)null);
+        Assert.True(typeof(byte[]) == val.GetType(), "#A2");
 
-        var newBytes = (byte[]) val;
-        Assert.AreEqual (1, newBytes [0], "A3");
-        newBytes [0] = 99;
+        var newBytes = (byte[])val;
+        Assert.AreEqual(1, newBytes[0], "A3");
+        newBytes[0] = 99;
 
-        finalNode = GetNodeFromResXReader (returnedNode);
-			
-        Assert.IsNotNull (finalNode, "#A4");
+        finalNode = GetNodeFromResXReader(returnedNode);
 
-        var finalVal = finalNode.GetValue ((ITypeResolutionService) null);
+        Assert.IsNotNull(finalNode, "#A4");
+
+        var finalVal = finalNode.GetValue((ITypeResolutionService)null);
         Assert.True(typeof(byte[]) == finalVal.GetType(), "#A5");
-        var finalBytes = (byte []) finalVal;
+        var finalBytes = (byte[])finalVal;
         // would be 99 if written back
-        Assert.AreEqual (1,finalBytes [0],"A6");
+        Assert.AreEqual(1, finalBytes[0], "A6");
     }
 
-    static readonly string fileRefResXCorrupted = 
+    static readonly string fileRefResXCorrupted =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   

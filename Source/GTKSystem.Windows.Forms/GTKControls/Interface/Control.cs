@@ -28,7 +28,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     [Designer(typeof(ControlDesigner))]
     [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement, IBindableComponent
+    public partial class Control : Component, IControl, ISynchronizeInvoke, ISupportInitialize, IArrangedElement, IBindableComponent
     {
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
@@ -36,9 +36,14 @@ namespace System.Windows.Forms
         public virtual IWidget Widget => (IWidget)GtkControl;
         public virtual IGtkControl Self => (IGtkControl)GtkControl;
 
-        public virtual object GtkControl { get; set; } = new GtkFormsControl();
+        public virtual object? GtkControl { get; set; } = null!;
 
         public Control()
+        {
+            Init();
+        }
+
+        private void Init()
         {
             Disposed += Control_Disposed;
             Controls = new ControlCollection(this);
@@ -723,7 +728,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public virtual ControlCollection Controls { get; }
+        public virtual ControlCollection Controls { get; set; }
 
         public virtual bool Created => _Created;
         internal bool _Created;
@@ -742,7 +747,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public virtual ControlBindingsCollection DataBindings { get; }
+        public virtual ControlBindingsCollection DataBindings { get; set; }
 
         public virtual int DeviceDpi { get; }
 

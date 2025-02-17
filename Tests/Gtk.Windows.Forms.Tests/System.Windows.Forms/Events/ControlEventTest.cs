@@ -19,7 +19,7 @@ public class EventClass : TestHelper
     [Test]
     public void BackColorChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test BackColorChanged Event
         c.BackColorChanged += Event_Handler1;
         c.BackColor = Color.Black;
@@ -30,7 +30,7 @@ public class EventClass : TestHelper
     [Test]
     public void BgrndImageChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test BackgroundImageChanged Event
         c.BackgroundImageChanged += Event_Handler1;
         eventhandled = false;
@@ -42,7 +42,7 @@ public class EventClass : TestHelper
     [Test]
     public void BindingContextChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test BindingContextChanged Event
         c.BindingContextChanged += Event_Handler1;
         var bcG1 = new BindingContext();
@@ -55,7 +55,7 @@ public class EventClass : TestHelper
     [Test]
     public void CausesValidationChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test CausesValidationChanged Event
         c.CausesValidationChanged += Event_Handler1;
         eventhandled = false;
@@ -67,7 +67,7 @@ public class EventClass : TestHelper
     [Test]
     public void CursorChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test CursorChanged Event
         c.CursorChanged += Event_Handler1;
         eventhandled = false;
@@ -78,7 +78,7 @@ public class EventClass : TestHelper
     [Test]
     public void DisposedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test Disposed Event
         c.Disposed += Event_Handler1;
         eventhandled = false;
@@ -89,7 +89,7 @@ public class EventClass : TestHelper
     [Test]
     public void DockChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test DockChanged Event
         c.DockChanged += Event_Handler1;
         eventhandled = false;
@@ -100,7 +100,7 @@ public class EventClass : TestHelper
     [Test]
     public void EnabledChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test EnabledChanged Event
         c.EnabledChanged += Event_Handler1;
         eventhandled = false;
@@ -111,7 +111,7 @@ public class EventClass : TestHelper
     [Test]
     public void FontChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test FontChanged Event
         c.FontChanged += Event_Handler1;
         eventhandled = false;
@@ -123,7 +123,7 @@ public class EventClass : TestHelper
     [Test]
     public void ForeColorChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test ForeColorChanged Event
         c.ForeColorChanged += Event_Handler1;
         eventhandled = false;
@@ -134,7 +134,7 @@ public class EventClass : TestHelper
     [Test]
     public void HandleCreatedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test HandleCreated Event
         c.HandleCreated += Event_Handler1;
         eventhandled = false;
@@ -145,7 +145,7 @@ public class EventClass : TestHelper
     [Test]
     public void ImeModeChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test ImeModeChanged Event
         c.ImeModeChanged += Event_Handler1;
         eventhandled = false;
@@ -156,7 +156,7 @@ public class EventClass : TestHelper
     [Test]
     public void LocationChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test LocationChanged Event
         c.LocationChanged += Event_Handler1;
         eventhandled = false;
@@ -167,7 +167,7 @@ public class EventClass : TestHelper
     [Test]
     public void ResizeTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test Resize Event
         c.Resize += Event_Handler1;
         eventhandled = false;
@@ -178,7 +178,7 @@ public class EventClass : TestHelper
     [Test]
     public void RightToLeftChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test RightToLeftChanged Event
         c.RightToLeftChanged += Event_Handler1;
         eventhandled = false;
@@ -189,7 +189,7 @@ public class EventClass : TestHelper
     [Test]
     public void SizeChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test SizeChanged Event
         c.SizeChanged += Event_Handler1;
         eventhandled = false;
@@ -200,7 +200,7 @@ public class EventClass : TestHelper
     [Test]
     public void TabIndexChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test TabIndexChanged Event
         c.TabIndexChanged += Event_Handler1;
         eventhandled = false;
@@ -211,7 +211,7 @@ public class EventClass : TestHelper
     [Test]
     public void TabStopChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test TabStopChanged Event
         c.TabStopChanged += Event_Handler1;
         eventhandled = false;
@@ -222,7 +222,7 @@ public class EventClass : TestHelper
     [Test]
     public void TextChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test TextChanged Event
         c.TextChanged += Event_Handler1;
         eventhandled = false;
@@ -233,7 +233,7 @@ public class EventClass : TestHelper
     [Test]
     public void VisibleChangedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         // Test VisibleChanged Event
         c.VisibleChanged += Event_Handler1;
         eventhandled = false;
@@ -255,7 +255,7 @@ public class LayoutEventClass
     [Test]
     public void LayoutTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.Layout += LayoutEvent;
         eventhandled = false;
         c.Visible = true;
@@ -286,7 +286,7 @@ public class LayoutEventClass
     [Test]
     public void LayoutResizeTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.Layout += layout;
         c.Resize += resize;
         c.SizeChanged += size_changed;
@@ -309,7 +309,7 @@ public class ControlAddRemoveEventClass
     [Test]
     public void ControlAddedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.ControlAdded += ControlEvent;
         var TB = new TextBox();
         eventhandled = false;
@@ -320,7 +320,7 @@ public class ControlAddRemoveEventClass
     [Test]
     public void ControlRemovedTest()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.ControlRemoved += ControlEvent;
         var TB = new TextBox();
         c.Controls.Add(TB);
@@ -343,7 +343,7 @@ public class ControlRefresh : TestHelper
     [Test]
     public void HandleNotCreated()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.Invalidated += Control_Invalidated;
 
         c.Visible = true;
@@ -359,7 +359,7 @@ public class ControlRefresh : TestHelper
     [Category("NotWorking")]
     public void Visible()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.Invalidated += Control_Invalidated;
         c.Visible = true;
 
@@ -380,7 +380,7 @@ public class ControlRefresh : TestHelper
     [Test]
     public void NotVisible()
     {
-        var c = new Control();
+        var c = new MockControl();
         c.Invalidated += Control_Invalidated;
         c.Visible = false;
 

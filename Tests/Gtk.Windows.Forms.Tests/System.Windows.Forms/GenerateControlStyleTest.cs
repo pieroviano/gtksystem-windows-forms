@@ -8,6 +8,7 @@
 using System.Windows.Forms;
 using System.Reflection;
 using System.Text;
+using GtkTests.System.Windows.Forms;
 
 namespace TestApp;
 
@@ -80,7 +81,7 @@ class MainForm {
     {
         using var file = new StreamWriter("c:\\ControlStyleTest.cs", false, Encoding.ASCII, 1024);
         file.WriteLine(TestHeader);
-        TestStyles(file, new Control(), "Control");
+        TestStyles(file, new MockControl(), "Control");
         TestStyles(file, new Button(), "Button");
         TestStyles(file, new CheckBox(), "CheckBox");
         TestStyles(file, new RadioButton(), "RadioButton");

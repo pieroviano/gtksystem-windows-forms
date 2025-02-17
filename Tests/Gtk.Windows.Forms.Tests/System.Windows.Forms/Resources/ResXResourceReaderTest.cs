@@ -8,186 +8,214 @@
 
 using System.Collections;
 using System.Globalization;
+using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Xml;
-using System.Reflection;
 using GtkTests.Helpers;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
+using GtkTests.TypeResolutionService_;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.System.Windows.Forms.Resources;
 
 [TestFixture]
-public class ResXResourceReaderTest : Windows.Forms.TestHelper
+public class ResXResourceReaderTest : TestHelper
 {
     private string _tempDirectory;
     private string _otherTempDirectory;
 
     [SetUp]
-    protected override void SetUp ()
+    protected override void SetUp()
     {
-        _tempDirectory = Path.Combine (Path.GetTempPath (), "ResXResourceReaderTest");
-        _otherTempDirectory = Path.Combine (_tempDirectory, "in");
-        if (!Directory.Exists (_otherTempDirectory)) {
-            Directory.CreateDirectory (_otherTempDirectory);
+        _tempDirectory = Path.Combine(Path.GetTempPath(), "ResXResourceReaderTest");
+        _otherTempDirectory = Path.Combine(_tempDirectory, "in");
+        if (!Directory.Exists(_otherTempDirectory))
+        {
+            Directory.CreateDirectory(_otherTempDirectory);
         }
-        base.SetUp ();
+        base.SetUp();
     }
 
     [TearDown]
-    protected override void TearDown ()
+    protected override void TearDown()
     {
-        if (Directory.Exists (_tempDirectory))
-            Directory.Delete (_tempDirectory, true);
-        base.TearDown ();
+        if (Directory.Exists(_tempDirectory))
+            Directory.Delete(_tempDirectory, true);
+        base.TearDown();
     }
 
     [Test] // ctor (Stream)
-    public void Constructor1_Stream_InvalidContent ()
+    public void Constructor1_Stream_InvalidContent()
     {
-        var ms = new MemoryStream ();
-        ms.WriteByte (byte.MaxValue);
+        var ms = new MemoryStream();
+        ms.WriteByte(byte.MaxValue);
         ms.Position = 0;
-        var r = new ResXResourceReader (ms);
-        try {
-            r.GetEnumerator ();
-            Assert.Fail ("#1");
-        } catch (ArgumentException ex) {
+        var r = new ResXResourceReader(ms);
+        try
+        {
+            r.GetEnumerator();
+            Assert.Fail("#1");
+        }
+        catch (ArgumentException ex)
+        {
             // Invalid ResX input
-            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
-            Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNull (ex.ParamName, "#4");
-            Assert.IsNotNull (ex.InnerException, "#5");
+            Assert.AreEqual(typeof(ArgumentException), ex.GetType(), "#2");
+            Assert.IsNotNull(ex.Message, "#3");
+            Assert.IsNull(ex.ParamName, "#4");
+            Assert.IsNotNull(ex.InnerException, "#5");
         }
     }
 
     [Test] // ctor (Stream)
-    [Category ("NotDotNet")] // MS throws a NullReferenceException in GetEnumerator ()
-    public void Constructor1_Stream_Null ()
+    [Category("NotDotNet")] // MS throws a NullReferenceException in GetEnumerator ()
+    public void Constructor1_Stream_Null()
     {
-        try {
-            new ResXResourceReader ((Stream) null);
-            Assert.Fail ("#1");
-        } catch (ArgumentException ex) {
-            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
-            Assert.IsNull (ex.InnerException, "#3");
-            Assert.IsNotNull (ex.Message, "#4");
+        try
+        {
+            new ResXResourceReader((Stream)null);
+            Assert.Fail("#1");
+        }
+        catch (ArgumentException ex)
+        {
+            Assert.AreEqual(typeof(ArgumentException), ex.GetType(), "#2");
+            Assert.IsNull(ex.InnerException, "#3");
+            Assert.IsNotNull(ex.Message, "#4");
         }
     }
 
     [Test] // ctor (String)
-    public void Constructor2_FileName_DoesNotExist ()
+    public void Constructor2_FileName_DoesNotExist()
     {
-        var r = new ResXResourceReader ((string) "definitelydoesnotexist.zzz");
-        try {
-            r.GetEnumerator ();
-            Assert.Fail ("#1");
-        } catch (FileNotFoundException ex) {
-            Assert.AreEqual (typeof (FileNotFoundException), ex.GetType (), "#2");
-            Assert.IsNotNull (ex.FileName, "#3");
-            Assert.IsNotNull (ex.Message, "#4");
-            Assert.IsNull (ex.InnerException, "#5");
+        var r = new ResXResourceReader("definitelydoesnotexist.zzz");
+        try
+        {
+            r.GetEnumerator();
+            Assert.Fail("#1");
+        }
+        catch (FileNotFoundException ex)
+        {
+            Assert.AreEqual(typeof(FileNotFoundException), ex.GetType(), "#2");
+            Assert.IsNotNull(ex.FileName, "#3");
+            Assert.IsNotNull(ex.Message, "#4");
+            Assert.IsNull(ex.InnerException, "#5");
         }
     }
 
     [Test] // ctor (TextReader)
-    public void Constructor3_Reader_InvalidContent ()
+    public void Constructor3_Reader_InvalidContent()
     {
-        var sr = new StringReader ("</definitelyinvalid<");
-        var r = new ResXResourceReader (sr);
-        try {
-            r.GetEnumerator ();
-            Assert.Fail ("#1");
-        } catch (ArgumentException ex) {
+        var sr = new StringReader("</definitelyinvalid<");
+        var r = new ResXResourceReader(sr);
+        try
+        {
+            r.GetEnumerator();
+            Assert.Fail("#1");
+        }
+        catch (ArgumentException ex)
+        {
             // Invalid ResX input
-            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
-            Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNull (ex.ParamName, "#4");
-            Assert.IsNotNull (ex.InnerException, "#5");
-            Assert.AreEqual (typeof (XmlException), ex.InnerException.GetType (), "#6");
+            Assert.AreEqual(typeof(ArgumentException), ex.GetType(), "#2");
+            Assert.IsNotNull(ex.Message, "#3");
+            Assert.IsNull(ex.ParamName, "#4");
+            Assert.IsNotNull(ex.InnerException, "#5");
+            Assert.AreEqual(typeof(XmlException), ex.InnerException.GetType(), "#6");
         }
     }
 
     [Test]
-    public void Close_FileName ()
+    public void Close_FileName()
     {
-        var fileName = TestResourceHelper.GetFullPathOfResource ("GtkTests.System.Resources.compat_1_1.resx");
+        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.System.Resources.compat_1_1.resx");
 
-        var r1 = new ResXResourceReader (fileName);
-        r1.GetEnumerator ();
-        r1.Close ();
-        r1.GetEnumerator ();
+        var r1 = new ResXResourceReader(fileName);
+        r1.GetEnumerator();
+        r1.Close();
+        r1.GetEnumerator();
 
-        var r2 = new ResXResourceReader (fileName);
-        r2.Close ();
-        r2.GetEnumerator ();
-        r2.Close ();
+        var r2 = new ResXResourceReader(fileName);
+        r2.Close();
+        r2.GetEnumerator();
+        r2.Close();
     }
 
     [Test]
-    public void Close_Reader ()
+    public void Close_Reader()
     {
-        var fileName = TestResourceHelper.GetFullPathOfResource ("GtkTests.System.Resources.compat_1_1.resx");
+        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.System.Resources.compat_1_1.resx");
 
-        using (var sr = new StreamReader (fileName)) {
-            var r = new ResXResourceReader (sr);
-            Assert.IsFalse (sr.Peek () == -1, "#A1");
-            r.GetEnumerator ();
-            Assert.IsTrue (sr.Peek () == -1, "#A2");
-            r.Close ();
-            try {
-                sr.Peek ();
-                Assert.Fail ("#A3");
-            } catch (ObjectDisposedException) {
+        using (var sr = new StreamReader(fileName))
+        {
+            var r = new ResXResourceReader(sr);
+            Assert.IsFalse(sr.Peek() == -1, "#A1");
+            r.GetEnumerator();
+            Assert.IsTrue(sr.Peek() == -1, "#A2");
+            r.Close();
+            try
+            {
+                sr.Peek();
+                Assert.Fail("#A3");
             }
-            r.GetEnumerator ();
+            catch (ObjectDisposedException)
+            {
+            }
+            r.GetEnumerator();
         }
 
-        using (var sr = new StreamReader (fileName)) {
-            var r = new ResXResourceReader (sr);
-            r.Close ();
-            try {
-                sr.Peek ();
-                Assert.Fail ("#B1");
-            } catch (ObjectDisposedException) {
+        using (var sr = new StreamReader(fileName))
+        {
+            var r = new ResXResourceReader(sr);
+            r.Close();
+            try
+            {
+                sr.Peek();
+                Assert.Fail("#B1");
             }
-            try {
-                r.GetEnumerator ();
-                Assert.Fail ("#B2");
-            } catch (NullReferenceException) { // MS
-            } catch (InvalidOperationException) { // Mono
+            catch (ObjectDisposedException)
+            {
+            }
+            try
+            {
+                r.GetEnumerator();
+                Assert.Fail("#B2");
+            }
+            catch (NullReferenceException)
+            { // MS
+            }
+            catch (InvalidOperationException)
+            { // Mono
             }
         }
     }
 
     [Test]
-    public void Close_Stream ()
+    public void Close_Stream()
     {
-        var fileName = TestResourceHelper.GetFullPathOfResource ("GtkTests.System.Resources.compat_1_1.resx");
+        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.System.Resources.compat_1_1.resx");
 
-        using (var fs = File.OpenRead (fileName)) {
-            var r = new ResXResourceReader (fs);
-            Assert.AreEqual (0, fs.Position, "#A1");
-            r.GetEnumerator ();
-            Assert.IsFalse (fs.Position == 0, "#A2");
-            Assert.IsTrue (fs.CanRead, "#A3");
-            r.Close ();
-            Assert.IsTrue (fs.CanRead, "#A4");
-            r.GetEnumerator ().MoveNext ();
+        using (var fs = File.OpenRead(fileName))
+        {
+            var r = new ResXResourceReader(fs);
+            Assert.AreEqual(0, fs.Position, "#A1");
+            r.GetEnumerator();
+            Assert.IsFalse(fs.Position == 0, "#A2");
+            Assert.IsTrue(fs.CanRead, "#A3");
+            r.Close();
+            Assert.IsTrue(fs.CanRead, "#A4");
+            r.GetEnumerator().MoveNext();
         }
 
-        using (var fs = File.OpenRead (fileName)) {
-            var r = new ResXResourceReader (fs);
-            r.Close ();
-            Assert.AreEqual (0, fs.Position, "#B1");
-            r.GetEnumerator ();
-            Assert.IsFalse (fs.Position == 0, "#B2");
+        using (var fs = File.OpenRead(fileName))
+        {
+            var r = new ResXResourceReader(fs);
+            r.Close();
+            Assert.AreEqual(0, fs.Position, "#B1");
+            r.GetEnumerator();
+            Assert.IsFalse(fs.Position == 0, "#B2");
         }
     }
 
     [Test]
-    public void Namespaces ()
+    public void Namespaces()
     {
         const string resXTemplate =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
@@ -234,52 +262,57 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
             "	</x:Section>" +
             "</o:Document>";
 
-        var resxFile = Path.Combine (_tempDirectory, "resources.resx");
-        using (var sw = new StreamWriter (resxFile, false, Encoding.UTF8)) {
-            sw.Write (string.Format (CultureInfo.InvariantCulture,
+        var resxFile = Path.Combine(_tempDirectory, "resources.resx");
+        using (var sw = new StreamWriter(resxFile, false, Encoding.UTF8))
+        {
+            sw.Write(string.Format(CultureInfo.InvariantCulture,
                 resXTemplate, ResXResourceWriter.ResMimeType, "1.0",
                 Consts.AssemblySystem_Windows_Forms));
         }
 
         // Stream
-        using (var fs = new FileStream (resxFile, FileMode.Open, FileAccess.Read, FileShare.Read)) {
-            using (var r = new ResXResourceReader (fs)) {
-                var enumerator = r.GetEnumerator ();
+        using (var fs = new FileStream(resxFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+        {
+            using (var r = new ResXResourceReader(fs))
+            {
+                var enumerator = r.GetEnumerator();
                 var entries = 0;
-                while (enumerator.MoveNext ()) {
+                while (enumerator.MoveNext())
+                {
                     entries++;
-                    switch ((string) enumerator.Key) {
+                    switch ((string)enumerator.Key)
+                    {
                         case "":
-                            Assert.IsNotNull (enumerator.Value, "#A1");
-                            Assert.AreEqual ("BO", enumerator.Value, "#A2");
+                            Assert.IsNotNull(enumerator.Value, "#A1");
+                            Assert.AreEqual("BO", enumerator.Value, "#A2");
                             break;
                         case "Address":
-                            Assert.IsNotNull (enumerator.Value, "#B1");
-                            Assert.AreEqual (string.Empty, enumerator.Value, "#B2");
+                            Assert.IsNotNull(enumerator.Value, "#B1");
+                            Assert.AreEqual(string.Empty, enumerator.Value, "#B2");
                             break;
                         case "country":
-                            Assert.IsNotNull (enumerator.Value, "#C1");
-                            Assert.AreEqual (string.Empty, enumerator.Value, "#C2");
+                            Assert.IsNotNull(enumerator.Value, "#C1");
+                            Assert.AreEqual(string.Empty, enumerator.Value, "#C2");
                             break;
                         case "firstName":
-                            Assert.IsNull (enumerator.Value, "#D");
+                            Assert.IsNull(enumerator.Value, "#D");
                             break;
                         case "zip":
-                            Assert.IsNotNull (enumerator.Value, "#E1");
-                            Assert.AreEqual (" <3510> ", enumerator.Value, "#E2");
+                            Assert.IsNotNull(enumerator.Value, "#E1");
+                            Assert.AreEqual(" <3510> ", enumerator.Value, "#E2");
                             break;
                         default:
-                            Assert.Fail ("#F:" + enumerator.Key);
+                            Assert.Fail("#F:" + enumerator.Key);
                             break;
                     }
                 }
-                Assert.AreEqual (5, entries, "#G");
+                Assert.AreEqual(5, entries, "#G");
             }
         }
     }
 
     [Test]
-    public void ResHeader_Unknown ()
+    public void ResHeader_Unknown()
     {
         const string resXTemplate =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
@@ -287,7 +320,7 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
             "	<resheader name=\"resmimetype\">" +
             "		{0}" +
             "	</resheader>" +
-            "	<resheader name=\"version\">" +	
+            "	<resheader name=\"version\">" +
             "		<value>{1}</value>" +
             "	</resheader>" +
             "	<resheader name=\"reader\">" +
@@ -301,11 +334,11 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
             "	</resheader>" +
             "</root>";
 
-        var resXContent = string.Format (CultureInfo.InvariantCulture,
+        var resXContent = string.Format(CultureInfo.InvariantCulture,
             resXTemplate, ResXResourceWriter.ResMimeType, "1.0",
             Consts.AssemblySystem_Windows_Forms);
-        using var r = new ResXResourceReader (new StringReader (resXContent));
-        r.GetEnumerator ();
+        using var r = new ResXResourceReader(new StringReader(resXContent));
+        r.GetEnumerator();
     }
 
     static readonly string resXWithEmptyName =
@@ -329,20 +362,20 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
 </root>";
 
     [Test]
-    public void ResName_Empty ()
+    public void ResName_Empty()
     {
-        using var sr = new StringReader (resXWithEmptyName);
-        using var r = new ResXResourceReader (sr);
-        var enumerator = r.GetEnumerator ();
-        enumerator.MoveNext ();
-        Assert.AreEqual ("", enumerator.Key, "#A1");
-        Assert.AreEqual ("a resource with no name", (string) enumerator.Value, "#A2");
+        using var sr = new StringReader(resXWithEmptyName);
+        using var r = new ResXResourceReader(sr);
+        var enumerator = r.GetEnumerator();
+        enumerator.MoveNext();
+        Assert.AreEqual("", enumerator.Key, "#A1");
+        Assert.AreEqual("a resource with no name", (string)enumerator.Value, "#A2");
     }
 
     [Test]
-    public void ResValue ()
+    public void ResValue()
     {
-        var resXContent = string.Format (CultureInfo.CurrentCulture,
+        var resXContent = string.Format(CultureInfo.CurrentCulture,
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
             "<root>" +
             "	<resheader name=\"resmimetype\">" +
@@ -408,92 +441,94 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
             "</root>",
             ResXResourceWriter.ResMimeType, Consts.AssemblySystem_Windows_Forms);
 
-        using var sr = new StringReader (resXContent);
-        using var r = new ResXResourceReader (sr);
-        var enumerator = r.GetEnumerator ();
+        using var sr = new StringReader(resXContent);
+        using var r = new ResXResourceReader(sr);
+        var enumerator = r.GetEnumerator();
         var entries = 0;
-        while (enumerator.MoveNext ()) {
+        while (enumerator.MoveNext())
+        {
             entries++;
-            switch ((string) enumerator.Key) {
+            switch ((string)enumerator.Key)
+            {
                 case "name1":
-                    Assert.IsNotNull (enumerator.Value, "#A1");
-                    Assert.AreEqual (" <value1> ", enumerator.Value, "#A2");
+                    Assert.IsNotNull(enumerator.Value, "#A1");
+                    Assert.AreEqual(" <value1> ", enumerator.Value, "#A2");
                     break;
                 case "name2":
-                    Assert.IsNotNull (enumerator.Value, "#B1");
-                    Assert.AreEqual ("<value2>", enumerator.Value, "#B2");
+                    Assert.IsNotNull(enumerator.Value, "#B1");
+                    Assert.AreEqual("<value2>", enumerator.Value, "#B2");
                     break;
                 case "name3":
-                    Assert.IsNotNull (enumerator.Value, "#C1");
-                    Assert.AreEqual ("<value3>", enumerator.Value, "#C2");
+                    Assert.IsNotNull(enumerator.Value, "#C1");
+                    Assert.AreEqual("<value3>", enumerator.Value, "#C2");
                     break;
                 case "name4":
-                    Assert.IsNotNull (enumerator.Value, "#D1");
-                    Assert.AreEqual (" value4 ", enumerator.Value, "#D2");
+                    Assert.IsNotNull(enumerator.Value, "#D1");
+                    Assert.AreEqual(" value4 ", enumerator.Value, "#D2");
                     break;
                 case "name5":
-                    Assert.IsNotNull (enumerator.Value, "#E1");
-                    Assert.AreEqual ("value5", enumerator.Value, "#E2");
+                    Assert.IsNotNull(enumerator.Value, "#E1");
+                    Assert.AreEqual("value5", enumerator.Value, "#E2");
                     break;
                 case "name6":
-                    Assert.IsNotNull (enumerator.Value, "#F1");
-                    Assert.AreEqual ("test2", enumerator.Value, "#F2");
+                    Assert.IsNotNull(enumerator.Value, "#F1");
+                    Assert.AreEqual("test2", enumerator.Value, "#F2");
                     break;
                 case "name7":
-                    Assert.IsNotNull (enumerator.Value, "#G1");
-                    Assert.AreEqual (string.Empty, enumerator.Value, "#G2");
+                    Assert.IsNotNull(enumerator.Value, "#G1");
+                    Assert.AreEqual(string.Empty, enumerator.Value, "#G2");
                     break;
                 case "name8":
-                    Assert.IsNotNull (enumerator.Value, "#H1");
-                    Assert.AreEqual (string.Empty, enumerator.Value, "#H2");
+                    Assert.IsNotNull(enumerator.Value, "#H1");
+                    Assert.AreEqual(string.Empty, enumerator.Value, "#H2");
                     break;
                 case "name9":
-                    Assert.IsNotNull (enumerator.Value, "#I1");
-                    Assert.AreEqual (string.Empty, enumerator.Value, "#I2");
+                    Assert.IsNotNull(enumerator.Value, "#I1");
+                    Assert.AreEqual(string.Empty, enumerator.Value, "#I2");
                     break;
                 case "name10":
-                    Assert.IsNotNull (enumerator.Value, "#J1");
-                    Assert.AreEqual (string.Empty, enumerator.Value, "#J2");
+                    Assert.IsNotNull(enumerator.Value, "#J1");
+                    Assert.AreEqual(string.Empty, enumerator.Value, "#J2");
                     break;
                 case "name11":
-                    Assert.IsNotNull (enumerator.Value, "#K1");
-                    Assert.AreEqual ("test2", enumerator.Value, "#K2");
+                    Assert.IsNotNull(enumerator.Value, "#K1");
+                    Assert.AreEqual("test2", enumerator.Value, "#K2");
                     break;
                 case "name12":
-                    Assert.IsNotNull (enumerator.Value, "#L1");
-                    Assert.AreEqual (" test  <value12>", enumerator.Value, "#L2");
+                    Assert.IsNotNull(enumerator.Value, "#L1");
+                    Assert.AreEqual(" test  <value12>", enumerator.Value, "#L2");
                     break;
                 case "name13":
-                    Assert.IsNotNull (enumerator.Value, "#M1");
-                    Assert.AreEqual ("<value13>", enumerator.Value, "#M2");
+                    Assert.IsNotNull(enumerator.Value, "#M1");
+                    Assert.AreEqual("<value13>", enumerator.Value, "#M2");
                     break;
                 case "name14":
-                    Assert.IsNull (enumerator.Value, "#N1");
+                    Assert.IsNull(enumerator.Value, "#N1");
                     break;
                 case "name16":
-                    Assert.IsNotNull (enumerator.Value, "#O1");
-                    Assert.AreEqual ("value16", enumerator.Value, "#O2");
+                    Assert.IsNotNull(enumerator.Value, "#O1");
+                    Assert.AreEqual("value16", enumerator.Value, "#O2");
                     break;
                 case "name17":
-                    Assert.IsNotNull (enumerator.Value, "#P1");
-                    Assert.AreEqual ("value17", enumerator.Value, "#P2");
+                    Assert.IsNotNull(enumerator.Value, "#P1");
+                    Assert.AreEqual("value17", enumerator.Value, "#P2");
                     break;
                 case "name18":
-                    Assert.IsNotNull (enumerator.Value, "#Q1");
-                    Assert.AreEqual ("value18", enumerator.Value, "#Q2");
+                    Assert.IsNotNull(enumerator.Value, "#Q1");
+                    Assert.AreEqual("value18", enumerator.Value, "#Q2");
                     break;
                 default:
-                    Assert.Fail ("#Q:" + enumerator.Key);
+                    Assert.Fail("#Q:" + enumerator.Key);
                     break;
             }
         }
-        Assert.AreEqual (17, entries, "#Q");
+        Assert.AreEqual(17, entries, "#Q");
     }
 
     [Test]
-    public void EnumeratorOrderSameAsResx ()
+    public void EnumeratorOrderSameAsResx()
     {
-        var resXContent = string.Format (CultureInfo.CurrentCulture,
+        var resXContent = string.Format(CultureInfo.CurrentCulture,
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
             "<root>" +
             "	<resheader name=\"resmimetype\">" +
@@ -523,23 +558,23 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
             "</root>",
             ResXResourceWriter.ResMimeType, Consts.AssemblySystem_Windows_Forms);
 
-        using var sr = new StringReader (resXContent);
-        using var r = new ResXResourceReader (sr);
-        var enumerator = r.GetEnumerator ();
-        enumerator.MoveNext ();
-        Assert.AreEqual ("name2", enumerator.Key, "#1");
-        enumerator.MoveNext ();
-        Assert.AreEqual ("name1", enumerator.Key, "#2");
-        enumerator.MoveNext ();
-        Assert.AreEqual ("aaa", enumerator.Key, "#3");
-        enumerator.MoveNext ();
-        Assert.AreEqual ("zzzz", enumerator.Key, "#4");
-        enumerator.MoveNext ();
-        Assert.AreEqual ("bbbbbb", enumerator.Key, "#5");
+        using var sr = new StringReader(resXContent);
+        using var r = new ResXResourceReader(sr);
+        var enumerator = r.GetEnumerator();
+        enumerator.MoveNext();
+        Assert.AreEqual("name2", enumerator.Key, "#1");
+        enumerator.MoveNext();
+        Assert.AreEqual("name1", enumerator.Key, "#2");
+        enumerator.MoveNext();
+        Assert.AreEqual("aaa", enumerator.Key, "#3");
+        enumerator.MoveNext();
+        Assert.AreEqual("zzzz", enumerator.Key, "#4");
+        enumerator.MoveNext();
+        Assert.AreEqual("bbbbbb", enumerator.Key, "#5");
     }
 
     [Test]
-    public void FileRef_DeserializationFails ()
+    public void FileRef_DeserializationFails()
     {
         Assert.Throws<TargetInvocationException>(() =>
         {
@@ -568,7 +603,7 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
     }
 
     [Test]
-    public void FileRef_TypeCantBeResolved ()
+    public void FileRef_TypeCantBeResolved()
     {
         Assert.Throws<ArgumentException>(() =>
         {
@@ -595,27 +630,30 @@ public class ResXResourceReaderTest : Windows.Forms.TestHelper
     }
 
     [Test]
-    public void TypeConverter_ITRSUsed ()
+    public void TypeConverter_ITRSUsed()
     {
-        var dn = new ResXDataNode ("test", 34L);
+        var dn = new ResXDataNode("test", 34L);
 
-        var sb = new StringBuilder ();
-        using (var sw = new StringWriter (sb)) {
-            using (var writer = new ResXResourceWriter (sw)) {
-                writer.AddResource (dn);
+        var sb = new StringBuilder();
+        using (var sw = new StringWriter(sb))
+        {
+            using (var writer = new ResXResourceWriter(sw))
+            {
+                writer.AddResource(dn);
             }
         }
 
-        using (var sr = new StringReader (sb.ToString ())) {
-            var rr = new ResXResourceReader (sr, new ReturnIntITRS ());
-            var en = rr.GetEnumerator ();
-            en.MoveNext ();
+        using (var sr = new StringReader(sb.ToString()))
+        {
+            var rr = new ResXResourceReader(sr, new ReturnIntITRS());
+            var en = rr.GetEnumerator();
+            en.MoveNext();
 
-            var o = ((DictionaryEntry) en.Current).Value;
-            Assert.IsNotNull (o, "#A1");
-            Assert.True (typeof (int)== o.GetType(),"#A2");
-            Assert.AreEqual (34, o,"#A3");
-            rr.Close ();
+            var o = ((DictionaryEntry)en.Current).Value;
+            Assert.IsNotNull(o, "#A1");
+            Assert.True(typeof(int) == o.GetType(), "#A2");
+            Assert.AreEqual(34, o, "#A3");
+            rr.Close();
         }
     }
 }

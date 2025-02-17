@@ -35,8 +35,8 @@ public class ControlBindingsCollectionTest  : TestHelper {
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var c1 = new Control();
-            var c2 = new Control();
+            var c1 = new MockControl();
+            var c2 = new MockControl();
 
             c2.DataBindings.Add("Text", c1, "Text");
             c2.DataBindings.Add("Text", c1, "Text");
@@ -56,7 +56,7 @@ public class ControlBindingsCollectionTest  : TestHelper {
     [Test]
     public void DefaultDataSourceUpdateModeTest ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var item = new MockItem ("A", -1);
 
         Assert.AreEqual (DataSourceUpdateMode.OnValidation, c.DataBindings.DefaultDataSourceUpdateMode, "#A1");

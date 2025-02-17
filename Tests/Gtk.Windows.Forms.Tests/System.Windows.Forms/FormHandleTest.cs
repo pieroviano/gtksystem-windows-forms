@@ -536,7 +536,7 @@ public class FormHandleTest : TestHelper
         c.Dispose ();
 			
         c = new Form ();
-        c.GetNextControl (new Control (), true);
+        c.GetNextControl (new MockControl (), true);
         Assert.IsFalse (c.IsHandleCreated, "A12");
         c.GetPreferredSize (Size.Empty);
         Assert.IsFalse (c.IsHandleCreated, "A13");
@@ -602,7 +602,7 @@ public class FormHandleTest : TestHelper
 			
         c = new Form ();
 			
-        c.SelectNextControl (new Control (), true, true, true, true);
+        c.SelectNextControl (new MockControl (), true, true, true, true);
         Assert.IsFalse (c.IsHandleCreated, "A35");
         c.SetBounds (0, 0, 100, 100);
         Assert.IsFalse (c.IsHandleCreated, "A36");

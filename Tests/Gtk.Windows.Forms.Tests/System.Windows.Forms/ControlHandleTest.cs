@@ -17,11 +17,11 @@ public class ControlHandleTest : TestHelper
         // - AccessibilityObject	[get]
         // - Capture			[set]
         // - Handle			[get]
-        var c = new Control ();
+        var c = new MockControl ();
         // A
         object o = c.AccessibilityObject;
         Assert.IsTrue (c.IsHandleCreated, "A0");
-        c = new Control ();
+        c = new MockControl ();
 
         o = c.AccessibleDefaultActionDescription;
         c.AccessibleDefaultActionDescription = "playdoh";
@@ -37,7 +37,7 @@ public class ControlHandleTest : TestHelper
         Assert.IsFalse (c.IsHandleCreated, "A5");
         // If we don't reset the control, handle creation will fail
         // because AllowDrop requires STAThread, which Nunit doesn't do
-        c = new Control();
+        c = new MockControl();
         o = c.Anchor;
         c.Anchor = AnchorStyles.Right;
         Assert.IsFalse (c.IsHandleCreated, "A6");
@@ -78,7 +78,7 @@ public class ControlHandleTest : TestHelper
         Assert.IsFalse (c.IsHandleCreated, "A17a");
         c.Capture = true;
         Assert.IsTrue (c.IsHandleCreated, "A17b");
-        c = new Control ();
+        c = new MockControl ();
         o = c.CausesValidation;
         c.CausesValidation = false;
         Assert.IsFalse (c.IsHandleCreated, "A18");
@@ -119,7 +119,7 @@ public class ControlHandleTest : TestHelper
         o = c.Enabled;
         c.Enabled = false;
         Assert.IsFalse (c.IsHandleCreated, "A33");
-        c = new Control ();  //Reset just in case enable = false affects things
+        c = new MockControl ();  //Reset just in case enable = false affects things
         o = c.Focused;
         Assert.IsFalse (c.IsHandleCreated, "A34");
         o = c.Font;
@@ -130,7 +130,7 @@ public class ControlHandleTest : TestHelper
         Assert.IsFalse (c.IsHandleCreated, "A36");
         o = c.Handle;
         Assert.IsTrue (c.IsHandleCreated, "A37");
-        c = new Control ();
+        c = new MockControl ();
         o = c.HasChildren;
         Assert.IsFalse (c.IsHandleCreated, "A38");
         o = c.Height;
@@ -179,7 +179,7 @@ public class ControlHandleTest : TestHelper
         c.Padding = new Padding (4);
         Assert.IsFalse (c.IsHandleCreated, "A52");
         o = c.Parent;
-        c.Parent = new Control ();
+        c.Parent = new MockControl ();
         Assert.IsFalse (c.IsHandleCreated, "A53");
         o = c.PreferredSize;
         Assert.IsFalse (c.IsHandleCreated, "A54");
@@ -284,7 +284,7 @@ public class ControlHandleTest : TestHelper
         RemoveWarning (o);
     }
 
-    readonly Control invokecontrol = new Control ();
+    readonly Control invokecontrol = new MockControl ();
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
@@ -304,22 +304,22 @@ public class ControlHandleTest : TestHelper
         // - PointToScreen ()
         // - RectangleToClient ()
         // - RectangleToScreen ()
-        var c = new Control ();
+        var c = new MockControl ();
 			
         c.BringToFront ();
         Assert.IsFalse (c.IsHandleCreated, "A1");
-        c.Contains (new Control ());
+        c.Contains (new MockControl ());
         Assert.IsFalse (c.IsHandleCreated, "A2");
         c.CreateControl ();
         Assert.IsTrue (c.IsHandleCreated, "A3");
-        c = new Control ();
+        c = new MockControl ();
         var g = c.CreateGraphics ();
         g.Dispose ();
         Assert.IsTrue (c.IsHandleCreated, "A4");
-        c = new Control ();
+        c = new MockControl ();
         c.Dispose ();
         Assert.IsFalse (c.IsHandleCreated, "A5");
-        c = new Control ();
+        c = new MockControl ();
         //DragDropEffects d = c.DoDragDrop ("yo", DragDropEffects.None);
         //Assert.IsFalse (c.IsHandleCreated, "A6");
         //Assert.AreEqual (DragDropEffects.None, d, "A6b");
@@ -335,9 +335,9 @@ public class ControlHandleTest : TestHelper
         c.GetChildAtPoint (new Point (10, 10));
         Assert.IsTrue (c.IsHandleCreated, "A10");
         c.GetContainerControl ();
-        c = new Control ();
+        c = new MockControl ();
         Assert.IsFalse (c.IsHandleCreated, "A11");
-        c.GetNextControl (new Control (), true);
+        c.GetNextControl (new MockControl (), true);
         Assert.IsFalse (c.IsHandleCreated, "A12");
         c.GetPreferredSize (Size.Empty);
         Assert.IsFalse (c.IsHandleCreated, "A13");
@@ -351,18 +351,18 @@ public class ControlHandleTest : TestHelper
         Assert.IsFalse (c.IsHandleCreated, "A17");
         c.PointToClient (new Point (100, 100));
         Assert.IsTrue (c.IsHandleCreated, "A18");
-        c = new Control ();
+        c = new MockControl ();
         c.PointToScreen (new Point (100, 100));
         Assert.IsTrue (c.IsHandleCreated, "A19");
-        c = new Control ();
+        c = new MockControl ();
         //c.PreProcessControlMessage   ???
         //c.PreProcessMessage          ???
         c.RectangleToClient (new Rectangle (0, 0, 100, 100));
         Assert.IsTrue (c.IsHandleCreated, "A20");
-        c = new Control ();
+        c = new MockControl ();
         c.RectangleToScreen (new Rectangle (0, 0, 100, 100));
         Assert.IsTrue (c.IsHandleCreated, "A21");
-        c = new Control ();
+        c = new MockControl ();
         c.Refresh ();
         Assert.IsFalse (c.IsHandleCreated, "A22");
         c.ResetBackColor ();
@@ -389,7 +389,7 @@ public class ControlHandleTest : TestHelper
         Assert.IsFalse (c.IsHandleCreated, "A33");
         c.Select ();
         Assert.IsFalse (c.IsHandleCreated, "A34");
-        c.SelectNextControl (new Control (), true, true, true, true);
+        c.SelectNextControl (new MockControl (), true, true, true, true);
         Assert.IsFalse (c.IsHandleCreated, "A35");
         c.SetBounds (0, 0, 100, 100);
         Assert.IsFalse (c.IsHandleCreated, "A36");
@@ -400,7 +400,7 @@ public class ControlHandleTest : TestHelper
     [Test]
     public void Show ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         Assert.IsFalse (c.IsHandleCreated, "A1");
         c.HandleCreated += HandleCreated_WriteStackTrace;
         c.Show ();
@@ -420,7 +420,7 @@ public class ControlHandleTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            var c = new Control();
+            var c = new MockControl();
             c.Invoke(new InvokeDelegate(InvokeMethod));
         });
     }

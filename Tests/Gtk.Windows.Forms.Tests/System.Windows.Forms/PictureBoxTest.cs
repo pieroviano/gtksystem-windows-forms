@@ -10,7 +10,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using GtkTests.Helpers;
-
 using BorderStyle = System.Windows.Forms.BorderStyle;
 
 namespace GtkTests.System.Windows.Forms;

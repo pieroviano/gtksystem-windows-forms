@@ -1276,7 +1276,7 @@ public class FlowPanelTests : TestHelper
     public void PreferredSize ()
     {
         var panel = new FlowLayoutPanel ();
-        panel.Controls.AddRange (new Control [] { new PreferredSizeControl (), new PreferredSizeControl () });
+        panel.Controls.AddRange (new [] { new PreferredSizeControl (), new PreferredSizeControl () });
         Assert.AreEqual (new Size (212, 106), panel.PreferredSize, "1");
         Assert.AreEqual (new Size (106, 212), panel.GetPreferredSize (new Size (150, 150)), "2");
         Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (1000, 1000)) , "3");

@@ -53,7 +53,7 @@ public class BindingsCollectionTest : TestHelper
     [Test]
     public void CollectionChangingTest ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 

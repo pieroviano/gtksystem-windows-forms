@@ -57,12 +57,12 @@ public class ScrollableControlTest : TestHelper
 			
 			
         Control c1, c2;
-        c1 = new Control ();
+        c1 = new MockControl ();
         c1.Location = new Point (-100, -200);
         c1.Size = new Size (10, 10);
         sc.Controls.Add (c1);
 
-        c2 = new Control ();
+        c2 = new MockControl ();
         c2.Location = new Point (400, 800);
         c2.Size = new Size (10, 10);
         sc.Controls.Add (c2);
@@ -255,7 +255,7 @@ public class ScrollableControlTest : TestHelper
         sc.AutoScroll = true;
 
         Control c;
-        c = new Control ();
+        c = new MockControl ();
         c.Location = new Point (0, 0);
         c.Size = new Size (200, 200);
         sc.Controls.Add (c);

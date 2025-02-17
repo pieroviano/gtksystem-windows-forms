@@ -27,50 +27,51 @@
 
 using System.Reflection;
 using System.Resources;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Internals.Resources;
 using GtkTests.Resources;
+using GtkTests.TypeResolutionService_;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.System.Windows.Forms.Resources;
 
 [TestFixture]
-public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
+public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper
+{
     [Test]
-    public void ITRSNotUsedWhenNodeCreatedNew ()
+    public void ITRSNotUsedWhenNodeCreatedNew()
     {
         ResXDataNode node;
-        node = GetNodeEmdeddedSerializable ();
+        node = GetNodeEmdeddedSerializable();
 
-        var returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
-        Assert.AreEqual ((typeof (serializable)).AssemblyQualifiedName, returnedType, "#A1");
+        var returnedType = node.GetValueTypeName(new ReturnSerializableSubClassITRS());
+        Assert.AreEqual(typeof(serializable).AssemblyQualifiedName, returnedType, "#A1");
     }
 
     [Test]
-    public void DeserializationErrorReturnsObjectType ()
+    public void DeserializationErrorReturnsObjectType()
     {
-        var node = GetNodeFromResXReader (serializedResXCorruped);
-        Assert.IsNotNull (node, "#A1");
-        var type = node.GetValueTypeName ((AssemblyName []) null);
+        var node = GetNodeFromResXReader(serializedResXCorruped);
+        Assert.IsNotNull(node, "#A1");
+        var type = node.GetValueTypeName((AssemblyName[])null);
 
-        Assert.AreEqual (typeof (object).AssemblyQualifiedName,type, "#A2");
-    }
-		
-    [Test]
-    public void InvalidMimeTypeFromReaderReturnsNull ()
-    {
-        var node = GetNodeFromResXReader (serializedResXInvalidMimeType);
-        Assert.IsNotNull (node, "#A1");
-        var type = node.GetValueTypeName ((AssemblyName []) null);
-        Assert.IsNull (type, "#A2");
+        Assert.AreEqual(typeof(object).AssemblyQualifiedName, type, "#A2");
     }
 
     [Test]
-    public void ReturnsObjectAssemblyMissing ()
+    public void InvalidMimeTypeFromReaderReturnsNull()
     {
-        var node = GetNodeFromResXReader (missingSerializableFromMissingAssembly);
-        Assert.IsNotNull (node, "#A1");
-        var type = node.GetValueTypeName ((AssemblyName []) null);
-        Assert.AreEqual (typeof (object).AssemblyQualifiedName, type, "#A2");
+        var node = GetNodeFromResXReader(serializedResXInvalidMimeType);
+        Assert.IsNotNull(node, "#A1");
+        var type = node.GetValueTypeName((AssemblyName[])null);
+        Assert.IsNull(type, "#A2");
+    }
+
+    [Test]
+    public void ReturnsObjectAssemblyMissing()
+    {
+        var node = GetNodeFromResXReader(missingSerializableFromMissingAssembly);
+        Assert.IsNotNull(node, "#A1");
+        var type = node.GetValueTypeName((AssemblyName[])null);
+        Assert.AreEqual(typeof(object).AssemblyQualifiedName, type, "#A2");
     }
 
     static readonly string serializedResXInvalidMimeType =

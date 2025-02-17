@@ -25,39 +25,40 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Resources;
 using System.ComponentModel.Design;
-using GtkTests.TypeResolutionService_;
+using System.Resources;
 using GtkTests.Internals.Resources;
+using GtkTests.TypeResolutionService_;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.System.Windows.Forms.Resources;
 
 [TestFixture]
-public class ResXDataNodeTypeConverterGetValueTests : ResourcesTestHelper {
+public class ResXDataNodeTypeConverterGetValueTests : ResourcesTestHelper
+{
     [Test]
-    public void ITRSNotUsedWhenCreatedNew ()
+    public void ITRSNotUsedWhenCreatedNew()
     {
         ResXDataNode node;
-        node = new ResXDataNode ("along", 34L);
+        node = new ResXDataNode("along", 34L);
 
-        var obj = node.GetValue (new ReturnIntITRS ());
+        var obj = node.GetValue(new ReturnIntITRS());
         Assert.True(typeof(long) == obj.GetType(), "#A1");
     }
 
     [Test]
-    public void ITRSUsedEachTimeWithNodeFromReader ()
+    public void ITRSUsedEachTimeWithNodeFromReader()
     {
         ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        originalNode = new ResXDataNode("aNumber", 23L);
+        returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
+        Assert.IsNotNull(returnedNode, "#A1");
 
-        var newVal = returnedNode.GetValue (new ReturnIntITRS ());
-        Assert.AreEqual (typeof (int).AssemblyQualifiedName, newVal.GetType ().AssemblyQualifiedName, "#A2");
+        var newVal = returnedNode.GetValue(new ReturnIntITRS());
+        Assert.AreEqual(typeof(int).AssemblyQualifiedName, newVal.GetType().AssemblyQualifiedName, "#A2");
 
-        var origVal = returnedNode.GetValue ((ITypeResolutionService) null);
-        Assert.AreEqual (typeof (long).AssemblyQualifiedName, origVal.GetType ().AssemblyQualifiedName, "#A3");
+        var origVal = returnedNode.GetValue((ITypeResolutionService)null);
+        Assert.AreEqual(typeof(long).AssemblyQualifiedName, origVal.GetType().AssemblyQualifiedName, "#A3");
     }
 
 }

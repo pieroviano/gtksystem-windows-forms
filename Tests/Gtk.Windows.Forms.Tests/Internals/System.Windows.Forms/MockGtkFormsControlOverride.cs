@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using Cairo;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -6,17 +7,17 @@ using Color = System.Drawing.Color;
 using Image = System.Drawing.Image;
 using Rectangle = Gdk.Rectangle;
 
-namespace System.Windows.Forms;
+namespace GtkTests.System.Windows.Forms;
 
-internal class GtkFormsControlOverride : IGtkControlOverride
+internal class MockGtkFormsControlOverride : IGtkControlOverride
 {
     public event DrawnHandler? DrawnBackground;
     public event PaintEventHandler? Paint;
     public event PaintGraphicsEventHandler? PaintGraphics;
     public Color? BackColor { get; set; }
-    public Image BackgroundImage { get; set; }
+    public Image BackgroundImage { get; set; } = null!;
     public ImageLayout BackgroundImageLayout { get; set; }
-    public Image Image { get; set; }
+    public Image Image { get; set; } = null!;
     public ContentAlignment ImageAlign { get; set; }
 
     public void AddClass(string cssClass)
@@ -27,11 +28,11 @@ internal class GtkFormsControlOverride : IGtkControlOverride
     {
     }
 
-    public void OnDrawnBackground(Context cr, Gdk.Rectangle area)
+    public void OnDrawnBackground(Context cr, Rectangle area)
     {
     }
 
-    public void OnPaint(Context cr, Gdk.Rectangle area)
+    public void OnPaint(Context cr, Rectangle area)
     {
     }
 

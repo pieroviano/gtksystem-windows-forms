@@ -394,7 +394,7 @@ public class DefaultLayoutTest : TestHelper
     [Test]	// bug #80917
     public void BehaviorOverriddenDisplayRectangle ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         c.Anchor |= AnchorStyles.Bottom;
         c.Size = new Size (100, 100);
 
@@ -422,7 +422,7 @@ public class DefaultLayoutTest : TestHelper
         var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        var c = new Control ();
+        var c = new MockControl ();
         c.Anchor = AnchorStyles.Left | AnchorStyles.Right;
         f.Controls.Add (c);
 
@@ -529,7 +529,7 @@ public class DefaultLayoutTest : TestHelper
         f.ShowInTaskbar = false;
         f.Padding = new Padding (15, 15, 15, 15);
 
-        var c = new Control ();
+        var c = new MockControl ();
         c.Dock = DockStyle.Fill;
         f.Controls.Add (c);
 
@@ -566,9 +566,9 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void Bug82805 ()
     {
-        var c1 = new Control ();
+        var c1 = new MockControl ();
         c1.Size = new Size (100, 100);
-        var c2 = new Control ();
+        var c2 = new MockControl ();
         c2.Size = new Size (100, 100);
 
         c2.SuspendLayout ();
@@ -741,7 +741,7 @@ public class DockingTests : TestHelper
         var mc = new MyControl ();
         mc.Size = new Size (200, 200);
 			
-        var c = new Control ();
+        var c = new MockControl ();
         c.Dock = DockStyle.Fill;
 			
         mc.Controls.Add (c);
@@ -816,7 +816,7 @@ public class DockingTests : TestHelper
         f.ShowInTaskbar = false;
         f.ClientSize = new Size (300, 300);
 			
-        var c = new Control ();
+        var c = new MockControl ();
         c.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 			
         f.Controls.Add (c);

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Windows.Forms;
 using Cairo;
 using Gdk;
 using GLib;
@@ -10,11 +11,11 @@ using Device = Gdk.Device;
 using Region = Cairo.Region;
 using Window = Gdk.Window;
 
-namespace System.Windows.Forms;
+namespace GtkTests.System.Windows.Forms;
 
-internal class GtkFormsControl : IGtkControl
+internal class MockGtkControl : IGtkControl
 {
-    private IGtkControlOverride _override = new GtkFormsControlOverride();
+    private IGtkControlOverride _override = new MockGtkFormsControlOverride();
 
     public void Dispose()
     {
@@ -123,10 +124,10 @@ internal class GtkFormsControl : IGtkControl
     public bool IsVisible { get; }
     public bool RedrawOnAllocate { get; set; }
     public Window GdkWindow { get; set; }
-    public IntPtr Handle { get; }
+    public nint Handle { get; }
     public Hashtable Data { get; } = new Hashtable();
     public GType NativeType { get; }
-    public IntPtr OwnedHandle { get; }
+    public nint OwnedHandle { get; }
     public bool IsFloating { get; set; }
     public event UnmapEventHandler? UnmapEvent;
     public event ConfigureEventHandler? ConfigureEvent;
@@ -358,19 +359,19 @@ internal class GtkFormsControl : IGtkControl
 
     public void GetPreferredWidth(out int minimumWidth, out int naturalWidth)
     {
-        minimumWidth=default;
-        naturalWidth=default;
+        minimumWidth = default;
+        naturalWidth = default;
     }
 
     public void GetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
     {
-        minimumWidth=0; 
-        naturalWidth=0;
+        minimumWidth = 0;
+        naturalWidth = 0;
     }
 
     public void GetSizeRequest(out int width, out int height)
     {
-        width=0; height=0;
+        width = 0; height = 0;
     }
 
     public GLib.Object GetTemplateChild(GType widgetType, string name)
@@ -415,7 +416,7 @@ internal class GtkFormsControl : IGtkControl
 
     public bool Intersect(Gdk.Rectangle area, out Gdk.Rectangle intersection)
     {
-        intersection=default;
+        intersection = default;
         return default;
     }
 
@@ -426,7 +427,7 @@ internal class GtkFormsControl : IGtkControl
 
     public string[] ListActionPrefixes()
     {
-        return default; 
+        return default;
     }
 
     public void Map()
@@ -615,7 +616,7 @@ internal class GtkFormsControl : IGtkControl
     public void SetSizeRequest(int width, int height)
     {
         AllocatedWidth = width;
-        AllocatedHeight=height;
+        AllocatedHeight = height;
     }
 
     public void SetStateFlags(StateFlags flags, bool clear)
@@ -670,7 +671,7 @@ internal class GtkFormsControl : IGtkControl
 
     public bool TranslateCoordinates(Widget destWidget, int srcX, int srcY, out int destX, out int destY)
     {
-        destX=destY=0;
+        destX = destY = 0;
         return default;
     }
 

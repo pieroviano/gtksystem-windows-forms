@@ -845,11 +845,11 @@ public class FocusTest  : TestHelper {
     [Category ("NotWorking")]
     public void ActiveControl2 () {
         var cc = new ContainerControl ();
-        var c1 = new Control ();
+        var c1 = new MockControl ();
         cc.Controls.Add (c1);
-        var c2 = new Control ();
+        var c2 = new MockControl ();
         cc.Controls.Add (c2);
-        var c3 = new Control ();
+        var c3 = new MockControl ();
         cc.Controls.Add (c3);
         Assert.IsFalse (c1.Focused, "#A1");
         Assert.IsFalse (c2.Focused, "#A2");
@@ -921,7 +921,7 @@ public class FocusTest  : TestHelper {
     public void ActiveControl_NoChild () {
         var cc = new ContainerControl ();
         try {
-            cc.ActiveControl = new Control ();
+            cc.ActiveControl = new MockControl ();
             Assert.Fail ("#1");
         } catch (ArgumentException ex) {
             Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
@@ -985,9 +985,9 @@ public class FocusTest  : TestHelper {
         cc1.Name = "ContainerControl 1";
         var cc2 = new ContainerControl();
         cc2.Name = "ContainerControl 2";
-        var c1 = new Control();
+        var c1 = new MockControl();
         c1.Name = "Control 1";
-        var c2 = new Control();
+        var c2 = new MockControl();
         c2.Name = "Control 2";
 
         connect(f);
@@ -1090,10 +1090,10 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
     [Category ("NotWorking")]
     public void ActiveControl_Invisible () {
         var cc = new ContainerControl ();
-        var c1 = new Control ();
+        var c1 = new MockControl ();
         c1.Visible = false;
         cc.Controls.Add (c1);
-        var c2 = new Control ();
+        var c2 = new MockControl ();
         cc.Controls.Add (c2);
         cc.ActiveControl = c1;
         Assert.IsFalse (c1.Focused, "#A1");
@@ -1121,10 +1121,10 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
     [Category ("NotWorking")]
     public void ActiveControl_Disabled () {
         var cc = new ContainerControl ();
-        var c1 = new Control ();
+        var c1 = new MockControl ();
         c1.Enabled = false;
         cc.Controls.Add (c1);
-        var c2 = new Control ();
+        var c2 = new MockControl ();
         cc.Controls.Add (c2);
         cc.ActiveControl = c1;
         Assert.IsFalse (c1.Focused, "#A1");
@@ -1152,9 +1152,9 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
     [Category ("NotWorking")]
     public void ActiveControl_Null () {
         var cc = new ContainerControl ();
-        var c1 = new Control ();
+        var c1 = new MockControl ();
         cc.Controls.Add (c1);
-        var c2 = new Control ();
+        var c2 = new MockControl ();
         cc.Controls.Add (c2);
         cc.ActiveControl = c1;
         Assert.IsFalse (c1.Focused, "#A1");

@@ -88,7 +88,7 @@ public class TestControlStyle  : TestHelper {
             "UseTextForAccessibility=True"
         };
 
-        Assert.AreEqual(Control_want, GetStyles(new Control()), "ControlStyles");
+        Assert.AreEqual(Control_want, GetStyles(new MockControl()), "ControlStyles");
     }
 
 

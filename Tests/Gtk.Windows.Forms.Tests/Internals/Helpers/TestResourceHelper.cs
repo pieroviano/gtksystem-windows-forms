@@ -31,7 +31,7 @@ using System.Reflection;
 
 namespace GtkTests.Helpers;
 
-public static class TestResourceHelper
+internal static class TestResourceHelper
 {
     static readonly string tempFolder;
     static readonly Assembly currentAssembly;

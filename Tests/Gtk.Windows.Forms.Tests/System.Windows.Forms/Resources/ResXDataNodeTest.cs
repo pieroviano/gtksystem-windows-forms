@@ -25,15 +25,15 @@
 //		Andreia Gaita	(avidigal@novell.com)
 //  		Gary Barnett	(gary.barnett.mono@gmail.com)
 
-using System.Reflection;
-using System.Drawing;
-using System.Resources;
 using System.Collections;
-using GtkTests.TypeResolutionService_;
+using System.Drawing;
+using System.Reflection;
+using System.Resources;
 using GtkTests.Internals.Resources;
 using GtkTests.Resources;
+using GtkTests.TypeResolutionService_;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.System.Windows.Forms.Resources;
 
 [TestFixture]
 public class ResXDataNodeTest : ResourcesTestHelper
@@ -64,7 +64,7 @@ public class ResXDataNodeTest : ResourcesTestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var d = new ResXDataNode("aname", (ResXFileRef)null);
+            var d = new ResXDataNode("aname", null);
         });
     }
 
@@ -82,7 +82,7 @@ public class ResXDataNodeTest : ResourcesTestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var d = new ResXDataNode("", (ResXFileRef)null);
+            var d = new ResXDataNode("", null);
         });
     }
 
@@ -154,7 +154,7 @@ public class ResXDataNodeTest : ResourcesTestHelper
     {
         var node = new ResXDataNode("name", (object?)null);
         node.Comment = null;
-        Assert.AreEqual(String.Empty, node.Comment, "#A1");
+        Assert.AreEqual(string.Empty, node.Comment, "#A1");
     }
 
     [Test]
@@ -210,7 +210,7 @@ public class ResXDataNodeTest : ResourcesTestHelper
         Assert.IsNotNull(node, "#A1");
 
         var o = node.GetValue((AssemblyName[])null);
-        Assert.True(typeof(long)== o.GetType(), "#A2");
+        Assert.True(typeof(long) == o.GetType(), "#A2");
         Assert.AreEqual(34L, o, "#A3");
     }
 

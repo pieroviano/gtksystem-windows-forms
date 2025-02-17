@@ -86,7 +86,7 @@ public class SplitContainerTests : TestHelper
         p.Name = "MyPanel";
         Assert.AreEqual ("MyPanel", p.Name, "D10-2");
 
-        // We set a new max/min size above, so let's start over with new controls
+        // We set a new max/min size above, so let's start over with new MockControls
         sc = new SplitContainer();
         p = sc.Panel1;
 

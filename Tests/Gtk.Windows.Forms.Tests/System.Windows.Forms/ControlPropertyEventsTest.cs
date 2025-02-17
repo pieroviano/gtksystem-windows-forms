@@ -10,7 +10,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyAllowDrop ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.AllowDrop = true;
@@ -25,7 +25,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyAnchor ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Anchor = AnchorStyles.Bottom;
@@ -40,7 +40,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyAutoSize ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.AutoSize = true;
@@ -55,7 +55,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyBackColor ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.BackColor = Color.Aquamarine;
@@ -70,7 +70,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyBackgroundImage ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
         Image i = new Bitmap (5, 5);
 
@@ -86,7 +86,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyBackgroundImageLayout ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.BackgroundImageLayout = ImageLayout.Zoom;
@@ -101,7 +101,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyBindingContext ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
         var b = new BindingContext ();
 
@@ -116,7 +116,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyBounds ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Bounds = new Rectangle (0, 0, 5, 5);
@@ -131,7 +131,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyCapture ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Capture = true;
@@ -146,7 +146,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyClientSize ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.ClientSize = new Size (5, 5);
@@ -161,7 +161,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyContextMenuStrip ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
         var cm = new ContextMenuStrip ();
 
@@ -177,7 +177,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyCursor ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Cursor = Cursors.HSplit;
@@ -192,7 +192,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyDock ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Dock = DockStyle.Fill;
@@ -207,7 +207,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyEnabled ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Enabled = false;
@@ -222,7 +222,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyFont ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
         var f = new Font ("Arial", 14);
 			
@@ -238,7 +238,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyForeColor ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.ForeColor = Color.Peru;
@@ -253,7 +253,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyHeight ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Height = 27;
@@ -268,7 +268,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyImeMode ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.ImeMode = ImeMode.Hiragana;
@@ -283,7 +283,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyLeft ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Left = 27;
@@ -298,7 +298,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyLocation ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Location = new Point (5, 5);
@@ -313,7 +313,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyMargin ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Margin = new Padding (5);
@@ -328,7 +328,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyMaximumSize ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         c.Size = new Size(10, 10);
 
         // Chaning MaximumSize below Size forces a size change
@@ -346,7 +346,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyMinimumSize ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.MinimumSize = new Size (5, 5);
@@ -361,7 +361,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyName ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Name = "Bob";
@@ -376,7 +376,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyPadding ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Padding = new Padding (5);
@@ -391,7 +391,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyRegion ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
         var r = new Region ();
 			
@@ -407,7 +407,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyRightToLeft ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.RightToLeft = RightToLeft.Yes;
@@ -422,7 +422,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertySize ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Size = new Size (5, 5);
@@ -437,7 +437,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyTabIndex ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.TabIndex = 4;
@@ -452,7 +452,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyTabStop ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.TabStop = false;
@@ -467,7 +467,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyTag ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
         Object o = "Hello";
 
@@ -483,7 +483,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyText ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Text = "Enchilada";
@@ -498,7 +498,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyTop ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Top = 27;
@@ -513,7 +513,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyVisible ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Visible = false;
@@ -528,7 +528,7 @@ public class ControlPropertyEventsTest : TestHelper
     [Test]
     public void PropertyWidth ()
     {
-        var c = new Control ();
+        var c = new MockControl ();
         var ew = new EventWatcher (c);
 
         c.Width = 27;

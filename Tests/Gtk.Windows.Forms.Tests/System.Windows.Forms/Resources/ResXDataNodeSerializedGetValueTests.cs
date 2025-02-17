@@ -26,33 +26,34 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Reflection;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Internals.Resources;
 using GtkTests.Resources;
+using GtkTests.TypeResolutionService_;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.System.Windows.Forms.Resources;
 
 [TestFixture]
-public class ResXDataNodeSerializedGetValueTests : ResourcesTestHelper {
+public class ResXDataNodeSerializedGetValueTests : ResourcesTestHelper
+{
     [Test]
-    public void ITRSNotTouchedWhenNodeCreatedNew ()
+    public void ITRSNotTouchedWhenNodeCreatedNew()
     {
         // check supplied params to GetValue are not touched
         // for an instance created manually
-        var node = GetNodeEmdeddedSerializable ();
+        var node = GetNodeEmdeddedSerializable();
 
         //would raise exception if param used
-        var obj = node.GetValue (new ExceptionalITRS ());
+        var obj = node.GetValue(new ExceptionalITRS());
         Assert.True(typeof(serializable) == obj.GetType(), "#A1");
     }
-		
+
     [Test]
-    public void InvalidMimeTypeFromReaderReturnsNull ()
+    public void InvalidMimeTypeFromReaderReturnsNull()
     {
-        var node = GetNodeFromResXReader (serializedResXInvalidMimeType);
-        Assert.IsNotNull (node, "#A1");
-        var val = node.GetValue ((AssemblyName []) null);
-        Assert.IsNull (val, "#A2");
+        var node = GetNodeFromResXReader(serializedResXInvalidMimeType);
+        Assert.IsNotNull(node, "#A1");
+        var val = node.GetValue((AssemblyName[])null);
+        Assert.IsNull(val, "#A2");
     }
 
 
