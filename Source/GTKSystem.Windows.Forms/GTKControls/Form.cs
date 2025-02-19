@@ -33,7 +33,7 @@ namespace System.Windows.Forms
         {
             self.Title = title;
         }
-        private void Init()
+        internal void Init()
         {
             this.SetScrolledWindow(self);
             contanter.Valign = Gtk.Align.Fill;

@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Windows.Forms;
 using Cairo;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -7,7 +6,7 @@ using Color = System.Drawing.Color;
 using Image = System.Drawing.Image;
 using Rectangle = Gdk.Rectangle;
 
-namespace GtkTests.System.Windows.Forms;
+namespace System.Windows.Forms;
 
 internal class MockGtkFormsControlOverride : IGtkControlOverride
 {

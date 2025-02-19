@@ -1,6 +1,4 @@
-﻿//此文件主要是为了覆盖原生System.Resources.ResourceManager类，原生类不支持读取项目资源图像文件。
-//GTKSystem.Resources.ResourceManager实现了项目资源文件和图像文件读取。
-//如果项目里没有使用资源图像文件，可以不用新建此文件
+﻿// ReSharper disable CheckNamespace
 
 using System.ComponentModel;
 using System.Reflection;
@@ -10,7 +8,7 @@ using System.Xml;
 namespace System.Resources
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ResourceManager : GTKSystem.Resources.ResourceManager
+    internal class ResourceManager : GTKSystem.Resources.ResourceManager
     {
         public ResourceManager(System.Type resourceSource) : base(null, null, resourceSource)
         {

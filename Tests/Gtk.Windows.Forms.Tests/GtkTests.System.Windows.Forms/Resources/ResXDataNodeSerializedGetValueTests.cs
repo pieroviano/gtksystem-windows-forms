@@ -26,7 +26,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Reflection;
-using GtkTests.Internals.Resources;
 using GtkTests.Resources;
 using GtkTests.TypeResolutionService_;
 

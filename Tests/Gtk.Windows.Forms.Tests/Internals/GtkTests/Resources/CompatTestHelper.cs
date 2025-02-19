@@ -2,7 +2,7 @@ using System.Collections;
 using System.Drawing;
 using System.Resources;
 
-namespace GtkTests;
+namespace GtkTests.Resources;
 
 internal class CompatTestHelper
 {

@@ -10,9 +10,9 @@
 using System.Diagnostics;
 using System.Runtime.Versioning;
 
-namespace GtkTests.System.Runtime;
+namespace GtkTests.Asserts;
 
-static class AssertHelper
+internal static class AssertHelper
 {
     [ResourceConsumption(ResourceScope.Process)]
     internal static void FireAssert(string message)

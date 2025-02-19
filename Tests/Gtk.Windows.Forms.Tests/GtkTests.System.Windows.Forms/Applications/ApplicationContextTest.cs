@@ -24,12 +24,12 @@ public class ApplicationContextTest : TestHelper
         ctx?.Dispose();
     }
 
-    void thread_exit(object sender, EventArgs e)
+    void thread_exit(object? sender, EventArgs e)
     {
         thread_exit_count++;
     }
 
-    void form_handle_destroyed(object sender, EventArgs e)
+    void form_handle_destroyed(object? sender, EventArgs e)
     {
         Assert.AreEqual(0, thread_exit_count, "1");
         Assert.AreEqual(sender, ctx.MainForm, "2");
@@ -49,7 +49,7 @@ public class ApplicationContextTest : TestHelper
         thread_exit_count = 0;
         reached_form_handle_destroyed = false;
 
-        var f1 = new Form();
+        var f1 = new MockForm();
         f1.ShowInTaskbar = false;
         f1.HandleDestroyed += form_handle_destroyed;
 

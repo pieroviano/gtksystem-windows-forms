@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using Gdk;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
@@ -16,8 +17,7 @@ using System.Drawing;
 using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.ListViewItem;
-
-
+using Size = System.Drawing.Size;
 
 namespace System.Windows.Forms
 {
@@ -72,6 +72,17 @@ namespace System.Windows.Forms
             self.box.PackStart(headerView, false, true, 0);
             self.box.PackStart(scrolledWindow, false, true, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            IsDisposed = true;
+            foreach (var column in Columns)
+            {
+                column.ImageList = null;
+                column.Index = -1;
+            }
         }
 
         private void Hadjustment_ValueChanged(object sender, EventArgs e)
@@ -229,7 +240,14 @@ namespace System.Windows.Forms
         public bool ShowGroups { get; set; } = true;
         public bool ShowItemToolTips { get; set; }
 
-        public ImageList SmallImageList { get; set; }
+        public ImageList SmallImageList
+        {
+            get => smallImageList;
+            set
+            {
+                smallImageList = value;
+            }
+        }
 
         public ImageList StateImageList { get; set; }
 
@@ -883,10 +901,12 @@ namespace System.Windows.Forms
         public void EndUpdate()
         {
             IsCacheUpdate = false;
-            self.Window.ProcessUpdates(true);
+            self.Window?.ProcessUpdates(true);
             self.ShowAll();
         }
         private ListViewGroup _defaultGroup;
+        private ImageList smallImageList;
+
         internal ListViewGroup DefaultGroup
         {
             get
@@ -938,8 +958,11 @@ namespace System.Windows.Forms
         [ListBindable(false)]
         public class ColumnHeaderCollection : List<ColumnHeader>
         {
+            private readonly ListView owner;
+
             public ColumnHeaderCollection(ListView owner)
             {
+                this.owner = owner;
                 owner.self.Realized += Self_Realized;
             }
 
@@ -964,6 +987,27 @@ namespace System.Windows.Forms
                 }
             }
 
+            public virtual new bool Remove(ColumnHeader item)
+            {
+                int index = IndexOf(item);
+                if (index >= 0)
+                {
+                    RemoveAt(index);
+                    item.displayIndex = -1;
+                    for (int i = 0; i < owner.Columns.Count; i++)
+                    {
+                        if (owner.Columns[i].displayIndex >= item.displayIndex)
+                        {
+                            owner.Columns[i].displayIndex--;
+                        }
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+
+
 
             public virtual void RemoveByKey(string key)
             {
@@ -980,6 +1024,13 @@ namespace System.Windows.Forms
                 return Add("", text, width, textAlign, "");
             }
 
+            public new virtual void Add(ColumnHeader item)
+            {
+                item._listView = owner;
+                base.Add(item);
+                item.displayIndex = Count - 1;
+                item.ImageList = owner.smallImageList;
+            }
             public virtual ColumnHeader Add(string text)
             {
                 return Add("", text, 60, HorizontalAlignment.Left, "");
@@ -1037,6 +1088,7 @@ namespace System.Windows.Forms
                     value._index = idx++;
                     if (value.DisplayIndex == 0)
                         value.DisplayIndex = value._index;
+                    value._listView = owner;
                 }
 
                 base.AddRange(values);

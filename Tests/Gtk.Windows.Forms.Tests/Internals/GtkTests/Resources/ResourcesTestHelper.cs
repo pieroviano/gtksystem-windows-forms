@@ -26,14 +26,13 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Resources;
 using System.Collections;
 using System.Drawing;
+using System.Resources;
 using GtkTests.Helpers;
-using GtkTests.Resources;
 using Newtonsoft.Json;
 
-namespace GtkTests.Internals.Resources;
+namespace GtkTests.Resources;
 
 public class ResourcesTestHelper
 {

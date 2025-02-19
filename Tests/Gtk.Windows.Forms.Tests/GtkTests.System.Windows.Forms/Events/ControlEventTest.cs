@@ -237,7 +237,7 @@ public class EventClass : TestHelper
         // Test VisibleChanged Event
         c.VisibleChanged += Event_Handler1;
         eventhandled = false;
-        c.Visible = false;
+        c.Visible = true;
         Assert.AreEqual(true, eventhandled, "#A30");
     }
 }

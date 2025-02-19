@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace GtkTests.System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     internal class MockControl : Control
     {

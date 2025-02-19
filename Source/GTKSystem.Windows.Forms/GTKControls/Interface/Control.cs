@@ -50,33 +50,36 @@ namespace System.Windows.Forms
             DataBindings = new ControlBindingsCollection(this);
             Enabled = true;
             this.unique_key = Guid.NewGuid().ToString().ToLower();
-            if (this.Widget is Gtk.Window win)
+            if (this.Widget != null)
             {
-                this.Widget.Halign = Align.Fill;
-                this.Widget.Valign = Align.Fill;
+                if (this.Widget is Gtk.Window win)
+                {
+                    this.Widget.Halign = Align.Fill;
+                    this.Widget.Valign = Align.Fill;
+                }
+                else
+                {
+                    this.Widget.Halign = Align.Start;
+                    this.Widget.Valign = Align.Start;
+                    this.Widget.Expand = false;
+                }
+                this.Widget.Data["Control"] = this;
+                this.Widget.StyleContext.AddClass("DefaultThemeStyle");
+                this.Widget.ButtonPressEvent += Widget_ButtonPressEvent;
+                this.Widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
+                this.Widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
+                this.Widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
+                this.Widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
+                this.Widget.ScrollEvent += Widget_ScrollEvent;
+                this.Widget.FocusInEvent += Widget_FocusInEvent;
+                this.Widget.FocusOutEvent += Widget_FocusOutEvent;
+                this.Widget.KeyPressEvent += Widget_KeyPressEvent;
+                this.Widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
+                this.Widget.Realized += Widget_Realized;
+                this.Widget.ConfigureEvent += Widget_ConfigureEvent;
+                Self.Override.PaintGraphics += Override_PaintGraphics;
+                this.Widget.SizeAllocated += Widget_SizeAllocated;
             }
-            else
-            {
-                this.Widget.Halign = Align.Start;
-                this.Widget.Valign = Align.Start;
-                this.Widget.Expand = false;
-            }
-            this.Widget.Data["Control"] = this;
-            this.Widget.StyleContext.AddClass("DefaultThemeStyle");
-            this.Widget.ButtonPressEvent += Widget_ButtonPressEvent;
-            this.Widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
-            this.Widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
-            this.Widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
-            this.Widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
-            this.Widget.ScrollEvent += Widget_ScrollEvent;
-            this.Widget.FocusInEvent += Widget_FocusInEvent;
-            this.Widget.FocusOutEvent += Widget_FocusOutEvent;
-            this.Widget.KeyPressEvent += Widget_KeyPressEvent;
-            this.Widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
-            this.Widget.Realized += Widget_Realized;
-            this.Widget.ConfigureEvent += Widget_ConfigureEvent;
-            Self.Override.PaintGraphics += Override_PaintGraphics;
-            this.Widget.SizeAllocated += Widget_SizeAllocated;
         }
 
         private void Control_Disposed(object sender, EventArgs e)
@@ -576,7 +579,16 @@ namespace System.Windows.Forms
             remove { Self.Override.Paint -= value; }
         }
         #endregion
-        public virtual AccessibleObject AccessibilityObject { get; }
+
+        public virtual AccessibleObject AccessibilityObject
+        {
+            get
+            {
+                _handleCreated = true;
+                return accessibilityObject;
+            }
+            set => accessibilityObject = value;
+        }
 
         public virtual string AccessibleDefaultActionDescription { get; set; }
         public virtual string AccessibleDescription { get; set; }
@@ -692,6 +704,7 @@ namespace System.Windows.Forms
             set
             {
                 _capture = value;
+                _handleCreated = true;
                 Handle = IntPtr.Zero;
             }
         }
@@ -806,9 +819,10 @@ namespace System.Windows.Forms
             get => this.Widget.Sensitive;
             set
             {
-                var sensitive = this.Widget.Sensitive;
+                bool sensitive = false;
                 if (this.Widget != null)
                 {
+                    sensitive = this.Widget.Sensitive;
                     this.Widget.Sensitive = value;
                 }
 
@@ -880,9 +894,13 @@ namespace System.Windows.Forms
 
         public virtual bool IsAccessible { get; set; }
 
-        public virtual bool IsDisposed { get; private set; }
+        public virtual bool IsDisposed { get; internal set; }
 
-        public virtual bool IsHandleCreated { get => true; }
+        public virtual bool IsHandleCreated
+        {
+            get => _handleCreated;
+            set => _handleCreated = value;
+        }
 
         public virtual bool IsMirrored { get; }
 
@@ -1035,7 +1053,7 @@ namespace System.Windows.Forms
                     ClientSizeChanged?.Invoke(this, EventArgs.Empty);
                 }
 
-                if (Dock!=DockStyle.None)
+                if (Dock != DockStyle.None)
                 {
                     Dock = DockStyle.None;
                 }
@@ -1305,6 +1323,7 @@ namespace System.Windows.Forms
 
         public virtual void CreateControl()
         {
+            _handleCreated = true;
             _Created = true;
         }
 
@@ -1323,13 +1342,13 @@ namespace System.Windows.Forms
                 context?.Dispose();
                 context = new Cairo.Context(surface);
 
-                var widget = this.Widget as Widget;
+                var widget = this.Widget as IWidget;
                 if (widget != null) return new Drawing.Graphics(widget, context, this.Widget.Allocation);
                 return null;
             }
             finally
             {
-
+                _handleCreated = true;
             }
         }
 
@@ -1356,7 +1375,7 @@ namespace System.Windows.Forms
 
         public virtual Form FindForm()
         {
-            if (this.Widget.Toplevel.Data.ContainsKey("Control"))
+            if (this.Widget.Toplevel?.Data.ContainsKey("Control")??false)
             {
                 return this.Widget.Toplevel.Data["Control"] as Form;
             }
@@ -1389,11 +1408,13 @@ namespace System.Windows.Forms
 
         public virtual Control GetChildAtPoint(Point pt)
         {
+            _handleCreated = true;
             return null;
         }
 
         public virtual Control GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue)
         {
+            _handleCreated = true;
             return null;
         }
 
@@ -1491,6 +1512,10 @@ namespace System.Windows.Forms
         public virtual object Invoke(Delegate method, params object[] args)
         {
             object result = null;
+            if (!_handleCreated)
+            {
+                throw new InvalidOperationException();
+            }
             GLib.Idle.Add(() =>
             {
                 result = method.DynamicInvoke(args);
@@ -1528,9 +1553,12 @@ namespace System.Windows.Forms
 
         public virtual Point PointToClient(Point p)
         {
+            int x=0;
+            int y=0;
+            _handleCreated = true;
             if (Widget != null)
             {
-                this.Widget.Window.GetOrigin(out int x, out int y);
+                this.Widget.Window?.GetOrigin(out x, out y);
                 if (p.X > x && p.Y > y)
                     return new Point(p.X - x, p.Y - y);
             }
@@ -1539,9 +1567,12 @@ namespace System.Windows.Forms
 
         public virtual Point PointToScreen(Point p)
         {
+            int x = 0;
+            int y = 0;
+            _handleCreated = true;
             if (Widget != null)
             {
-                this.Widget.Window.GetOrigin(out int x, out int y);
+                this.Widget.Window?.GetOrigin(out x, out y);
                 if (p.X < x && p.Y < y)
                     return new Point(p.X + x, p.Y + y);
             }
@@ -1560,9 +1591,12 @@ namespace System.Windows.Forms
 
         public virtual Rectangle RectangleToClient(Rectangle r)
         {
+            int x = 0;
+            int y = 0;
+            _handleCreated = true;
             if (Widget != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window?.GetPosition(out x, out y);
                 if (r.X > x && r.Y > y)
                     return new Rectangle(r.X - x, r.Y - y, r.Width, r.Height);
             }
@@ -1571,9 +1605,12 @@ namespace System.Windows.Forms
 
         public virtual Rectangle RectangleToScreen(Rectangle r)
         {
+            int x = 0;
+            int y = 0;
+            _handleCreated = true;
             if (Widget != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window?.GetPosition(out x, out y);
                 if (r.X < x && r.Y < y)
                     return new Rectangle(r.X + x, r.Y + y, r.Width, r.Height);
             }
@@ -1737,15 +1774,8 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (this.Widget == null)
-                {
-                    OnHandleCreated(EventArgs.Empty);
-                    return IntPtr.Zero;
-                }
-                else
-                {
-                    return this.Widget.Handle;
-                }
+                OnHandleCreated(EventArgs.Empty);
+                return this.Widget.Handle;
             }
             set => OnHandleCreated(EventArgs.Empty);
         }
@@ -1760,7 +1790,20 @@ namespace System.Windows.Forms
             }
         }
 
-        public virtual Padding Margin { get; set; }
+        public virtual Padding Margin
+        {
+            get => margin;
+            set
+            {
+                var padding = margin;
+                margin = value;
+                if (padding != value)
+                {
+                    MarginChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
         public virtual Size MaximumSize { get; set; }
         public virtual Size MinimumSize { get; set; }
         private BorderStyle _BorderStyle;
@@ -1776,8 +1819,10 @@ namespace System.Windows.Forms
         private ImeMode imeMode;
         private bool _autoSize;
         private bool _capture;
-        private bool _handleCreated;
         private ContextMenuStrip _contextMenuStrip;
+        private AccessibleObject accessibilityObject;
+        private bool _handleCreated;
+        private Padding margin;
 
         public virtual BorderStyle BorderStyle
         {
@@ -1838,7 +1883,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                this.Widget.Window.ProcessUpdates(true);
+                this.Widget.Window?.ProcessUpdates(true);
                 this.Widget.QueueDraw();
             }
         }
@@ -1860,6 +1905,7 @@ namespace System.Windows.Forms
         {
             Dispose(true);
             base.Dispose();
+            _handleCreated = false;
             Disposed?.Invoke(this, EventArgs.Empty);
         }
 

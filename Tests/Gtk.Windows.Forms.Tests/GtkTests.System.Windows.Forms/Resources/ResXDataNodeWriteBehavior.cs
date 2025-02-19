@@ -29,7 +29,7 @@
 using System.ComponentModel.Design;
 using System.Reflection;
 using System.Resources;
-using GtkTests.Internals.Resources;
+using GtkTests.Resources;
 
 namespace GtkTests.System.Windows.Forms.Resources;
 

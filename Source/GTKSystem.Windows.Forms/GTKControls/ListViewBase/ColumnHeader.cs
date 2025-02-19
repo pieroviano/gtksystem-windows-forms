@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
@@ -8,7 +9,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     public class ColumnHeader : Component, ICloneable
     {
-        internal int _index=-1;
+        internal int _index = -1;
 
         internal string _text;
 
@@ -24,7 +25,38 @@ namespace System.Windows.Forms
             get => displayIndex;
             set
             {
+                if (_listView != null && value < 0 && !_listView.IsDisposed)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(DisplayIndex), $"{value}<0");
+                }
+                if (_listView != null && value >= _listView.Columns.Count && !_listView.IsDisposed)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(DisplayIndex), $"{value}>={_listView.Columns.Count}");
+                }
                 var index = displayIndex;
+                if (_listView != null)
+                {
+                    for (int i = 0; i < _listView.Columns.Count; i++)
+                    {
+                        if (value <= displayIndex)
+                        {
+                            if (_listView.Columns[i] != this &&
+                                _listView.Columns[i].displayIndex <= displayIndex)
+                            {
+                                _listView.Columns[i].displayIndex++;
+                            }
+                        }
+                        else
+                        {
+                            if (_listView.Columns[i] != this &&
+                                _listView.Columns[i].displayIndex <= value && _listView.Columns[i].displayIndex >= displayIndex)
+                            {
+                                _listView.Columns[i].displayIndex--;
+                            }
+                        }
+                    }
+                }
+
                 displayIndex = value;
                 if (index != value)
                 {
@@ -40,19 +72,49 @@ namespace System.Windows.Forms
             {
                 return _index;
             }
+            internal set => _index = value;
         }
 
         [DefaultValue(-1)]
-
-        public int ImageIndex { get; set; } = -1;
+        public int ImageIndex
+        {
+            get => imageIndex;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(ImageIndex), $"{value}<0");
+                }
+                imageIndex = value;
+                imageKey = string.Empty;
+            }
+        }
 
         private ImageList? _imageList;
-        private int displayIndex = -1;
+        internal int displayIndex = -1;
+        public ListView _listView;
+        private int imageIndex = -1;
+        private string imageKey = string.Empty;
+        private string name = string.Empty;
+        private object? tag;
+        private int width = 100;
 
         [Browsable(false)]
-        public ImageList? ImageList => _imageList;
+        public ImageList? ImageList
+        {
+            get => _imageList;
+            internal set => _imageList = value;
+        }
 
-        public string ImageKey { get; set; } = string.Empty;
+        public string ImageKey
+        {
+            get => imageKey;
+            set
+            {
+                imageKey = value ?? string.Empty;
+                imageIndex = -1;
+            }
+        }
 
         [Browsable(false)]
         public ListView ListView
@@ -64,9 +126,9 @@ namespace System.Windows.Forms
         [Browsable(false)]
         public string Name
         {
-            get;
-            set;
-        } = string.Empty;
+            get => name;
+            set => name = value ?? string.Empty;
+        }
 
         [Localizable(true)]
         public string Text
@@ -84,25 +146,30 @@ namespace System.Windows.Forms
             set;
         } = HorizontalAlignment.Left;
 
-
         [Localizable(false)]
         [Bindable(true)]
-
         [DefaultValue(null)]
 
-        public object Tag
+        public object? Tag
         {
-            get;
-            set;
+            get => tag;
+            set => tag = value;
         }
 
         [Localizable(true)]
         [DefaultValue(60)]
         public int Width
         {
-            get;
-            set;
-        } = 100;
+            get => width;
+            set
+            {
+                if (value < 0)
+                {
+                    value = _listView.ClientRectangle.Width - _listView.Columns.Where(i=>i!=this).Sum(col1 => col1.Width);
+                }
+                width = value;
+            }
+        }
 
         public ColumnHeader()
         {
@@ -118,6 +185,11 @@ namespace System.Windows.Forms
             ImageKey = imageKey;
         }
 
+        public override string ToString()
+        {
+            return $"ColumnHeader: {Name} Text: {Text}";
+        }
+
         //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
         //{
         //	throw null;
@@ -131,7 +203,7 @@ namespace System.Windows.Forms
         }
         protected override void Dispose(bool disposing)
         {
-         
+
         }
     }
 }

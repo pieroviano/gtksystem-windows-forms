@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace GtkTests.Internals
+namespace System.Resources
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ResourceManager : GTKSystem.Resources.ResourceManager

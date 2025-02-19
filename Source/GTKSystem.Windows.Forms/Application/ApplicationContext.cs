@@ -48,11 +48,17 @@ namespace System.Windows.Forms
             set
             {
                 EventHandler onClose = OnMainFormDestroy;
-                _mainForm.HandleDestroyed -= onClose;
+                if (_mainForm != null)
+                {
+                    _mainForm.HandleDestroyed -= onClose;
+                }
 
                 _mainForm = value;
 
-                _mainForm.HandleDestroyed += onClose;
+                if (_mainForm != null)
+                {
+                    _mainForm.HandleDestroyed += onClose;
+                }
             }
         }
 

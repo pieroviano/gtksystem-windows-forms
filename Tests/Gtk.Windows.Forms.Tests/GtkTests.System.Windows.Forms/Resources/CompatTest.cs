@@ -14,6 +14,7 @@
 //
 
 using GtkTests.Helpers;
+using GtkTests.Resources;
 
 namespace GtkTests.System.Windows.Forms.Resources;
 

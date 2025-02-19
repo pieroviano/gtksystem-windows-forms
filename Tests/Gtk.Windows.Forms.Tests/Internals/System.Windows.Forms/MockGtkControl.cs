@@ -1,21 +1,22 @@
 ﻿using System.Collections;
-using System.Windows.Forms;
 using Cairo;
 using Gdk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using GTKSystem.Windows.Forms.Interfaces;
 using Pango;
 using Context = Cairo.Context;
 using Device = Gdk.Device;
 using Region = Cairo.Region;
 using Window = Gdk.Window;
 
-namespace GtkTests.System.Windows.Forms;
+namespace System.Windows.Forms;
 
 internal class MockGtkControl : IGtkControl
 {
     private IGtkControlOverride _override = new MockGtkFormsControlOverride();
+    private StyleContext styleContext;
 
     public void Dispose()
     {
@@ -100,7 +101,7 @@ internal class MockGtkControl : IGtkControl
     public bool HasWindow { get; set; }
     public bool IsMapped { get; set; }
     public RcStyle ModifierStyle { get; }
-    public Pango.Context PangoContext { get; }
+    public Pango.Context PangoContext { get; } = new Pango.Context();
     public Window ParentWindow { get; set; }
     public WidgetPath WidgetPath { get; }
     public bool IsRealized { get; set; }
@@ -108,7 +109,9 @@ internal class MockGtkControl : IGtkControl
     public Window RootWindow { get; }
     public Screen Screen { get; }
     public StateFlags StateFlags { get; }
-    public StyleContext StyleContext { get; } = new StyleContext();
+
+    public StyleContext StyleContext => styleContext ??= new StyleContext();
+
     public bool SupportMultidevice { get; set; }
     public Widget Toplevel { get; }
     public Align ValignWithBaseline { get; }

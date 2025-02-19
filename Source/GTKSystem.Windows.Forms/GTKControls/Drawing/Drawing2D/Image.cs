@@ -8,11 +8,12 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using GTKSystem.Windows.Forms.Interfaces;
 
 namespace System.Drawing
 {
     [Serializable]
-	public abstract class Image : Gtk.Widget, IDisposable, ICloneable, ISerializable//,MarshalByRefObject
+	public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,MarshalByRefObject
     {
         #region 只取图像byte[]数据 
         internal Image(byte[] pixbuf)

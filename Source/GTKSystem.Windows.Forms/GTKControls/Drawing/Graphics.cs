@@ -7,6 +7,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
+using Gtk;
+using GTKSystem.Windows.Forms.Interfaces;
 
 namespace System.Drawing
 {
@@ -14,20 +16,27 @@ namespace System.Drawing
 	{
 		private Cairo.Context context;
 		private Gdk.Rectangle rectangle;
-		private Gtk.Widget widget;
+		private IWidget _widget;
         #region 用于输入与输出的数值调整差值
         internal double diff_left { get; set; }
         internal double diff_top { get; set; }
         //internal int diff_right { get; set; }
         //internal int diff_bottom { get; set; }
         #endregion
-        internal Graphics(Gtk.Widget widget, Cairo.Context context, Gdk.Rectangle rectangle)
-		{
-			this.widget = widget;
-			this.context = context;
-			this.rectangle = rectangle;
-			this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
-		}
+        internal Graphics(IWidget widget, Cairo.Context context, Gdk.Rectangle rectangle)
+        {
+            this._widget = widget;
+            this.context = context;
+            this.rectangle = rectangle;
+            this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
+        }
+        internal Graphics(Widget widget, Cairo.Context context, Gdk.Rectangle rectangle)
+        {
+            this.widget = widget;
+            this.context = context;
+            this.rectangle = rectangle;
+            this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
+        }
         internal Graphics(Cairo.Context context, Gdk.Rectangle rectangle)
         {
             this.context = context;
@@ -947,7 +956,15 @@ namespace System.Drawing
                     float textSize = str.emSize < 1 ? 14f : str.emSize;
                     FontFamily font = str.family;
                     string family = font?.Name;
-                    if (this.widget != null)
+                    if (this._widget != null)
+                    {
+                        Pango.Context pangocontext = this._widget.PangoContext;
+                        family = pangocontext.FontDescription.Family;
+                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                        if (pangoFamily == null)
+                            family = pangocontext.FontDescription.Family;
+                    }
+                    else if (this.widget != null)
                     {
                         Pango.Context pangocontext = this.widget.PangoContext;
                         family = pangocontext.FontDescription.Family;
@@ -955,7 +972,7 @@ namespace System.Drawing
                         if (pangoFamily == null)
                             family = pangocontext.FontDescription.Family;
                     }
-                    
+
                     this.context.SelectFontFace(family, str.style == 2 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, str.style == 1 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                     this.context.SetFontSize(textSize);
                     TextExtents textext = this.context.TextExtents(text);
@@ -1145,7 +1162,15 @@ namespace System.Drawing
 				}
                 
                 string family = font?.Name;
-                if (this.widget != null)
+                if (this._widget != null)
+                {
+                    Pango.Context pangocontext = this._widget.PangoContext;
+                    family = pangocontext.FontDescription.Family;
+                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                    if (pangoFamily == null)
+                        family = pangocontext.FontDescription.Family;
+                }
+                else if (this.widget != null)
                 {
                     Pango.Context pangocontext = this.widget.PangoContext;
                     family = pangocontext.FontDescription.Family;
@@ -1497,7 +1522,7 @@ namespace System.Drawing
         /// <param name="image"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static Graphics FromImage(Image image)
+        public static Graphics? FromImage(Image image)
         {
             int _width = image.Width;
             int _height = image.Height;
@@ -1514,7 +1539,14 @@ namespace System.Drawing
             simisurface = imagesurface.CreateSimilar(Cairo.Content.ColorAlpha, _width, _height);
             imagecontext?.Dispose();
             imagecontext = new Cairo.Context(simisurface);
-            return new Drawing.Graphics(image, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
+            var o = (object)image;
+            var widgetValue = o as IWidget;
+            if (widgetValue != null)
+            {
+                return new Drawing.Graphics(widgetValue, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
+            }
+
+            return null;
         }
 
         public void Flush()
@@ -1655,6 +1687,14 @@ namespace System.Drawing
                     textSize = font.Size * 96;
             }
             string family = font?.Name;
+            if (this._widget != null)
+            {
+                Pango.Context pangocontext = this._widget.PangoContext;
+                family = pangocontext.FontDescription.Family;
+                var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                if (pangoFamily == null)
+                    family = pangocontext.FontDescription.Family;
+            }
             if (this.widget != null)
             {
                 Pango.Context pangocontext = this.widget.PangoContext;
@@ -1708,7 +1748,9 @@ namespace System.Drawing
 			this.context.Restore();
         }
 		private float _angle = 0;
-		public void RotateTransform(float angle)
+        private readonly Widget widget;
+
+        public void RotateTransform(float angle)
 		{
             this.context.Rotate(Math.PI / 180 * angle);
             _angle = angle;

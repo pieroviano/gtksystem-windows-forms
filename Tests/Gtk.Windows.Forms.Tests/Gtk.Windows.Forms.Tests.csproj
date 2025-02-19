@@ -8,16 +8,16 @@
 		<AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
-		<RootNamespace>GtkTests</RootNamespace>
+		<RootNamespace></RootNamespace>
 		<LangVersion>latest</LangVersion>
 		<NoWarn>NUnit2005</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="System.Windows.Forms\Resources\compat_1_1.txt">
+	  <EmbeddedResource Include="GtkTests.System.Windows.Forms\Resources\compat_1_1.txt">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
-	  <EmbeddedResource Include="System.Windows.Forms\Resources\compat_2_0.txt">
+	  <EmbeddedResource Include="GtkTests.System.Windows.Forms\Resources\compat_2_0.txt">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	</ItemGroup>
@@ -52,11 +52,8 @@
 	  <EmbeddedResource Update="Properties\Resources.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>GtkTests.Properties</CustomToolNamespace>
 	  </EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="System.Windows.Forms\General\" />
 	</ItemGroup>
 
 </Project>
