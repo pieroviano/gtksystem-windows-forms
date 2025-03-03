@@ -550,7 +550,7 @@ public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISeriali
         //     System.Drawing.Font.GdiVerticalFont, System.Drawing.Font.GdiCharSet, System.Drawing.Font.Style,
         //     System.Drawing.Font.Size, and System.Drawing.Font.Unit property values as this
         //     System.Drawing.Font; otherwise, false.
-        public override bool Equals(object obj) { return Equals(obj as Font); }
+        public override bool Equals(object? obj) { return base.Equals(obj as Font); }
         //
         // 摘要:
         //     Gets the hash code for this System.Drawing.Font.

@@ -92,13 +92,18 @@ public sealed class ImageAnimator
 						var num3 = 0;
 						while (num2 < _frameCount)
 						{
-							if (num3 >= value.Length)
+							if (num3 >= value?.Length)
 							{
 								num3 = 0;
 							}
-							var num4 = BitConverter.ToInt32(value, num3) * 10;
-							num += ((num4 > 0) ? num4 : 40);
-							if (num < _totalAnimationTime)
+
+                            if (value != null)
+                            {
+                                var num4 = BitConverter.ToInt32(value, num3) * 10;
+                                num += ((num4 > 0) ? num4 : 40);
+                            }
+
+                            if (num < _totalAnimationTime)
 							{
 								num = _totalAnimationTime;
 							}
@@ -113,9 +118,12 @@ public sealed class ImageAnimator
 					}
 					var propertyItem2 = image.GetPropertyItem(20737);
 					if (propertyItem2 != null)
-					{
-						var value2 = propertyItem2.Value;
-						_loopCount = BitConverter.ToInt16(value2, 0);
+                    {
+                        var value2 = propertyItem2.Value;
+                        if (value2 != null)
+                        {
+                            _loopCount = BitConverter.ToInt16(value2, 0);
+                        }
                     }
 					else
 					{

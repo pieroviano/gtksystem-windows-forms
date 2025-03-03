@@ -11,7 +11,6 @@ namespace System.Drawing;
 [Serializable]
 public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,MarshalByRefObject
 {
-    #region 只取图像byte[]数据 
     internal Image(byte[]? pixbuf)
     {
         PixbufData = pixbuf;
@@ -42,7 +41,6 @@ public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,M
     }
     private string? _fileName;
     public string? FileName { get => _fileName; set { _fileName = value; Pixbuf = new Pixbuf(value); } }
-    #endregion
 
     /// <summary>Provides a callback method for determining when the <see cref="M:System.Drawing.Image.GetThumbnailImage(System.Int32,System.Int32,System.Drawing.Image.GetThumbnailImageAbort,System.IntPtr)" /> method should prematurely cancel execution.</summary>
     /// <returns>This method returns <see langword="true" /> if it decides that the <see cref="M:System.Drawing.Image.GetThumbnailImage(System.Int32,System.Int32,System.Drawing.Image.GetThumbnailImageAbort,System.IntPtr)" /> method should prematurely stop execution; otherwise, it returns <see langword="false" />.</returns>
@@ -224,7 +222,7 @@ public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,M
     /// <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
     /// <exception cref="T:System.ArgumentException">
     ///   <paramref name="filename" /> is a <see cref="T:System.Uri" />.</exception>
-    public static Image FromFile(string? filename)
+    public static Image? FromFile(string? filename)
     {
         return FromFile(filename, useEmbeddedColorManagement: false);
     }
@@ -239,23 +237,32 @@ public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,M
     /// <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
     /// <exception cref="T:System.ArgumentException">
     ///   <paramref name="filename" /> is a <see cref="T:System.Uri" />.</exception>
-    public static Image FromFile(string? filename, bool useEmbeddedColorManagement)
+    public static Image? FromFile(string? filename, bool useEmbeddedColorManagement)
     {
         if (!File.Exists(filename))
         {
-            filename = IO.Path.GetFullPath(filename);
-            throw new FileNotFoundException(filename);
-        }
-        filename = IO.Path.GetFullPath(filename);
-        var extension = IO.Path.GetExtension(filename)?.ToLower();
-        var filebytes = File.ReadAllBytes(filename);
-        var bitmap = new Bitmap(filebytes);
-        if (extension != null)
-        {
-            bitmap.GetImageFormat(extension);
+            if (filename != null)
+            {
+                filename = IO.Path.GetFullPath(filename);
+                throw new FileNotFoundException(filename);
+            }
         }
 
-        return bitmap;
+        if (filename != null)
+        {
+            filename = IO.Path.GetFullPath(filename);
+            var extension = IO.Path.GetExtension(filename)?.ToLower();
+            var filebytes = File.ReadAllBytes(filename);
+            var bitmap = new Bitmap(filebytes);
+            if (extension != null)
+            {
+                bitmap.GetImageFormat(extension);
+            }
+
+            return bitmap;
+        }
+
+        return null;
     }
 
     /// <summary>Creates an <see cref="T:System.Drawing.Image" /> from the specified data stream.</summary>

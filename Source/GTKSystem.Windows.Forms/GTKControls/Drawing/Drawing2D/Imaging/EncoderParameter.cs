@@ -6,7 +6,6 @@ namespace System.Drawing.Imaging;
 [StructLayout(LayoutKind.Sequential)]
 public sealed class EncoderParameter : IDisposable
 {
-    private readonly int numberOfValues;
     public bool Undefined { get; }
     public Encoder? ConstructorEncoder { get; }
     public int[]? Numerators1 { get; }

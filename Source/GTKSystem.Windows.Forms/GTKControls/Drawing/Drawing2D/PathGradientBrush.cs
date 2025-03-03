@@ -125,11 +125,11 @@ public sealed class PathGradientBrush : Brush
         Rectangle = new RectangleF(left, top, right - left, bottom - top);
     }
 
-		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
-		/// <returns>The <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> this method creates, cast as an object.</returns>
-		public override object? Clone()
-		{
-			return null;
+    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
+    /// <returns>The <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> this method creates, cast as an object.</returns>
+    public override object Clone()
+    {
+        return null!;
 
     }
 

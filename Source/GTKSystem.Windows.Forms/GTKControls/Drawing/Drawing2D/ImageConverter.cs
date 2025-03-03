@@ -38,7 +38,13 @@ public class ImageConverter : TypeConverter
             var stream = GetBitmapStream(array) ?? new MemoryStream(array);
             return Image.FromStream(stream);
         }
-        return base.ConvertFrom(context, culture, value);
+
+        if (context != null && culture != null)
+        {
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        return null;
     }
 
     public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)

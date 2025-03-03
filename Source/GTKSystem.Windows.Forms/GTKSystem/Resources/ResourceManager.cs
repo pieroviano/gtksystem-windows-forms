@@ -117,7 +117,7 @@ public class ResourceManager : System.Resources.ResourceManager
                         }
                         catch
                         {
-                            //图像格式内容不能提取
+                            // Image format content cannot be extracted
                             return null;
                         }
                     }

@@ -173,9 +173,9 @@ public interface IWidget: IDisposable
     event MapEventHandler? MapEvent;
     event HierarchyChangedHandler HierarchyChanged;
     event ButtonReleaseEventHandler? ButtonReleaseEvent;
-    event Gtk.ScrollEventHandler? ScrollEvent;
+    event ScrollEventHandler? ScrollEvent;
     event ProximityInEventHandler? ProximityInEvent;
-    event Gtk.KeyPressEventHandler? KeyPressEvent;
+    event KeyPressEventHandler? KeyPressEvent;
     event SelectionGetHandler SelectionGet;
     bool Activate();
 
@@ -194,7 +194,7 @@ public interface IWidget: IDisposable
     bool ChildFocus(DirectionType direction);
     void ChildNotify(string childProperty);
     void ClassPath(out uint pathLength, out string path, out string pathReversed);
-    bool ComputeExpand(Gtk.Orientation orientation);
+    bool ComputeExpand(Orientation orientation);
     Pango.Context CreatePangoContext();
     Pango.Layout CreatePangoLayout(string text);
     bool DeviceIsShadowed(Gdk.Device device);
