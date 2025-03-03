@@ -37,7 +37,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             items[index] = value;

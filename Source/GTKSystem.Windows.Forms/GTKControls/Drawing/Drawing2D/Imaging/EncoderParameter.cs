@@ -91,7 +91,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and one unsigned 8-bit integer. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeByte" />, and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to 1.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">An 8-bit unsigned integer that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
+    /// <param name=nameof(value)>An 8-bit unsigned integer that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
     public EncoderParameter(Encoder? encoder, byte value)
     {
         ConstructorEncoder = encoder;
@@ -100,7 +100,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and one 8-bit value. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeUndefined" /> or <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeByte" />, and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to 1.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">A byte that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
+    /// <param name=nameof(value)>A byte that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
     /// <param name="undefined">If <see langword="true" />, the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property is set to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeUndefined" />; otherwise, the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property is set to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeByte" />.</param>
     public  EncoderParameter(Encoder? encoder, byte value, bool undefined)
     {
@@ -111,7 +111,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and one, 16-bit integer. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeShort" />, and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to 1.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">A 16-bit integer that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. Must be nonnegative.</param>
+    /// <param name=nameof(value)>A 16-bit integer that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. Must be nonnegative.</param>
     public  EncoderParameter(Encoder? encoder, short value)
     {
         ConstructorEncoder = encoder;
@@ -120,7 +120,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and one 64-bit integer. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeLong" /> (32 bits), and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to 1.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">A 64-bit integer that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. Must be nonnegative. This parameter is converted to a 32-bit integer before it is stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
+    /// <param name=nameof(value)>A 64-bit integer that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. Must be nonnegative. This parameter is converted to a 32-bit integer before it is stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
     public  EncoderParameter(Encoder? encoder, long value)
     {
         ConstructorEncoder = encoder;
@@ -166,7 +166,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and a character string. The string is converted to a null-terminated ASCII string before it is stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeAscii" />, and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to the length of the ASCII string including the NULL terminator.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">A <see cref="T:System.String" /> that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
+    /// <param name=nameof(value)>A <see cref="T:System.String" /> that specifies the value stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
     public EncoderParameter(Encoder encoder, string value)
     {
         _parameterGuid = encoder.Guid;
@@ -178,7 +178,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and an array of unsigned 8-bit integers. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeByte" />, and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to the number of elements in the array.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">An array of 8-bit unsigned integers that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
+    /// <param name=nameof(value)>An array of 8-bit unsigned integers that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
     public EncoderParameter(Encoder encoder, byte[] value)
     {
         _parameterGuid = encoder.Guid;
@@ -191,7 +191,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and an array of bytes. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeUndefined" /> or <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeByte" />, and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to the number of elements in the array.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">An array of bytes that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
+    /// <param name=nameof(value)>An array of bytes that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
     /// <param name="undefined">If <see langword="true" />, the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property is set to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeUndefined" />; otherwise, the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property is set to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeByte" />.</param>
     public EncoderParameter(Encoder encoder, byte[] value, bool undefined)
     {
@@ -205,7 +205,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and an array of 16-bit integers. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeShort" />, and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to the number of elements in the array.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">An array of 16-bit integers that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The integers in the array must be nonnegative.</param>
+    /// <param name=nameof(value)>An array of 16-bit integers that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The integers in the array must be nonnegative.</param>
     public EncoderParameter(Encoder encoder, short[] value)
     {
         _parameterGuid = encoder.Guid;
@@ -218,7 +218,7 @@ public sealed class EncoderParameter : IDisposable
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> class with the specified <see cref="T:System.Drawing.Imaging.Encoder" /> object and an array of 64-bit integers. Sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> property to <see cref="F:System.Drawing.Imaging.EncoderParameterValueType.ValueTypeLong" /> (32-bit), and sets the <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property to the number of elements in the array.</summary>
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
-    /// <param name="value">An array of 64-bit integers that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The integers in the array must be nonnegative. The 64-bit integers are converted to 32-bit integers before they are stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
+    /// <param name=nameof(value)>An array of 64-bit integers that specifies the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The integers in the array must be nonnegative. The 64-bit integers are converted to 32-bit integers before they are stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object.</param>
     public EncoderParameter(Encoder encoder, long[]? value)
     {
         ConstructorEncoder = encoder;
@@ -268,7 +268,7 @@ public sealed class EncoderParameter : IDisposable
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
     /// <param name="numberOfValues">An integer that specifies the number of values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property is set to this value.</param>
     /// <param name="type">A member of the <see cref="T:System.Drawing.Imaging.EncoderParameterValueType" /> enumeration that specifies the data type of the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The <see cref="T:System.Type" /> and <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> properties are set to this value.</param>
-    /// <param name="value">A pointer to an array of values of the type specified by the <paramref name="type" /> parameter.</param>
+    /// <param name=nameof(value)>A pointer to an array of values of the type specified by the <paramref name="type" /> parameter.</param>
     /// <exception cref="T:System.InvalidOperationException">Type is not a valid <see cref="T:System.Drawing.Imaging.EncoderParameterValueType" />.</exception>
     [Obsolete("This constructor has been deprecated. Use EncoderParameter(Encoder encoder, int numberValues, EncoderParameterValueType type, IntPtr value) instead.")]
     public  EncoderParameter(Encoder encoder, int numberOfValues, int type, int value)
@@ -283,7 +283,7 @@ public sealed class EncoderParameter : IDisposable
     /// <param name="encoder">An <see cref="T:System.Drawing.Imaging.Encoder" /> object that encapsulates the globally unique identifier of the parameter category.</param>
     /// <param name="numberValues">An integer that specifies the number of values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The <see cref="P:System.Drawing.Imaging.EncoderParameter.NumberOfValues" /> property is set to this value.</param>
     /// <param name="type">A member of the <see cref="T:System.Drawing.Imaging.EncoderParameterValueType" /> enumeration that specifies the data type of the values stored in the <see cref="T:System.Drawing.Imaging.EncoderParameter" /> object. The <see cref="T:System.Type" /> and <see cref="P:System.Drawing.Imaging.EncoderParameter.ValueType" /> properties are set to this value.</param>
-    /// <param name="value">A pointer to an array of values of the type specified by the <paramref name="Type" /> parameter.</param>
+    /// <param name=nameof(value)>A pointer to an array of values of the type specified by the <paramref name="Type" /> parameter.</param>
     public  EncoderParameter(Encoder encoder, int numberValues, EncoderParameterValueType type, IntPtr value)
     {
         ConstructorEncoder = encoder;

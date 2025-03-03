@@ -627,10 +627,10 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Adds an existing item to the internal list.</summary>
-    /// <returns>The zero-based index at which <paramref name="value" /> was added to the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. </returns>
-    /// <param name="value">An <see cref="T:System.Object" /> to be added to the internal list.</param>
+    /// <returns>The zero-based index at which <paramref name=nameof(value) /> was added to the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. </returns>
+    /// <param name=nameof(value)>An <see cref="T:System.Object" /> to be added to the internal list.</param>
     /// <exception cref="T:System.InvalidOperationException">
-    ///   <paramref name="value" /> differs in type from the existing items in the underlying list.</exception>
+    ///   <paramref name=nameof(value) /> differs in type from the existing items in the underlying list.</exception>
     public virtual int Add(object? value)
     {
         if (dataSource == null && List.Count == 0)
@@ -786,8 +786,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Determines whether an object is an item in the list.</summary>
-    /// <returns>true if the <paramref name="value" /> parameter is found in the <see cref="P:System.Windows.Forms.BindingSource.List" />; otherwise, false.</returns>
-    /// <param name="value">The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
+    /// <returns>true if the <paramref name=nameof(value) /> parameter is found in the <see cref="P:System.Windows.Forms.BindingSource.List" />; otherwise, false.</returns>
+    /// <param name=nameof(value)>The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
     public virtual bool Contains(object? value)
     {
         return List.Contains(value);
@@ -1086,8 +1086,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Searches for the specified object and returns the index of the first occurrence within the entire list.</summary>
-    /// <returns>The zero-based index of the first occurrence of the <paramref name="value" /> parameter; otherwise, -1 if <paramref name="value" /> is not in the list.</returns>
-    /// <param name="value">The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
+    /// <returns>The zero-based index of the first occurrence of the <paramref name=nameof(value) /> parameter; otherwise, -1 if <paramref name=nameof(value) /> is not in the list.</returns>
+    /// <param name=nameof(value)>The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
     public virtual int IndexOf(object value)
     {
         return List.IndexOf(value);
@@ -1110,8 +1110,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Inserts an item into the list at the specified index.</summary>
-    /// <param name="index">The zero-based index at which <paramref name="value" /> should be inserted. </param>
-    /// <param name="value">The <see cref="T:System.Object" /> to insert. The value can be null. </param>
+    /// <param name="index">The zero-based index at which <paramref name=nameof(value) /> should be inserted. </param>
+    /// <param name=nameof(value)>The <see cref="T:System.Object" /> to insert. The value can be null. </param>
     /// <exception cref="T:System.ArgumentOutOfRangeException">
     ///   <paramref name="index" /> is less than zero or greater than <see cref="P:System.Windows.Forms.BindingSource.Count" />.</exception>
     /// <exception cref="T:System.NotSupportedException">The list is read-only or has a fixed size.</exception>
@@ -1417,7 +1417,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Removes the specified item from the list.</summary>
-    /// <param name="value">The item to remove from the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property.</param>
+    /// <param name=nameof(value)>The item to remove from the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property.</param>
     /// <exception cref="T:System.NotSupportedException">The underlying list has a fixed size or is read-only. </exception>
     public virtual void Remove(object value)
     {

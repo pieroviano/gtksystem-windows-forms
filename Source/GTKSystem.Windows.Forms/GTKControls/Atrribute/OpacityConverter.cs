@@ -38,7 +38,7 @@ public class OpacityConverter : TypeConverter
     /// <param name="culture">
     ///     The locale information for the conversion.
     /// </param>
-    /// <param name="value">
+    /// <param name=nameof(value)>
     ///     The object to convert.
     ///</param>
     /// <returns>
@@ -63,7 +63,7 @@ public class OpacityConverter : TypeConverter
     /// <param name="culture">
     ///     The locale information for the conversion.
     /// </param>
-    /// <param name="value">
+    /// <param name=nameof(value)>
     ///     The value to convert.
     /// </param>
     /// <param name="destinationType">

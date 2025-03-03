@@ -53,7 +53,7 @@ public sealed class BitmapData
             switch (value)
             {
                 default:
-                    throw new InvalidEnumArgumentException("value", (int)value, typeof(PixelFormat));
+                    throw new InvalidEnumArgumentException(nameof(value), (int)value, typeof(PixelFormat));
                 case PixelFormat.Undefined:
                 case PixelFormat.Max:
                 case PixelFormat.Indexed:

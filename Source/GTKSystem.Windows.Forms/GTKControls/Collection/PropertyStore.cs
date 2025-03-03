@@ -196,7 +196,7 @@ internal partial class PropertyStore
     /// </summary>
     /// <typeparam name="T">The type of object to retrieve.</typeparam>
     /// <param name="key">The key corresponding to the object in the property list.</param>
-    /// <param name="value">Output parameter where the object will be set if found.
+    /// <param name=nameof(value)>Output parameter where the object will be set if found.
     ///  Will be set to null if the key is not present.</param>
     /// <remarks><para>If a null value is set for a given key
     ///  it will return true and a null value.</para></remarks>

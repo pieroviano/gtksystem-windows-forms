@@ -642,7 +642,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (value == null)
         {
-            throw new ArgumentNullException("value");
+            throw new ArgumentNullException(nameof(value));
         }
         if (typeName == null)
         {
@@ -678,7 +678,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (value == null)
         {
-            throw new ArgumentNullException("value");
+            throw new ArgumentNullException(nameof(value));
         }
         if (typeName == null)
         {
@@ -696,7 +696,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (value == null)
         {
-            throw new ArgumentNullException("value");
+            throw new ArgumentNullException(nameof(value));
         }
         if (typeName == null)
         {
@@ -714,7 +714,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (value == null)
         {
-            throw new ArgumentNullException("value");
+            throw new ArgumentNullException(nameof(value));
         }
         if (typeName == null)
         {

@@ -45,7 +45,7 @@ public partial class ResXFileRef
             return created;
         }
 
-        // "value" is the parameter name of ConvertFrom, which calls this method.
+        // nameof(value) is the parameter name of ConvertFrom, which calls this method.
         internal static string?[]? ParseResxFileRefString(string? stringValue)
         {
             string?[]? result = null;
