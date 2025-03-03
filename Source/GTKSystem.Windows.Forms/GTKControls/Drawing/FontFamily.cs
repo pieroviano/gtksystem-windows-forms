@@ -4,35 +4,28 @@ using System.Drawing.Text;
 
 namespace System.Drawing;
 
-//
-// 摘要:
-//     Defines a group of type faces having a similar basic design and certain variations
-//     in styles. This class cannot be inherited.
+/// <summary>
+/// Defines a group of type faces having a similar basic design and certain variations
+/// in styles. This class cannot be inherited.
+/// </summary>
 public sealed class FontFamily : MarshalByRefObject, IDisposable
 {
-    //
-    // 摘要:
-    //     Initializes a new System.Drawing.FontFamily from the specified generic font family.
-    //
-    // 参数:
-    //   genericFamily:
-    //     The System.Drawing.Text.GenericFontFamilies from which to create the new System.Drawing.FontFamily.
+    /// <summary>
+    /// Initializes a new System.Drawing.FontFamily from the specified generic font family.
+    /// </summary>
+    /// <param name="genericFamily">The System.Drawing.Text.GenericFontFamilies from which to create the new System.Drawing.FontFamily.</param>
     public FontFamily(GenericFontFamilies genericFamily) : this(genericFamily.ToString(), null)
     {
     }
-    //
-    // 摘要:
-    //     Initializes a new System.Drawing.FontFamily with the specified name.
-    //
-    // 参数:
-    //   name:
-    //     The name of the new System.Drawing.FontFamily.
-    //
-    // 异常:
-    //   T:System.ArgumentException:
-    //     name is an empty string (""). -or- name specifies a font that is not installed
-    //     on the computer running the application. -or- name specifies a font that is not
-    //     a TrueType font.
+    /// <summary>
+    /// Initializes a new System.Drawing.FontFamily with the specified name.
+    /// </summary>
+    /// <param name="name">The name of the new System.Drawing.FontFamily.</param>
+    /// <throws> T:System.ArgumentException:
+    /// name is an empty string (""). -or- name specifies a font that is not installed
+    /// on the computer running the application. -or- name specifies a font that is not
+    /// a TrueType font.
+    /// </throws>
     public FontFamily(string name) : this(name, null) { }
     //
     // 摘要:

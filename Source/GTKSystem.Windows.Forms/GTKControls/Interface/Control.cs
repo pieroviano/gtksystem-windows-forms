@@ -556,7 +556,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         controlStyle = value ? controlStyle | styles : controlStyle & ~styles;
     }
 
-    #region 背景
+    #region background
     public virtual Image? Image { get; set; }
     public virtual ContentAlignment ImageAlign { get; set; }
 

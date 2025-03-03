@@ -62,7 +62,7 @@ public struct HashCode
     private uint _queue1, _queue2, _queue3;
     private uint _length;
 
-    private static unsafe uint GenerateGlobalSeed()
+    private static uint GenerateGlobalSeed()
     {
         return unchecked ((uint)new Random().Next());
     }

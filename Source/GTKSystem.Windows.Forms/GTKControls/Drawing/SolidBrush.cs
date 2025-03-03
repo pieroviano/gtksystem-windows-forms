@@ -21,9 +21,9 @@ public sealed class SolidBrush : Brush
 
 		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.SolidBrush" /> object.</summary>
 		/// <returns>The <see cref="T:System.Drawing.SolidBrush" /> object that this method creates.</returns>
-		public override object? Clone()
+		public override object Clone()
 		{
-            return null;
+            return null!;
         }
 
     protected override void Dispose(bool disposing)

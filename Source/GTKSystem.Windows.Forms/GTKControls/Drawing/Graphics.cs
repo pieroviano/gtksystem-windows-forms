@@ -14,12 +14,10 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     private readonly Context? context;
     private readonly Gdk.Rectangle rectangle;
     private readonly IWidget? _widget;
-    #region 用于输入与输出的数值调整差值
     public double DiffLeft { get; set; }
     public double DiffTop { get; set; }
     //internal int diff_right { get; set; }
     //internal int diff_bottom { get; set; }
-    #endregion
     public Graphics(IWidget? widget, Context? context, Gdk.Rectangle rectangle)
     {
         _widget = widget;
@@ -280,12 +278,6 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         DrawArcCore(pen, x, y, width, height, startAngle, sweepAngle);
     }
 
-    #region 贝塞尔曲线
-    /// <summary>
-    /// 收集贝塞尔曲线坐标点全部点的位置集合
-    /// </summary>
-    /// <param name="points"></param>
-    /// <returns></returns>
     private List<PointF> GetBezierPoints(List<PointF> points)
     {
         float seedNum = 0;
@@ -304,12 +296,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         }
         return rpoint;
     }
-    /// <summary>
-    /// 计算贝塞尔曲线上坐标点单点位置
-    /// </summary>
-    /// <param name="points">贝塞尔条件坐标集合</param>
-    /// <param name="time">时间因子</param>
-    /// <returns></returns>
+
     private List<PointF> CalculateBezier(List<PointF> points, float time)
     {
         var nList = new List<PointF>
@@ -362,7 +349,6 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     {
         DrawBeziersCore(pen, Array.ConvertAll(points, p => new PointF(p.X, p.Y)));
     }
-    #endregion
 
     private void DrawCurveCore(bool isClosePath, bool isfill, Pen pen, PointF[] points, int offset, int numberOfSegments, float tension, FillMode fillmode)
     {
@@ -507,7 +493,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         DrawImage(new Bitmap(icon.PixbufData), new Point(x, y));
     }
 
-    public void DrawIconUnstretched(Icon icon, Rectangle targetRect)
+    public void DrawIconUnStretched(Icon icon, Rectangle targetRect)
     {
         DrawImage(new Bitmap(icon.PixbufData), targetRect);
     }
