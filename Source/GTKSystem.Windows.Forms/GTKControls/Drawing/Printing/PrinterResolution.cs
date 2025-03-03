@@ -6,7 +6,7 @@ namespace System.Drawing.Printing;
 /// <summary>
 ///  Retrieves the resolution supported by a printer.
 /// </summary>
-public partial class PrinterResolution
+public class PrinterResolution
 {
     private PrinterResolutionKind _kind;
 
@@ -31,7 +31,7 @@ public partial class PrinterResolution
     public PrinterResolutionKind Kind
     {
         get => _kind;
-        set { _kind = value; }
+        set => _kind = value;
     }
 
     /// <summary>

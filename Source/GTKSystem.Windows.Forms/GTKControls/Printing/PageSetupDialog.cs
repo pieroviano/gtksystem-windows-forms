@@ -3,9 +3,7 @@
 
 using Gtk;
 using System.ComponentModel;
-using System.Drawing;
 using System.Drawing.Printing;
-using System.Drawing;
 
 namespace System.Windows.Forms;
 

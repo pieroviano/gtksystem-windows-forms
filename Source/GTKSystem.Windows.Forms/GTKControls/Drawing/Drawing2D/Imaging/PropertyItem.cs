@@ -17,7 +17,7 @@ public sealed class PropertyItem
 
     /// <summary>Gets or sets the value of the property item.</summary>
     /// <returns>A byte array that represents the value of the property item.</returns>
-    public byte[] Value { get; set; }
+    public byte[]? Value { get; set; }
 
     internal PropertyItem()
     {

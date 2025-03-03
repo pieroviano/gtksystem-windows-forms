@@ -10,8 +10,6 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
-namespace System.Windows.Forms;
-
 [DesignerCategory("Component")]
 public class SplitContainer : ContainerControl
 {

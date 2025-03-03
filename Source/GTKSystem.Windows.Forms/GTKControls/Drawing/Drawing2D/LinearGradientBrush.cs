@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace System.Drawing.Drawing2D;
 
 /// <summary>Encapsulates a <see cref="T:System.Drawing.Brush" /> with a linear gradient. This class cannot be inherited.</summary>
@@ -7,34 +5,71 @@ public sealed class LinearGradientBrush : Brush
 {
     /// <summary>Gets or sets a <see cref="T:System.Drawing.Drawing2D.Blend" /> that specifies positions and factors that define a custom falloff for the gradient.</summary>
     /// <returns>A <see cref="T:System.Drawing.Drawing2D.Blend" /> that represents a custom falloff for the gradient.</returns>
-    public Blend Blend { get; set; }
+    public Blend? Blend
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets a value indicating whether gamma correction is enabled for this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />.</summary>
     /// <returns>The value is <see langword="true" /> if gamma correction is enabled for this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />; otherwise, <see langword="false" />.</returns>
-    public bool GammaCorrection { get; set; }
+    public bool GammaCorrection
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets a <see cref="T:System.Drawing.Drawing2D.ColorBlend" /> that defines a multicolor linear gradient.</summary>
     /// <returns>A <see cref="T:System.Drawing.Drawing2D.ColorBlend" /> that defines a multicolor linear gradient.</returns>
-    public ColorBlend InterpolationColors { get; set; }
+    public ColorBlend? InterpolationColors
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets the starting and ending colors of the gradient.</summary>
     /// <returns>An array of two <see cref="T:System.Drawing.Color" /> structures that represents the starting and ending colors of the gradient.</returns>
-    public Color[] LinearColors { get; set; }
+    public Color[] LinearColors
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets a rectangular region that defines the starting and ending points of the gradient.</summary>
     /// <returns>A <see cref="T:System.Drawing.RectangleF" /> structure that specifies the starting and ending points of the gradient.</returns>
-    public RectangleF Rectangle { get; private set; }
+    public RectangleF Rectangle
+    {
+        get;
+        private set;
+    }
 
     /// <summary>Gets or sets a copy <see cref="T:System.Drawing.Drawing2D.Matrix" /> that defines a local geometric transform for this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />.</summary>
     /// <returns>A copy of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> that defines a geometric transform that applies only to fills drawn with this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />.</returns>
-    public Matrix Transform { get; set; }
+    public Matrix? Transform
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets a <see cref="T:System.Drawing.Drawing2D.WrapMode" /> enumeration that indicates the wrap mode for this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />.</summary>
     /// <returns>A <see cref="T:System.Drawing.Drawing2D.WrapMode" /> that specifies how fills drawn with this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> are tiled.</returns>
-    public WrapMode WrapMode { get; set; } = WrapMode.Tile;
+    public WrapMode WrapMode
+    {
+        get;
+        set;
+    } = WrapMode.Tile;
+    public LinearGradientMode LinearGradientMode
+    {
+        get;
+        set;
+    }
+    public float Angle
+    {
+        get;
+        set;
+    }
 
-    public LinearGradientMode LinearGradientMode { get; set; }
-    public float Angle { get; set; }
+    public bool IsAngleScaleable { get; }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> class with the specified points and colors.</summary>
     /// <param name="point1">A <see cref="T:System.Drawing.Point" /> structure that represents the starting point of the linear gradient.</param>
@@ -43,9 +78,8 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="color2">A <see cref="T:System.Drawing.Color" /> structure that represents the ending color of the linear gradient.</param>
     public LinearGradientBrush(Point point1, Point point2, Color color1, Color color2)
     {
-        this.Rectangle = new RectangleF(point1.X, point1.Y, Math.Abs(point2.X - point1.X),
-            Math.Abs(point2.Y - point1.Y));
-        this.LinearColors = new Color[2] { color1, color2 };
+        Rectangle = new RectangleF(point1.X, point1.Y, Math.Abs(point2.X - point1.X), Math.Abs(point2.Y - point1.Y));
+        LinearColors = [color1, color2];
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> class with the specified points and colors.</summary>
@@ -55,9 +89,8 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="color2">A <see cref="T:System.Drawing.Color" /> structure that represents the ending color of the linear gradient.</param>
     public LinearGradientBrush(PointF point1, PointF point2, Color color1, Color color2)
     {
-        this.Rectangle = new RectangleF(point1.X, point1.Y, Math.Abs(point2.X - point1.X),
-            Math.Abs(point2.Y - point1.Y));
-        this.LinearColors = new Color[2] { color1, color2 };
+        Rectangle = new RectangleF(point1.X, point1.Y, Math.Abs(point2.X - point1.X), Math.Abs(point2.Y - point1.Y));
+        LinearColors = [color1, color2];
     }
 
     /// <summary>Creates a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> class based on a rectangle, starting and ending colors, and orientation.</summary>
@@ -67,9 +100,9 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="linearGradientMode">A <see cref="T:System.Drawing.Drawing2D.LinearGradientMode" /> enumeration element that specifies the orientation of the gradient. The orientation determines the starting and ending points of the gradient. For example, <see langword="LinearGradientMode.ForwardDiagonal" /> specifies that the starting point is the upper-left corner of the rectangle and the ending point is the lower-right corner of the rectangle.</param>
     public LinearGradientBrush(Rectangle rect, Color color1, Color color2, LinearGradientMode linearGradientMode)
     {
-        this.Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
-        this.LinearColors = new Color[2] { color1, color2 };
-        this.LinearGradientMode = linearGradientMode;
+        Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
+        LinearColors = [color1, color2];
+        LinearGradientMode = linearGradientMode;
     }
 
     /// <summary>Creates a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> class based on a rectangle, starting and ending colors, and an orientation angle.</summary>
@@ -79,10 +112,10 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="angle">The angle, measured in degrees clockwise from the x-axis, of the gradient's orientation line.</param>
     public LinearGradientBrush(Rectangle rect, Color color1, Color color2, float angle)
     {
-        this.Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
-        this.LinearColors = new Color[2] { color1, color2 };
-        this.Angle = angle;
-        this.WrapMode = WrapMode.Clamp;
+        Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
+        LinearColors = [color1, color2];
+        Angle = angle;
+        WrapMode = WrapMode.Clamp;
     }
 
     /// <summary>Creates a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> class based on a rectangle, starting and ending colors, and an orientation angle.</summary>
@@ -93,10 +126,11 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="isAngleScaleable">Set to <see langword="true" /> to specify that the angle is affected by the transform associated with this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />; otherwise, <see langword="false" />.</param>
     public LinearGradientBrush(Rectangle rect, Color color1, Color color2, float angle, bool isAngleScaleable)
     {
-        this.Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
-        this.LinearColors = new Color[2] { color1, color2 };
-        this.Angle = angle;
-        this.WrapMode = WrapMode.Clamp;
+        Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
+        LinearColors = [color1, color2];
+        Angle = angle;
+        IsAngleScaleable = isAngleScaleable;
+        WrapMode = WrapMode.Clamp;
     }
 
     /// <summary>Creates a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> based on a rectangle, starting and ending colors, and an orientation mode.</summary>
@@ -106,9 +140,9 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="linearGradientMode">A <see cref="T:System.Drawing.Drawing2D.LinearGradientMode" /> enumeration element that specifies the orientation of the gradient. The orientation determines the starting and ending points of the gradient. For example, <see langword="LinearGradientMode.ForwardDiagonal" /> specifies that the starting point is the upper-left corner of the rectangle and the ending point is the lower-right corner of the rectangle.</param>
     public LinearGradientBrush(RectangleF rect, Color color1, Color color2, LinearGradientMode linearGradientMode)
     {
-        this.Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
-        this.LinearColors = new Color[2] { color1, color2 };
-        this.LinearGradientMode = linearGradientMode;
+        Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
+        LinearColors = [color1, color2];
+        LinearGradientMode = linearGradientMode;
     }
 
     /// <summary>Creates a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> class based on a rectangle, starting and ending colors, and an orientation angle.</summary>
@@ -118,10 +152,10 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="angle">The angle, measured in degrees clockwise from the x-axis, of the gradient's orientation line.</param>
     public LinearGradientBrush(RectangleF rect, Color color1, Color color2, float angle)
     {
-        this.Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
-        this.LinearColors = new Color[2] { color1, color2 };
-        this.Angle = angle;
-        this.WrapMode = WrapMode.Clamp;
+        Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
+        LinearColors = [color1, color2];
+        Angle = angle;
+        WrapMode = WrapMode.Clamp;
     }
 
     /// <summary>Creates a new instance of the <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> class based on a rectangle, starting and ending colors, and an orientation angle.</summary>
@@ -132,18 +166,19 @@ public sealed class LinearGradientBrush : Brush
     /// <param name="isAngleScaleable">Set to <see langword="true" /> to specify that the angle is affected by the transform associated with this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />; otherwise, <see langword="false" />.</param>
     public LinearGradientBrush(RectangleF rect, Color color1, Color color2, float angle, bool isAngleScaleable)
     {
-        this.Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
-        this.LinearColors = new Color[2] { color1, color2 };
-        this.Angle = angle;
-        this.WrapMode = WrapMode.Clamp;
+        Rectangle = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
+        LinearColors = [color1, color2];
+        Angle = angle;
+        IsAngleScaleable = isAngleScaleable;
+        WrapMode = WrapMode.Clamp;
     }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />.</summary>
-    /// <returns>The <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> this method creates, cast as an object.</returns>
-    public override object Clone()
-    {
-        return ((ArrayList)(new ArrayList() { this }).Clone())[0];
-    }
+		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />.</summary>
+		/// <returns>The <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> this method creates, cast as an object.</returns>
+		public override object? Clone()
+		{
+            return null;
+        }
 
     /// <summary>Multiplies the <see cref="T:System.Drawing.Drawing2D.Matrix" /> that represents the local geometric transform of this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> by the specified <see cref="T:System.Drawing.Drawing2D.Matrix" /> by prepending the specified <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
     /// <param name="matrix">The <see cref="T:System.Drawing.Drawing2D.Matrix" /> by which to multiply the geometric transform.</param>

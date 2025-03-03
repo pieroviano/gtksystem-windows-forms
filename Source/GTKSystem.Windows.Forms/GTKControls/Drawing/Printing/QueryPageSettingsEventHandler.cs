@@ -7,4 +7,4 @@ namespace System.Drawing.Printing;
 ///  Represents the method that will handle the <see cref='PrintDocument.QueryPageSettings'/> event of a
 ///  <see cref='PrintDocument'/>.
 /// </summary>
-public delegate void QueryPageSettingsEventHandler(object sender, QueryPageSettingsEventArgs e);
+public delegate void QueryPageSettingsEventHandler(object? sender, QueryPageSettingsEventArgs e);

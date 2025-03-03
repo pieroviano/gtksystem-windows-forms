@@ -106,12 +106,12 @@ public enum PaperKind
     /// <summary>
     ///  10-by-14-inch paper.
     /// </summary>
-    Standard10x14 = 19,
+    Standard10X14 = 19,
 
     /// <summary>
     ///  11-by-17-inch paper.
     /// </summary>
-    Standard11x17 = 20,
+    Standard11X17 = 20,
 
     /// <summary>
     ///  Note paper (8.5 in. by 11 in.).
@@ -146,7 +146,7 @@ public enum PaperKind
     /// <summary>
     ///  DL envelope (110 mm by 220 mm).
     /// </summary>
-    DLEnvelope = 27,
+    DlEnvelope = 27,
 
     /// <summary>
     ///  C5 envelope (162 mm by 229 mm).
@@ -206,7 +206,7 @@ public enum PaperKind
     /// <summary>
     ///  US standard fanfold (14.875 in. by 11 in.).
     /// </summary>
-    USStandardFanfold = 39,
+    UsStandardFanfold = 39,
 
     /// <summary>
     ///  German standard fanfold (8.5 in. by 12 in.).
@@ -231,17 +231,17 @@ public enum PaperKind
     /// <summary>
     ///  9-by-11-inch paper.
     /// </summary>
-    Standard9x11 = 44,
+    Standard9X11 = 44,
 
     /// <summary>
     ///  10-by-11-inch paper.
     /// </summary>
-    Standard10x11 = 45,
+    Standard10X11 = 45,
 
     /// <summary>
     ///  15-by-11-inch paper.
     /// </summary>
-    Standard15x11 = 46,
+    Standard15X11 = 46,
 
     /// <summary>
     ///  Invite envelope (220 mm by 220 mm).
@@ -455,7 +455,7 @@ public enum PaperKind
     /// <summary>
     ///  12-by-11-inch paper.
     /// </summary>
-    Standard12x11 = 88,
+    Standard12X11 = 88,
 
     /// <summary>
     ///  Japanese You #4 envelope.

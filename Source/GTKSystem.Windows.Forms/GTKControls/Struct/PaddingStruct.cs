@@ -208,7 +208,7 @@ public struct Padding
     /// </returns>
     public override string ToString()
     {
-        return this.GetType().Name;
+        return GetType().Name;
     }
 
     /// <summary>

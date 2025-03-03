@@ -3,32 +3,49 @@
 
 namespace System.Drawing.Printing;
 
-public unsafe class PageSettings : ICloneable
+public class PageSettings : ICloneable
 {
-    private PrinterSettings _printerSettings;
-    private PaperSize _paperSize;
-    private PaperSource _paperSource;
-    private PrinterResolution _printerResolution;
-    private Margins _margins = new Margins();
+    private PrinterSettings? _printerSettings;
+    private Margins _margins = new();
 
     public PageSettings() : this(new PrinterSettings())
     {
     }
 
-    public PageSettings(PrinterSettings printerSettings)
+    public PageSettings(PrinterSettings? printerSettings)
     {
         _printerSettings = printerSettings;
     }
 
-    public Rectangle Bounds { get; internal set; }
+    public Rectangle Bounds
+    {
+        get;
+        internal set;
+    }
 
-    public bool Color { get; set; }
+    public bool Color
+    {
+        get;
+        set;
+    }
 
-    public float HardMarginX { get; internal set; }
+    public float HardMarginX
+    {
+        get;
+        internal set;
+    }
 
-    public float HardMarginY { get; internal set; }
+    public float HardMarginY
+    {
+        get;
+        internal set;
+    }
 
-    public bool Landscape { get; set; }
+    public bool Landscape
+    {
+        get;
+        set;
+    }
 
     public Margins Margins
     {
@@ -36,15 +53,31 @@ public unsafe class PageSettings : ICloneable
         set => _margins = value;
     }
 
-    public PaperSize PaperSize { get; set; }
+    public PaperSize? PaperSize
+    {
+        get;
+        set;
+    }
 
-    public PaperSource PaperSource { get; set; }
+    public PaperSource? PaperSource
+    {
+        get;
+        set;
+    }
 
-    public RectangleF PrintableArea { get; internal set; }
+    public RectangleF PrintableArea
+    {
+        get;
+        internal set;
+    }
 
-    public PrinterResolution PrinterResolution { get; set; }
+    public PrinterResolution? PrinterResolution
+    {
+        get;
+        set;
+    }
 
-    public PrinterSettings PrinterSettings
+    public PrinterSettings? PrinterSettings
     {
         get => _printerSettings;
         set => _printerSettings = value ?? new PrinterSettings();
@@ -52,17 +85,19 @@ public unsafe class PageSettings : ICloneable
 
     public object Clone()
     {
-        PageSettings result = (PageSettings)MemberwiseClone();
+        var result = (PageSettings)MemberwiseClone();
         result._margins = (Margins)_margins.Clone();
         return result;
     }
 
     public void CopyToHdevmode(IntPtr hdevmode)
     {
+            
     }
 
     public void SetHdevmode(IntPtr hdevmode)
     {
+        
     }
 
     public override string ToString() =>

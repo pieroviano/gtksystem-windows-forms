@@ -3,7 +3,7 @@
 
 namespace System.Drawing.Printing;
 
-public partial class PaperSource
+public class PaperSource
 {
     private string _name;
     private PaperSourceKind _kind;

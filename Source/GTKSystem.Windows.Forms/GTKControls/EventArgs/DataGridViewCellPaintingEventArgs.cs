@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System.ComponentModel;
-
-namespace System.Windows.Forms;
+using System.Diagnostics;
+using System.Drawing;
 
 namespace System.Windows.Forms;
 

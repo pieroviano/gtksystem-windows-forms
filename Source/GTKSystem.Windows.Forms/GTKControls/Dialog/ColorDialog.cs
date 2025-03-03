@@ -60,18 +60,18 @@ public class ColorDialog : CommonDialog
     {
         if (colorChooserDialog == null)
         {
-            if (owner != null && owner is Form ownerform)
+            if (owner is Form ownerform)
             {
-                colorChooserDialog = new Gtk.ColorChooserDialog(
-                    Gtk.Windows.Forms.Properties.Resources.ColorDialog_RunDialog_Choose_color, ownerform.self);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                colorChooserDialog = new ColorChooserDialog(
+                    Properties.Resources.ColorDialog_RunDialog_Choose_color, ownerform.self);
+                colorChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
             }
             else
             {
                 colorChooserDialog =
-                    new Gtk.ColorChooserDialog(
-                        Gtk.Windows.Forms.Properties.Resources.ColorDialog_RunDialog_Choose_color, null);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+                    new ColorChooserDialog(
+                        Properties.Resources.ColorDialog_RunDialog_Choose_color, null);
+                colorChooserDialog.WindowPosition = WindowPosition.Center;
             }
         }
         colorChooserDialog.KeepAbove = true;

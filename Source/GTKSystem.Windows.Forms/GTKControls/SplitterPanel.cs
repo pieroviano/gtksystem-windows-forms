@@ -10,8 +10,6 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
-namespace System.Windows.Forms;
-
 [DesignerCategory("Component")]
 public sealed class SplitterPanel : Panel
 {

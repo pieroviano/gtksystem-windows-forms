@@ -10,20 +10,24 @@ namespace System.Drawing.Printing;
 ///  Specifies the margins of a printed page.
 /// </summary>
 [TypeConverter(typeof(MarginsConverter))]
-public partial class Margins : ICloneable
+public class Margins : ICloneable
 {
     private int _left;
     private int _right;
     private int _bottom;
     private int _top;
 
-    [OptionalField] private double _doubleLeft;
+    [OptionalField]
+    private double _doubleLeft;
 
-    [OptionalField] private double _doubleRight;
+    [OptionalField]
+    private double _doubleRight;
 
-    [OptionalField] private double _doubleTop;
+    [OptionalField]
+    private double _doubleTop;
 
-    [OptionalField] private double _doubleBottom;
+    [OptionalField]
+    private double _doubleBottom;
 
     /// <summary>
     ///  Initializes a new instance of a the <see cref='Margins'/> class with one-inch margins.
@@ -170,8 +174,7 @@ public partial class Margins : ICloneable
     }
 
     public object Clone() => MemberwiseClone();
-
-    public override bool Equals(object obj) =>
+    public override bool Equals(object? obj) =>
         obj is Margins margins
         && margins.Left == Left
         && margins.Right == Right

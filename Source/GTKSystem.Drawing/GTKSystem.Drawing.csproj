@@ -47,6 +47,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="..\GTKSystem.Windows.Forms\GTKControls\Drawing\**\*.cs" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="..\..\README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>

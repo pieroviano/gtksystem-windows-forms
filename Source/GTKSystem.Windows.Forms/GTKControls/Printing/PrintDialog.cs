@@ -1,7 +1,6 @@
 ﻿using Gtk;
 using System.ComponentModel;
 using System.Drawing.Printing;
-using System.Drawing;
 
 namespace System.Windows.Forms;
 
@@ -138,11 +137,11 @@ public sealed class PrintDialog : CommonDialog
             }
         }catch(Exception ex)
         {
-            Gtk.MessageDialog messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self,
+            MessageDialog messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self,
                 DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");
             messageDialog.WindowPosition = owner == null ? WindowPosition.Center : WindowPosition.CenterOnParent;
             if (ex.Message.ToLower().Contains("doc"))
-                messageDialog.Text = Gtk.Windows.Forms.Properties.Resources
+                messageDialog.Text = Properties.Resources
                     .PrintDialog_RunPrint_File_is_in_use_and_cannot_be_overwritten;
             else
                 messageDialog.Text = ex.Message;

@@ -3,8 +3,6 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
-namespace System.Windows.Forms;
-
 public interface IControlSample
 {
     bool UseVisualStyleBackColor { get; set; }

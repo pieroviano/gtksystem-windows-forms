@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Linq;
-
 namespace System.Drawing.Drawing2D;
 
 /// <summary>Encapsulates a <see cref="T:System.Drawing.Brush" /> object that fills the interior of a <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> object with a gradient. This class cannot be inherited.</summary>
@@ -8,55 +5,92 @@ public sealed class PathGradientBrush : Brush
 {
     /// <summary>Gets or sets a <see cref="T:System.Drawing.Drawing2D.Blend" /> that specifies positions and factors that define a custom falloff for the gradient.</summary>
     /// <returns>A <see cref="T:System.Drawing.Drawing2D.Blend" /> that represents a custom falloff for the gradient.</returns>
-    public Blend Blend { get; set; }
+    public Blend? Blend
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets the color at the center of the path gradient.</summary>
     /// <returns>A <see cref="T:System.Drawing.Color" /> that represents the color at the center of the path gradient.</returns>
-    public Color CenterColor { get; set; } = Color.Black;
+    public Color CenterColor
+    {
+        get;
+        set;
+    } = Color.Black;
 
     /// <summary>Gets or sets the center point of the path gradient.</summary>
     /// <returns>A <see cref="T:System.Drawing.PointF" /> that represents the center point of the path gradient.</returns>
-    public PointF CenterPoint { get; set; }
+    public PointF CenterPoint
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets the focus point for the gradient falloff.</summary>
     /// <returns>A <see cref="T:System.Drawing.PointF" /> that represents the focus point for the gradient falloff.</returns>
-    public PointF FocusScales { get; set; }
+    public PointF FocusScales
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets a <see cref="T:System.Drawing.Drawing2D.ColorBlend" /> that defines a multicolor linear gradient.</summary>
     /// <returns>A <see cref="T:System.Drawing.Drawing2D.ColorBlend" /> that defines a multicolor linear gradient.</returns>
-    public ColorBlend InterpolationColors { get; set; }
+    public ColorBlend? InterpolationColors
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets a bounding rectangle for this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
     /// <returns>A <see cref="T:System.Drawing.RectangleF" /> that represents a rectangular region that bounds the path this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> fills.</returns>
-    public RectangleF Rectangle { get; private set; }
+    public RectangleF Rectangle
+    {
+        get;
+        private set;
+    }
 
     /// <summary>Gets or sets an array of colors that correspond to the points in the path this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> fills.</summary>
     /// <returns>An array of <see cref="T:System.Drawing.Color" /> structures that represents the colors associated with each point in the path this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> fills.</returns>
-    public Color[] SurroundColors { get; set; }
+    public Color[]? SurroundColors
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets a copy of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> that defines a local geometric transform for this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
     /// <returns>A copy of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> that defines a geometric transform that applies only to fills drawn with this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</returns>
-    public Matrix Transform { get; set; }
+    public Matrix? Transform
+    {
+        get;
+        set;
+    }
 
     /// <summary>Gets or sets a <see cref="T:System.Drawing.Drawing2D.WrapMode" /> that indicates the wrap mode for this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
     /// <returns>A <see cref="T:System.Drawing.Drawing2D.WrapMode" /> that specifies how fills drawn with this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> are tiled.</returns>
-    public WrapMode WrapMode { get; set; }
+    public WrapMode WrapMode
+    {
+        get;
+        set;
+    }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> class with the specified path.</summary>
     /// <param name="path">The <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> that defines the area filled by this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</param>
     public PathGradientBrush(GraphicsPath path)
     {
-        float left = path.SizePoints.Select(o => o.X).Min();
-        float top = path.SizePoints.Select(o => o.Y).Min();
-        float right = path.SizePoints.Select(o => o.X).Max();
-        float bottom = path.SizePoints.Select(o => o.Y).Max();
-        this.Rectangle = new RectangleF(left, top, right - left, bottom - top);
+        var left = path.sizePoints.Select(o => o.X).Min();
+        var top = path.sizePoints.Select(o => o.Y).Min();
+        var right = path.sizePoints.Select(o => o.X).Max();
+        var bottom = path.sizePoints.Select(o => o.Y).Max();
+        Rectangle = new RectangleF(left, top, right - left, bottom - top);
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> class with the specified points.</summary>
     /// <param name="points">An array of <see cref="T:System.Drawing.PointF" /> structures that represents the points that make up the vertices of the path.</param>
     public PathGradientBrush(PointF[] points) : this(points, WrapMode.Clamp)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> class with the specified points and wrap mode.</summary>
@@ -64,11 +98,12 @@ public sealed class PathGradientBrush : Brush
     /// <param name="wrapMode">A <see cref="T:System.Drawing.Drawing2D.WrapMode" /> that specifies how fills drawn with this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> are tiled.</param>
     public PathGradientBrush(PointF[] points, WrapMode wrapMode)
     {
-        float left = points.Select(o => o.X).Min();
-        float top = points.Select(o => o.Y).Min();
-        float right = points.Select(o => o.X).Max();
-        float bottom = points.Select(o => o.Y).Max();
-        this.Rectangle = new RectangleF(left, top, right - left, bottom - top);
+        WrapMode = wrapMode;
+        var left = points.Select(o => o.X).Min();
+        var top = points.Select(o => o.Y).Min();
+        var right = points.Select(o => o.X).Max();
+        var bottom = points.Select(o => o.Y).Max();
+        Rectangle = new RectangleF(left, top, right - left, bottom - top);
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> class with the specified points.</summary>
@@ -82,18 +117,20 @@ public sealed class PathGradientBrush : Brush
     /// <param name="wrapMode">A <see cref="T:System.Drawing.Drawing2D.WrapMode" /> that specifies how fills drawn with this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> are tiled.</param>
     public PathGradientBrush(Point[] points, WrapMode wrapMode)
     {
+        WrapMode = wrapMode;
         float left = points.Select(o => o.X).Min();
         float top = points.Select(o => o.Y).Min();
         float right = points.Select(o => o.X).Max();
         float bottom = points.Select(o => o.Y).Max();
-        this.Rectangle = new RectangleF(left, top, right - left, bottom - top);
+        Rectangle = new RectangleF(left, top, right - left, bottom - top);
     }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
-    /// <returns>The <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> this method creates, cast as an object.</returns>
-    public override object Clone()
-    {
-        return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
+		/// <returns>The <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> this method creates, cast as an object.</returns>
+		public override object? Clone()
+		{
+			return null;
+
     }
 
     /// <summary>Updates the brush's transformation matrix with the product of brush's transformation matrix multiplied by another matrix.</summary>

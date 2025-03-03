@@ -1,3 +1,4 @@
+
 using System.Drawing.Drawing2D;
 
 namespace System.Drawing;
@@ -5,10 +6,9 @@ namespace System.Drawing;
 /// <summary>Describes the interior of a graphics shape composed of rectangles and paths. This class cannot be inherited.</summary>
 public sealed class Region : MarshalByRefObject, IDisposable
 {
-    private RectangleF rectangle = new RectangleF(0, 0, 0, 0);
-    private RegionData regionData = new RegionData();
-    private GraphicsPath graphicsPath = new GraphicsPath();
-
+    private RectangleF rectangle = new(0, 0, 0, 0);
+    private RegionData regionData = new();
+    private GraphicsPath graphicsPath = new();
     /// <summary>Initializes a new <see cref="T:System.Drawing.Region" />.</summary>
     public Region()
     {
@@ -22,6 +22,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     {
         graphicsPath = path;
         rectangle = path.GetBounds();
+
     }
 
     /// <summary>Initializes a new <see cref="T:System.Drawing.Region" /> from the specified data.</summary>
@@ -31,6 +32,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     public Region(RegionData rgnData)
     {
         regionData = rgnData;
+
     }
 
     /// <summary>Initializes a new <see cref="T:System.Drawing.Region" /> from the specified <see cref="T:System.Drawing.Rectangle" /> structure.</summary>
@@ -60,7 +62,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <paramref name="path" /> is <see langword="null" />.</exception>
     public void Complement(GraphicsPath path)
     {
-        graphicsPath = path;
+        graphicsPath = path; 
         rectangle = path.GetBounds();
     }
 
@@ -106,8 +108,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <paramref name="g" /> or <paramref name="region" /> is <see langword="null" />.</exception>
     public bool Equals(Region region, Graphics g)
     {
-        return rectangle.Equals(region.rectangle) && graphicsPath.Equals(region.graphicsPath) &&
-               regionData.Equals(region.regionData);
+        return rectangle.Equals(region.rectangle) && graphicsPath.Equals(region.graphicsPath) && regionData.Equals(region.regionData);
     }
 
     /// <summary>Updates this <see cref="T:System.Drawing.Region" /> to contain only the portion of its interior that does not intersect with the specified <see cref="T:System.Drawing.Drawing2D.GraphicsPath" />.</summary>
@@ -138,17 +139,12 @@ public sealed class Region : MarshalByRefObject, IDisposable
     {
     }
 
-    /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
-    ~Region()
-    {
-    }
-
     /// <summary>Initializes a new <see cref="T:System.Drawing.Region" /> from a handle to the specified existing GDI region.</summary>
     /// <param name="hrgn">A handle to an existing <see cref="T:System.Drawing.Region" />.</param>
     /// <returns>The new <see cref="T:System.Drawing.Region" />.</returns>
     public static Region FromHrgn(IntPtr hrgn)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Gets a <see cref="T:System.Drawing.RectangleF" /> structure that represents a rectangle that bounds this <see cref="T:System.Drawing.Region" /> on the drawing surface of a <see cref="T:System.Drawing.Graphics" /> object.</summary>
@@ -168,7 +164,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <paramref name="g" /> is <see langword="null" />.</exception>
     public IntPtr GetHrgn(Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Returns a <see cref="T:System.Drawing.Drawing2D.RegionData" /> that represents the information that describes this <see cref="T:System.Drawing.Region" />.</summary>
@@ -185,7 +181,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <paramref name="matrix" /> is <see langword="null" />.</exception>
     public RectangleF[] GetRegionScans(Matrix matrix)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Updates this <see cref="T:System.Drawing.Region" /> to the intersection of itself with the specified <see cref="T:System.Drawing.Drawing2D.GraphicsPath" />.</summary>
@@ -220,7 +216,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <paramref name="g" /> is <see langword="null" />.</exception>
     public bool IsEmpty(Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether this <see cref="T:System.Drawing.Region" /> has an infinite interior on the specified drawing surface.</summary>
@@ -231,7 +227,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <paramref name="g" /> is <see langword="null" />.</exception>
     public bool IsInfinite(Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether the specified <see cref="T:System.Drawing.Point" /> structure is contained within this <see cref="T:System.Drawing.Region" />.</summary>
@@ -240,7 +236,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when <paramref name="point" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(Point point)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether the specified <see cref="T:System.Drawing.Point" /> structure is contained within this <see cref="T:System.Drawing.Region" /> when drawn using the specified <see cref="T:System.Drawing.Graphics" />.</summary>
@@ -250,7 +246,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when <paramref name="point" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(Point point, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether the specified <see cref="T:System.Drawing.PointF" /> structure is contained within this <see cref="T:System.Drawing.Region" />.</summary>
@@ -259,7 +255,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when <paramref name="point" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(PointF point)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether the specified <see cref="T:System.Drawing.PointF" /> structure is contained within this <see cref="T:System.Drawing.Region" /> when drawn using the specified <see cref="T:System.Drawing.Graphics" />.</summary>
@@ -269,7 +265,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when <paramref name="point" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(PointF point, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified <see cref="T:System.Drawing.Rectangle" /> structure is contained within this <see cref="T:System.Drawing.Region" />.</summary>
@@ -277,7 +273,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     /// <returns>This method returns <see langword="true" /> when any portion of <paramref name="rect" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(Rectangle rect)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified <see cref="T:System.Drawing.Rectangle" /> structure is contained within this <see cref="T:System.Drawing.Region" /> when drawn using the specified <see cref="T:System.Drawing.Graphics" />.</summary>
@@ -287,7 +283,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when any portion of the <paramref name="rect" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(Rectangle rect, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified <see cref="T:System.Drawing.RectangleF" /> structure is contained within this <see cref="T:System.Drawing.Region" />.</summary>
@@ -296,7 +292,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when any portion of <paramref name="rect" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(RectangleF rect)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified <see cref="T:System.Drawing.RectangleF" /> structure is contained within this <see cref="T:System.Drawing.Region" /> when drawn using the specified <see cref="T:System.Drawing.Graphics" />.</summary>
@@ -306,7 +302,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when <paramref name="rect" /> is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(RectangleF rect, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether the specified point is contained within this <see cref="T:System.Drawing.Region" /> object when drawn using the specified <see cref="T:System.Drawing.Graphics" /> object.</summary>
@@ -317,7 +313,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when the specified point is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(int x, int y, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" />.</summary>
@@ -329,7 +325,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(int x, int y, int width, int height)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" /> when drawn using the specified <see cref="T:System.Drawing.Graphics" />.</summary>
@@ -342,7 +338,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(int x, int y, int width, int height, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether the specified point is contained within this <see cref="T:System.Drawing.Region" />.</summary>
@@ -352,7 +348,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when the specified point is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(float x, float y)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether the specified point is contained within this <see cref="T:System.Drawing.Region" /> when drawn using the specified <see cref="T:System.Drawing.Graphics" />.</summary>
@@ -363,7 +359,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when the specified point is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(float x, float y, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" />.</summary>
@@ -375,7 +371,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" /> object; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(float x, float y, float width, float height)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Tests whether any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" /> when drawn using the specified <see cref="T:System.Drawing.Graphics" />.</summary>
@@ -388,7 +384,7 @@ public sealed class Region : MarshalByRefObject, IDisposable
     ///   <see langword="true" /> when any portion of the specified rectangle is contained within this <see cref="T:System.Drawing.Region" />; otherwise, <see langword="false" />.</returns>
     public bool IsVisible(float x, float y, float width, float height, Graphics g)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Initializes this <see cref="T:System.Drawing.Region" /> to an empty interior.</summary>

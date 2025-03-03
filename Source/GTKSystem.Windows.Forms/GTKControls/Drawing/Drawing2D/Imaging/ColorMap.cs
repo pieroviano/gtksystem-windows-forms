@@ -11,16 +11,16 @@ public sealed class ColorMap
     /// <returns>The existing <see cref="T:System.Drawing.Color" /> structure to be converted.</returns>
     public Color OldColor
     {
-        get { return _oldColor; }
-        set { _oldColor = value; }
+        get => _oldColor;
+        set => _oldColor = value;
     }
 
     /// <summary>Gets or sets the new <see cref="T:System.Drawing.Color" /> structure to which to convert.</summary>
     /// <returns>The new <see cref="T:System.Drawing.Color" /> structure to which to convert.</returns>
     public Color NewColor
     {
-        get { return _newColor; }
-        set { _newColor = value; }
+        get => _newColor;
+        set => _newColor = value;
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.ColorMap" /> class.</summary>

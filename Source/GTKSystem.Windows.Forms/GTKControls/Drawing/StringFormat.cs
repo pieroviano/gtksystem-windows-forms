@@ -9,68 +9,56 @@ public sealed class StringFormat : MarshalByRefObject, ICloneable, IDisposable
     /// <returns>A <see cref="T:System.Drawing.StringAlignment" /> enumeration that specifies the horizontal  alignment of the string.</returns>
     public StringAlignment Alignment
     {
-        get { throw null; }
-        set { }
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
     }
 
     /// <summary>Gets the language that is used when local digits are substituted for western digits.</summary>
     /// <returns>A National Language Support (NLS) language identifier that identifies the language that will be used when local digits are substituted for western digits. You can pass the <see cref="P:System.Globalization.CultureInfo.LCID" /> property of a <see cref="T:System.Globalization.CultureInfo" /> object as the NLS language identifier. For example, suppose you create a <see cref="T:System.Globalization.CultureInfo" /> object by passing the string "ar-EG" to a <see cref="T:System.Globalization.CultureInfo" /> constructor. If you pass the <see cref="P:System.Globalization.CultureInfo.LCID" /> property of that <see cref="T:System.Globalization.CultureInfo" /> object along with <see cref="F:System.Drawing.StringDigitSubstitute.Traditional" /> to the <see cref="M:System.Drawing.StringFormat.SetDigitSubstitution(System.Int32,System.Drawing.StringDigitSubstitute)" /> method, then Arabic-Indic digits will be substituted for western digits at display time.</returns>
-    public int DigitSubstitutionLanguage
-    {
-        get { throw null; }
-    }
+    public int DigitSubstitutionLanguage => throw new NotImplementedException();
 
     /// <summary>Gets the method to be used for digit substitution.</summary>
     /// <returns>A <see cref="T:System.Drawing.StringDigitSubstitute" /> enumeration value that specifies how to substitute characters in a string that cannot be displayed because they are not supported by the current font.</returns>
-    public StringDigitSubstitute DigitSubstitutionMethod
-    {
-        get { throw null; }
-    }
+    public StringDigitSubstitute DigitSubstitutionMethod => throw new NotImplementedException();
 
     /// <summary>Gets or sets a <see cref="T:System.Drawing.StringFormatFlags" /> enumeration that contains formatting information.</summary>
     /// <returns>A <see cref="T:System.Drawing.StringFormatFlags" /> enumeration that contains formatting information.</returns>
     public StringFormatFlags FormatFlags
     {
-        get { throw null; }
-        set { }
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
     }
 
     /// <summary>Gets a generic default <see cref="T:System.Drawing.StringFormat" /> object.</summary>
     /// <returns>The generic default <see cref="T:System.Drawing.StringFormat" /> object.</returns>
-    public static StringFormat GenericDefault
-    {
-        get { throw null; }
-    }
+    public static StringFormat GenericDefault => throw new NotImplementedException();
 
     /// <summary>Gets a generic typographic <see cref="T:System.Drawing.StringFormat" /> object.</summary>
     /// <returns>A generic typographic <see cref="T:System.Drawing.StringFormat" /> object.</returns>
-    public static StringFormat GenericTypographic
-    {
-        get { throw null; }
-    }
+    public static StringFormat GenericTypographic => throw new NotImplementedException();
 
     /// <summary>Gets or sets the <see cref="T:System.Drawing.Text.HotkeyPrefix" /> object for this <see cref="T:System.Drawing.StringFormat" /> object.</summary>
     /// <returns>The <see cref="T:System.Drawing.Text.HotkeyPrefix" /> object for this <see cref="T:System.Drawing.StringFormat" /> object, the default is <see cref="F:System.Drawing.Text.HotkeyPrefix.None" />.</returns>
     public HotkeyPrefix HotkeyPrefix
     {
-        get { throw null; }
-        set { }
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
     }
 
     /// <summary>Gets or sets the vertical alignment of the string.</summary>
     /// <returns>A <see cref="T:System.Drawing.StringAlignment" /> enumeration that represents the vertical line alignment.</returns>
     public StringAlignment LineAlignment
     {
-        get { throw null; }
-        set { }
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
     }
 
     /// <summary>Gets or sets the <see cref="T:System.Drawing.StringTrimming" /> enumeration for this <see cref="T:System.Drawing.StringFormat" /> object.</summary>
     /// <returns>A <see cref="T:System.Drawing.StringTrimming" /> enumeration that indicates how text drawn with this <see cref="T:System.Drawing.StringFormat" /> object is trimmed when it exceeds the edges of the layout rectangle.</returns>
     public StringTrimming Trimming
     {
-        get { throw null; }
-        set { }
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
     }
 
     /// <summary>Initializes a new <see cref="T:System.Drawing.StringFormat" /> object.</summary>
@@ -103,17 +91,19 @@ public sealed class StringFormat : MarshalByRefObject, ICloneable, IDisposable
     /// <returns>The <see cref="T:System.Drawing.StringFormat" /> object this method creates.</returns>
     public object Clone()
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.StringFormat" /> object.</summary>
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
     }
 
     /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
     ~StringFormat()
     {
+        Dispose();
     }
 
     /// <summary>Gets the tab stops for this <see cref="T:System.Drawing.StringFormat" /> object.</summary>
@@ -121,7 +111,7 @@ public sealed class StringFormat : MarshalByRefObject, ICloneable, IDisposable
     /// <returns>An array of distances (in number of spaces) between tab stops.</returns>
     public float[] GetTabStops(out float firstTabOffset)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Specifies the language and method to be used when local digits are substituted for western digits.</summary>
@@ -149,6 +139,6 @@ public sealed class StringFormat : MarshalByRefObject, ICloneable, IDisposable
     /// <returns>A string representation of this <see cref="T:System.Drawing.StringFormat" /> object.</returns>
     public override string ToString()
     {
-        throw null;
+        throw new NotImplementedException();
     }
 }

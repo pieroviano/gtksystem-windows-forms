@@ -4,7 +4,7 @@ namespace System.Drawing;
 
 internal static class NativeMethods
 {
-    internal struct BITMAPINFOHEADER
+    internal struct Bitmapinfoheader
     {
         public int biSize;
 
@@ -29,7 +29,7 @@ internal static class NativeMethods
         public int biClrImportant;
     }
 
-    internal struct PALETTEENTRY
+    internal struct Paletteentry
     {
         public byte peRed;
 
@@ -40,7 +40,7 @@ internal static class NativeMethods
         public byte peFlags;
     }
 
-    internal struct RGBQUAD
+    internal struct Rgbquad
     {
         public byte rgbBlue;
 
@@ -51,15 +51,15 @@ internal static class NativeMethods
         public byte rgbReserved;
     }
 
-    public const int MAX_PATH = 260;
+    public const int maxPath = 260;
 
-    internal const int SM_REMOTESESSION = 4096;
+    internal const int smRemotesession = 4096;
 
-    internal const int DIB_RGB_COLORS = 0;
+    internal const int dibRgbColors = 0;
 
-    internal const int BI_BITFIELDS = 3;
+    internal const int biBitfields = 3;
 
-    internal const int BI_RGB = 0;
+    internal const int biRgb = 0;
 
-    internal static HandleRef NullHandleRef => new HandleRef(null, IntPtr.Zero);
+    internal static HandleRef NullHandleRef => new(null, IntPtr.Zero);
 }

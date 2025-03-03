@@ -14,7 +14,7 @@ namespace System.Windows.Forms;
 public struct Message
 {
 #if DEBUG
-    private static readonly TraceSwitch s_allWinMessages =
+    private static readonly TraceSwitch AllWinMessages =
         new TraceSwitch("AllWinMessages", "Output every received message");
 #endif
 
@@ -54,7 +54,7 @@ public struct Message
         };
 
 #if DEBUG
-        if (allWinMessages.TraceVerbose)
+        if (AllWinMessages.TraceVerbose)
         {
             Debug.WriteLine(m.ToString());
         }

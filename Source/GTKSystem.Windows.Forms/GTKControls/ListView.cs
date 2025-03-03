@@ -319,7 +319,7 @@ public class ListView : ContainerControl
     internal void NativeUpdateText(ListViewItem item, string text)
     {
         var box = item._flowBoxChild?.Child as Box;
-        if (item._flowBoxChild != null && item._flowBoxChild.Parent is FlowBox)
+        if (item._flowBoxChild is { Parent: FlowBox })
         {
             if (View == View.Details)
             {

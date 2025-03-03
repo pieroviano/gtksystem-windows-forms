@@ -6,22 +6,21 @@ namespace System.Drawing.Imaging;
 [StructLayout(LayoutKind.Sequential)]
 public sealed class MetafileHeader
 {
-    internal MetafileHeaderWmf wmf;
+    internal MetafileHeaderWmf? wmf;
 
-    internal MetafileHeaderEmf emf;
+    internal MetafileHeaderEmf? emf;
 
     /// <summary>Gets the type of the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</summary>
     /// <returns>A <see cref="T:System.Drawing.Imaging.MetafileType" /> enumeration that represents the type of the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
-    public MetafileType Type
+    public MetafileType? Type
     {
         get
         {
             if (!IsWmf())
             {
-                return emf.type;
+                return emf?.type;
             }
-
-            return wmf.type;
+            return wmf?.type;
         }
     }
 
@@ -33,10 +32,9 @@ public sealed class MetafileHeader
         {
             if (!IsWmf())
             {
-                return emf.size;
+                return emf?.size??0;
             }
-
-            return wmf.size;
+            return wmf?.size??0;
         }
     }
 
@@ -48,10 +46,9 @@ public sealed class MetafileHeader
         {
             if (!IsWmf())
             {
-                return emf.version;
+                return emf?.version??0;
             }
-
-            return wmf.version;
+            return wmf?.version ?? 0;
         }
     }
 
@@ -63,10 +60,9 @@ public sealed class MetafileHeader
         {
             if (!IsWmf())
             {
-                return emf.dpiX;
+                return emf?.dpiX ?? 0;
             }
-
-            return wmf.dpiX;
+            return wmf?.dpiX ?? 0;
         }
     }
 
@@ -78,10 +74,9 @@ public sealed class MetafileHeader
         {
             if (!IsWmf())
             {
-                return emf.dpiY;
+                return emf?.dpiY ?? 0;
             }
-
-            return wmf.dpiY;
+            return wmf?.dpiY ?? 0;
         }
     }
 
@@ -93,40 +88,27 @@ public sealed class MetafileHeader
         {
             if (!IsWmf())
             {
-                return new Rectangle(emf.X, emf.Y, emf.Width, emf.Height);
+                return new Rectangle(emf?.X??0, emf?.Y??0, emf?.Width??0, emf?.Height??0);
             }
-
-            return new Rectangle(wmf.X, wmf.Y, wmf.Width, wmf.Height);
+            return new Rectangle(wmf?.X ?? 0, wmf?.Y ?? 0, wmf?.Width ?? 0, wmf?.Height ?? 0);
         }
     }
 
     /// <summary>Gets the Windows metafile (WMF) header file for the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</summary>
     /// <returns>A <see cref="T:System.Drawing.Imaging.MetaHeader" /> that contains the WMF header file for the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
-    public MetaHeader WmfHeader
-    {
-        get { return wmf.WmfHeader; }
-    }
+    public MetaHeader? WmfHeader => wmf?.WmfHeader;
 
     /// <summary>Gets the size, in bytes, of the enhanced metafile plus header file.</summary>
     /// <returns>The size, in bytes, of the enhanced metafile plus header file.</returns>
-    public int EmfPlusHeaderSize
-    {
-        get { return wmf.EmfPlusHeaderSize; }
-    }
+    public int EmfPlusHeaderSize => wmf?.EmfPlusHeaderSize??0;
 
     /// <summary>Gets the logical horizontal resolution, in dots per inch, of the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</summary>
     /// <returns>The logical horizontal resolution, in dots per inch, of the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
-    public int LogicalDpiX
-    {
-        get { return wmf.LogicalDpiX; }
-    }
+    public int LogicalDpiX => wmf?.LogicalDpiX ?? 0;
 
     /// <summary>Gets the logical vertical resolution, in dots per inch, of the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</summary>
     /// <returns>The logical vertical resolution, in dots per inch, of the associated <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
-    public int LogicalDpiY
-    {
-        get { return wmf.LogicalDpiY; }
-    }
+    public int LogicalDpiY => wmf?.LogicalDpiY ?? 0;
 
     internal MetafileHeader()
     {
@@ -137,6 +119,7 @@ public sealed class MetafileHeader
     ///   <see langword="true" /> if the associated <see cref="T:System.Drawing.Imaging.Metafile" /> is in the Windows metafile format; otherwise, <see langword="false" />.</returns>
     public bool IsWmf()
     {
+
         return false;
     }
 
@@ -145,6 +128,7 @@ public sealed class MetafileHeader
     ///   <see langword="true" /> if the associated <see cref="T:System.Drawing.Imaging.Metafile" /> is in the Windows placeable metafile format; otherwise, <see langword="false" />.</returns>
     public bool IsWmfPlaceable()
     {
+
         return false;
     }
 
@@ -153,6 +137,7 @@ public sealed class MetafileHeader
     ///   <see langword="true" /> if the associated <see cref="T:System.Drawing.Imaging.Metafile" /> is in the Windows enhanced metafile format; otherwise, <see langword="false" />.</returns>
     public bool IsEmf()
     {
+		
         return false;
     }
 
@@ -161,6 +146,7 @@ public sealed class MetafileHeader
     ///   <see langword="true" /> if the associated <see cref="T:System.Drawing.Imaging.Metafile" /> is in the Windows enhanced metafile format or the Windows enhanced metafile plus format; otherwise, <see langword="false" />.</returns>
     public bool IsEmfOrEmfPlus()
     {
+	
         return false;
     }
 
@@ -169,6 +155,7 @@ public sealed class MetafileHeader
     ///   <see langword="true" /> if the associated <see cref="T:System.Drawing.Imaging.Metafile" /> is in the Windows enhanced metafile plus format; otherwise, <see langword="false" />.</returns>
     public bool IsEmfPlus()
     {
+	
         return false;
     }
 
@@ -177,6 +164,7 @@ public sealed class MetafileHeader
     ///   <see langword="true" /> if the associated <see cref="T:System.Drawing.Imaging.Metafile" /> is in the Dual enhanced metafile format; otherwise, <see langword="false" />.</returns>
     public bool IsEmfPlusDual()
     {
+
         return false;
     }
 
@@ -185,6 +173,7 @@ public sealed class MetafileHeader
     ///   <see langword="true" /> if the associated <see cref="T:System.Drawing.Imaging.Metafile" /> supports only the Windows enhanced metafile plus format; otherwise, <see langword="false" />.</returns>
     public bool IsEmfPlusOnly()
     {
+
         return false;
     }
 
@@ -195,9 +184,8 @@ public sealed class MetafileHeader
     {
         if (IsEmfPlus())
         {
-            return (emf.emfPlusFlags & EmfPlusFlags.Display) != 0;
+            return (emf?.emfPlusFlags ?? 0 & EmfPlusFlags.Display) != 0;
         }
-
         return false;
     }
 }

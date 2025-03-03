@@ -9,12 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{F6BA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKWinFormsApp", "Samples\GTKWinFormsApp\GTKWinFormsApp.csproj", "{A963833A-1053-4321-9BCF-3FB7C58F0601}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "licenses", "licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
 	ProjectSection(SolutionItems) = preProject
 		Source\licenses\LICENSE.txt = Source\licenses\LICENSE.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystemWinFormsApp11", "Samples\GTKSystemWinFormsApp11\GTKSystemWinFormsApp11.csproj", "{ED029673-302D-4E58-B33E-1472BD96B19C}"
 EndProject

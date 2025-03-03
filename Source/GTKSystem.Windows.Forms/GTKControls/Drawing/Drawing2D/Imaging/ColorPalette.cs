@@ -36,18 +36,18 @@ public sealed class ColorPalette
     internal void ConvertFromMemory(IntPtr memory)
     {
         _flags = Marshal.ReadInt32(memory);
-        int num = Marshal.ReadInt32((IntPtr)((long)memory + 4));
+        var num = Marshal.ReadInt32((IntPtr)((long)memory + 4));
         _entries = new Color[num];
-        for (int i = 0; i < num; i++)
+        for (var i = 0; i < num; i++)
         {
-            int argb = Marshal.ReadInt32((IntPtr)((long)memory + 8 + i * 4));
+            var argb = Marshal.ReadInt32((IntPtr)((long)memory + 8 + i * 4));
             _entries[i] = Color.FromArgb(argb);
         }
     }
 
     internal IntPtr ConvertToMemory()
     {
-        int num = _entries.Length;
+        var num = _entries.Length;
         IntPtr intPtr;
         checked
         {
@@ -55,12 +55,10 @@ public sealed class ColorPalette
             Marshal.WriteInt32(intPtr, 0, _flags);
             Marshal.WriteInt32((IntPtr)((long)intPtr + 4), 0, num);
         }
-
-        for (int i = 0; i < num; i++)
+        for (var i = 0; i < num; i++)
         {
             Marshal.WriteInt32((IntPtr)((long)intPtr + 4 * (i + 2)), 0, _entries[i].ToArgb());
         }
-
         return intPtr;
     }
 }

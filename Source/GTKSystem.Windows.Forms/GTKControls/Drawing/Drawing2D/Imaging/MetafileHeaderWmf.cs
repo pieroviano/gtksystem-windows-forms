@@ -25,7 +25,8 @@ internal sealed class MetafileHeaderWmf
 
     public int Height;
 
-    [MarshalAs(UnmanagedType.Struct)] public MetaHeader WmfHeader = new MetaHeader();
+    [MarshalAs(UnmanagedType.Struct)]
+    public MetaHeader WmfHeader = new();
 
     public int dummy1;
 

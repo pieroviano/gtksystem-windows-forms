@@ -74,8 +74,6 @@ public class TreeNode : ICloneable, ISerializable, IEquatable<TreeNode>
         }
     }
 
-    public string Text { get; set; }
-
     public string? ToolTipText
     {
         get; set;

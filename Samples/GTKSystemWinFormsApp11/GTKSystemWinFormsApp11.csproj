@@ -10,10 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
   </ItemGroup>
 

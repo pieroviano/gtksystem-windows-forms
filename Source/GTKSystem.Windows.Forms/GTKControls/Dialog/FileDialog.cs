@@ -105,28 +105,28 @@ public abstract class FileDialog : CommonDialog
 
     protected override bool RunDialog(IWin32Window? owner)
     {
-        if (owner != null && owner is Form ownerform)
+        if (owner is Form ownerform)
         {
-            fileDialog = new Gtk.FileChooserDialog(
-                Gtk.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_file, ownerform.self,
+            fileDialog = new FileChooserDialog(
+                Properties.Resources.FileDialog_RunDialog_Select_file, ownerform.self,
                 ActionType);
-            fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+            fileDialog.WindowPosition = WindowPosition.CenterOnParent;
         }
         else
         {
             fileDialog =
-                new Gtk.FileChooserDialog(Gtk.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_file,
+                new FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_file,
                     null, ActionType);
-            fileDialog.WindowPosition = Gtk.WindowPosition.Center;
+            fileDialog.WindowPosition = WindowPosition.Center;
         }
 
         fileDialog.KeepAbove = true;
-        fileDialog.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_OK, Gtk.ResponseType.Ok);
-        fileDialog.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel,
-            Gtk.ResponseType.Cancel);
-        fileDialog.SelectMultiple = this.Multiselect;
-        fileDialog.Title = this.Title ?? string.Empty;
-        fileDialog.TooltipText = this.Description ?? string.Empty;
+        fileDialog.AddButton(Properties.Resources.MessageBox_ShowCore_OK, ResponseType.Ok);
+        fileDialog.AddButton(Properties.Resources.MessageBox_ShowCore_Cancel,
+            ResponseType.Cancel);
+        fileDialog.SelectMultiple = Multiselect;
+        fileDialog.Title = Title ?? string.Empty;
+        fileDialog.TooltipText = Description ?? string.Empty;
 
         fileDialog.KeepAbove = true;
         if (!string.IsNullOrWhiteSpace(SelectedDirectory))

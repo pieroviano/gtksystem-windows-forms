@@ -5,10 +5,9 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Drawing.Design;
+using System.Windows.Forms.Design;
 
-namespace System.Windows.Forms.Design;
-
-namespace System.Windows.Forms.Design;
+namespace System.Windows.Forms.Designer;
 
 /// <summary>
 ///  Provides a designer that extends the ScrollableControlDesigner and implements

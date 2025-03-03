@@ -3,7 +3,7 @@
 
 using System.ComponentModel;
 
-namespace System.Windows.Forms.Design;
+namespace System.Windows.Forms.Designer;
 
 /// <summary>
 ///  <para>Provides a base implementation of a designer for user controls.</para>

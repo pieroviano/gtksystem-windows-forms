@@ -4,44 +4,38 @@
 
 namespace System.Drawing;
 
-/// <summary>
-///     Specifies the unit of measure for the given data.
-/// </summary>
+//
+// 摘要:
+//     Specifies the unit of measure for the given data.
 public enum GraphicsUnit
 {
-    /// <summary>
-    ///     Specifies the world coordinate system unit as the unit of measure.
-    /// </summary>
+    //
+    // 摘要:
+    //     Specifies the world coordinate system unit as the unit of measure.
     World = 0,
-
-    /// <summary>
-    ///     Specifies the unit of measure of the display device. Typically pixels for video
-    ///     displays, and 1/100 inch for printers.
-    /// </summary>
+    //
+    // 摘要:
+    //     Specifies the unit of measure of the display device. Typically pixels for video
+    //     displays, and 1/100 inch for printers.
     Display = 1,
-
-    /// <summary>
-    ///     Specifies a device pixel as the unit of measure.
-    /// </summary>
+    //
+    // 摘要:
+    //     Specifies a device pixel as the unit of measure.
     Pixel = 2,
-
-    /// <summary>
-    ///     Specifies a printer's point (1/72 inch) as the unit of measure.
-    /// </summary>
+    //
+    // 摘要:
+    //     Specifies a printer's point (1/72 inch) as the unit of measure.
     Point = 3,
-
-    /// <summary>
-    ///     Specifies the inch as the unit of measure.
-    /// </summary>
+    //
+    // 摘要:
+    //     Specifies the inch as the unit of measure.
     Inch = 4,
-
-    /// <summary>
-    ///     Specifies the document unit (1/300 inch) as the unit of measure.
-    /// </summary>
+    //
+    // 摘要:
+    //     Specifies the document unit (1/300 inch) as the unit of measure.
     Document = 5,
-
-    /// <summary>
-    ///     Specifies the millimeter as the unit of measure.
-    /// </summary>
+    //
+    // 摘要:
+    //     Specifies the millimeter as the unit of measure.
     Millimeter = 6
 }

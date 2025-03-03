@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -8,13 +7,11 @@ namespace System.Drawing.Imaging;
 
 /// <summary>Defines a graphic metafile. A metafile contains records that describe a sequence of graphics operations that can be recorded (constructed) and played back (displayed). This class is not inheritable.</summary>
 [Serializable]
-[Editor(
-    "System.Drawing.Design.MetafileEditor, System.Drawing.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
-    "System.Drawing.Design.UITypeEditor, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+[Editor("System.Drawing.Design.MetafileEditor, System.Drawing.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", "System.Drawing.Design.UITypeEditor, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 [TypeForwardedFrom("System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 public sealed class Metafile : Image
 {
-    private const int MaxPath = 260;
+    private const int maxPath = 260;
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified handle and a <see cref="T:System.Drawing.Imaging.WmfPlaceableFileHeader" />. Also, the <paramref name="deleteWmf" /> parameter can be used to delete the handle when the metafile is deleted.</summary>
     /// <param name="hmetafile">A windows handle to a <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
@@ -23,6 +20,7 @@ public sealed class Metafile : Image
     ///   <see langword="true" /> to delete the handle to the new <see cref="T:System.Drawing.Imaging.Metafile" /> when the <see cref="T:System.Drawing.Imaging.Metafile" /> is deleted; otherwise, <see langword="false" />.</param>
     public Metafile(IntPtr hmetafile, WmfPlaceableFileHeader wmfHeader, bool deleteWmf)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified handle.</summary>
@@ -31,12 +29,14 @@ public sealed class Metafile : Image
     ///   <see langword="true" /> to delete the enhanced metafile handle when the <see cref="T:System.Drawing.Imaging.Metafile" /> is deleted; otherwise, <see langword="false" />.</param>
     public Metafile(IntPtr henhmetafile, bool deleteEmf)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified file name.</summary>
     /// <param name="filename">A <see cref="T:System.String" /> that represents the file name from which to create the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     public Metafile(string filename)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified device context, bounded by the specified rectangle.</summary>
@@ -88,9 +88,9 @@ public sealed class Metafile : Image
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit, EmfType type,
-        string description)
+    public Metafile(IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit, EmfType type, string? description)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified device context, bounded by the specified rectangle that uses the supplied unit of measure.</summary>
@@ -154,8 +154,7 @@ public sealed class Metafile : Image
     /// <param name="frameRect">A <see cref="T:System.Drawing.RectangleF" /> that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(string fileName, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit,
-        EmfType type)
+    public Metafile(string fileName, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit, EmfType type)
         : this(fileName, referenceHdc, frameRect, frameUnit, type, null)
     {
     }
@@ -166,8 +165,7 @@ public sealed class Metafile : Image
     /// <param name="frameRect">A <see cref="T:System.Drawing.RectangleF" /> that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="desc">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(string fileName, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit,
-        string desc)
+    public Metafile(string fileName, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit, string? desc)
         : this(fileName, referenceHdc, frameRect, frameUnit, EmfType.EmfPlusDual, desc)
     {
     }
@@ -179,9 +177,9 @@ public sealed class Metafile : Image
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(string fileName, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit,
-        EmfType type, string description)
+    public Metafile(string fileName, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit, EmfType type, string? description)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class with the specified file name, a Windows handle to a device context, and a <see cref="T:System.Drawing.Rectangle" /> structure that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />.</summary>
@@ -209,8 +207,7 @@ public sealed class Metafile : Image
     /// <param name="frameRect">A <see cref="T:System.Drawing.Rectangle" /> that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(string fileName, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit,
-        EmfType type)
+    public Metafile(string fileName, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit, EmfType type)
         : this(fileName, referenceHdc, frameRect, frameUnit, type, null)
     {
     }
@@ -221,8 +218,7 @@ public sealed class Metafile : Image
     /// <param name="frameRect">A <see cref="T:System.Drawing.Rectangle" /> that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(string fileName, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit,
-        string description)
+    public Metafile(string fileName, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit, string? description)
         : this(fileName, referenceHdc, frameRect, frameUnit, EmfType.EmfPlusDual, description)
     {
     }
@@ -269,8 +265,7 @@ public sealed class Metafile : Image
     /// <param name="frameRect">A <see cref="T:System.Drawing.RectangleF" /> that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(Stream stream, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit,
-        EmfType type)
+    public Metafile(Stream stream, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit, EmfType type)
         : this(stream, referenceHdc, frameRect, frameUnit, type, null)
     {
     }
@@ -300,8 +295,7 @@ public sealed class Metafile : Image
     /// <param name="frameRect">A <see cref="T:System.Drawing.Rectangle" /> that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(Stream stream, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit,
-        EmfType type)
+    public Metafile(Stream stream, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit, EmfType type)
         : this(stream, referenceHdc, frameRect, frameUnit, type, null)
     {
     }
@@ -320,14 +314,16 @@ public sealed class Metafile : Image
     ///   <paramref name="stream" /> is <see langword="null" />.</exception>
     public Metafile(Stream stream)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified handle to a device context and an <see cref="T:System.Drawing.Imaging.EmfType" /> enumeration that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />. A string can be supplied to name the file.</summary>
     /// <param name="referenceHdc">The handle to a device context.</param>
     /// <param name="emfType">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(IntPtr referenceHdc, EmfType emfType, string description)
+    public Metafile(IntPtr referenceHdc, EmfType emfType, string? description)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified device context, bounded by the specified rectangle that uses the supplied unit of measure, and an <see cref="T:System.Drawing.Imaging.EmfType" /> enumeration that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />. A string can be provided to name the file.</summary>
@@ -336,9 +332,9 @@ public sealed class Metafile : Image
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="desc">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit, EmfType type,
-        string desc)
+    public Metafile(IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit, EmfType type, string? desc)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class with the specified file name, a Windows handle to a device context, and an <see cref="T:System.Drawing.Imaging.EmfType" /> enumeration that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />. A descriptive string can be added, as well.</summary>
@@ -346,8 +342,9 @@ public sealed class Metafile : Image
     /// <param name="referenceHdc">A Windows handle to a device context.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(string fileName, IntPtr referenceHdc, EmfType type, string description)
+    public Metafile(string fileName, IntPtr referenceHdc, EmfType type, string? description)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class with the specified file name, a Windows handle to a device context, a <see cref="T:System.Drawing.Rectangle" /> structure that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />, the supplied unit of measure, and an <see cref="T:System.Drawing.Imaging.EmfType" /> enumeration that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />. A descriptive string can also be added.</summary>
@@ -357,9 +354,9 @@ public sealed class Metafile : Image
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(string fileName, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit,
-        EmfType type, string description)
+    public Metafile(string fileName, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit, EmfType type, string? description)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified data stream, a Windows handle to a device context, and an <see cref="T:System.Drawing.Imaging.EmfType" /> enumeration that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />. Also, a string that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" /> can be added.</summary>
@@ -367,8 +364,9 @@ public sealed class Metafile : Image
     /// <param name="referenceHdc">A Windows handle to a device context.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(Stream stream, IntPtr referenceHdc, EmfType type, string description)
+    public Metafile(Stream stream, IntPtr referenceHdc, EmfType type, string? description)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified data stream, a Windows handle to a device context, a <see cref="T:System.Drawing.RectangleF" /> structure that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />, the supplied unit of measure, and an <see cref="T:System.Drawing.Imaging.EmfType" /> enumeration that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />. A string that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" /> can be added.</summary>
@@ -378,9 +376,9 @@ public sealed class Metafile : Image
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(Stream stream, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit,
-        EmfType type, string description)
+    public Metafile(Stream stream, IntPtr referenceHdc, RectangleF frameRect, MetafileFrameUnit frameUnit, EmfType type, string? description)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.Metafile" /> class from the specified data stream, a Windows handle to a device context, a <see cref="T:System.Drawing.Rectangle" /> structure that represents the rectangle that bounds the new <see cref="T:System.Drawing.Imaging.Metafile" />, the supplied unit of measure, and an <see cref="T:System.Drawing.Imaging.EmfType" /> enumeration that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />. A string that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" /> can be added.</summary>
@@ -390,9 +388,9 @@ public sealed class Metafile : Image
     /// <param name="frameUnit">A <see cref="T:System.Drawing.Imaging.MetafileFrameUnit" /> that specifies the unit of measure for <paramref name="frameRect" />.</param>
     /// <param name="type">An <see cref="T:System.Drawing.Imaging.EmfType" /> that specifies the format of the <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
     /// <param name="description">A <see cref="T:System.String" /> that contains a descriptive name for the new <see cref="T:System.Drawing.Imaging.Metafile" />.</param>
-    public Metafile(Stream stream, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit,
-        EmfType type, string description)
+    public Metafile(Stream stream, IntPtr referenceHdc, Rectangle frameRect, MetafileFrameUnit frameUnit, EmfType type, string? description)
     {
+
     }
 
     private Metafile(SerializationInfo info, StreamingContext context)
@@ -412,6 +410,7 @@ public sealed class Metafile : Image
     /// <param name="data">An array of bytes that contains the record data.</param>
     public void PlayRecord(EmfPlusRecordType recordType, int flags, int dataSize, byte[] data)
     {
+
     }
 
     /// <summary>Returns the <see cref="T:System.Drawing.Imaging.MetafileHeader" /> associated with the specified <see cref="T:System.Drawing.Imaging.Metafile" />.</summary>
@@ -420,7 +419,7 @@ public sealed class Metafile : Image
     /// <returns>The <see cref="T:System.Drawing.Imaging.MetafileHeader" /> associated with the specified <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
     public static MetafileHeader GetMetafileHeader(IntPtr hmetafile, WmfPlaceableFileHeader wmfHeader)
     {
-        MetafileHeader metafileHeader = new MetafileHeader
+        var metafileHeader = new MetafileHeader
         {
             wmf = new MetafileHeaderWmf()
         };
@@ -433,7 +432,7 @@ public sealed class Metafile : Image
     /// <returns>The <see cref="T:System.Drawing.Imaging.MetafileHeader" /> associated with the specified <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
     public static MetafileHeader GetMetafileHeader(IntPtr henhmetafile)
     {
-        MetafileHeader metafileHeader = new MetafileHeader
+        var metafileHeader = new MetafileHeader
         {
             emf = new MetafileHeaderEmf()
         };
@@ -446,21 +445,20 @@ public sealed class Metafile : Image
     /// <returns>The <see cref="T:System.Drawing.Imaging.MetafileHeader" /> associated with the specified <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
     public static MetafileHeader GetMetafileHeader(string fileName)
     {
-        System.IO.Path.GetFullPath(fileName);
-        MetafileHeader metafileHeader = new MetafileHeader();
-        IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<MetafileHeaderEmf>());
+        var metafileHeader = new MetafileHeader();
+        var intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<MetafileHeaderEmf>());
         try
         {
-            int[] array = new int[1];
+
+            var array = new int[1];
             Marshal.Copy(intPtr, array, 0, 1);
-            MetafileType metafileType = (MetafileType)array[0];
+            var metafileType = (MetafileType)array[0];
             if (metafileType == MetafileType.Wmf || metafileType == MetafileType.WmfPlaceable)
             {
                 metafileHeader.wmf = Marshal.PtrToStructure<MetafileHeaderWmf>(intPtr);
                 metafileHeader.emf = null;
                 return metafileHeader;
             }
-
             metafileHeader.wmf = null;
             metafileHeader.emf = Marshal.PtrToStructure<MetafileHeaderEmf>(intPtr);
             return metafileHeader;
@@ -476,29 +474,22 @@ public sealed class Metafile : Image
     /// <returns>The <see cref="T:System.Drawing.Imaging.MetafileHeader" /> associated with the specified <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
     public static MetafileHeader GetMetafileHeader(Stream stream)
     {
-        IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<MetafileHeaderEmf>());
+        var intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<MetafileHeaderEmf>());
         try
         {
-            try
+            var array = new int[1];
+            Marshal.Copy(intPtr, array, 0, 1);
+            var metafileType = (MetafileType)array[0];
+            var metafileHeader = new MetafileHeader();
+            if (metafileType == MetafileType.Wmf || metafileType == MetafileType.WmfPlaceable)
             {
-                int[] array = new int[1];
-                Marshal.Copy(intPtr, array, 0, 1);
-                MetafileType metafileType = (MetafileType)array[0];
-                MetafileHeader metafileHeader = new MetafileHeader();
-                if (metafileType == MetafileType.Wmf || metafileType == MetafileType.WmfPlaceable)
-                {
-                    metafileHeader.wmf = Marshal.PtrToStructure<MetafileHeaderWmf>(intPtr);
-                    metafileHeader.emf = null;
-                    return metafileHeader;
-                }
-
-                metafileHeader.wmf = null;
-                metafileHeader.emf = Marshal.PtrToStructure<MetafileHeaderEmf>(intPtr);
+                metafileHeader.wmf = Marshal.PtrToStructure<MetafileHeaderWmf>(intPtr);
+                metafileHeader.emf = null;
                 return metafileHeader;
             }
-            finally
-            {
-            }
+            metafileHeader.wmf = null;
+            metafileHeader.emf = Marshal.PtrToStructure<MetafileHeaderEmf>(intPtr);
+            return metafileHeader;
         }
         finally
         {
@@ -510,20 +501,20 @@ public sealed class Metafile : Image
     /// <returns>The <see cref="T:System.Drawing.Imaging.MetafileHeader" /> associated with this <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
     public MetafileHeader GetMetafileHeader()
     {
-        IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<MetafileHeaderEmf>());
+        var intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<MetafileHeaderEmf>());
         try
         {
-            int[] array = new int[1];
+
+            var array = new int[1];
             Marshal.Copy(intPtr, array, 0, 1);
-            MetafileType metafileType = (MetafileType)array[0];
-            MetafileHeader metafileHeader = new MetafileHeader();
+            var metafileType = (MetafileType)array[0];
+            var metafileHeader = new MetafileHeader();
             if (metafileType == MetafileType.Wmf || metafileType == MetafileType.WmfPlaceable)
             {
                 metafileHeader.wmf = Marshal.PtrToStructure<MetafileHeaderWmf>(intPtr);
                 metafileHeader.emf = null;
                 return metafileHeader;
             }
-
             metafileHeader.wmf = null;
             metafileHeader.emf = Marshal.PtrToStructure<MetafileHeaderEmf>(intPtr);
             return metafileHeader;
@@ -538,6 +529,7 @@ public sealed class Metafile : Image
     /// <returns>A Windows handle to this enhanced <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
     public IntPtr GetHenhmetafile()
     {
+
         return IntPtr.Zero;
     }
 }

@@ -8,17 +8,17 @@ namespace System.Drawing.Printing;
 /// </summary>
 public class QueryPageSettingsEventArgs : PrintEventArgs
 {
-    private PageSettings _pageSettings;
+    private PageSettings? _pageSettings;
 
     /// <summary>
     ///  Initializes a new instance of the <see cref='QueryPageSettingsEventArgs'/> class.
     /// </summary>
-    public QueryPageSettingsEventArgs(PageSettings pageSettings) : base() => _pageSettings = pageSettings;
+    public QueryPageSettingsEventArgs(PageSettings? pageSettings) => _pageSettings = pageSettings;
 
     /// <summary>
     ///  Gets or sets the page settings for the page to be printed.
     /// </summary>
-    public PageSettings PageSettings
+    public PageSettings? PageSettings
     {
         get
         {

@@ -35,24 +35,23 @@
 	  <Nullable>enable</Nullable>
       <RootNamespace>System.Windows.Forms</RootNamespace>
 	  <ImplicitUsings>enable</ImplicitUsings>
+	  <IsAotCompatible>True</IsAotCompatible>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>True</Optimize>
-    <IsAotCompatible>True</IsAotCompatible>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <IsAotCompatible>True</IsAotCompatible>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);GTKSystemWindowsForms</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GTKControls\Drawing\**" />
     <Compile Remove="GTKControls\Internal\**" />
     <Compile Remove="Resources\Forms_ico\**" />
     <Compile Remove="Resources\icons\**" />
+    <EmbeddedResource Remove="GTKControls\Drawing\**" />
     <EmbeddedResource Remove="GTKControls\Internal\**" />
     <EmbeddedResource Remove="Resources\Forms_ico\**" />
     <EmbeddedResource Remove="Resources\icons\**" />
+    <None Remove="GTKControls\Drawing\**" />
     <None Remove="GTKControls\Internal\**" />
     <None Remove="Resources\Forms_ico\**" />
     <None Remove="Resources\icons\**" />
@@ -116,6 +115,10 @@
     <None Remove="Resources\System\view-more.ico" />
     <None Remove="Resources\System\view-more.png" />
   </ItemGroup>
+	
+	<ItemGroup>
+	  <Compile Include="GTKControls\Drawing\Printing\PrintDocument.cs" />
+	</ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\System\go-next-symbolic.png" />

@@ -1,11 +1,8 @@
 ﻿using Gtk;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace System.Windows.Forms
@@ -82,7 +79,7 @@ namespace System.Windows.Forms
             {
                 var cssStyle = @"
 
-/* {Gtk.Windows.Forms.Properties.Resources.Application_Init_Define_control_style} */
+/* {System.Windows.Forms.Properties.Resources.Application_Init_Define_control_style} */
 
 @define-color frame_color  alpha(@theme_fg_color, 0.2);
 @define-color frame3d_color  alpha(@theme_fg_color, 0.2);
@@ -229,7 +226,7 @@ namespace System.Windows.Forms
                                 }
                                 else
                                 {
-                                    Console.WriteLine(themefolder + Gtk.Windows.Forms.Properties.Resources
+                                    Console.WriteLine(themefolder + Properties.Resources
                                         .Application_Init_Directory_does_not_exist);
                                 }
                             }
@@ -254,7 +251,7 @@ namespace System.Windows.Forms
                             }
                             else
                             {
-                                File.WriteAllText(stylepath, "/* 这里可以自定义或调整控件样式 */ ", Encoding.UTF8);
+                                File.WriteAllText(stylepath, @"/* Here you can customize or adjust the control style */ ", Encoding.UTF8);
                             }
                         }
                     }
@@ -265,34 +262,34 @@ namespace System.Windows.Forms
 
                     var setupthemecontent = new StringBuilder();
                     setupthemecontent.AppendLine("[setup]");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_Whether_to_follow_the_system_theme_by_default);
                     setupthemecontent.AppendLine("AutoTheme=true");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_Whether_to_apply_built_in_styles);
                     setupthemecontent.AppendLine("UseDefaultStyle=true");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_Specify_the_theme__valid_when_AutoTheme_is_false);
                     setupthemecontent.AppendLine("DefaultThemeName=Default");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_Whether_to_use_a_custom_theme__corresponding_to_custom_theme);
                     setupthemecontent.AppendLine("UseCustomTheme=false");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_Whether_to_use_custom_style__corresponding_to__custom_style_);
                     setupthemecontent.AppendLine("UseCustomStyle=true");
 
                     setupthemecontent.AppendLine().AppendLine("[custom theme]");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_Custom_theme_name);
                     setupthemecontent.AppendLine("Name=mytheme");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_The_folder_where_the_theme_files_are_located);
                     setupthemecontent.AppendLine("ThemeFolder=theme");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_css_file_path);
+                    setupthemecontent.AppendLine(Properties.Resources.Application_Init_css_file_path);
                     setupthemecontent.AppendLine("ThemeCssPath=theme/mytheme/theme.css");
 
                     setupthemecontent.AppendLine().AppendLine("[custom style]");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                    setupthemecontent.AppendLine(Properties.Resources
                         .Application_Init_Freely_defined_style_files);
                     setupthemecontent.AppendLine("StylePath=style.css");
 

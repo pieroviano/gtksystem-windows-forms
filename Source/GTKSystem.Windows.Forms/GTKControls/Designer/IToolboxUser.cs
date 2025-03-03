@@ -3,8 +3,6 @@
 
 namespace System.Drawing.Design;
 
-namespace System.Drawing.Design;
-
 /// <summary>
 ///  Provides notifications of toolbox actions to designers which implement this interface.
 /// </summary>

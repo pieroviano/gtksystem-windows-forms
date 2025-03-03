@@ -6,10 +6,8 @@ public enum PaletteFlags
 {
     /// <summary>Alpha data.</summary>
     HasAlpha = 0x1,
-
     /// <summary>Grayscale data.</summary>
     GrayScale = 0x2,
-
     /// <summary>Halftone data.</summary>
     Halftone = 0x4
 }

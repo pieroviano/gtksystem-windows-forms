@@ -60,200 +60,200 @@ public sealed class ColorMatrix
     /// <returns>The element at the 0 row and 0 column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix00
     {
-        get { return _matrix00; }
-        set { _matrix00 = value; }
+        get => _matrix00;
+        set => _matrix00 = value;
     }
 
     /// <summary>Gets or sets the element at the 0 (zero) row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the 0 row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" /> .</returns>
     public float Matrix01
     {
-        get { return _matrix01; }
-        set { _matrix01 = value; }
+        get => _matrix01;
+        set => _matrix01 = value;
     }
 
     /// <summary>Gets or sets the element at the 0 (zero) row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the 0 row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix02
     {
-        get { return _matrix02; }
-        set { _matrix02 = value; }
+        get => _matrix02;
+        set => _matrix02 = value;
     }
 
     /// <summary>Gets or sets the element at the 0 (zero) row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />. Represents the alpha component.</summary>
     /// <returns>The element at the 0 row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix03
     {
-        get { return _matrix03; }
-        set { _matrix03 = value; }
+        get => _matrix03;
+        set => _matrix03 = value;
     }
 
     /// <summary>Gets or sets the element at the 0 (zero) row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the 0 row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix04
     {
-        get { return _matrix04; }
-        set { _matrix04 = value; }
+        get => _matrix04;
+        set => _matrix04 = value;
     }
 
     /// <summary>Gets or sets the element at the first row and 0 (zero) column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the first row and 0 column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix10
     {
-        get { return _matrix10; }
-        set { _matrix10 = value; }
+        get => _matrix10;
+        set => _matrix10 = value;
     }
 
     /// <summary>Gets or sets the element at the first row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the first row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix11
     {
-        get { return _matrix11; }
-        set { _matrix11 = value; }
+        get => _matrix11;
+        set => _matrix11 = value;
     }
 
     /// <summary>Gets or sets the element at the first row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the first row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix12
     {
-        get { return _matrix12; }
-        set { _matrix12 = value; }
+        get => _matrix12;
+        set => _matrix12 = value;
     }
 
     /// <summary>Gets or sets the element at the first row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />. Represents the alpha component.</summary>
     /// <returns>The element at the first row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix13
     {
-        get { return _matrix13; }
-        set { _matrix13 = value; }
+        get => _matrix13;
+        set => _matrix13 = value;
     }
 
     /// <summary>Gets or sets the element at the first row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the first row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix14
     {
-        get { return _matrix14; }
-        set { _matrix14 = value; }
+        get => _matrix14;
+        set => _matrix14 = value;
     }
 
     /// <summary>Gets or sets the element at the second row and 0 (zero) column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the second row and 0 column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix20
     {
-        get { return _matrix20; }
-        set { _matrix20 = value; }
+        get => _matrix20;
+        set => _matrix20 = value;
     }
 
     /// <summary>Gets or sets the element at the second row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the second row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix21
     {
-        get { return _matrix21; }
-        set { _matrix21 = value; }
+        get => _matrix21;
+        set => _matrix21 = value;
     }
 
     /// <summary>Gets or sets the element at the second row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the second row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix22
     {
-        get { return _matrix22; }
-        set { _matrix22 = value; }
+        get => _matrix22;
+        set => _matrix22 = value;
     }
 
     /// <summary>Gets or sets the element at the second row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the second row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix23
     {
-        get { return _matrix23; }
-        set { _matrix23 = value; }
+        get => _matrix23;
+        set => _matrix23 = value;
     }
 
     /// <summary>Gets or sets the element at the second row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the second row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix24
     {
-        get { return _matrix24; }
-        set { _matrix24 = value; }
+        get => _matrix24;
+        set => _matrix24 = value;
     }
 
     /// <summary>Gets or sets the element at the third row and 0 (zero) column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the third row and 0 column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix30
     {
-        get { return _matrix30; }
-        set { _matrix30 = value; }
+        get => _matrix30;
+        set => _matrix30 = value;
     }
 
     /// <summary>Gets or sets the element at the third row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the third row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix31
     {
-        get { return _matrix31; }
-        set { _matrix31 = value; }
+        get => _matrix31;
+        set => _matrix31 = value;
     }
 
     /// <summary>Gets or sets the element at the third row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the third row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix32
     {
-        get { return _matrix32; }
-        set { _matrix32 = value; }
+        get => _matrix32;
+        set => _matrix32 = value;
     }
 
     /// <summary>Gets or sets the element at the third row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />. Represents the alpha component.</summary>
     /// <returns>The element at the third row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix33
     {
-        get { return _matrix33; }
-        set { _matrix33 = value; }
+        get => _matrix33;
+        set => _matrix33 = value;
     }
 
     /// <summary>Gets or sets the element at the third row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the third row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix34
     {
-        get { return _matrix34; }
-        set { _matrix34 = value; }
+        get => _matrix34;
+        set => _matrix34 = value;
     }
 
     /// <summary>Gets or sets the element at the fourth row and 0 (zero) column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the fourth row and 0 column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix40
     {
-        get { return _matrix40; }
-        set { _matrix40 = value; }
+        get => _matrix40;
+        set => _matrix40 = value;
     }
 
     /// <summary>Gets or sets the element at the fourth row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the fourth row and first column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix41
     {
-        get { return _matrix41; }
-        set { _matrix41 = value; }
+        get => _matrix41;
+        set => _matrix41 = value;
     }
 
     /// <summary>Gets or sets the element at the fourth row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the fourth row and second column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix42
     {
-        get { return _matrix42; }
-        set { _matrix42 = value; }
+        get => _matrix42;
+        set => _matrix42 = value;
     }
 
     /// <summary>Gets or sets the element at the fourth row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />. Represents the alpha component.</summary>
     /// <returns>The element at the fourth row and third column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix43
     {
-        get { return _matrix43; }
-        set { _matrix43 = value; }
+        get => _matrix43;
+        set => _matrix43 = value;
     }
 
     /// <summary>Gets or sets the element at the fourth row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
     /// <returns>The element at the fourth row and fourth column of this <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</returns>
     public float Matrix44
     {
-        get { return _matrix44; }
-        set { _matrix44 = value; }
+        get => _matrix44;
+        set => _matrix44 = value;
     }
 
     /// <summary>Gets or sets the element at the specified row and column in the <see cref="T:System.Drawing.Imaging.ColorMatrix" />.</summary>
@@ -262,10 +262,10 @@ public sealed class ColorMatrix
     /// <returns>The element at the specified row and column.</returns>
     public float this[int row, int column]
     {
-        get { return GetMatrix()[row][column]; }
+        get => GetMatrix()[row][column];
         set
         {
-            float[][] matrix = GetMatrix();
+            var matrix = GetMatrix();
             matrix[row][column] = value;
             SetMatrix(matrix);
         }
@@ -320,12 +320,11 @@ public sealed class ColorMatrix
 
     internal float[][] GetMatrix()
     {
-        float[][] array = new float[5][];
-        for (int i = 0; i < 5; i++)
+        var array = new float[5][];
+        for (var i = 0; i < 5; i++)
         {
             array[i] = new float[5];
         }
-
         array[0][0] = _matrix00;
         array[0][1] = _matrix01;
         array[0][2] = _matrix02;

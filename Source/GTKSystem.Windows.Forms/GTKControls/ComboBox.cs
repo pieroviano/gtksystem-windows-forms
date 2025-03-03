@@ -131,23 +131,24 @@ public partial class ComboBox : ListControl
         }
     }
 
-    public override string Text
-    {
-        get => self.Entry.Text;
-        set { self.Entry.Text = value; }
-    }
+    public override string Text { get => self.Entry.Text; set => self.Entry.Text = value ?? string.Empty; }
 
-    public override string Text { get => self.Entry.Text; set => self.Entry.Text = value??string.Empty; }
     public object? SelectedItem
     {
         get => SelectedIndex == -1 ? null : itemsData[SelectedIndex];
         set { int _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } }
     }
     internal int _selectedIndex;
-    public override int SelectedIndex { get => self.Active;
-        set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
-    public override object? SelectedValue { get => self.ActiveId;
-        set => self.ActiveId = value?.ToString(); }
+    public override int SelectedIndex
+    {
+        get => self.Active;
+        set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } }
+    }
+    public override object? SelectedValue
+    {
+        get => self.ActiveId;
+        set => self.ActiveId = value?.ToString();
+    }
     public ObjectCollection Items => itemsData;
 
     public override string? GetItemText(object? item)

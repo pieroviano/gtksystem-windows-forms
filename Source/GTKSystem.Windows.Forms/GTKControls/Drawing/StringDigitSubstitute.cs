@@ -5,13 +5,10 @@ public enum StringDigitSubstitute
 {
     /// <summary>Specifies a user-defined substitution scheme.</summary>
     User,
-
     /// <summary>Specifies to disable substitutions.</summary>
     None,
-
     /// <summary>Specifies substitution digits that correspond with the official national language of the user's locale.</summary>
     National,
-
     /// <summary>Specifies substitution digits that correspond with the user's native script or language, which may be different from the official national language of the user's locale.</summary>
     Traditional
 }

@@ -11,8 +11,7 @@ public class PrintPageEventArgs : EventArgs
     /// <summary>
     ///  Initializes a new instance of the <see cref='PrintPageEventArgs'/> class.
     /// </summary>
-    public PrintPageEventArgs(Graphics graphics, Rectangle marginBounds, Rectangle pageBounds,
-        PageSettings pageSettings)
+    public PrintPageEventArgs(Graphics graphics, Rectangle marginBounds, Rectangle pageBounds, PageSettings? pageSettings)
     {
         Graphics = graphics; // may be null, see PrintController
         MarginBounds = marginBounds;
@@ -48,7 +47,7 @@ public class PrintPageEventArgs : EventArgs
     /// <summary>
     ///  Gets the page settings for the current page.
     /// </summary>
-    public PageSettings PageSettings { get; }
+    public PageSettings? PageSettings { get; }
 
     /// <summary>
     ///  Apply page settings to the printer.

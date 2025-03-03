@@ -11,11 +11,13 @@ public sealed class ImageAttributes : ICloneable, IDisposable
 
     internal void SetNativeImageAttributes(IntPtr handle)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Imaging.ImageAttributes" /> class.</summary>
     public ImageAttributes()
     {
+
     }
 
     internal ImageAttributes(IntPtr newNativeImageAttributes)
@@ -32,6 +34,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
 
     private void Dispose(bool disposing)
     {
+			 
     }
 
     /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
@@ -44,6 +47,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <returns>The <see cref="T:System.Drawing.Imaging.ImageAttributes" /> object this class creates, cast as an object.</returns>
     public object Clone()
     {
+
         return new ImageAttributes(IntPtr.Zero);
     }
 
@@ -68,6 +72,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color-adjustment matrix is set.</param>
     public void SetColorMatrix(ColorMatrix newColorMatrix, ColorMatrixFlag mode, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Clears the color-adjustment matrix for the default category.</summary>
@@ -80,6 +85,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color-adjustment matrix is cleared.</param>
     public void ClearColorMatrix(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the color-adjustment matrix and the grayscale-adjustment matrix for the default category.</summary>
@@ -104,9 +110,9 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="grayMatrix">The grayscale-adjustment matrix.</param>
     /// <param name="mode">An element of <see cref="T:System.Drawing.Imaging.ColorMatrixFlag" /> that specifies the type of image and color that will be affected by the color-adjustment and grayscale-adjustment matrices.</param>
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color-adjustment and grayscale-adjustment matrices are set.</param>
-    public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix grayMatrix, ColorMatrixFlag mode,
-        ColorAdjustType type)
+    public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix grayMatrix, ColorMatrixFlag mode, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the threshold (transparency range) for the default category.</summary>
@@ -121,6 +127,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color threshold is set.</param>
     public void SetThreshold(float threshold, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Clears the threshold value for the default category.</summary>
@@ -133,6 +140,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the threshold is cleared.</param>
     public void ClearThreshold(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the gamma value for the default category.</summary>
@@ -147,6 +155,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of the <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> enumeration that specifies the category for which the gamma value is set.</param>
     public void SetGamma(float gamma, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Disables gamma correction for the default category.</summary>
@@ -159,6 +168,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which gamma correction is disabled.</param>
     public void ClearGamma(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Turns off color adjustment for the default category. You can call the <see cref="Overload:System.Drawing.Imaging.ImageAttributes.ClearNoOp" /> method to reinstate the color-adjustment settings that were in place before the call to the <see cref="Overload:System.Drawing.Imaging.ImageAttributes.SetNoOp" /> method.</summary>
@@ -171,6 +181,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which color correction is turned off.</param>
     public void SetNoOp(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Clears the <see langword="NoOp" /> setting for the default category.</summary>
@@ -183,6 +194,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the <see langword="NoOp" /> setting is cleared.</param>
     public void ClearNoOp(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the color key for the default category.</summary>
@@ -199,6 +211,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color key is set.</param>
     public void SetColorKey(Color colorLow, Color colorHigh, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Clears the color key (transparency range) for the default category.</summary>
@@ -211,6 +224,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color key is cleared.</param>
     public void ClearColorKey(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the CMYK (cyan-magenta-yellow-black) output channel for the default category.</summary>
@@ -225,6 +239,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the output channel is set.</param>
     public void SetOutputChannel(ColorChannelFlag flags, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Clears the CMYK (cyan-magenta-yellow-black) output channel setting for the default category.</summary>
@@ -237,6 +252,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the output channel setting is cleared.</param>
     public void ClearOutputChannel(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the output channel color-profile file for the default category.</summary>
@@ -251,6 +267,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the output channel color-profile file is set.</param>
     public void SetOutputChannelColorProfile(string colorProfileFilename, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Clears the output channel color profile setting for the default category.</summary>
@@ -263,6 +280,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the output channel profile setting is cleared.</param>
     public void ClearOutputChannelColorProfile(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the color-remap table for the default category.</summary>
@@ -277,6 +295,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color-remap table is set.</param>
     public void SetRemapTable(ColorMap[] map, ColorAdjustType type)
     {
+
     }
 
     /// <summary>Clears the color-remap table for the default category.</summary>
@@ -289,6 +308,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the remap table is cleared.</param>
     public void ClearRemapTable(ColorAdjustType type)
     {
+
     }
 
     /// <summary>Sets the color-remap table for the brush category.</summary>
@@ -325,6 +345,7 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="clamp">This parameter has no effect. Set it to <see langword="false" />.</param>
     public void SetWrapMode(WrapMode mode, Color color, bool clamp)
     {
+
     }
 
     /// <summary>Adjusts the colors in a palette according to the adjustment settings of a specified category.</summary>
@@ -332,5 +353,6 @@ public sealed class ImageAttributes : ICloneable, IDisposable
     /// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category whose adjustment settings will be applied to the palette.</param>
     public void GetAdjustedPalette(ColorPalette palette, ColorAdjustType type)
     {
+
     }
 }

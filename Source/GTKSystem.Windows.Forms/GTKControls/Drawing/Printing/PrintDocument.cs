@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if GTKSystemWindowsForms
 using Gtk;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -12,10 +13,10 @@ public class PrintDocument : Component
 {
     private string _documentName = "document";
 
-    private PrintEventHandler _beginPrintHandler;
-    private PrintEventHandler _endPrintHandler;
-    private PrintPageEventHandler _printPageHandler;
-    private QueryPageSettingsEventHandler _queryHandler;
+    private PrintEventHandler? _beginPrintHandler;
+    private PrintEventHandler? _endPrintHandler;
+    private PrintPageEventHandler? _printPageHandler;
+    private QueryPageSettingsEventHandler? _queryHandler;
 
     private PrinterSettings _printerSettings = new PrinterSettings();
     private PageSettings _defaultPageSettings;
@@ -40,13 +41,13 @@ public class PrintDocument : Component
         {
             _pageSetup = value;
             PageSettings pageSettings = DefaultPageSettings;
-            pageSettings.Landscape = value.Orientation == Gtk.PageOrientation.Landscape ||
-                                     value.Orientation == Gtk.PageOrientation.ReverseLandscape;
+            pageSettings.Landscape = value.Orientation == PageOrientation.Landscape ||
+                                     value.Orientation == PageOrientation.ReverseLandscape;
             pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points),
                 (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points),
                 (int)value.GetBottomMargin(Unit.Points));
-            pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(
-                Enum.Parse<PaperKind>(value.PaperSize.DisplayName), value.PaperSize.Name,
+            pageSettings.PaperSize = new PaperSize(
+                (PaperKind)Enum.Parse(typeof(PaperKind),value.PaperSize.DisplayName), value.PaperSize.Name,
                 (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
             _userSetPageSettings = true;
         }
@@ -104,25 +105,25 @@ public class PrintDocument : Component
         }
     }
 
-    public event PrintEventHandler BeginPrint
+    public event PrintEventHandler? BeginPrint
     {
         add => _beginPrintHandler += value;
         remove => _beginPrintHandler -= value;
     }
 
-    public event PrintEventHandler EndPrint
+    public event PrintEventHandler? EndPrint
     {
         add => _endPrintHandler += value;
         remove => _endPrintHandler -= value;
     }
 
-    public event PrintPageEventHandler PrintPage
+    public event PrintPageEventHandler? PrintPage
     {
         add => _printPageHandler += value;
         remove => _printPageHandler -= value;
     }
 
-    public event QueryPageSettingsEventHandler QueryPageSettings
+    public event QueryPageSettingsEventHandler? QueryPageSettings
     {
         add => _queryHandler += value;
         remove => _queryHandler -= value;
@@ -149,3 +150,4 @@ public class PrintDocument : Component
 
     public override string ToString() => $"[PrintDocument {DocumentName}]";
 }
+#endif

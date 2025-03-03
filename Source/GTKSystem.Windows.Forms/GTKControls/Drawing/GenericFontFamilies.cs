@@ -4,23 +4,21 @@
 
 namespace System.Drawing;
 
-/// <summary>
-///     Specifies a generic System.Drawing.FontFamily object.
-/// </summary>
+//
+// 摘要:
+//     Specifies a generic System.Drawing.FontFamily object.
 public enum GenericFontFamilies
 {
-    /// <summary>
-    ///     A generic Serif System.Drawing.FontFamily object.
-    /// </summary>
+    //
+    // 摘要:
+    //     A generic Serif System.Drawing.FontFamily object.
     Serif = 0,
-
-    /// <summary>
-    ///     A generic Sans Serif System.Drawing.FontFamily object.
-    /// </summary>
+    //
+    // 摘要:
+    //     A generic Sans Serif System.Drawing.FontFamily object.
     SansSerif = 1,
-
-    /// <summary>
-    ///     A generic Monospace System.Drawing.FontFamily object.
-    /// </summary>
+    //
+    // 摘要:
+    //     A generic Monospace System.Drawing.FontFamily object.
     Monospace = 2
 }

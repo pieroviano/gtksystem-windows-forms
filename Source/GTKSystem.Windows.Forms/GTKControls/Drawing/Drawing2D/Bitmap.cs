@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -10,12 +9,12 @@ namespace System.Drawing;
 [Serializable]
 public sealed class Bitmap : Image
 {
-    private static readonly Color s_defaultTransparentColor = Color.LightGray;
+    private static readonly Color defaultTransparentColor = Color.LightGray;
 
-    internal Bitmap(byte[] pixbuf) : base(pixbuf)
+    public Bitmap(byte[]? pixbuf):base(pixbuf)
     {
+            
     }
-
     internal Bitmap(IntPtr ptr)
     {
         SetNativeImage(ptr);
@@ -24,7 +23,7 @@ public sealed class Bitmap : Image
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified file.</summary>
     /// <param name="filename">The bitmap file name and path.</param>
     /// <exception cref="T:System.IO.FileNotFoundException">The specified file is not found.</exception>
-    public Bitmap(string filename)
+    public Bitmap(string? filename)
         : this(filename, useIcm: false)
     {
     }
@@ -33,9 +32,9 @@ public sealed class Bitmap : Image
     /// <param name="filename">The name of the bitmap file.</param>
     /// <param name="useIcm">
     ///   <see langword="true" /> to use color correction for this <see cref="T:System.Drawing.Bitmap" />; otherwise, <see langword="false" />.</param>
-    public Bitmap(string filename, bool useIcm)
+    public Bitmap(string? filename, bool useIcm)
     {
-        this.FileName = filename;
+        FileName = filename;
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified data stream.</summary>
@@ -44,7 +43,7 @@ public sealed class Bitmap : Image
     ///   <paramref name="stream" /> does not contain image data or is <see langword="null" />.
     /// -or-
     /// <paramref name="stream" /> contains a PNG image file with a single dimension greater than 65,535 pixels.</exception>
-    public Bitmap(Stream stream)
+    public Bitmap(Stream? stream)
         : this(stream, useIcm: false)
     {
     }
@@ -57,10 +56,10 @@ public sealed class Bitmap : Image
     ///   <paramref name="stream" /> does not contain image data or is <see langword="null" />.
     /// -or-
     /// <paramref name="stream" /> contains a PNG image file with a single dimension greater than 65,535 pixels.</exception>
-    public Bitmap(Stream stream, bool useIcm)
+    public Bitmap(Stream? stream, bool useIcm)
     {
         stream.Position = 0;
-        BinaryReader binaryReader = new BinaryReader(stream);
+        var binaryReader = new BinaryReader(stream);
         PixbufData = binaryReader.ReadBytes((int)stream.Length);
     }
 
@@ -72,9 +71,10 @@ public sealed class Bitmap : Image
     {
     }
 
-    private static Stream GetResourceStream(Type type, string resource)
+    private static Stream? GetResourceStream(Type type, string resource)
     {
-        Stream manifestResourceStream = type.Module.Assembly.GetManifestResourceStream(type, resource);
+  
+        var manifestResourceStream = type.Module.Assembly.GetManifestResourceStream(type, resource);
 
         return manifestResourceStream;
     }
@@ -84,7 +84,7 @@ public sealed class Bitmap : Image
     /// <param name="height">The height, in pixels, of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public Bitmap(int width, int height)
-        : this(width, height, PixelFormat.Format32bppArgb)
+        : this(width, height, PixelFormat.Format32BppArgb)
     {
         //object obj =  Activator.CreateInstance("System.Drawing", "System.Drawing.Design.BitmapEditor, System.Drawing.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
         //  Reflection.Assembly.CreateQualifiedName("");
@@ -96,8 +96,9 @@ public sealed class Bitmap : Image
     /// <param name="g">The <see cref="T:System.Drawing.Graphics" /> object that specifies the resolution for the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <exception cref="T:System.ArgumentNullException">
     ///   <paramref name="g" /> is <see langword="null" />.</exception>
-    public Bitmap(int width, int height, Graphics g) : this(width, height, PixelFormat.Format32bppArgb)
+    public Bitmap(int width, int height, Graphics g) : this(width, height, PixelFormat.Format32BppArgb)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class with the specified size, pixel format, and pixel data.</summary>
@@ -107,9 +108,9 @@ public sealed class Bitmap : Image
     /// <param name="format">The pixel format for the new <see cref="T:System.Drawing.Bitmap" />. This must specify a value that begins with <c>Format</c>.</param>
     /// <param name="scan0">Pointer to an array of bytes that contains the pixel data.</param>
     /// <exception cref="T:System.ArgumentException">A <see cref="T:System.Drawing.Imaging.PixelFormat" /> value is specified whose name does not start with Format. For example, specifying <see cref="F:System.Drawing.Imaging.PixelFormat.Gdi" /> will cause an <see cref="T:System.ArgumentException" />, but <see cref="F:System.Drawing.Imaging.PixelFormat.Format48bppRgb" /> will not.</exception>
-    public Bitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0) : this(width, height,
-        PixelFormat.Format32bppArgb)
+    public Bitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0) : this(width, height, PixelFormat.Format32BppArgb)
     {
+
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class with the specified size and format.</summary>
@@ -119,9 +120,9 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.ArgumentException">A <see cref="T:System.Drawing.Imaging.PixelFormat" /> value is specified whose name does not start with Format. For example, specifying <see cref="F:System.Drawing.Imaging.PixelFormat.Gdi" /> will cause an <see cref="T:System.ArgumentException" />, but <see cref="F:System.Drawing.Imaging.PixelFormat.Format48bppRgb" /> will not.</exception>
     public Bitmap(int width, int height, PixelFormat format)
     {
-        this.Width = width;
-        this.Height = height;
-        this.PixelFormat = format;
+        Width = width;
+        Height = height;
+        PixelFormat = format;
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified existing image.</summary>
@@ -146,9 +147,9 @@ public sealed class Bitmap : Image
     /// <param name="height">The height, in pixels, of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public Bitmap(Image original, int width, int height)
-        : this(width, height, PixelFormat.Format32bppArgb)
+        : this(width, height, PixelFormat.Format32BppArgb)
     {
-        this.PixbufData = original.PixbufData;
+        PixbufData = original.PixbufData;
     }
 
     private Bitmap(SerializationInfo info, StreamingContext context)
@@ -161,6 +162,7 @@ public sealed class Bitmap : Image
     /// <returns>The <see cref="T:System.Drawing.Bitmap" /> that this method creates.</returns>
     public static Bitmap FromHicon(IntPtr hicon)
     {
+
         return new Bitmap(hicon);
     }
 
@@ -170,9 +172,10 @@ public sealed class Bitmap : Image
     /// <returns>The <see cref="T:System.Drawing.Bitmap" /> that this method creates.</returns>
     public static Bitmap FromResource(IntPtr hinstance, string bitmapName)
     {
-        IntPtr intPtr = Marshal.StringToHGlobalUni(bitmapName);
+        var intPtr = Marshal.StringToHGlobalUni(bitmapName);
         try
         {
+
             return new Bitmap(hinstance);
         }
         finally
@@ -199,6 +202,7 @@ public sealed class Bitmap : Image
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public IntPtr GetHbitmap(Color background)
     {
+ 
         return IntPtr.Zero;
     }
 
@@ -208,7 +212,7 @@ public sealed class Bitmap : Image
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public IntPtr GetHicon()
     {
-        IntPtr hicon = IntPtr.Zero;
+        var hicon=IntPtr.Zero;
 
         return hicon;
     }
@@ -222,6 +226,7 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.ArgumentException">The height or width of <paramref name="rect" /> is 0.</exception>
     public Bitmap Clone(RectangleF rect, PixelFormat format)
     {
+
         return new Bitmap((int)rect.Width, (int)rect.Height, format);
     }
 
@@ -230,12 +235,11 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public void MakeTransparent()
     {
-        Color pixel = s_defaultTransparentColor;
-        if (base.Height > 0 && base.Width > 0)
+        var pixel = defaultTransparentColor;
+        if (Height > 0 && Width > 0)
         {
-            pixel = GetPixel(0, base.Size.Height - 1);
+            pixel = GetPixel(0, Size.Height - 1);
         }
-
         if (pixel.A >= byte.MaxValue)
         {
             MakeTransparent(pixel);
@@ -248,6 +252,7 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public void MakeTransparent(Color transparentColor)
     {
+      
     }
 
     /// <summary>Locks a <see cref="T:System.Drawing.Bitmap" /> into system memory.</summary>
@@ -277,6 +282,7 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public BitmapData LockBits(Rectangle rect, ImageLockMode flags, PixelFormat format, BitmapData bitmapData)
     {
+
         return bitmapData;
     }
 
@@ -285,6 +291,7 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public void UnlockBits(BitmapData bitmapdata)
     {
+         
     }
 
     /// <summary>Gets the color of the specified pixel in this <see cref="T:System.Drawing.Bitmap" />.</summary>
@@ -298,7 +305,8 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public Color GetPixel(int x, int y)
     {
-        return Color.FromArgb(x * y);
+
+        return Color.FromArgb(x*y);
     }
 
     /// <summary>Sets the color of the specified pixel in this <see cref="T:System.Drawing.Bitmap" />.</summary>
@@ -308,6 +316,7 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public void SetPixel(int x, int y, Color color)
     {
+        
     }
 
     /// <summary>Sets the resolution for this <see cref="T:System.Drawing.Bitmap" />.</summary>
@@ -316,6 +325,7 @@ public sealed class Bitmap : Image
     /// <exception cref="T:System.Exception">The operation failed.</exception>
     public void SetResolution(float xDpi, float yDpi)
     {
+           
     }
 
     /// <summary>Creates a copy of the section of this <see cref="T:System.Drawing.Bitmap" /> defined by <see cref="T:System.Drawing.Rectangle" /> structure and with a specified <see cref="T:System.Drawing.Imaging.PixelFormat" /> enumeration.</summary>
@@ -329,6 +339,7 @@ public sealed class Bitmap : Image
     /// A <see cref="T:System.Drawing.Imaging.PixelFormat" /> value is specified whose name does not start with Format. For example, specifying <see cref="F:System.Drawing.Imaging.PixelFormat.Gdi" /> will cause an <see cref="T:System.ArgumentException" />, but <see cref="F:System.Drawing.Imaging.PixelFormat.Format48bppRgb" /> will not.</exception>
     public Bitmap Clone(Rectangle rect, PixelFormat format)
     {
-        return new Bitmap(rect.Width, rect.Height, format) { PixbufData = (byte[])this.PixbufData.Clone() };
+
+        return new Bitmap(rect.Width, rect.Height, format) { PixbufData = (byte[])PixbufData.Clone() };
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace System.Drawing.Drawing2D;
 
 /// <summary>Encapsulates a custom user-defined line cap.</summary>
@@ -7,35 +5,19 @@ public class CustomLineCap : MarshalByRefObject, ICloneable, IDisposable
 {
     /// <summary>Gets or sets the <see cref="T:System.Drawing.Drawing2D.LineCap" /> enumeration on which this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> is based.</summary>
     /// <returns>The <see cref="T:System.Drawing.Drawing2D.LineCap" /> enumeration on which this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> is based.</returns>
-    public LineCap BaseCap
-    {
-        get { throw null; }
-        set { }
-    }
+    public LineCap BaseCap => throw new NotImplementedException();
 
     /// <summary>Gets or sets the distance between the cap and the line.</summary>
     /// <returns>The distance between the beginning of the cap and the end of the line.</returns>
-    public float BaseInset
-    {
-        get { throw null; }
-        set { }
-    }
+    public float BaseInset => throw new NotImplementedException();
 
     /// <summary>Gets or sets the <see cref="T:System.Drawing.Drawing2D.LineJoin" /> enumeration that determines how lines that compose this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> object are joined.</summary>
     /// <returns>The <see cref="T:System.Drawing.Drawing2D.LineJoin" /> enumeration this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> object uses to join lines.</returns>
-    public LineJoin StrokeJoin
-    {
-        get { throw null; }
-        set { }
-    }
+    public LineJoin StrokeJoin => throw new NotImplementedException();
 
     /// <summary>Gets or sets the amount by which to scale this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> Class object with respect to the width of the <see cref="T:System.Drawing.Pen" /> object.</summary>
     /// <returns>The amount by which to scale the cap.</returns>
-    public float WidthScale
-    {
-        get { throw null; }
-        set { }
-    }
+    public float WidthScale => throw new NotImplementedException();
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> class with the specified outline and fill.</summary>
     /// <param name="fillPath">A <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> object that defines the fill for the custom cap.</param>
@@ -61,12 +43,12 @@ public class CustomLineCap : MarshalByRefObject, ICloneable, IDisposable
     {
     }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" />.</summary>
-    /// <returns>The <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> this method creates, cast as an object.</returns>
-    public object Clone()
-    {
-        return ((ArrayList)(new ArrayList() { this }).Clone())[0];
-    }
+		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" />.</summary>
+		/// <returns>The <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> this method creates, cast as an object.</returns>
+		public object Clone()
+		{
+            return null;
+        }
 
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> object.</summary>
     public void Dispose()
@@ -90,7 +72,7 @@ public class CustomLineCap : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="endCap">The <see cref="T:System.Drawing.Drawing2D.LineCap" /> enumeration used at the end of a line within this cap.</param>
     public void GetStrokeCaps(out LineCap startCap, out LineCap endCap)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     /// <summary>Sets the caps used to start and end lines that make up this custom cap.</summary>

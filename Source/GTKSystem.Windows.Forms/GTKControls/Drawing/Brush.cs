@@ -15,6 +15,7 @@ public abstract class Brush : MarshalByRefObject, ICloneable, IDisposable
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Brush" /> object.</summary>
     public void Dispose()
     {
+        Dispose(true);
     }
 
     /// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Brush" /> and optionally releases the managed resources.</summary>
@@ -22,11 +23,17 @@ public abstract class Brush : MarshalByRefObject, ICloneable, IDisposable
     ///   <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
+        if (!disposing)
+        {
+            return;
+        }
+        GC.SuppressFinalize(this);
     }
 
     /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
     ~Brush()
     {
+        Dispose();
     }
 
     /// <summary>In a derived class, sets a reference to a GDI+ brush object.</summary>

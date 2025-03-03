@@ -8,4 +8,4 @@ namespace System.Drawing.Printing;
 ///  <see cref='PrintDocument.EndPrint'/>, or <see cref='PrintDocument.QueryPageSettings'/>
 ///  event of a <see cref='PrintDocument'/>.
 /// </summary>
-public delegate void PrintEventHandler(object sender, PrintEventArgs e);
+public delegate void PrintEventHandler(object? sender, PrintEventArgs e);

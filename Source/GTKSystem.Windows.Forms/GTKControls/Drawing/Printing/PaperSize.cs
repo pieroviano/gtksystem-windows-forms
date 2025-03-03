@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace System.Drawing.Printing;
 
-public partial class PaperSize
+public class PaperSize
 {
     private PaperKind _kind;
     private string _name;
@@ -22,7 +22,7 @@ public partial class PaperSize
         _createdByDefaultConstructor = true;
     }
 
-    internal PaperSize(PaperKind kind, string name, int width, int height)
+    public PaperSize(PaperKind kind, string name, int width, int height)
     {
         _kind = kind;
         _name = name;
@@ -45,7 +45,7 @@ public partial class PaperSize
         {
             if (_kind != PaperKind.Custom && !_createdByDefaultConstructor)
             {
-                throw new ArgumentException("PSizeNotCustom", nameof(value));
+                throw new ArgumentException(@"PSizeNotCustom", nameof(value));
             }
 
             _height = value;
@@ -62,7 +62,7 @@ public partial class PaperSize
         {
             if (_kind != PaperKind.Custom && !_createdByDefaultConstructor)
             {
-                throw new ArgumentException("PSizeNotCustom", nameof(value));
+                throw new ArgumentException(@"PSizeNotCustom", nameof(value));
             }
 
             _name = value;
@@ -82,13 +82,12 @@ public partial class PaperSize
         {
             if (_kind != PaperKind.Custom && !_createdByDefaultConstructor)
             {
-                throw new ArgumentException("PSizeNotCustom", nameof(value));
+                throw new ArgumentException(@"PSizeNotCustom", nameof(value));
             }
 
             _width = value;
         }
     }
 
-    public override string ToString() =>
-        $"[PaperSize {PaperName} Kind={Kind} Height={Height.ToString(CultureInfo.InvariantCulture)} Width={Width.ToString(CultureInfo.InvariantCulture)}]";
+    public override string ToString() => $"[PaperSize {PaperName} Kind={Kind} Height={Height.ToString(CultureInfo.InvariantCulture)} Width={Width.ToString(CultureInfo.InvariantCulture)}]";
 }

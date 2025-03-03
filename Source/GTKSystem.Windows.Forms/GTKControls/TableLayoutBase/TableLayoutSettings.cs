@@ -2,8 +2,6 @@ using System.Runtime.Serialization;
 
 namespace System.Windows.Forms;
 
-namespace System.Windows.Forms;
-
 [Serializable]
 public sealed class TableLayoutSettings : ISerializable
 {

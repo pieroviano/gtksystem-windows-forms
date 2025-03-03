@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gtk.Windows.Forms.Properties {
+namespace System.Windows.Forms.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Gtk.Windows.Forms.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Gtk.Windows.Forms.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Windows.Forms.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,123 @@ namespace Gtk.Windows.Forms.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /* css file path */.
+        /// </summary>
+        internal static string Application_Init_css_file_path {
+            get {
+                return ResourceManager.GetString("Application_Init_css file path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /* Custom theme name */.
+        /// </summary>
+        internal static string Application_Init_Custom_theme_name {
+            get {
+                return ResourceManager.GetString("Application_Init_Custom theme name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define control style.
+        /// </summary>
+        internal static string Application_Init_Define_control_style {
+            get {
+                return ResourceManager.GetString("Application_Init_Define control style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to =》Directory does not exist.
+        /// </summary>
+        internal static string Application_Init_Directory_does_not_exist {
+            get {
+                return ResourceManager.GetString("Application_Init_Directory_does_not_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /* Freely defined style files */.
+        /// </summary>
+        internal static string Application_Init_Freely_defined_style_files {
+            get {
+                return ResourceManager.GetString("Application_Init_Freely defined style files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /* Here you can customize or adjust the control style */ .
+        /// </summary>
+        internal static string Application_Init_Here_you_can_customize_or_adjust_the_control_style {
+            get {
+                return ResourceManager.GetString("Application_Init_Here you can customize or adjust the control style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /*Specify the theme, valid when AutoTheme=false*/.
+        /// </summary>
+        internal static string Application_Init_Specify_the_theme__valid_when_AutoTheme_is_false {
+            get {
+                return ResourceManager.GetString("Application_Init_Specify the theme, valid when AutoTheme is false", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /* The folder where the theme files are located */.
+        /// </summary>
+        internal static string Application_Init_The_folder_where_the_theme_files_are_located {
+            get {
+                return ResourceManager.GetString("Application_Init_The folder where the theme files are located", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /*Whether to apply built-in styles*/.
+        /// </summary>
+        internal static string Application_Init_Whether_to_apply_built_in_styles {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to apply built-in styles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /*Whether to follow the system theme by default*/.
+        /// </summary>
+        internal static string Application_Init_Whether_to_follow_the_system_theme_by_default {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to follow the system theme by default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /*Whether to use a custom theme, corresponding to [custom theme]*/.
+        /// </summary>
+        internal static string Application_Init_Whether_to_use_a_custom_theme__corresponding_to_custom_theme {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to use a custom theme, corresponding to custom theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /*Whether to use custom style, corresponding to [custom style]*/.
+        /// </summary>
+        internal static string Application_Init_Whether_to_use_custom_style__corresponding_to__custom_style_ {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to use custom style, corresponding to [custom style]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose color.
+        /// </summary>
+        internal static string ColorDialog_RunDialog_Choose_color {
+            get {
+                return ResourceManager.GetString("ColorDialog_RunDialog_Choose color", resourceCulture);
             }
         }
         

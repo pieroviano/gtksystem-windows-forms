@@ -26,7 +26,7 @@ internal sealed class MetafileHeaderEmf
 
     public int Height;
 
-    public SafeNativeMethods.ENHMETAHEADER EmfHeader;
+    public SafeNativeMethods.Enhmetaheader EmfHeader;
 
     public int EmfPlusHeaderSize;
 
@@ -39,30 +39,29 @@ internal sealed class MetafileHeaderEmf
         return ref Unsafe.As<MetafileType, byte>(ref type);
     }
 }
-
 internal static class SafeNativeMethods
 {
-    public struct ENHMETAHEADER
+    public struct Enhmetaheader
     {
         public int iType;
 
         public int nSize;
 
-        public int rclBounds_left;
+        public int rclBoundsLeft;
 
-        public int rclBounds_top;
+        public int rclBoundsTop;
 
-        public int rclBounds_right;
+        public int rclBoundsRight;
 
-        public int rclBounds_bottom;
+        public int rclBoundsBottom;
 
-        public int rclFrame_left;
+        public int rclFrameLeft;
 
-        public int rclFrame_top;
+        public int rclFrameTop;
 
-        public int rclFrame_right;
+        public int rclFrameRight;
 
-        public int rclFrame_bottom;
+        public int rclFrameBottom;
 
         public int dSignature;
 
@@ -82,18 +81,18 @@ internal static class SafeNativeMethods
 
         public int nPalEntries;
 
-        public int szlDevice_cx;
+        public int szlDeviceCx;
 
-        public int szlDevice_cy;
+        public int szlDeviceCy;
 
-        public int szlMillimeters_cx;
+        public int szlMillimetersCx;
 
-        public int szlMillimeters_cy;
+        public int szlMillimetersCy;
 
         public int cbPixelFormat;
 
         public int offPixelFormat;
 
-        public int bOpenGL;
+        public int bOpenGl;
     }
 }

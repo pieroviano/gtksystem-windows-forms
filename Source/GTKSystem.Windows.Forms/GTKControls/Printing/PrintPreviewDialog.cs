@@ -4,7 +4,7 @@
 using Gtk;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing;
+using System.Drawing.Printing;
 
 namespace System.Windows.Forms;
 

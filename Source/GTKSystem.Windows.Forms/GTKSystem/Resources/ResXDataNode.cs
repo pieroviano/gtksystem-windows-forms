@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
-using System.Resources;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Windows.Forms.Resources.Estensions;

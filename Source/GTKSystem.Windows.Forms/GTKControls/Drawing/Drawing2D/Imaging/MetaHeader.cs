@@ -12,56 +12,56 @@ public sealed class MetaHeader
     /// <returns>The type of the associated <see cref="T:System.Drawing.Imaging.Metafile" /> object.</returns>
     public short Type
     {
-        get { return _data._type; }
-        set { _data._type = value; }
+        get => _data._type;
+        set => _data._type = value;
     }
 
     /// <summary>Gets or sets the size, in bytes, of the header file.</summary>
     /// <returns>The size, in bytes, of the header file.</returns>
     public short HeaderSize
     {
-        get { return _data._headerSize; }
-        set { _data._headerSize = value; }
+        get => _data._headerSize;
+        set => _data._headerSize = value;
     }
 
     /// <summary>Gets or sets the version number of the header format.</summary>
     /// <returns>The version number of the header format.</returns>
     public short Version
     {
-        get { return _data._version; }
-        set { _data._version = value; }
+        get => _data._version;
+        set => _data._version = value;
     }
 
     /// <summary>Gets or sets the size, in bytes, of the associated <see cref="T:System.Drawing.Imaging.Metafile" /> object.</summary>
     /// <returns>The size, in bytes, of the associated <see cref="T:System.Drawing.Imaging.Metafile" /> object.</returns>
     public int Size
     {
-        get { return _data._size; }
-        set { _data._size = value; }
+        get => _data._size;
+        set => _data._size = value;
     }
 
     /// <summary>Gets or sets the maximum number of objects that exist in the <see cref="T:System.Drawing.Imaging.Metafile" /> object at the same time.</summary>
     /// <returns>The maximum number of objects that exist in the <see cref="T:System.Drawing.Imaging.Metafile" /> object at the same time.</returns>
     public short NoObjects
     {
-        get { return _data._noObjects; }
-        set { _data._noObjects = value; }
+        get => _data._noObjects;
+        set => _data._noObjects = value;
     }
 
     /// <summary>Gets or sets the size, in bytes, of the largest record in the associated <see cref="T:System.Drawing.Imaging.Metafile" /> object.</summary>
     /// <returns>The size, in bytes, of the largest record in the associated <see cref="T:System.Drawing.Imaging.Metafile" /> object.</returns>
     public int MaxRecord
     {
-        get { return _data._maxRecord; }
-        set { _data._maxRecord = value; }
+        get => _data._maxRecord;
+        set => _data._maxRecord = value;
     }
 
     /// <summary>Not used. Always returns 0.</summary>
     /// <returns>Always 0.</returns>
     public short NoParameters
     {
-        get { return _data._noParameters; }
-        set { _data._noParameters = value; }
+        get => _data._noParameters;
+        set => _data._noParameters = value;
     }
 
     /// <summary>Initializes a new instance of the <see langword="MetaHeader" /> class.</summary>
