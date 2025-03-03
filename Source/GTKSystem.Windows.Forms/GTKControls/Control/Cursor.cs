@@ -4,7 +4,6 @@
 using System.Drawing;
 using System.Runtime.Serialization;
 
-
 namespace System.Windows.Forms;
 
 public sealed class Cursor : IDisposable, ISerializable

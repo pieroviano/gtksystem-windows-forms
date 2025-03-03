@@ -1,24 +1,27 @@
 ﻿namespace System.Windows.Forms;
 
-//
-// 摘要:
-//     Specifies what to render (image or text) for this System.Windows.Forms.ToolStripItem.
+/// <summary>
+///     Specifies what to render (image or text) for this System.Windows.Forms.ToolStripItem.
+/// </summary>
 public enum ToolStripItemDisplayStyle
 {
-    //
-    // 摘要:
-    //     Specifies that neither image nor text is to be rendered for this System.Windows.Forms.ToolStripItem.
+    /// <summary>
+    ///     Specifies that neither image nor text is to be rendered for this System.Windows.Forms.ToolStripItem.
+    /// </summary>
     None = 0,
-    //
-    // 摘要:
-    //     Specifies that only text is to be rendered for this System.Windows.Forms.ToolStripItem.
+
+    /// <summary>
+    ///     Specifies that only text is to be rendered for this System.Windows.Forms.ToolStripItem.
+    /// </summary>
     Text = 1,
-    //
-    // 摘要:
-    //     Specifies that only an image is to be rendered for this System.Windows.Forms.ToolStripItem.
+
+    /// <summary>
+    ///     Specifies that only an image is to be rendered for this System.Windows.Forms.ToolStripItem.
+    /// </summary>
     Image = 2,
-    //
-    // 摘要:
-    //     Specifies that both an image and text are to be rendered for this System.Windows.Forms.ToolStripItem.
+
+    /// <summary>
+    ///     Specifies that both an image and text are to be rendered for this System.Windows.Forms.ToolStripItem.
+    /// </summary>
     ImageAndText = 3
 }

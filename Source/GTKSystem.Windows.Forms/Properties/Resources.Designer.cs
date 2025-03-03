@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace System.Windows.Forms.Properties {
+namespace Gtk.Windows.Forms.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace System.Windows.Forms.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Windows.Forms.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Gtk.Windows.Forms.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -67,6 +67,150 @@ namespace System.Windows.Forms.Properties {
             get {
                 object obj = ResourceManager.GetObject("DateTimePicker", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected date is outside the restricted range \nMaximum time: {0}\nMinimum time: {1}.
+        /// </summary>
+        internal static string DateTimePicker_Calendar_DaySelected_Choose {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Calendar_DaySelected_Choose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date restrictions.
+        /// </summary>
+        internal static string DateTimePicker_Calendar_DaySelected_Date_restrictions {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Calendar_DaySelected_Date restrictions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose Today .
+        /// </summary>
+        internal static string DateTimePicker_DateTimePicker_Choose_Today {
+            get {
+                return ResourceManager.GetString("DateTimePicker_DateTimePicker_Choose Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ____year__month__day.
+        /// </summary>
+        internal static string DateTimePicker_DateTimePicker_Mask {
+            get {
+                return ResourceManager.GetString("DateTimePicker_DateTimePicker_Mask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MM month dd day yyyy year.
+        /// </summary>
+        internal static string DateTimePicker_Value_yyyy年MM月dd日 {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Value_yyyy年MM月dd日", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select file.
+        /// </summary>
+        internal static string FileDialog_RunDialog_Select_file {
+            get {
+                return ResourceManager.GetString("FileDialog_RunDialog_Select file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select font.
+        /// </summary>
+        internal static string FontDialog_RunDialog_Select_font {
+            get {
+                return ResourceManager.GetString("FontDialog_RunDialog_Select font", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are closing this window, are you sure you want to close it?.
+        /// </summary>
+        internal static string FormBase_FormBase_Close_ {
+            get {
+                return ResourceManager.GetString("FormBase_FormBase_Close_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string MessageBox_ShowCore_Cancel {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        internal static string MessageBox_ShowCore_Close {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        internal static string MessageBox_ShowCore_Help {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string MessageBox_ShowCore_No {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string MessageBox_ShowCore_OK {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reject.
+        /// </summary>
+        internal static string MessageBox_ShowCore_Reject {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string MessageBox_ShowCore_Yes {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File is in use and cannot be overwritten.
+        /// </summary>
+        internal static string PrintDialog_RunPrint_File_is_in_use_and_cannot_be_overwritten {
+            get {
+                return ResourceManager.GetString("PrintDialog_RunPrint_File is in use and cannot be overwritten", resourceCulture);
             }
         }
     }

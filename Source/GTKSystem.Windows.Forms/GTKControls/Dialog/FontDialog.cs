@@ -42,15 +42,19 @@ public class FontDialog : CommonDialog
     {
         if (fontChooserDialog == null)
         {
-            if (owner is Form ownerform)
+            if (owner != null && owner is Form ownerform)
             {
-                fontChooserDialog = new FontChooserDialog("选择字体", ownerform.self);
-                fontChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
+                fontChooserDialog =
+                    new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font,
+                        ownerform.self);
+                fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
             else
             {
-                fontChooserDialog = new FontChooserDialog("选择字体", null);
-                fontChooserDialog.WindowPosition = WindowPosition.Center;
+                fontChooserDialog =
+                    new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font,
+                        null);
+                fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
         }
         fontChooserDialog.KeepAbove = true;

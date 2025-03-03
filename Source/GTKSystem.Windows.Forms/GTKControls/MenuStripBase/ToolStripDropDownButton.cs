@@ -30,6 +30,7 @@ public class ToolStripDropDownButton : ToolStripDropDownItem
 
     protected  bool DefaultAutoToolTip { get; set; }
 
+    protected bool DefaultAutoToolTip { get; }
 
     //protected AccessibleObject CreateAccessibilityInstance()
     //{

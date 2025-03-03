@@ -1,7 +1,7 @@
 ﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
 
@@ -60,15 +60,18 @@ public class ColorDialog : CommonDialog
     {
         if (colorChooserDialog == null)
         {
-            if (owner is Form ownerform)
+            if (owner != null && owner is Form ownerform)
             {
-                colorChooserDialog = new ColorChooserDialog("选择颜色", ownerform.self);
-                colorChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
+                colorChooserDialog = new Gtk.ColorChooserDialog(
+                    Gtk.Windows.Forms.Properties.Resources.ColorDialog_RunDialog_Choose_color, ownerform.self);
+                colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
             else
             {
-                colorChooserDialog = new ColorChooserDialog("选择颜色", null);
-                colorChooserDialog.WindowPosition = WindowPosition.Center;
+                colorChooserDialog =
+                    new Gtk.ColorChooserDialog(
+                        Gtk.Windows.Forms.Properties.Resources.ColorDialog_RunDialog_Choose_color, null);
+                colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
         }
         colorChooserDialog.KeepAbove = true;

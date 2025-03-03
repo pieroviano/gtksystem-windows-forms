@@ -1,5 +1,6 @@
 using System.Runtime.Serialization;
- 
+
+namespace System.Windows.Forms;
 
 namespace System.Windows.Forms;
 

@@ -2,53 +2,62 @@
 
 public enum BorderStyle
 {
-    //
-    // 摘要:
-    //     No border.
+    /// <summary>
+    ///     No border.
+    /// </summary>
     None = 0,
-    //
-    // 摘要:
-    //     A single-line border.
+
+    /// <summary>
+    ///     A single-line border.
+    /// </summary>
     FixedSingle = 1,
-    //
-    // 摘要:
-    //     A three-dimensional border.
+
+    /// <summary>
+    ///     A three-dimensional border.
+    /// </summary>
     Fixed3D = 2
 }
+
 public enum FormBorderStyle
 {
-    //
-    // 摘要:
-    //     No border.
+    /// <summary>
+    ///     No border.
+    /// </summary>
     None,
-    //
-    // 摘要:
-    //     A fixed, single-line border.
+
+    /// <summary>
+    ///     A fixed, single-line border.
+    /// </summary>
     FixedSingle,
-    //
-    // 摘要:
-    //     A fixed, three-dimensional border.
+
+    /// <summary>
+    ///     A fixed, three-dimensional border.
+    /// </summary>
     Fixed3D,
-    //
-    // 摘要:
-    //     A thick, fixed dialog-style border.
+
+    /// <summary>
+    ///     A thick, fixed dialog-style border.
+    /// </summary>
     FixedDialog,
-    //
-    // 摘要:
-    //     A resizable border.
+
+    /// <summary>
+    ///     A resizable border.
+    /// </summary>
     Sizable,
-    //
-    // 摘要:
-    //     A tool window border that is not resizable. A tool window does not appear in
-    //     the taskbar or in the window that appears when the user presses ALT+TAB. Although
-    //     forms that specify System.Windows.Forms.FormBorderStyle.FixedToolWindow typically
-    //     are not shown in the taskbar, you must also ensure that the System.Windows.Forms.Form.ShowInTaskbar
-    //     property is set to false, since its default value is true.
+
+    /// <summary>
+    ///     A tool window border that is not resizable. A tool window does not appear in
+    ///     the taskbar or in the window that appears when the user presses ALT+TAB. Although
+    ///     forms that specify System.Windows.Forms.FormBorderStyle.FixedToolWindow typically
+    ///     are not shown in the taskbar, you must also ensure that the System.Windows.Forms.Form.ShowInTaskbar
+    ///     property is set to false, since its default value is true.
+    /// </summary>
     FixedToolWindow,
-    //
-    // 摘要:
-    //     A resizable tool window border. A tool window does not appear in the taskbar
-    //     or in the window that appears when the user presses ALT+TAB.
+
+    /// <summary>
+    ///     A resizable tool window border. A tool window does not appear in the taskbar
+    ///     or in the window that appears when the user presses ALT+TAB.
+    /// </summary>
     SizableToolWindow
 }
 
@@ -60,6 +69,7 @@ public enum FormStartPosition
     CenterParent,
     WindowsDefaultBounds
 }
+
 public enum SizeGripStyle
 {
     /// <summary>
@@ -77,6 +87,7 @@ public enum SizeGripStyle
     /// </summary>
     Hide = 2,
 }
+
 public enum Column
 {
     Fixed,
@@ -90,58 +101,67 @@ public enum Column
     Num
 };
 
-//
-// 摘要:
-//     Defines constants that indicate the alignment of content within a System.Windows.Forms.DataGridView
-//     cell.
+/// <summary>
+///     Defines constants that indicate the alignment of content within a System.Windows.Forms.DataGridView
+///     cell.
+/// </summary>
 public enum DataGridViewContentAlignment
 {
-    //
-    // 摘要:
-    //     The alignment is not set.
+    /// <summary>
+    ///     The alignment is not set.
+    /// </summary>
     NotSet = 0,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the top and horizontally at the left of
-    //     a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the top and horizontally at the left of
+    ///     a cell.
+    /// </summary>
     TopLeft = 1,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the top and horizontally at the center of
-    //     a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the top and horizontally at the center of
+    ///     a cell.
+    /// </summary>
     TopCenter = 2,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the top and horizontally at the right of
-    //     a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the top and horizontally at the right of
+    ///     a cell.
+    /// </summary>
     TopRight = 4,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the middle and horizontally at the left
-    //     of a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the middle and horizontally at the left
+    ///     of a cell.
+    /// </summary>
     MiddleLeft = 16,
-    //
-    // 摘要:
-    //     The content is aligned at the vertical and horizontal center of a cell.
+
+    /// <summary>
+    ///     The content is aligned at the vertical and horizontal center of a cell.
+    /// </summary>
     MiddleCenter = 32,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the middle and horizontally at the right
-    //     of a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the middle and horizontally at the right
+    ///     of a cell.
+    /// </summary>
     MiddleRight = 64,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the bottom and horizontally at the left
-    //     of a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the bottom and horizontally at the left
+    ///     of a cell.
+    /// </summary>
     BottomLeft = 256,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the bottom and horizontally at the center
-    //     of a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the bottom and horizontally at the center
+    ///     of a cell.
+    /// </summary>
     BottomCenter = 512,
-    //
-    // 摘要:
-    //     The content is aligned vertically at the bottom and horizontally at the right
-    //     of a cell.
+
+    /// <summary>
+    ///     The content is aligned vertically at the bottom and horizontally at the right
+    ///     of a cell.
+    /// </summary>
     BottomRight = 1024
 }

@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using Gtk;
 using Image = System.Drawing.Image;

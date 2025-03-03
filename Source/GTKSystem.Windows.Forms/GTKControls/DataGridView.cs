@@ -1,9 +1,10 @@
 ﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using GLib;
 using Gtk;
 using System.Collections;
@@ -64,7 +65,7 @@ public partial class DataGridView : ScrollableControl
 
     private void GridView_RowActivated(object o, RowActivatedArgs args)
     {
-        //单行选择有效
+        // Single row selection is valid
         if (CellClick != null)
         {
             var column = args.Column as DataGridViewColumn;
@@ -447,253 +448,255 @@ public partial class DataGridView : ScrollableControl
         if (CellPainting != null)
             CellPainting(sender, e);
     }
-    //[Obsolete("此事件未实现，自行开发")]
-    //public event EventHandler BackgroundImageChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? BackgroundColorChanged;
-    //[Obsolete("此事件未实现，自行开发")]
-    //public event EventHandler BackColorChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewAutoSizeModeEventHandler? AutoSizeRowsModeChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewAutoSizeColumnsModeEventHandler? AutoSizeColumnsModeChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? AutoGenerateColumnsChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? AlternatingRowsDefaultCellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? AllowUserToResizeRowsChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? AllowUserToResizeColumnsChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? AllowUserToDeleteRowsChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? AllowUserToAddRowsChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? Sorted;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewSortCompareEventHandler? SortCompare;
-    //[Obsolete("此事件未实现，自行开发")]
-    //public event EventHandler SelectionChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? AllowUserToOrderColumnsChanged;
-    //[Obsolete("此事件未实现，自行开发")]
-    //public event EventHandler StyleChanged;
-    //[Obsolete("此事件未实现，自行开发")]
-    //public event EventHandler BackgroundImageLayoutChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? CellBorderStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewDataErrorEventHandler? DataError;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewBindingCompleteEventHandler? DataBindingComplete;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? CurrentCellDirtyStateChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? CurrentCellChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnWidthChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnToolTipTextChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnStateChangedEventHandler? ColumnStateChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnSortModeChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnRemoved;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnNameChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? DefaultValuesNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnMinimumWidthChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? ColumnHeaderMouseDoubleClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? ColumnHeaderMouseClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnDividerWidthChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnDividerDoubleClickEventHandler? ColumnDividerDoubleClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnDisplayIndexChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnDefaultCellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnDataPropertyNameChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnContextMenuStripChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnAdded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellValueEventHandler? CellValuePushed;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewColumnEventHandler? ColumnHeaderCellChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellValueEventHandler? CellValueNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewEditingControlShowingEventHandler? EditingControlShowing;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowContextMenuStripChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowUnshared;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowStateChangedEventHandler? RowStateChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowsRemovedEventHandler? RowsRemoved;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowsAddedEventHandler? RowsAdded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowPrePaintEventHandler? RowPrePaint;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowPostPaintEventHandler? RowPostPaint;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowMinimumHeightChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? RowLeave;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowHeightInfoPushedEventHandler? RowHeightInfoPushed;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowHeightInfoNeededEventHandler? RowHeightInfoNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? NewRowNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowHeightChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? RowHeaderMouseDoubleClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? RowHeaderMouseClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowErrorTextNeededEventHandler? RowErrorTextNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowErrorTextChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? RowEnter;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowDividerHeightChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowDividerDoubleClickEventHandler? RowDividerDoubleClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event QuestionEventHandler? RowDirtyStateNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowDefaultCellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowContextMenuStripNeededEventHandler? RowContextMenuStripNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? RowHeaderCellChanged;
-    //[Obsolete("此事件未实现，自行开发")]
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellValueEventHandler CellValuePushed;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewColumnEventHandler ColumnHeaderCellChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellValueEventHandler CellValueNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewEditingControlShowingEventHandler EditingControlShowing;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowContextMenuStripChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowUnshared;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowStateChangedEventHandler RowStateChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowsRemovedEventHandler RowsRemoved;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowsAddedEventHandler RowsAdded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowPrePaintEventHandler RowPrePaint;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowPostPaintEventHandler RowPostPaint;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowMinimumHeightChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler RowLeave;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowHeightInfoPushedEventHandler RowHeightInfoPushed;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowHeightInfoNeededEventHandler RowHeightInfoNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler NewRowNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowHeightChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellMouseEventHandler RowHeaderMouseDoubleClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellMouseEventHandler RowHeaderMouseClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowErrorTextNeededEventHandler RowErrorTextNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowErrorTextChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler RowEnter;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowDividerHeightChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowDividerDoubleClickEventHandler RowDividerDoubleClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event QuestionEventHandler RowDirtyStateNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowDefaultCellStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowContextMenuStripNeededEventHandler RowContextMenuStripNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler RowHeaderCellChanged;
+
+    //[Obsolete("This event is not implemented and is developed by ourselves.")]
     //public event DataGridViewCellEventHandler CellValueChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellValidatingEventHandler? CellValidating;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellValidated;
-    [Obsolete("此事件未实现，自行开发")]
-    public event QuestionEventHandler? CancelRowEdit;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewAutoSizeColumnModeEventHandler? AutoSizeColumnModeChanged;
-    //[Obsolete("此事件未实现，自行开发")]
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellValidatingEventHandler CellValidating;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellValidated;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event QuestionEventHandler CancelRowEdit;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewAutoSizeColumnModeEventHandler AutoSizeColumnModeChanged;
+
+    //[Obsolete("This event is not implemented and is developed by ourselves.")]
     //public event EventHandler TextChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? RowsDefaultCellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewAutoSizeModeEventHandler? RowHeadersWidthSizeModeChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? RowHeadersWidthChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? RowHeadersDefaultCellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? RowHeadersBorderStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? ReadOnlyChanged;
-    //[Obsolete("此事件未实现，自行开发")]
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler RowsDefaultCellStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewAutoSizeModeEventHandler RowHeadersWidthSizeModeChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler RowHeadersWidthChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler RowHeadersDefaultCellStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler RowHeadersBorderStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler ReadOnlyChanged;
+
+    //[Obsolete("This event is not implemented and is developed by ourselves.")]
     //public event EventHandler PaddingChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellCancelEventHandler? CellBeginEdit;
-    [Obsolete("此事件未实现，此事件未实现，自行开发")]
-    public event EventHandler? MultiSelectChanged;
-    //[Obsolete("此事件未实现，自行开发")]
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellCancelEventHandler CellBeginEdit;
+
+    [Obsolete("此事件未实现，This event is not implemented and is developed by ourselves.")]
+    public event EventHandler MultiSelectChanged;
+
+    //[Obsolete("This event is not implemented and is developed by ourselves.")]
     //public event EventHandler FontChanged;
-    //[Obsolete("此事件未实现，自行开发")]
+    //[Obsolete("This event is not implemented and is developed by ourselves.")]
     //public event EventHandler ForeColorChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? EditModeChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? DefaultCellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? DataSourceChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? DataMemberChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewAutoSizeModeEventHandler? ColumnHeadersHeightSizeModeChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? ColumnHeadersHeightChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? ColumnHeadersDefaultCellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? ColumnHeadersBorderStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? GridColorChanged;
-    //[Obsolete("此事件未实现，自行开发")]
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler EditModeChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler DefaultCellStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler DataSourceChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler DataMemberChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewAutoSizeModeEventHandler ColumnHeadersHeightSizeModeChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler ColumnHeadersHeightChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler ColumnHeadersDefaultCellStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler ColumnHeadersBorderStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler GridColorChanged;
+
+    //[Obsolete("This event is not implemented and is developed by ourselves.")]
     //public event DataGridViewCellEventHandler CellClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellContentClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellContentDoubleClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellToolTipTextNeededEventHandler? CellToolTipTextNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellToolTipTextChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellStyleContentChangedEventHandler? CellStyleContentChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellStateChangedEventHandler? CellStateChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellParsingEventHandler? CellParsing;
-    public event DataGridViewCellPaintingEventHandler? CellPainting;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? CellMouseUp;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? CellMouseMove;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellMouseLeave;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellMouseEnter;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? CellMouseDown;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? CellMouseDoubleClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellMouseEventHandler? CellMouseClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellLeave;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellFormattingEventHandler? CellFormatting;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellErrorTextNeededEventHandler? CellErrorTextNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellErrorTextChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellEnter;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellEndEdit;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellDoubleClick;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellContextMenuStripNeededEventHandler? CellContextMenuStripNeeded;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? CellContextMenuStripChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event EventHandler? BorderStyleChanged;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellEventHandler? RowValidated;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewCellCancelEventHandler? RowValidating;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowCancelEventHandler? UserDeletingRow;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? UserDeletedRow;
-    [Obsolete("此事件未实现，自行开发")]
-    public event DataGridViewRowEventHandler? UserAddedRow;
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellContentClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellContentDoubleClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellToolTipTextNeededEventHandler CellToolTipTextNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellToolTipTextChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellStyleContentChangedEventHandler CellStyleContentChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellStateChangedEventHandler CellStateChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellParsingEventHandler CellParsing;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellPaintingEventHandler CellPainting;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellMouseEventHandler CellMouseUp;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellMouseEventHandler CellMouseMove;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellMouseLeave;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellMouseEnter;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellMouseEventHandler CellMouseDown;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellMouseEventHandler CellMouseDoubleClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellMouseEventHandler CellMouseClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellLeave;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellFormattingEventHandler CellFormatting;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellErrorTextNeededEventHandler CellErrorTextNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellErrorTextChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellEnter;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellEndEdit;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellDoubleClick;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellContextMenuStripNeededEventHandler CellContextMenuStripNeeded;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler CellContextMenuStripChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event EventHandler BorderStyleChanged;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellEventHandler RowValidated;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewCellCancelEventHandler RowValidating;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowCancelEventHandler UserDeletingRow;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler UserDeletedRow;
+
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
+    public event DataGridViewRowEventHandler UserAddedRow;
 }

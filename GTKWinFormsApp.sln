@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{3BF22C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{F6BAC321-6965-4B7A-8C35-34B3F226C1AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystem.Windows.Forms", "Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj", "{99043664-0431-4398-92A6-55A45736D2F6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKWinFormsApp", "Samples\GTKWinFormsApp\GTKWinFormsApp.csproj", "{A963833A-1053-4321-9BCF-3FB7C58F0601}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "licenses", "licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
@@ -22,16 +20,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystemWinFormsApp11", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystem.Drawing", "Source\GTKSystem.Drawing\GTKSystem.Drawing.csproj", "{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystem.Windows.Forms", "Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj", "{400FCDE9-834C-486F-BD0B-5C5CFC788606}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{99043664-0431-4398-92A6-55A45736D2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99043664-0431-4398-92A6-55A45736D2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99043664-0431-4398-92A6-55A45736D2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99043664-0431-4398-92A6-55A45736D2F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,15 +40,19 @@ Global
 		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{99043664-0431-4398-92A6-55A45736D2F6} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
 		{A963833A-1053-4321-9BCF-3FB7C58F0601} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
 		{ED029673-302D-4E58-B33E-1472BD96B19C} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
 		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B2528BB-EDE2-4992-83A6-3C0C3FDA43DE}

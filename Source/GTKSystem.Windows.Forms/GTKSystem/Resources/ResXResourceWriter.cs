@@ -521,7 +521,7 @@ public class ResXResourceWriter : IResourceWriter
                     }
                 }
 
-                Writer.WriteEndElement();
+            Writer.WriteEndElement();
 
                 if (!string.IsNullOrEmpty(comment))
                 {
@@ -530,9 +530,9 @@ public class ResXResourceWriter : IResourceWriter
                         Writer.WriteString(comment);
                     }
 
-                    Writer.WriteEndElement();
-                }
+                Writer.WriteEndElement();
             }
+        }
 
             Writer.WriteEndElement();
         }

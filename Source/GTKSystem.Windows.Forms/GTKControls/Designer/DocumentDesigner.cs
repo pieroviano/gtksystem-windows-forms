@@ -6,6 +6,7 @@ using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Drawing.Design;
 
+namespace System.Windows.Forms.Design;
 
 namespace System.Windows.Forms.Design;
 

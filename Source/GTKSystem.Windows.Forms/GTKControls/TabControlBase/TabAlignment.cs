@@ -1,25 +1,27 @@
-﻿
-namespace System.Windows.Forms;
+﻿namespace System.Windows.Forms;
 
-//
-// 摘要:
-//     Specifies the locations of the tabs in a tab control.
+/// <summary>
+///     Specifies the locations of the tabs in a tab control.
+/// </summary>
 public enum TabAlignment
 {
-    //
-    // 摘要:
-    //     The tabs are located across the top of the control.
+    /// <summary>
+    ///     The tabs are located across the top of the control.
+    /// </summary>
     Top = 0,
-    //
-    // 摘要:
-    //     The tabs are located across the bottom of the control.
+
+    /// <summary>
+    ///     The tabs are located across the bottom of the control.
+    /// </summary>
     Bottom = 1,
-    //
-    // 摘要:
-    //     The tabs are located along the left edge of the control.
+
+    /// <summary>
+    ///     The tabs are located along the left edge of the control.
+    /// </summary>
     Left = 2,
-    //
-    // 摘要:
-    //     The tabs are located along the right edge of the control.
+
+    /// <summary>
+    ///     The tabs are located along the right edge of the control.
+    /// </summary>
     Right = 3
 }

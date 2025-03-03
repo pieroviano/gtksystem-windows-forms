@@ -5,7 +5,7 @@ namespace System.Windows.Forms;
 
 public interface IControl
 {
-    //widget含有的方法注销
+    // The widget contains methods to log out
     IWidget? Widget { get; }
     AccessibleObject? AccessibilityObject { get; }
     string? AccessibleDefaultActionDescription { get; set; }

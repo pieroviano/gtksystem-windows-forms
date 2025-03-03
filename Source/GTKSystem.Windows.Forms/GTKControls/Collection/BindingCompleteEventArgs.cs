@@ -68,10 +68,7 @@ public class BindingCompleteEventArgs : CancelEventArgs
     public Binding? Binding { get; }
 
     public BindingCompleteState BindingCompleteState { get; }
-
     public BindingCompleteContext BindingCompleteContext { get; }
-
     public string ErrorText { get; }
-
     public Exception? Exception { get; }
 }

@@ -1,4 +1,3 @@
-
 using Gtk;
 using System.ComponentModel;
 using Container = Gtk.Container;

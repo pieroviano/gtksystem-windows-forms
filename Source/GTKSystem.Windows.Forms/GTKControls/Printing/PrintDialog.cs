@@ -1,5 +1,4 @@
-﻿
-using Gtk;
+﻿using Gtk;
 using System.ComponentModel;
 using System.Drawing.Printing;
 using System.Drawing;
@@ -139,10 +138,12 @@ public sealed class PrintDialog : CommonDialog
             }
         }catch(Exception ex)
         {
-            var messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");
+            Gtk.MessageDialog messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self,
+                DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");
             messageDialog.WindowPosition = owner == null ? WindowPosition.Center : WindowPosition.CenterOnParent;
             if (ex.Message.ToLower().Contains("doc"))
-                messageDialog.Text = "文件正在使用，无法覆盖写入";
+                messageDialog.Text = Gtk.Windows.Forms.Properties.Resources
+                    .PrintDialog_RunPrint_File_is_in_use_and_cannot_be_overwritten;
             else
                 messageDialog.Text = ex.Message;
             messageDialog.Response += MessageDialog_Response;

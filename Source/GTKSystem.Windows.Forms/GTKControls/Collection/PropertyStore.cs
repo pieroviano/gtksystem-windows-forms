@@ -65,7 +65,8 @@ internal partial class PropertyStore
                 return wrapper.color;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a color wrapper stored in a color entry!{Environment.NewLine}Did someone SetObject instead of SetColor?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a color wrapper stored in a color entry!{Environment.NewLine}Did someone SetObject instead of SetColor?");
         }
 
         found = false;
@@ -85,7 +86,8 @@ internal partial class PropertyStore
                 return wrapper.padding;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
         found = false;
@@ -105,7 +107,8 @@ internal partial class PropertyStore
                 return wrapper.size;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
         found = false;
@@ -125,7 +128,8 @@ internal partial class PropertyStore
                 return wrapper.rectangle;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a Rectangle wrapper stored in a Rectangle entry!{Environment.NewLine}Did someone SetObject instead of SetRectangle?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a Rectangle wrapper stored in a Rectangle entry!{Environment.NewLine}Did someone SetObject instead of SetRectangle?");
         }
 
         found = false;
@@ -266,10 +270,8 @@ internal partial class PropertyStore
     /// </summary>
     private bool LocateIntegerEntry(short _, out int index)
     {
-
-            index = 0;
-            return false;
-        
+        index = 0;
+        return false;
     }
 
     /// <summary>
@@ -282,10 +284,8 @@ internal partial class PropertyStore
     /// </summary>
     private bool LocateObjectEntry(short _, out int index)
     {
-
-            index = 0;
-            return false;
-        
+        index = 0;
+        return false;
     }
 
     /// <summary>
@@ -293,7 +293,6 @@ internal partial class PropertyStore
     /// </summary>
     public void RemoveInteger(int key)
     {
-
     }
 
     /// <summary>
@@ -386,7 +385,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or ColorWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or ColorWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new ColorWrapper(value));
             }
         }
@@ -408,7 +408,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or PaddingWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or PaddingWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new PaddingWrapper(value));
             }
         }
@@ -430,7 +431,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or RectangleWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or RectangleWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new RectangleWrapper(value));
             }
         }
@@ -452,7 +454,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or SizeWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or SizeWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new SizeWrapper(value));
             }
         }

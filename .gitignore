@@ -321,3 +321,11 @@ Packages
 obfuscar.xml
 /Samples/GTKSystemWinFormsApp11/obj/Debug/net8.0/GTKSystemWinFormsApp11.GeneratedMSBuildEditorConfig.editorconfig
 /Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj.user
+# BizTalk build output
+*.btp.cs
+*.btm.cs
+*.odx.cs
+*.xsd.cs
+obfuscar.xml
+/Directory.Nuget.json
+/Libs

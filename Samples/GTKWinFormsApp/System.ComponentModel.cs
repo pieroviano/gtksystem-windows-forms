@@ -15,8 +15,8 @@ namespace System.ComponentModel
         public new object? GetObject(string name, CultureInfo culture)
         {
 
-            return GetObject(name);
-        }
+        return GetObject(name);
+    }
 
         public new object? GetObject(string name)
         {
