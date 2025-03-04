@@ -1,30 +1,27 @@
 ﻿namespace System.Drawing.Text;
 
-//
-// 摘要:
-//     Provides a base class for installed and private font collections.
+/// <summary>
+/// Provides a base class for installed and private font collections.
+/// </summary>
 public abstract class FontCollection : IDisposable
 {
-    //
-    // 摘要:
-    //     Gets the array of System.Drawing.FontFamily objects associated with this System.Drawing.Text.FontCollection.
-    //
-    // 返回结果:
-    //     An array of System.Drawing.FontFamily objects.
+    /// <summary>
+    /// Gets the array of System.Drawing.FontFamily objects associated with this System.Drawing.Text.FontCollection.
+    /// </summary>
+    /// <returns>An array of System.Drawing.FontFamily objects.</returns>
     public FontFamily[]? Families { get; } = default;
 
-    //
-    // 摘要:
-    //     Releases all resources used by this System.Drawing.Text.FontCollection.
+    /// <summary>
+    /// Releases all resources used by this System.Drawing.Text.FontCollection.
+    /// </summary>
     public void Dispose() { }
-    //
-    // 摘要:
-    //     Releases the unmanaged resources used by the System.Drawing.Text.FontCollection
-    //     and optionally releases the managed resources.
-    //
-    // 参数:
-    //   disposing:
-    //     true to release both managed and unmanaged resources; false to release only unmanaged
-    //     resources.
+    /// <summary>
+    /// Releases the unmanaged resources used by the System.Drawing.Text.FontCollection
+    /// and optionally releases the managed resources.
+    /// </summary>
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources; false to release only unmanaged
+    /// resources.
+    /// </param>
     protected virtual void Dispose(bool disposing) { }
 }
