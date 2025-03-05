@@ -12,19 +12,19 @@ namespace System.Windows.Forms;
 /// </summary>
 public class FormCollection : ReadOnlyCollectionBase
 {
-    internal static object collectionSyncRoot = new();
+    internal static object CollectionSyncRoot = new();
 
     /// <summary>
     ///  Gets a form specified by name, if present, else returns null. If there are multiple
     ///  forms with matching names, the first form found is returned.
     /// </summary>
-    public virtual Form? this[string name]
+    public virtual Form? this[string? name]
     {
         get
         {
             if (name != null)
             {
-                lock (collectionSyncRoot)
+                lock (CollectionSyncRoot)
                 {
                     foreach (Form? form in InnerList)
                     {
@@ -48,7 +48,7 @@ public class FormCollection : ReadOnlyCollectionBase
         {
             Form? f;
 
-            lock (collectionSyncRoot)
+            lock (CollectionSyncRoot)
             {
                 f = (Form?)InnerList[index];
             }
@@ -61,7 +61,7 @@ public class FormCollection : ReadOnlyCollectionBase
     /// </summary>
     internal void Add(Form form)
     {
-        lock (collectionSyncRoot)
+        lock (CollectionSyncRoot)
         {
             InnerList.Add(form);
         }
@@ -73,7 +73,7 @@ public class FormCollection : ReadOnlyCollectionBase
     internal bool Contains(Form form)
     {
         bool inCollection;
-        lock (collectionSyncRoot)
+        lock (CollectionSyncRoot)
         {
             inCollection = InnerList.Contains(form);
         }
@@ -85,7 +85,7 @@ public class FormCollection : ReadOnlyCollectionBase
     /// </summary>
     internal void Remove(Form form)
     {
-        lock (collectionSyncRoot)
+        lock (CollectionSyncRoot)
         {
             InnerList.Remove(form);
         }

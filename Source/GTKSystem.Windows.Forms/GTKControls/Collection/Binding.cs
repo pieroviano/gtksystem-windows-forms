@@ -8,53 +8,53 @@ namespace System.Windows.Forms;
 /// <filterpriority>1</filterpriority>
 public class Binding
 {
-    private IBindableComponent? control;
+    private IBindableComponent? _control;
 
-    private BindingManagerBase? bindingManagerBase;
+    private BindingManagerBase? _bindingManagerBase;
 
-    private readonly BindToObject? bindToObject;
+    private readonly BindToObject? _bindToObject;
 
-    private readonly string propertyName = "";
+    private readonly string _propertyName = "";
 
-    private PropertyDescriptor? propInfo;
+    private PropertyDescriptor? _propInfo;
 
-    private PropertyDescriptor? propIsNullInfo;
+    private PropertyDescriptor? _propIsNullInfo;
 
-    private EventDescriptor? validateInfo;
+    private EventDescriptor? _validateInfo;
 
-    private TypeConverter? propInfoConverter;
+    private TypeConverter? _propInfoConverter;
 
-    private bool formattingEnabled = true;
+    private bool _formattingEnabled = true;
 
-    private bool bound;
+    private bool _bound;
 
-    private bool modified;
+    private bool _modified;
 
-    private bool inSetPropValue;
+    private bool _inSetPropValue;
 
-    private bool inPushOrPull;
+    private bool _inPushOrPull;
 
-    private bool inOnBindingComplete;
+    private bool _inOnBindingComplete;
 
-    private string formatString = string.Empty;
+    private string? _formatString = string.Empty;
 
-    private IFormatProvider? formatInfo;
+    private IFormatProvider? _formatInfo;
 
-    private object? nullValue;
+    private object? _nullValue;
 
-    private object? dsNullValue = Formatter.GetDefaultDataSourceNullValue(null);
+    private object? _dsNullValue = Formatter.GetDefaultDataSourceNullValue(null);
 
-    private bool dsNullValueSet;
+    private bool _dsNullValueSet;
 
-    private ConvertEventHandler? onParse;
+    private ConvertEventHandler? _onParse;
 
-    private ConvertEventHandler? onFormat;
+    private ConvertEventHandler? _onFormat;
 
-    private ControlUpdateMode controlUpdateMode;
+    private ControlUpdateMode _controlUpdateMode;
 
-    private DataSourceUpdateMode dataSourceUpdateMode;
+    private DataSourceUpdateMode _dataSourceUpdateMode;
 
-    private BindingCompleteEventHandler? onComplete;
+    private BindingCompleteEventHandler? _onComplete;
 
     /// <summary>Gets the control the <see cref="T:System.Windows.Forms.Binding" /> is associated with.</summary>
     /// <returns>The <see cref="T:System.Windows.Forms.IBindableComponent" /> the <see cref="T:System.Windows.Forms.Binding" /> is associated with.</returns>
@@ -66,23 +66,23 @@ public class Binding
     public IBindableComponent? BindableComponent
     {
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        get => control;
-        internal set => control = value;
+        get => _control;
+        internal set => _control = value;
     }
 
     /// <summary>Gets the <see cref="T:System.Windows.Forms.BindingManagerBase" /> for this <see cref="T:System.Windows.Forms.Binding" />.</summary>
     /// <returns>The <see cref="T:System.Windows.Forms.BindingManagerBase" /> that manages this <see cref="T:System.Windows.Forms.Binding" />.</returns>
     /// <filterpriority>1</filterpriority>
-    public BindingManagerBase? BindingManagerBase => bindingManagerBase;
+    public BindingManagerBase? BindingManagerBase => _bindingManagerBase;
 
-    /// <summary>Gets an object that contains information about this binding based on the <paramref name="dataMember" /> parameter in the <see cref="Overload:System.Windows.Forms.Binding.#ctor" /> constructor.</summary>
+    /// <summary>Gets an object that contains information about this binding based on the dataMember parameter in the Overload:System.Windows.Forms.Binding constructor.</summary>
     /// <returns>A <see cref="T:System.Windows.Forms.BindingMemberInfo" /> that contains information about this <see cref="T:System.Windows.Forms.Binding" />.</returns>
     /// <filterpriority>1</filterpriority>
-    public BindingMemberInfo? BindingMemberInfo => bindToObject?.BindingMemberInfo;
+    public BindingMemberInfo? BindingMemberInfo => _bindToObject?.BindingMemberInfo;
 
-    internal BindToObject? BindToObject => bindToObject;
+    internal BindToObject? BindToObject => _bindToObject;
 
-    internal bool ComponentCreated => IsComponentCreated(control);
+    internal bool ComponentCreated => IsComponentCreated(_control);
 
     /// <summary>Gets the control that the binding belongs to.</summary>
     /// <returns>The <see cref="T:System.Windows.Forms.Control" /> that the binding belongs to.</returns>
@@ -94,8 +94,8 @@ public class Binding
     public Control? Control
     {
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        get => control as Control;
-        internal set => control = value;
+        get => _control as Control;
+        internal set => _control = value;
     }
 
     /// <summary>Gets or sets when changes to the data source are propagated to the bound control property.</summary>
@@ -103,12 +103,12 @@ public class Binding
     [DefaultValue(ControlUpdateMode.OnPropertyChanged)]
     public ControlUpdateMode ControlUpdateMode
     {
-        get => controlUpdateMode;
+        get => _controlUpdateMode;
         set
         {
-            if (controlUpdateMode != value)
+            if (_controlUpdateMode != value)
             {
-                controlUpdateMode = value;
+                _controlUpdateMode = value;
                 if (IsBinding)
                 {
                     PushData();
@@ -120,23 +120,23 @@ public class Binding
     /// <summary>Gets the data source for this binding.</summary>
     /// <returns>An <see cref="T:System.Object" /> that represents the data source.</returns>
     /// <filterpriority>1</filterpriority>
-    public object? DataSource => bindToObject?.DataSource;
+    public object? DataSource => _bindToObject?.DataSource;
 
     /// <summary>Gets or sets the value to be stored in the data source if the control value is null or empty.</summary>
     /// <returns>The <see cref="T:System.Object" /> to be stored in the data source when the control property is empty or null. The default is <see cref="T:System.DBNull" /> for value types and null for non-value types.</returns>
     public object? DataSourceNullValue
     {
-        get => dsNullValue;
+        get => _dsNullValue;
         set
         {
-            if (!Equals(dsNullValue, value))
+            if (!Equals(_dsNullValue, value))
             {
-                var obj = dsNullValue;
-                dsNullValue = value;
-                dsNullValueSet = true;
+                var obj = _dsNullValue;
+                _dsNullValue = value;
+                _dsNullValueSet = true;
                 if (IsBinding)
                 {
-                    var obj1 = bindToObject?.GetValue();
+                    var obj1 = _bindToObject?.GetValue();
                     if (Formatter.IsNullData(obj1, obj))
                     {
                         WriteValue();
@@ -155,8 +155,8 @@ public class Binding
     [DefaultValue(DataSourceUpdateMode.OnValidation)]
     public DataSourceUpdateMode DataSourceUpdateMode
     {
-        get => dataSourceUpdateMode;
-        set => dataSourceUpdateMode = value;
+        get => _dataSourceUpdateMode;
+        set => _dataSourceUpdateMode = value;
     }
 
     /// <summary>Gets or sets the <see cref="T:System.IFormatProvider" /> that provides custom formatting behavior.</summary>
@@ -165,15 +165,15 @@ public class Binding
     [DefaultValue(null)]
     public IFormatProvider? FormatInfo
     {
-        get => formatInfo;
+        get => _formatInfo;
         set
         {
-            if (ReferenceEquals(formatInfo, value))
+            if (ReferenceEquals(_formatInfo, value))
             {
                 return;
             }
 
-            formatInfo = value;
+            _formatInfo = value;
             if (IsBinding)
             {
                 PushData();
@@ -184,18 +184,18 @@ public class Binding
     /// <summary>Gets or sets the format specifier characters that indicate how a value is to be displayed.</summary>
     /// <returns>The string of format specifier characters that indicate how a value is to be displayed.</returns>
     /// <filterpriority>1</filterpriority>
-    public string FormatString
+    public string? FormatString
     {
-        get => formatString;
+        get => _formatString;
         set
         {
             if (value == null)
             {
                 value = string.Empty;
             }
-            if (!value.Equals(formatString))
+            if (!value.Equals(_formatString))
             {
-                formatString = value;
+                _formatString = value;
                 if (IsBinding)
                 {
                     PushData();
@@ -209,12 +209,12 @@ public class Binding
     /// <filterpriority>1</filterpriority>
     public bool FormattingEnabled
     {
-        get => formattingEnabled;
+        get => _formattingEnabled;
         set
         {
-            if (formattingEnabled != value)
+            if (_formattingEnabled != value)
             {
-                formattingEnabled = value;
+                _formattingEnabled = value;
                 if (IsBinding)
                 {
                     PushData();
@@ -227,31 +227,31 @@ public class Binding
     {
         get
         {
-            if (control == null || propertyName.Length <= 0 || bindToObject?.DataSource == null)
+            if (_control == null || _propertyName.Length <= 0 || _bindToObject?.DataSource == null)
             {
                 return false;
             }
-            return bindingManagerBase != null;
+            return _bindingManagerBase != null;
         }
     }
 
     /// <summary>Gets a value indicating whether the binding is active.</summary>
     /// <returns>true if the binding is active; otherwise, false.</returns>
     /// <filterpriority>1</filterpriority>
-    public bool IsBinding => bound;
+    public bool IsBinding => _bound;
 
     /// <summary>Gets or sets the <see cref="T:System.Object" /> to be set as the control property when the data source contains a <see cref="T:System.DBNull" /> value. </summary>
     /// <returns>The <see cref="T:System.Object" /> to be set as the control property when the data source contains a <see cref="T:System.DBNull" /> value. The default is null.</returns>
     /// <filterpriority>1</filterpriority>
     public object? NullValue
     {
-        get => nullValue;
+        get => _nullValue;
         set
         {
-            if (!Equals(nullValue, value))
+            if (!Equals(_nullValue, value))
             {
-                nullValue = value;
-                if (IsBinding && Formatter.IsNullData(bindToObject?.GetValue(), dsNullValue))
+                _nullValue = value;
+                if (IsBinding && Formatter.IsNullData(_bindToObject?.GetValue(), _dsNullValue))
                 {
                     PushData();
                 }
@@ -263,7 +263,7 @@ public class Binding
     /// <returns>The name of a control property to bind to.</returns>
     /// <filterpriority>1</filterpriority>
     [DefaultValue("")]
-    public string PropertyName => propertyName;
+    public string PropertyName => _propertyName;
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Windows.Forms.Binding" /> class that simple-binds the indicated control property to the specified data member of the data source.</summary>
     /// <param name="propertyName">The name of the control property to bind. </param>
@@ -335,14 +335,14 @@ public class Binding
     /// <exception cref="T:System.ArgumentException">The property given by <paramref name="propertyName" /> does not exist on the control.-or-The data source or data member or control property specified are associated with another binding in the collection.</exception>
     public Binding(string propertyName, object dataSource, string? dataMember, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object? nullValue, string formatString, IFormatProvider? formatInfo)
     {
-        bindToObject = new BindToObject(this, dataSource, dataMember);
-        this.propertyName = propertyName;
-        this.formattingEnabled = formattingEnabled;
-        this.formatString = formatString;
-        this.nullValue = nullValue;
-        this.formatInfo = formatInfo;
-        this.formattingEnabled = formattingEnabled;
-        this.dataSourceUpdateMode = dataSourceUpdateMode;
+        _bindToObject = new BindToObject(this, dataSource, dataMember);
+        _propertyName = propertyName;
+        _formattingEnabled = formattingEnabled;
+        _formatString = formatString;
+        _nullValue = nullValue;
+        _formatInfo = formatInfo;
+        _formattingEnabled = formattingEnabled;
+        _dataSourceUpdateMode = dataSourceUpdateMode;
         CheckBinding();
     }
 
@@ -359,51 +359,51 @@ public class Binding
     {
         if (!bind)
         {
-            if (propInfo != null && control != null)
+            if (_propInfo != null && _control != null)
             {
                 EventHandler eventHandler = Target_PropertyChanged;
-                propInfo.RemoveValueChanged(control, eventHandler);
+                _propInfo.RemoveValueChanged(_control, eventHandler);
             }
-            if (validateInfo != null)
+            if (_validateInfo != null)
             {
                 CancelEventHandler cancelEventHandler = Target_Validate;
-                validateInfo.RemoveEventHandler(control, cancelEventHandler);
+                _validateInfo.RemoveEventHandler(_control, cancelEventHandler);
             }
         }
         else if (IsBinding)
         {
-            if (propInfo != null && control != null)
+            if (_propInfo != null && _control != null)
             {
                 EventHandler eventHandler1 = Target_PropertyChanged;
-                propInfo.AddValueChanged(control, eventHandler1);
+                _propInfo.AddValueChanged(_control, eventHandler1);
             }
-            if (validateInfo != null)
+            if (_validateInfo != null)
             {
-                validateInfo.AddEventHandler(control, (CancelEventHandler)Target_Validate);
+                _validateInfo.AddEventHandler(_control, (CancelEventHandler)Target_Validate);
             }
         }
     }
 
     private void CheckBinding()
     {
-        bindToObject?.CheckBinding();
-        if (control == null || propertyName.Length <= 0)
+        _bindToObject?.CheckBinding();
+        if (_control == null || _propertyName.Length <= 0)
         {
-            propInfo = null;
-            validateInfo = null;
+            _propInfo = null;
+            _validateInfo = null;
         }
         else
         {
-            control.DataBindings?.CheckDuplicates(this);
-            var type = control.GetType();
-            var str = string.Concat(propertyName, "IsNull");
+            _control.DataBindings?.CheckDuplicates(this);
+            var type = _control.GetType();
+            var str = string.Concat(_propertyName, "IsNull");
             PropertyDescriptor? item = null;
             PropertyDescriptor? propertyDescriptor = null;
-            var inheritanceAttribute = (InheritanceAttribute)TypeDescriptor.GetAttributes(control)[typeof(InheritanceAttribute)];
-            var propertyDescriptorCollections = inheritanceAttribute == null || inheritanceAttribute.InheritanceLevel == InheritanceLevel.NotInherited ? TypeDescriptor.GetProperties(control) : TypeDescriptor.GetProperties(type);
+            var inheritanceAttribute = (InheritanceAttribute)TypeDescriptor.GetAttributes(_control)[typeof(InheritanceAttribute)];
+            var propertyDescriptorCollections = inheritanceAttribute == null || inheritanceAttribute.InheritanceLevel == InheritanceLevel.NotInherited ? TypeDescriptor.GetProperties(_control) : TypeDescriptor.GetProperties(type);
             for (var i = 0; i < propertyDescriptorCollections.Count; i++)
             {
-                if (item == null && string.Equals(propertyDescriptorCollections[i].Name, propertyName, StringComparison.OrdinalIgnoreCase))
+                if (item == null && string.Equals(propertyDescriptorCollections[i].Name, _propertyName, StringComparison.OrdinalIgnoreCase))
                 {
                     item = propertyDescriptorCollections[i];
                     if (propertyDescriptor != null)
@@ -424,19 +424,19 @@ public class Binding
             {
                 throw new ArgumentException(@"ListBindingBindProperty", nameof(PropertyName));
             }
-            if (item.IsReadOnly && controlUpdateMode != ControlUpdateMode.Never)
+            if (item.IsReadOnly && _controlUpdateMode != ControlUpdateMode.Never)
             {
                 throw new ArgumentException(@"ListBindingBindPropertyReadOnly", nameof(PropertyName));
             }
-            propInfo = item;
-            propInfoConverter = propInfo.Converter;
+            _propInfo = item;
+            _propInfoConverter = _propInfo.Converter;
             if (propertyDescriptor != null && propertyDescriptor.PropertyType == typeof(bool) && !propertyDescriptor.IsReadOnly)
             {
-                propIsNullInfo = propertyDescriptor;
+                _propIsNullInfo = propertyDescriptor;
             }
             EventDescriptor? eventDescriptor = null;
             var str1 = "Validating";
-            var events = TypeDescriptor.GetEvents(control);
+            var events = TypeDescriptor.GetEvents(_control);
             var num = 0;
             while (num < events.Count)
             {
@@ -450,14 +450,14 @@ public class Binding
                     break;
                 }
             }
-            validateInfo = eventDescriptor;
+            _validateInfo = eventDescriptor;
         }
         UpdateIsBinding();
     }
 
     internal bool ControlAtDesignTime()
     {
-        IComponent? component = control;
+        IComponent? component = _control;
         var site = component?.Site;
         if (site == null)
         {
@@ -494,8 +494,8 @@ public class Binding
         {
             return value;
         }
-        var propertyType = propInfo?.PropertyType ?? typeof(object);
-        if (formattingEnabled)
+        var propertyType = _propInfo?.PropertyType ?? typeof(object);
+        if (_formattingEnabled)
         {
             var convertEventArg = new ConvertEventArgs(value, propertyType);
             OnFormat(convertEventArg);
@@ -504,11 +504,11 @@ public class Binding
                 return convertEventArg.Value;
             }
             TypeConverter? converter = null;
-            if (bindToObject?.FieldInfo != null)
+            if (_bindToObject?.FieldInfo != null)
             {
-                converter = bindToObject.FieldInfo.Converter;
+                converter = _bindToObject.FieldInfo.Converter;
             }
-            return Formatter.FormatObject(value, propertyType, converter, propInfoConverter, formatString, formatInfo, nullValue, dsNullValue);
+            return Formatter.FormatObject(value, propertyType, converter, _propInfoConverter, _formatString??string.Empty, _formatInfo, _nullValue, _dsNullValue);
         }
         var convertEventArg1 = new ConvertEventArgs(value, propertyType);
         OnFormat(convertEventArg1);
@@ -522,7 +522,7 @@ public class Binding
             return obj;
         }
         var typeConverter = TypeDescriptor.GetConverter(value != null ? value.GetType() : typeof(object));
-        if (typeConverter != null && typeConverter.CanConvertTo(propertyType))
+        if (typeConverter.CanConvertTo(propertyType))
         {
             if (value != null)
             {
@@ -549,25 +549,25 @@ public class Binding
 
     private object? GetDataSourceNullValue(Type? type)
     {
-        if (!dsNullValueSet)
+        if (!_dsNullValueSet)
         {
             return Formatter.GetDefaultDataSourceNullValue(type);
         }
-        return dsNullValue;
+        return _dsNullValue;
     }
 
     private object? GetPropValue()
     {
         var obj = DataSourceNullValue;
         var value = false;
-        if (propIsNullInfo != null)
+        if (_propIsNullInfo != null)
         {
-            value = control != null && (bool)propIsNullInfo.GetValue(control);
+            value = _control != null && (bool)_propIsNullInfo.GetValue(_control);
         }
 
-        if (control != null)
+        if (_control != null)
         {
-            obj = !value ? propInfo?.GetValue(control) ?? DataSourceNullValue : DataSourceNullValue;
+            obj = !value ? _propInfo?.GetValue(_control) ?? DataSourceNullValue : DataSourceNullValue;
         }
 
         return obj;
@@ -587,14 +587,14 @@ public class Binding
     /// <param name="e">A <see cref="T:System.Windows.Forms.BindingCompleteEventArgs" />  that contains the event data. </param>
     protected virtual void OnBindingComplete(BindingCompleteEventArgs e)
     {
-        if (!inOnBindingComplete)
+        if (!_inOnBindingComplete)
         {
             try
             {
                 try
                 {
-                    inOnBindingComplete = true;
-                    onComplete?.Invoke(this, e);
+                    _inOnBindingComplete = true;
+                    _onComplete?.Invoke(this, e);
                 }
                 catch (Exception exception)
                 {
@@ -607,7 +607,7 @@ public class Binding
             }
             finally
             {
-                inOnBindingComplete = false;
+                _inOnBindingComplete = false;
             }
         }
     }
@@ -616,8 +616,8 @@ public class Binding
     /// <param name="cevent">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
     protected virtual void OnFormat(ConvertEventArgs cevent)
     {
-        onFormat?.Invoke(this, cevent);
-        if (!formattingEnabled && !(cevent.Value is DBNull) && cevent.DesiredType != null && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
+        _onFormat?.Invoke(this, cevent);
+        if (!_formattingEnabled && !(cevent.Value is DBNull) && cevent.DesiredType != null && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
         {
             cevent.Value = Convert.ChangeType(cevent.Value, cevent.DesiredType, CultureInfo.CurrentCulture);
         }
@@ -627,8 +627,8 @@ public class Binding
     /// <param name="cevent">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
     protected virtual void OnParse(ConvertEventArgs cevent)
     {
-        onParse?.Invoke(this, cevent);
-        if (!formattingEnabled && !(cevent.Value is DBNull) && cevent is { Value: not null, DesiredType: not null } && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
+        _onParse?.Invoke(this, cevent);
+        if (!_formattingEnabled && !(cevent.Value is DBNull) && cevent is { Value: not null, DesiredType: not null } && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
         {
             cevent.Value = Convert.ChangeType(cevent.Value, cevent.DesiredType, CultureInfo.CurrentCulture);
         }
@@ -636,8 +636,8 @@ public class Binding
 
     private object? ParseObject(object? value)
     {
-        var bindToType = bindToObject?.BindToType;
-        if (formattingEnabled)
+        var bindToType = _bindToObject?.BindToType;
+        if (_formattingEnabled)
         {
             var convertEventArg = new ConvertEventArgs(value, bindToType);
             OnParse(convertEventArg);
@@ -647,11 +647,11 @@ public class Binding
                 return obj;
             }
             TypeConverter? converter = null;
-            if (bindToObject?.FieldInfo != null)
+            if (_bindToObject?.FieldInfo != null)
             {
-                converter = bindToObject.FieldInfo.Converter;
+                converter = _bindToObject.FieldInfo.Converter;
             }
-            return Formatter.ParseObject(value, bindToType, value == null ? propInfo?.PropertyType : value.GetType(), converter, propInfoConverter, formatInfo, nullValue, GetDataSourceNullValue(bindToType));
+            return Formatter.ParseObject(value, bindToType, value == null ? _propInfo?.PropertyType : value.GetType(), converter, _propInfoConverter, _formatInfo, _nullValue, GetDataSourceNullValue(bindToType));
         }
         var convertEventArg1 = new ConvertEventArgs(value, bindToType);
         OnParse(convertEventArg1);
@@ -660,7 +660,7 @@ public class Binding
             return convertEventArg1.Value;
         }
         var typeConverter = TypeDescriptor.GetConverter(value != null ? value.GetType() : typeof(object));
-        if (typeConverter != null && bindToType != null && typeConverter.CanConvertTo(bindToType))
+        if (bindToType != null && typeConverter.CanConvertTo(bindToType))
         {
             if (value != null)
             {
@@ -708,7 +708,7 @@ public class Binding
         }
         if (!force)
         {
-            if (propInfo is { SupportsChangeEvents: true } && !modified)
+            if (_propInfo is { SupportsChangeEvents: true } && !_modified)
             {
                 return false;
             }
@@ -717,11 +717,11 @@ public class Binding
                 return false;
             }
         }
-        if (inPushOrPull && formattingEnabled)
+        if (_inPushOrPull && _formattingEnabled)
         {
             return false;
         }
-        inPushOrPull = true;
+        _inPushOrPull = true;
         var propValue = GetPropValue();
         try
         {
@@ -738,7 +738,7 @@ public class Binding
                 if (exception != null || !FormattingEnabled && value == null)
                 {
                     flag = true;
-                    value = bindToObject?.GetValue();
+                    value = _bindToObject?.GetValue();
                 }
                 if (reformat && !FormattingEnabled | !flag)
                 {
@@ -750,7 +750,7 @@ public class Binding
                 }
                 if (!flag)
                 {
-                    bindToObject?.SetValue(value);
+                    _bindToObject?.SetValue(value);
                 }
             }
             catch (Exception exception2)
@@ -764,18 +764,18 @@ public class Binding
         }
         finally
         {
-            inPushOrPull = false;
+            _inPushOrPull = false;
         }
         if (!FormattingEnabled)
         {
-            modified = false;
+            _modified = false;
             return false;
         }
         var bindingCompleteEventArg = CreateBindingCompleteEventArgs(BindingCompleteContext.DataSourceUpdate, exception);
         OnBindingComplete(bindingCompleteEventArg);
         if (bindingCompleteEventArg.BindingCompleteState == BindingCompleteState.Success && !bindingCompleteEventArg.Cancel)
         {
-            modified = false;
+            _modified = false;
         }
         return bindingCompleteEventArg.Cancel;
     }
@@ -792,11 +792,11 @@ public class Binding
         {
             return false;
         }
-        if (inPushOrPull && formattingEnabled)
+        if (_inPushOrPull && _formattingEnabled)
         {
             return false;
         }
-        inPushOrPull = true;
+        _inPushOrPull = true;
         try
         {
             try
@@ -807,8 +807,8 @@ public class Binding
                 }
                 else
                 {
-                    SetPropValue(FormatObject(bindToObject?.GetValue()));
-                    modified = false;
+                    SetPropValue(FormatObject(_bindToObject?.GetValue()));
+                    _modified = false;
                 }
             }
             catch (Exception? exception1)
@@ -822,7 +822,7 @@ public class Binding
         }
         finally
         {
-            inPushOrPull = false;
+            _inPushOrPull = false;
         }
         if (!FormattingEnabled)
         {
@@ -842,11 +842,11 @@ public class Binding
     internal void SetBindableComponent(IBindableComponent? value)
     {
         BindingContext? bindingContext;
-        if (control != value)
+        if (_control != value)
         {
-            var bindableComponent = control;
+            var bindableComponent = _control;
             BindTarget(false);
-            control = value;
+            _control = value;
             BindTarget(true);
             try
             {
@@ -855,17 +855,17 @@ public class Binding
             catch
             {
                 BindTarget(false);
-                control = bindableComponent;
+                _control = bindableComponent;
                 BindTarget(true);
                 throw;
             }
-            if (control == null || !IsComponentCreated(control))
+            if (_control == null || !IsComponentCreated(_control))
             {
                 bindingContext = null;
             }
             else
             {
-                bindingContext = control.BindingContext;
+                bindingContext = _control.BindingContext;
             }
             BindingContext.UpdateBinding(bindingContext, this);
             var form = value as Form;
@@ -878,14 +878,14 @@ public class Binding
 
     internal void SetListManager(BindingManagerBase? bindingManager)
     {
-        if (bindingManagerBase is CurrencyManager)
+        if (_bindingManagerBase is CurrencyManager)
         {
-            ((CurrencyManager)bindingManagerBase).MetaDataChanged -= binding_MetaDataChanged;
+            ((CurrencyManager)_bindingManagerBase).MetaDataChanged -= binding_MetaDataChanged;
         }
-        bindingManagerBase = bindingManager;
-        if (bindingManagerBase is CurrencyManager)
+        _bindingManagerBase = bindingManager;
+        if (_bindingManagerBase is CurrencyManager)
         {
-            ((CurrencyManager)bindingManagerBase).MetaDataChanged += binding_MetaDataChanged;
+            ((CurrencyManager)_bindingManagerBase).MetaDataChanged += binding_MetaDataChanged;
         }
         BindToObject?.SetBindingManagerBase(bindingManager);
         CheckBinding();
@@ -897,68 +897,68 @@ public class Binding
         {
             return;
         }
-        inSetPropValue = true;
+        _inSetPropValue = true;
         try
         {
             if (value == null ? false : !Formatter.IsNullData(value, DataSourceNullValue))
             {
-                propInfo?.SetValue(control, value);
+                _propInfo?.SetValue(_control, value);
             }
-            else if (propIsNullInfo != null)
+            else if (_propIsNullInfo != null)
             {
-                propIsNullInfo.SetValue(control, true);
+                _propIsNullInfo.SetValue(_control, true);
             }
-            else if (propInfo?.PropertyType != typeof(object))
+            else if (_propInfo?.PropertyType != typeof(object))
             {
-                propInfo?.SetValue(control, null);
+                _propInfo?.SetValue(_control, null);
             }
             else
             {
-                propInfo.SetValue(control, DataSourceNullValue);
+                _propInfo.SetValue(_control, DataSourceNullValue);
             }
         }
         finally
         {
-            inSetPropValue = false;
+            _inSetPropValue = false;
         }
     }
 
     private bool ShouldSerializeDataSourceNullValue()
     {
-        if (!dsNullValueSet)
+        if (!_dsNullValueSet)
         {
             return false;
         }
-        return dsNullValue != Formatter.GetDefaultDataSourceNullValue(null);
+        return _dsNullValue != Formatter.GetDefaultDataSourceNullValue(null);
     }
 
     private bool ShouldSerializeFormatString()
     {
-        if (formatString == null)
+        if (_formatString == null)
         {
             return false;
         }
-        return formatString.Length > 0;
+        return _formatString.Length > 0;
     }
 
     private bool ShouldSerializeNullValue()
     {
-        return nullValue != null;
+        return _nullValue != null;
     }
 
     private void Target_PropertyChanged(object? sender, EventArgs e)
     {
-        if (inSetPropValue)
+        if (_inSetPropValue)
         {
             return;
         }
         if (IsBinding)
         {
-            modified = true;
+            _modified = true;
             if (DataSourceUpdateMode == DataSourceUpdateMode.OnPropertyChanged)
             {
                 PullData(false);
-                modified = true;
+                _modified = true;
             }
         }
     }
@@ -980,14 +980,14 @@ public class Binding
 
     internal void UpdateIsBinding()
     {
-        var flag = IsBindable && ComponentCreated && (bindingManagerBase?.IsBinding ?? false);
-        if (bound != flag)
+        var flag = IsBindable && ComponentCreated && (_bindingManagerBase?.IsBinding ?? false);
+        if (_bound != flag)
         {
-            bound = flag;
+            _bound = flag;
             BindTarget(flag);
-            if (bound)
+            if (_bound)
             {
-                if (controlUpdateMode == ControlUpdateMode.Never)
+                if (_controlUpdateMode == ControlUpdateMode.Never)
                 {
                     PullData(false, true);
                     return;
@@ -1006,23 +1006,23 @@ public class Binding
     /// <summary>Occurs when the <see cref="P:System.Windows.Forms.Binding.FormattingEnabled" /> property is set to true and a binding operation is complete, such as when data is pushed from the control to the data source or vice versa</summary>
     public event BindingCompleteEventHandler? BindingComplete
     {
-        add => onComplete += value;
-        remove => onComplete -= value;
+        add => _onComplete += value;
+        remove => _onComplete -= value;
     }
 
     /// <summary>Occurs when the property of a control is bound to a data value.</summary>
     /// <filterpriority>1</filterpriority>
     public event ConvertEventHandler? Format
     {
-        add => onFormat += value;
-        remove => onFormat -= value;
+        add => _onFormat += value;
+        remove => _onFormat -= value;
     }
 
     /// <summary>Occurs when the value of a data-bound control changes.</summary>
     /// <filterpriority>1</filterpriority>
     public event ConvertEventHandler? Parse
     {
-        add => onParse += value;
-        remove => onParse -= value;
+        add => _onParse += value;
+        remove => _onParse -= value;
     }
 }

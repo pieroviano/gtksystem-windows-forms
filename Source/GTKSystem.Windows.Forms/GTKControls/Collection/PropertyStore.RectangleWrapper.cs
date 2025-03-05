@@ -9,11 +9,11 @@ internal partial class PropertyStore
 {
     private sealed class RectangleWrapper
     {
-        public Rectangle rectangle;
+        public Rectangle Rectangle;
 
         public RectangleWrapper(Rectangle rectangle)
         {
-            this.rectangle = rectangle;
+            Rectangle = rectangle;
         }
     }
 }

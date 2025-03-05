@@ -68,7 +68,7 @@ public partial class ComboBox
                     throw;
                 }
             }
-            private int AddInternal(object item)
+            private int AddInternal(object? item)
             {
                 item ??= "";
                 int index;
@@ -95,9 +95,9 @@ public partial class ComboBox
             return Add(item!);
         }
 
-            public void AddRange(params object[] items)
+            public void AddRange(params object?[] items)
             {
-                foreach (object item in items)
+                foreach (object? item in items)
                 {
                     AddInternal(item);
                     if (item is Entry entryItem)
@@ -224,7 +224,7 @@ public partial class ComboBox
             }
         }
 
-        internal void SetItemInternal(int index, object value)
+        internal void SetItemInternal(int index, object? value)
         {
             // If the native control has been created, and the display text of the new list item object
             // is different to the current text in the native list item, recreate the native list item...

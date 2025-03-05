@@ -5,13 +5,13 @@ namespace System.Windows.Forms;
 
 internal class RelatedPropertyManager : PropertyManager
 {
-    private BindingManagerBase? parentManager;
+    private BindingManagerBase? _parentManager;
 
-    private string? dataField;
+    private string? _dataField;
 
-    private PropertyDescriptor? fieldInfo;
+    private PropertyDescriptor? _fieldInfo;
 
-    internal override Type? BindType => fieldInfo?.PropertyType;
+    internal override Type? BindType => _fieldInfo?.PropertyType;
 
     public override object? Current
     {
@@ -21,7 +21,7 @@ internal class RelatedPropertyManager : PropertyManager
             {
                 return null;
             }
-            return fieldInfo?.GetValue(DataSource);
+            return _fieldInfo?.GetValue(DataSource);
         }
     }
 
@@ -32,14 +32,14 @@ internal class RelatedPropertyManager : PropertyManager
 
     private void Bind(BindingManagerBase? manager, string? field)
     {
-        parentManager = manager;
-        dataField = field;
+        _parentManager = manager;
+        _dataField = field;
         if (field != null)
         {
-            fieldInfo = manager?.GetItemProperties()?.Find(field, true);
+            _fieldInfo = manager?.GetItemProperties()?.Find(field, true);
         }
 
-        if (fieldInfo == null)
+        if (_fieldInfo == null)
         {
             throw new ArgumentException("RelatedListManagerChild");
         }
@@ -73,8 +73,8 @@ internal class RelatedPropertyManager : PropertyManager
             propertyDescriptorArray = new PropertyDescriptor[listAccessors.Length + 1];
             listAccessors.CopyTo(propertyDescriptorArray, 1);
         }
-        propertyDescriptorArray[0] = fieldInfo;
-        return parentManager?.GetItemProperties(propertyDescriptorArray);
+        propertyDescriptorArray[0] = _fieldInfo;
+        return _parentManager?.GetItemProperties(propertyDescriptorArray);
     }
 
     internal override string? GetListName()
@@ -89,8 +89,8 @@ internal class RelatedPropertyManager : PropertyManager
 
     protected internal override string? GetListName(ArrayList? listAccessors)
     {
-        listAccessors?.Insert(0, fieldInfo);
-        return parentManager?.GetListName(listAccessors);
+        listAccessors?.Insert(0, _fieldInfo);
+        return _parentManager?.GetListName(listAccessors);
     }
 
     private void ParentManager_CurrentItemChanged(object? sender, EventArgs e)
@@ -101,7 +101,7 @@ internal class RelatedPropertyManager : PropertyManager
     private void Refresh()
     {
         EndCurrentEdit();
-        SetDataSource(GetCurrentOrNull(parentManager));
+        SetDataSource(GetCurrentOrNull(_parentManager));
         OnCurrentChanged(EventArgs.Empty);
     }
 }

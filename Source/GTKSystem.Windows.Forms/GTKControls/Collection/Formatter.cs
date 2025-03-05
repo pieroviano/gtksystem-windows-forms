@@ -6,23 +6,23 @@ namespace System.Windows.Forms;
 
 internal class Formatter
 {
-    private static readonly Type? stringType;
+    internal static readonly Type? StringType;
 
-    private static readonly Type booleanType;
+    internal static readonly Type BooleanType;
 
-    private static readonly Type checkStateType;
+    internal static readonly Type CheckStateType;
 
-    private static readonly object? parseMethodNotFound;
+    internal static readonly object? ParseMethodNotFound;
 
-    private static readonly object? defaultDataSourceNullValue;
+    internal static readonly object? DefaultDataSourceNullValue;
 
     static Formatter()
     {
-        stringType = typeof(string);
-        booleanType = typeof(bool);
-        checkStateType = typeof(CheckState);
-        parseMethodNotFound = new object();
-        defaultDataSourceNullValue = DBNull.Value;
+        StringType = typeof(string);
+        BooleanType = typeof(bool);
+        CheckStateType = typeof(CheckState);
+        ParseMethodNotFound = new object();
+        DefaultDataSourceNullValue = DBNull.Value;
     }
 
     private static object? ChangeType(object? value, Type? type, IFormatProvider? formatInfo)
@@ -86,17 +86,17 @@ internal class Formatter
             {
                 return formattedNullValue;
             }
-            if (targetType == stringType)
+            if (targetType == StringType)
             {
                 return string.Empty;
             }
-            if (targetType != checkStateType)
+            if (targetType != CheckStateType)
             {
                 return null;
             }
             return CheckState.Indeterminate;
         }
-        if (targetType == stringType && value is IFormattable && !string.IsNullOrEmpty(formatString))
+        if (targetType == StringType && value is IFormattable && !string.IsNullOrEmpty(formatString))
         {
             return (value as IFormattable)?.ToString(formatString, formatInfo);
         }
@@ -112,9 +112,9 @@ internal class Formatter
         {
             return targetConverter.ConvertFrom(null!, GetFormatterCulture(formatInfo), value);
         }
-        if (targetType == checkStateType)
+        if (targetType == CheckStateType)
         {
-            if (type == booleanType)
+            if (type == BooleanType)
             {
                 return (bool)value ? CheckState.Checked : CheckState.Unchecked;
             }
@@ -122,9 +122,9 @@ internal class Formatter
             {
                 sourceConverter = converter;
             }
-            if (sourceConverter != null && sourceConverter.CanConvertTo(booleanType))
+            if (sourceConverter.CanConvertTo(BooleanType))
             {
-                return (bool)sourceConverter.ConvertTo(null, GetFormatterCulture(formatInfo), value, booleanType) ? CheckState.Checked : CheckState.Unchecked;
+                return (bool)sourceConverter.ConvertTo(null, GetFormatterCulture(formatInfo), value, BooleanType) ? CheckState.Checked : CheckState.Unchecked;
             }
         }
         if (targetType.IsAssignableFrom(type))
@@ -139,11 +139,11 @@ internal class Formatter
         {
             targetConverter = typeConverter;
         }
-        if (sourceConverter != null && sourceConverter.CanConvertTo(targetType))
+        if (sourceConverter.CanConvertTo(targetType))
         {
             return sourceConverter.ConvertTo(null, GetFormatterCulture(formatInfo), value, targetType);
         }
-        if (targetConverter != null && targetConverter.CanConvertFrom(type))
+        if (targetConverter.CanConvertFrom(type))
         {
             return targetConverter.ConvertFrom(null!, GetFormatterCulture(formatInfo), value);
         }
@@ -166,7 +166,7 @@ internal class Formatter
         {
             return null;
         }
-        return defaultDataSourceNullValue;
+        return DefaultDataSourceNullValue;
     }
 
     private static CultureInfo GetFormatterCulture(IFormatProvider? formatInfo)
@@ -183,17 +183,17 @@ internal class Formatter
         object? obj;
         try
         {
-            var method = targetType?.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, [stringType, typeof(NumberStyles), typeof(IFormatProvider)
+            var method = targetType?.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, [StringType, typeof(NumberStyles), typeof(IFormatProvider)
             ], null);
             if (method == null)
             {
-                method = targetType?.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, [stringType, typeof(IFormatProvider)
+                method = targetType?.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, [StringType, typeof(IFormatProvider)
                 ], null);
                 if (method == null)
                 {
-                    method = targetType?.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, [stringType
+                    method = targetType?.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, [StringType
                     ], null);
-                    obj = method == null ? parseMethodNotFound : method.Invoke(null, [(string?)value]);
+                    obj = method == null ? ParseMethodNotFound : method.Invoke(null, [(string?)value]);
                 }
                 else
                 {
@@ -224,9 +224,9 @@ internal class Formatter
 
     private static Type? NullableUnwrap(Type? type)
     {
-        if (type == stringType)
+        if (type == StringType)
         {
-            return stringType;
+            return StringType;
         }
         return Nullable.GetUnderlyingType(type??typeof(object)) ?? type;
     }
@@ -292,7 +292,7 @@ internal class Formatter
         if (value is string)
         {
             var obj = InvokeStringParseMethod(value, targetType, formatInfo);
-            if (obj != parseMethodNotFound)
+            if (obj != ParseMethodNotFound)
             {
                 return obj;
             }
@@ -304,7 +304,7 @@ internal class Formatter
             {
                 return DBNull.Value;
             }
-            if (targetType == booleanType)
+            if (targetType == BooleanType)
             {
                 return checkState == CheckState.Checked;
             }
@@ -312,7 +312,7 @@ internal class Formatter
             {
                 targetConverter = converter;
             }
-            if (targetConverter != null && targetConverter.CanConvertFrom(booleanType))
+            if (targetConverter.CanConvertFrom(BooleanType))
             {
                 return targetConverter.ConvertFrom(null!, GetFormatterCulture(formatInfo), checkState == CheckState.Checked);
             }
@@ -329,11 +329,11 @@ internal class Formatter
         {
             sourceConverter = typeConverter;
         }
-        if (targetConverter != null && targetConverter.CanConvertFrom(sourceType))
+        if (targetConverter.CanConvertFrom(sourceType))
         {
             return targetConverter.ConvertFrom(null!, GetFormatterCulture(formatInfo), value);
         }
-        if (sourceConverter != null && sourceConverter.CanConvertTo(targetType))
+        if (sourceConverter.CanConvertTo(targetType))
         {
             return sourceConverter.ConvertTo(null, GetFormatterCulture(formatInfo), value, targetType);
         }

@@ -4,35 +4,35 @@ namespace System.Windows.Forms;
 
 internal class BindToObject
 {
-    private PropertyDescriptor? fieldInfo;
+    private PropertyDescriptor? _fieldInfo;
 
-    private readonly BindingMemberInfo dataMember;
+    private readonly BindingMemberInfo _dataMember;
 
-    private readonly object dataSource;
+    private readonly object _dataSource;
 
-    private BindingManagerBase? bindingManager;
+    private BindingManagerBase? _bindingManager;
 
-    private readonly Binding owner;
+    private readonly Binding? _owner;
 
-    private string errorText = string.Empty;
+    private string _errorText = string.Empty;
 
-    private bool dataSourceInitialized;
+    private bool _dataSourceInitialized;
 
-    private bool waitingOnDataSource;
+    private bool _waitingOnDataSource;
 
-    internal BindingManagerBase? BindingManagerBase => bindingManager;
+    internal BindingManagerBase? BindingManagerBase => _bindingManager;
 
-    internal BindingMemberInfo BindingMemberInfo => dataMember;
+    internal BindingMemberInfo BindingMemberInfo => _dataMember;
 
     internal Type? BindToType
     {
         get
         {
-            if (dataMember.BindingField.Length != 0)
+            if (_dataMember.BindingField.Length != 0)
             {
-                return fieldInfo?.PropertyType;
+                return _fieldInfo?.PropertyType;
             }
-            var bindType = bindingManager?.BindType;
+            var bindType = _bindingManager?.BindType;
             if (typeof(Array).IsAssignableFrom(bindType))
             {
                 bindType = bindType?.GetElementType();
@@ -41,76 +41,76 @@ internal class BindToObject
         }
     }
 
-    internal string DataErrorText => errorText;
+    internal string DataErrorText => _errorText;
 
-    internal object DataSource => dataSource;
+    internal object DataSource => _dataSource;
 
-    internal PropertyDescriptor? FieldInfo => fieldInfo;
+    internal PropertyDescriptor? FieldInfo => _fieldInfo;
 
     private bool IsDataSourceInitialized
     {
         get
         {
-            if (dataSourceInitialized)
+            if (_dataSourceInitialized)
             {
                 return true;
             }
-            var supportInitializeNotification = dataSource as ISupportInitializeNotification;
+            var supportInitializeNotification = _dataSource as ISupportInitializeNotification;
             if (supportInitializeNotification == null || supportInitializeNotification.IsInitialized)
             {
-                dataSourceInitialized = true;
+                _dataSourceInitialized = true;
                 return true;
             }
-            if (waitingOnDataSource)
+            if (_waitingOnDataSource)
             {
                 return false;
             }
             supportInitializeNotification.Initialized += DataSource_Initialized;
-            waitingOnDataSource = true;
+            _waitingOnDataSource = true;
             return false;
         }
     }
 
     internal BindToObject(Binding owner, object dataSource, string? dataMember)
     {
-        this.owner = owner;
-        this.dataSource = dataSource;
-        this.dataMember = new BindingMemberInfo(dataMember);
+        _owner = owner;
+        _dataSource = dataSource;
+        _dataMember = new BindingMemberInfo(dataMember);
         CheckBinding();
     }
 
     internal void CheckBinding()
     {
-        if (owner is { BindableComponent: not null } && owner.ControlAtDesignTime())
+        if (_owner is { BindableComponent: not null } && _owner.ControlAtDesignTime())
         {
             return;
         }
 
-        var component = owner.BindingManagerBase?.Current;
-        if (owner?.BindingManagerBase != null && fieldInfo != null && owner.BindingManagerBase.IsBinding && !(owner.BindingManagerBase is CurrencyManager))
+        var component = _owner?.BindingManagerBase?.Current;
+        if (_owner?.BindingManagerBase != null && _fieldInfo != null && _owner.BindingManagerBase.IsBinding && !(_owner.BindingManagerBase is CurrencyManager))
         {
             if (component != null)
             {
-                fieldInfo?.RemoveValueChanged(component, PropValueChanged);
+                _fieldInfo?.RemoveValueChanged(component, PropValueChanged);
             }
         }
-        if (owner == null || owner.BindingManagerBase == null || owner.BindableComponent == null || !owner.ComponentCreated || !IsDataSourceInitialized)
+        if (_owner == null || _owner.BindingManagerBase == null || _owner.BindableComponent == null || !_owner.ComponentCreated || !IsDataSourceInitialized)
         {
-            fieldInfo = null;
+            _fieldInfo = null;
         }
         else
         {
-            var bindingField = dataMember.BindingField;
-            fieldInfo = owner.BindingManagerBase.GetItemProperties()?.Find(bindingField, true);
-            if (owner.BindingManagerBase.DataSource != null && fieldInfo == null && bindingField.Length > 0)
+            var bindingField = _dataMember.BindingField;
+            _fieldInfo = _owner.BindingManagerBase.GetItemProperties()?.Find(bindingField, true);
+            if (_owner.BindingManagerBase.DataSource != null && _fieldInfo == null && bindingField.Length > 0)
             {
-                throw new ArgumentException(@"ListBindingBindField", nameof(dataMember));
+                throw new ArgumentException(@"ListBindingBindField", nameof(_dataMember));
             }
-            if (fieldInfo != null && owner.BindingManagerBase.IsBinding && !(owner.BindingManagerBase is CurrencyManager))
+            if (_fieldInfo != null && _owner.BindingManagerBase.IsBinding && !(_owner.BindingManagerBase is CurrencyManager))
             {
                 if (component != null)
                 {
-                    fieldInfo.AddValueChanged(component, PropValueChanged);
+                    _fieldInfo.AddValueChanged(component, PropValueChanged);
                 }
             }
         }
@@ -118,13 +118,13 @@ internal class BindToObject
 
     private void DataSource_Initialized(object? sender, EventArgs e)
     {
-        var supportInitializeNotification = dataSource as ISupportInitializeNotification;
+        var supportInitializeNotification = _dataSource as ISupportInitializeNotification;
         if (supportInitializeNotification != null)
         {
             supportInitializeNotification.Initialized -= DataSource_Initialized;
         }
-        waitingOnDataSource = false;
-        dataSourceInitialized = true;
+        _waitingOnDataSource = false;
+        _dataSourceInitialized = true;
         CheckBinding();
     }
 
@@ -134,20 +134,20 @@ internal class BindToObject
         var empty = string.Empty;
         if (dataErrorInfo != null)
         {
-            empty = fieldInfo != null ? dataErrorInfo[fieldInfo.Name] : dataErrorInfo.Error;
+            empty = _fieldInfo != null ? dataErrorInfo[_fieldInfo.Name] : dataErrorInfo.Error;
         }
         return empty ?? string.Empty;
     }
 
     internal object? GetValue()
     {
-        var current = bindingManager?.Current;
-        errorText = GetErrorText(current);
-        if (fieldInfo != null)
+        var current = _bindingManager?.Current;
+        _errorText = GetErrorText(current);
+        if (_fieldInfo != null)
         {
             if (current != null)
             {
-                current = fieldInfo.GetValue(current);
+                current = _fieldInfo.GetValue(current);
             }
         }
         return current;
@@ -155,34 +155,34 @@ internal class BindToObject
 
     private void PropValueChanged(object? sender, EventArgs e)
     {
-        bindingManager?.OnCurrentChanged(EventArgs.Empty);
+        _bindingManager?.OnCurrentChanged(EventArgs.Empty);
     }
 
     internal void SetBindingManagerBase(BindingManagerBase? lManager)
     {
-        if (bindingManager == lManager)
+        if (_bindingManager == lManager)
         {
             return;
         }
-        if (bindingManager != null && fieldInfo != null && bindingManager.IsBinding && !(bindingManager is CurrencyManager))
+        if (_bindingManager != null && _fieldInfo != null && _bindingManager.IsBinding && !(_bindingManager is CurrencyManager))
         {
-            if (bindingManager.Current != null)
+            if (_bindingManager.Current != null)
             {
-                fieldInfo.RemoveValueChanged(bindingManager.Current, PropValueChanged);
+                _fieldInfo.RemoveValueChanged(_bindingManager.Current, PropValueChanged);
             }
 
-            fieldInfo = null;
+            _fieldInfo = null;
         }
-        bindingManager = lManager;
+        _bindingManager = lManager;
         CheckBinding();
     }
 
     internal void SetValue(object? value)
     {
         object? current = null;
-        if (fieldInfo == null)
+        if (_fieldInfo == null)
         {
-            var currencyManager = bindingManager as CurrencyManager;
+            var currencyManager = _bindingManager as CurrencyManager;
             if (currencyManager != null)
             {
                 if (value != null)
@@ -194,13 +194,13 @@ internal class BindToObject
         }
         else
         {
-            current = bindingManager?.Current;
+            current = _bindingManager?.Current;
             (current as IEditableObject)?.BeginEdit();
-            if (!fieldInfo.IsReadOnly)
+            if (!_fieldInfo.IsReadOnly)
             {
-                fieldInfo.SetValue(current, value);
+                _fieldInfo.SetValue(current, value);
             }
         }
-        errorText = GetErrorText(current);
+        _errorText = GetErrorText(current);
     }
 }

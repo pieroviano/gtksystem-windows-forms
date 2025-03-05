@@ -9,11 +9,11 @@ internal partial class PropertyStore
 {
     private sealed class SizeWrapper
     {
-        public Size size;
+        public Size Size;
 
         public SizeWrapper(Size size)
         {
-            this.size = size;
+            Size = size;
         }
     }
 }

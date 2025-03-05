@@ -8,7 +8,7 @@ namespace System.Windows.Forms;
 
 public class ArrangedElementCollection : IList
 {
-    internal static ArrangedElementCollection empty = new(0);
+    internal static ArrangedElementCollection Empty = new(0);
 
     internal ArrangedElementCollection()
         : this(4)

@@ -13,7 +13,7 @@ namespace System.Windows.Forms;
 /// </summary>
 internal partial class PropertyStore
 {
-    private static int currentKey;
+    private static int _currentKey;
 
     private IntegerEntry[]? _intEntries;
     private ObjectEntry[]? _objEntries;
@@ -48,7 +48,7 @@ internal partial class PropertyStore
     ///  initializer, and we never have the same class hierarchy
     ///  initializing on multiple threads at once.
     /// </summary>
-    public static int CreateKey() => currentKey++;
+    public static int CreateKey() => _currentKey++;
 
     public Color GetColor(int key) => GetColor(key, out _);
 
@@ -62,7 +62,7 @@ internal partial class PropertyStore
         {
             if (storedObject is ColorWrapper wrapper)
             {
-                return wrapper.color;
+                return wrapper.Color;
             }
 
             Debug.Assert(storedObject is null,
@@ -83,7 +83,7 @@ internal partial class PropertyStore
         {
             if (storedObject is PaddingWrapper wrapper)
             {
-                return wrapper.padding;
+                return wrapper.Padding;
             }
 
             Debug.Assert(storedObject is null,
@@ -104,7 +104,7 @@ internal partial class PropertyStore
         {
             if (storedObject is SizeWrapper wrapper)
             {
-                return wrapper.size;
+                return wrapper.Size;
             }
 
             Debug.Assert(storedObject is null,
@@ -125,7 +125,7 @@ internal partial class PropertyStore
         {
             if (storedObject is RectangleWrapper wrapper)
             {
-                return wrapper.rectangle;
+                return wrapper.Rectangle;
             }
 
             Debug.Assert(storedObject is null,
@@ -159,7 +159,7 @@ internal partial class PropertyStore
 
         // We have found the relevant entry. See if
         // the bitmask indicates the value is used.
-        if (((1 << element) & _intEntries![index].mask) == 0)
+        if (((1 << element) & _intEntries![index].Mask) == 0)
         {
             found = false;
             return default;
@@ -169,13 +169,13 @@ internal partial class PropertyStore
         switch (element)
         {
             case 0:
-                return _intEntries[index].value1;
+                return _intEntries[index].Value1;
             case 1:
-                return _intEntries[index].value2;
+                return _intEntries[index].Value2;
             case 2:
-                return _intEntries[index].value3;
+                return _intEntries[index].Value3;
             case 3:
-                return _intEntries[index].value4;
+                return _intEntries[index].Value4;
             default:
                 Debug.Fail("Invalid element obtained from LocateIntegerEntry");
                 return default;
@@ -196,7 +196,7 @@ internal partial class PropertyStore
     /// </summary>
     /// <typeparam name="T">The type of object to retrieve.</typeparam>
     /// <param name="key">The key corresponding to the object in the property list.</param>
-    /// <param name=nameof(value)>Output parameter where the object will be set if found.
+    /// <param name="value">Output parameter where the object will be set if found.
     ///  Will be set to null if the key is not present.</param>
     /// <remarks><para>If a null value is set for a given key
     ///  it will return true and a null value.</para></remarks>
@@ -237,7 +237,7 @@ internal partial class PropertyStore
 
         // We have found the relevant entry. See if
         // the bitmask indicates the value is used.
-        if (((1 << element) & _objEntries![index].mask) == 0)
+        if (((1 << element) & _objEntries![index].Mask) == 0)
         {
             found = false;
             return null;
@@ -247,13 +247,13 @@ internal partial class PropertyStore
         switch (element)
         {
             case 0:
-                return _objEntries[index].value1;
+                return _objEntries[index].Value1;
             case 1:
-                return _objEntries[index].value2;
+                return _objEntries[index].Value2;
             case 2:
-                return _objEntries[index].value3;
+                return _objEntries[index].Value3;
             case 3:
-                return _objEntries[index].value4;
+                return _objEntries[index].Value4;
             default:
                 Debug.Fail("Invalid element obtained from LocateObjectEntry");
                 return null;
@@ -306,16 +306,16 @@ internal partial class PropertyStore
             return;
         }
 
-        if (((1 << element) & _objEntries![index].mask) == 0)
+        if (((1 << element) & _objEntries![index].Mask) == 0)
         {
             // This element is not being used - return right away
             return;
         }
 
         // Declare that the element is no longer used
-        _objEntries[index].mask &= (short)~(short)(1 << element);
+        _objEntries[index].Mask &= (short)~(short)(1 << element);
 
-        if (_objEntries[index].mask == 0)
+        if (_objEntries[index].Mask == 0)
         {
             // This object entry is no longer in use - let's remove it all together
             // not great for perf but very simple and we don't expect to remove much
@@ -347,19 +347,19 @@ internal partial class PropertyStore
             switch (element)
             {
                 case 0:
-                    _objEntries[index].value1 = null;
+                    _objEntries[index].Value1 = null;
                     break;
 
                 case 1:
-                    _objEntries[index].value2 = null;
+                    _objEntries[index].Value2 = null;
                     break;
 
                 case 2:
-                    _objEntries[index].value3 = null;
+                    _objEntries[index].Value3 = null;
                     break;
 
                 case 3:
-                    _objEntries[index].value4 = null;
+                    _objEntries[index].Value4 = null;
                     break;
 
                 default:
@@ -381,7 +381,7 @@ internal partial class PropertyStore
             if (storedObject is ColorWrapper wrapper)
             {
                 // re-using the wrapper reduces the boxing hit.
-                wrapper.color = value;
+                wrapper.Color = value;
             }
             else
             {
@@ -404,7 +404,7 @@ internal partial class PropertyStore
             if (storedObject is PaddingWrapper wrapper)
             {
                 // re-using the wrapper reduces the boxing hit.
-                wrapper.padding = value;
+                wrapper.Padding = value;
             }
             else
             {
@@ -427,7 +427,7 @@ internal partial class PropertyStore
             if (storedObject is RectangleWrapper wrapper)
             {
                 // re-using the wrapper reduces the boxing hit.
-                wrapper.rectangle = value;
+                wrapper.Rectangle = value;
             }
             else
             {
@@ -450,7 +450,7 @@ internal partial class PropertyStore
             if (storedObject is SizeWrapper wrapper)
             {
                 // re-using the wrapper reduces the boxing hit.
-                wrapper.size = value;
+                wrapper.Size = value;
             }
             else
             {
@@ -492,26 +492,26 @@ internal partial class PropertyStore
                 Debug.Assert(index == 0, "LocateIntegerEntry should have given us a zero index.");
             }
 
-            _intEntries[index].key = entryKey;
+            _intEntries[index].Key = entryKey;
         }
 
         // Now determine which value to set.
         switch (element)
         {
             case 0:
-                _intEntries![index].value1 = value;
+                _intEntries![index].Value1 = value;
                 break;
 
             case 1:
-                _intEntries![index].value2 = value;
+                _intEntries![index].Value2 = value;
                 break;
 
             case 2:
-                _intEntries![index].value3 = value;
+                _intEntries![index].Value3 = value;
                 break;
 
             case 3:
-                _intEntries![index].value4 = value;
+                _intEntries![index].Value4 = value;
                 break;
 
             default:
@@ -521,7 +521,7 @@ internal partial class PropertyStore
 
         if (_intEntries != null)
         {
-            _intEntries[index].mask = (short)((1 << element) | (ushort)_intEntries[index].mask);
+            _intEntries[index].Mask = (short)((1 << element) | (ushort)_intEntries[index].Mask);
         }
     }
 
@@ -556,26 +556,26 @@ internal partial class PropertyStore
                 Debug.Assert(index == 0, "LocateObjectEntry should have given us a zero index.");
             }
 
-            _objEntries[index].key = entryKey;
+            _objEntries[index].Key = entryKey;
         }
 
         // Now determine which value to set.
         switch (element)
         {
             case 0:
-                _objEntries![index].value1 = value;
+                _objEntries![index].Value1 = value;
                 break;
 
             case 1:
-                _objEntries![index].value2 = value;
+                _objEntries![index].Value2 = value;
                 break;
 
             case 2:
-                _objEntries![index].value3 = value;
+                _objEntries![index].Value3 = value;
                 break;
 
             case 3:
-                _objEntries![index].value4 = value;
+                _objEntries![index].Value4 = value;
                 break;
 
             default:
@@ -585,7 +585,7 @@ internal partial class PropertyStore
 
         if (_objEntries != null)
         {
-            _objEntries[index].mask = (short)((ushort)_objEntries[index].mask | (1 << element));
+            _objEntries[index].Mask = (short)((ushort)_objEntries[index].Mask | (1 << element));
         }
     }
 
@@ -607,12 +607,12 @@ internal partial class PropertyStore
     /// </summary>
     private struct IntegerEntry
     {
-        public short key;
-        public short mask;  // only lower four bits are used; mask of used values.
-        public int value1;
-        public int value2;
-        public int value3;
-        public int value4;
+        public short Key;
+        public short Mask;  // only lower four bits are used; mask of used values.
+        public int Value1;
+        public int Value2;
+        public int Value3;
+        public int Value4;
     }
 
     /// <summary>
@@ -624,11 +624,11 @@ internal partial class PropertyStore
     /// </summary>
     private struct ObjectEntry
     {
-        public short key;
-        public short mask;  // only lower four bits are used; mask of used values.
-        public object? value1;
-        public object? value2;
-        public object? value3;
-        public object? value4;
+        public short Key;
+        public short Mask;  // only lower four bits are used; mask of used values.
+        public object? Value1;
+        public object? Value2;
+        public object? Value3;
+        public object? Value4;
     }
 }

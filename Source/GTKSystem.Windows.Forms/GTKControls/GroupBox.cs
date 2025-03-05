@@ -20,7 +20,7 @@ public class GroupBox : ContainerControl
     public GroupBox()
     {
         _controls = new ControlCollection(this, contaner);
-        _controls.offset.Offset(0, -20);
+        _controls.Offset.Offset(0, -20);
         if (contaner != null)
         {
             contaner.MarginStart = 0;

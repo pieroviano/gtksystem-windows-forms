@@ -17,27 +17,27 @@ public partial class Control
 {
     public class ControlCollection : ArrangedElementCollection, IList, ICloneable
     {
-        readonly Container? ownerControl;
-        readonly Control? owner;
+        readonly Container? _ownerControl;
+        readonly Control? _owner;
         public ControlCollection(Control? owner)
         {
-            ownerControl = owner?.GtkControl as Container;
-            this.owner = owner;
-            if (ownerControl != null)
+            _ownerControl = owner?.GtkControl as Container;
+            _owner = owner;
+            if (_ownerControl != null)
             {
-                ownerControl.Mapped += __ownerControl_Mapped;
-                ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                _ownerControl.Mapped += __ownerControl_Mapped;
+                _ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
             }
         }
 
         public ControlCollection(Control? owner, Container? ownerContainer)
         {
-            ownerControl = ownerContainer;
-            this.owner = owner;
-            if (ownerControl != null)
+            _ownerControl = ownerContainer;
+            _owner = owner;
+            if (_ownerControl != null)
             {
-                ownerControl.Mapped += __ownerControl_Mapped;
-                ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                _ownerControl.Mapped += __ownerControl_Mapped;
+                _ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
             }
         }
         //ResizeChecked可重置布局
@@ -49,12 +49,12 @@ public partial class Control
             }
         }
 
-        private bool isOwnerControlMapped;
+        private bool _isOwnerControlMapped;
         private void __ownerControl_Mapped(object? sender, EventArgs e)
         {
-            if (isOwnerControlMapped == false)
+            if (_isOwnerControlMapped == false)
             {
-                isOwnerControlMapped = true;
+                _isOwnerControlMapped = true;
                 if (sender is Overlay lay)
                 {
                     ResizeMapped(lay);
@@ -67,13 +67,13 @@ public partial class Control
             {
                 if (item is Control { Widget: not null } control)
                 {
-                    control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + offset.X);
-                    control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + offset.Y);
+                    control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
+                    control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
                 }
                 else if (item is Widget widget)
                 {
-                    widget.MarginStart = Math.Max(0, widget.MarginStart + offset.X);
-                    widget.MarginTop = Math.Max(0, widget.MarginTop + offset.Y);
+                    widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
+                    widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
                 }
             }
             foreach (var item in this)
@@ -85,7 +85,7 @@ public partial class Control
             }
         }
 
-        internal Point offset = new(0, 0);
+        internal Point Offset = new(0, 0);
 
         private void NativeAdd(object? item)
         {
@@ -93,13 +93,13 @@ public partial class Control
             {
                 if (item is Control icontrol)
                 {
-                    icontrol.Parent = owner;
+                    icontrol.Parent = _owner;
                 }
-                if (ownerControl is Overlay lay)
+                if (_ownerControl is Overlay lay)
                 {
                     if (item is StatusStrip statusbar)
                     {
-                        if (owner is Form form)
+                        if (_owner is Form form)
                         {
                             statusbar.self.Halign = Align.Fill;
                             statusbar.self.Valign = Align.Start;
@@ -126,32 +126,32 @@ public partial class Control
                         lay.AddOverlay(widget);
                     }
                 }
-                else if (ownerControl is Fixed lay2)
+                else if (_ownerControl is Fixed lay2)
                 {
                     if (item is Control con)
                     {
-                        if (con.Widget is Widget widget) lay2.Put(widget, offset.X, offset.Y);
+                        if (con.Widget is Widget widget) lay2.Put(widget, Offset.X, Offset.Y);
                     }
                     else if (item is Widget widget)
                     {
-                        lay2.Put(widget, offset.X, offset.Y);
+                        lay2.Put(widget, Offset.X, Offset.Y);
                     }
                 }
-                else if (ownerControl is Layout lay3)
+                else if (_ownerControl is Layout lay3)
                 {
                     if (item is Control con)
                     {
-                        if (con.Widget is Widget widget) lay3.Put(widget, offset.X, offset.Y);
+                        if (con.Widget is Widget widget) lay3.Put(widget, Offset.X, Offset.Y);
                     }
                     else if (item is Widget widget)
                     {
-                        lay3.Put(widget, offset.X, offset.Y);
+                        lay3.Put(widget, Offset.X, Offset.Y);
                     }
                 }
             }
             finally
             {
-                if (ownerControl?.IsRealized??false)
+                if (_ownerControl?.IsRealized??false)
                 {
                     if (item is Control con)
                         con.Widget.ShowAll();
@@ -223,7 +223,7 @@ public partial class Control
         }
         public void AddWidget(Widget? item, Control control)
         {
-            control.Parent = owner;
+            control.Parent = _owner;
             InnerList.Add(new ArrangedElementWidget(item));
         }
         public virtual void Add(Type itemType, Control item)
@@ -235,7 +235,7 @@ public partial class Control
 
         public object Clone()
         {
-            var ccOther = new ControlCollection(owner, ownerControl);
+            var ccOther = new ControlCollection(_owner, _ownerControl);
             ccOther.InnerList.AddRange(InnerList);
             return ccOther;
         }
@@ -245,7 +245,7 @@ public partial class Control
             return IsValidIndex(IndexOfKey(key));
         }
 
-        public virtual void Add(Control value)
+        public virtual void Add(Control? value)
         {
             if (value is null)
             {
@@ -286,14 +286,14 @@ public partial class Control
 
         object ICloneable.Clone()
         {
-            var ccOther = new ControlCollection(owner, ownerControl);
+            var ccOther = new ControlCollection(_owner, _ownerControl);
             ccOther.InnerList.AddRange(InnerList);
             return ccOther;
         }
 
         public bool Contains(Control? control) => ((IList)InnerList).Contains(control);
 
-        public Control?[]? Find(string key, bool searchAllChildren)
+        public Control?[] Find(string key, bool searchAllChildren)
         {
             if(string.IsNullOrEmpty(key))
             {
@@ -313,7 +313,7 @@ public partial class Control
                 return false;
             });
             List<Control?> controls= [];
-            if (foundControls != null)
+            if (!foundControls.Any())
             {
                 controls = foundControls.ConvertAll(o => o as Control).ToList();
             }
@@ -333,7 +333,7 @@ public partial class Control
                     }
                 }
             }
-            return controls?.ToArray();
+            return controls.ToArray();
         }
 
         public override IEnumerator GetEnumerator()
@@ -369,7 +369,7 @@ public partial class Control
             return index >= 0 && index < Count;
         }
 
-        public Control? Owner => owner;
+        public Control? Owner => _owner;
 
         public virtual void Remove(Control? value)
         {
@@ -379,7 +379,7 @@ public partial class Control
             }
             InnerList.Remove(value);
             if (value.Widget is Widget widget)
-                ownerControl?.Remove(widget);
+                _ownerControl?.Remove(widget);
         }
 
         void IList.Remove(object? element)
@@ -388,7 +388,7 @@ public partial class Control
                 Remove(control);
             else if (element is Widget widget)
             {
-                ownerControl?.Remove(widget);
+                _ownerControl?.Remove(widget);
                 var index = IndexOfKey(widget.Name);
                 if (index >= 0)
                     InnerList.RemoveAt(index);
@@ -403,7 +403,7 @@ public partial class Control
             else if (element is ArrangedElementWidget widget)
             {
                 InnerList.RemoveAt(index);
-                ownerControl?.Remove(widget.GetWidget);
+                _ownerControl?.Remove(widget.GetWidget);
             }
         }
 
@@ -446,10 +446,10 @@ public partial class Control
 
         public virtual void Clear()
         {
-            if (ownerControl != null)
+            if (_ownerControl != null)
             {
-                foreach (var wid in ownerControl.Children)
-                    ownerControl.Remove(wid);
+                foreach (var wid in _ownerControl.Children)
+                    _ownerControl.Remove(wid);
             }
 
             InnerList.Clear();

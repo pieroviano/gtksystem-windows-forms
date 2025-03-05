@@ -5,17 +5,17 @@ namespace System.Windows.Forms;
 
 internal class RelatedCurrencyManager : CurrencyManager
 {
-    private BindingManagerBase? parentManager;
+    private BindingManagerBase? _parentManager;
 
-    private string? dataField;
+    private string? _dataField;
 
-    private PropertyDescriptor? fieldInfo;
+    private PropertyDescriptor? _fieldInfo;
 
-    private static readonly List<BindingManagerBase?> ignoreItemChangedTable;
+    private static readonly List<BindingManagerBase?> s_ignoreItemChangedTable;
 
     static RelatedCurrencyManager()
     {
-        ignoreItemChangedTable = [];
+        s_ignoreItemChangedTable = [];
     }
 
     internal RelatedCurrencyManager(BindingManagerBase? parentManager, string? dataField) : base(null)
@@ -25,16 +25,16 @@ internal class RelatedCurrencyManager : CurrencyManager
 
     internal void Bind(BindingManagerBase? manager, string? dataFieldName)
     {
-        UnwireParentManager(parentManager);
-        parentManager = manager;
-        dataField = dataFieldName;
-        fieldInfo = manager?.GetItemProperties()?.Find(dataFieldName??string.Empty, true);
-        if (fieldInfo == null || !typeof(IList).IsAssignableFrom(fieldInfo.PropertyType))
+        UnwireParentManager(_parentManager);
+        _parentManager = manager;
+        _dataField = dataFieldName;
+        _fieldInfo = manager?.GetItemProperties()?.Find(dataFieldName??string.Empty, true);
+        if (_fieldInfo == null || !typeof(IList).IsAssignableFrom(_fieldInfo.PropertyType))
         {
             throw new ArgumentException("RelatedListManagerChild");
         }
-        finalType = fieldInfo.PropertyType;
-        WireParentManager(parentManager);
+        FinalType = _fieldInfo.PropertyType;
+        WireParentManager(_parentManager);
         ParentManager_CurrentItemChanged(manager, EventArgs.Empty);
     }
 
@@ -50,8 +50,8 @@ internal class RelatedCurrencyManager : CurrencyManager
             propertyDescriptorArray = new PropertyDescriptor[listAccessors.Length + 1];
             listAccessors.CopyTo(propertyDescriptorArray, 1);
         }
-        propertyDescriptorArray[0] = fieldInfo;
-        return parentManager?.GetItemProperties(propertyDescriptorArray);
+        propertyDescriptorArray[0] = _fieldInfo;
+        return _parentManager?.GetItemProperties(propertyDescriptorArray);
     }
 
     public override PropertyDescriptorCollection? GetItemProperties()
@@ -71,17 +71,17 @@ internal class RelatedCurrencyManager : CurrencyManager
 
     protected internal override string? GetListName(ArrayList? listAccessors)
     {
-        listAccessors?.Insert(0, fieldInfo);
-        return parentManager?.GetListName(listAccessors);
+        listAccessors?.Insert(0, _fieldInfo);
+        return _parentManager?.GetListName(listAccessors);
     }
 
     private void ParentManager_CurrentItemChanged(object? sender, EventArgs e)
     {
-        if (ignoreItemChangedTable.Contains(parentManager))
+        if (s_ignoreItemChangedTable.Contains(_parentManager))
         {
             return;
         }
-        var num = listposition;
+        var num = ListPosition;
         try
         {
             PullData();
@@ -90,31 +90,31 @@ internal class RelatedCurrencyManager : CurrencyManager
         {
             OnDataError(exception);
         }
-        if (!(parentManager is CurrencyManager))
+        if (!(_parentManager is CurrencyManager))
         {
-            if (parentManager is { Current: not null })
+            if (_parentManager is { Current: not null })
             {
-                SetDataSource(fieldInfo?.GetValue(parentManager.Current));
+                SetDataSource(_fieldInfo?.GetValue(_parentManager.Current));
             }
 
-            listposition = Count > 0 ? 0 : -1;
+            ListPosition = Count > 0 ? 0 : -1;
         }
         else
         {
-            var currencyManager = (CurrencyManager)parentManager;
+            var currencyManager = (CurrencyManager)_parentManager;
             if (currencyManager.Count <= 0)
             {
                 currencyManager.AddNew();
                 try
                 {
-                    ignoreItemChangedTable.Add(currencyManager);
+                    s_ignoreItemChangedTable.Add(currencyManager);
                     currencyManager.CancelCurrentEdit();
                 }
                 finally
                 {
-                    if (ignoreItemChangedTable.Contains(currencyManager))
+                    if (s_ignoreItemChangedTable.Contains(currencyManager))
                     {
-                        ignoreItemChangedTable.Remove(currencyManager);
+                        s_ignoreItemChangedTable.Remove(currencyManager);
                     }
                 }
             }
@@ -122,13 +122,13 @@ internal class RelatedCurrencyManager : CurrencyManager
             {
                 if (currencyManager.Current != null)
                 {
-                    SetDataSource(fieldInfo?.GetValue(currencyManager.Current));
+                    SetDataSource(_fieldInfo?.GetValue(currencyManager.Current));
                 }
 
-                listposition = Count > 0 ? 0 : -1;
+                ListPosition = Count > 0 ? 0 : -1;
             }
         }
-        if (num != listposition)
+        if (num != ListPosition)
         {
             OnPositionChanged(EventArgs.Empty);
         }

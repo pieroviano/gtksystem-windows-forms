@@ -15,22 +15,22 @@ public sealed class InputLanguage
     /// <summary>
     ///  The HKL handle.
     /// </summary>
-    private readonly IntPtr handle;
+    private readonly IntPtr _handle;
 
     internal InputLanguage(IntPtr handle)
     {
-        this.handle = handle;
+        _handle = handle;
     }
 
     /// <summary>
     ///  Returns the culture of the current input language.
     /// </summary>
-    public CultureInfo Culture => new((int)handle & 0xFFFF);
+    public CultureInfo Culture => new((int)_handle & 0xFFFF);
 
     /// <summary>
     ///  Gets or sets the input language for the current thread.
     /// </summary>
-    public static InputLanguage CurrentInputLanguage
+    public static InputLanguage? CurrentInputLanguage
     {
         get => new(PangoHelper.ContextGet().Language.Handle);
         set
@@ -52,7 +52,7 @@ public sealed class InputLanguage
     /// <summary>
     ///  Returns the handle for the input language.
     /// </summary>
-    public IntPtr Handle => handle;
+    public IntPtr Handle => _handle;
 
     /// <summary>
     ///  Returns a list of all installed input languages.
@@ -84,7 +84,7 @@ public sealed class InputLanguage
     /// </summary>
     public override bool Equals(object? value)
     {
-        return value is InputLanguage other && handle == other.handle;
+        return value is InputLanguage other && _handle == other._handle;
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public sealed class InputLanguage
 
         foreach (InputLanguage lang in InstalledInputLanguages)
         {
-            if ((unchecked((int)(long)lang.handle) & 0xFFFF) == lcid)
+            if ((unchecked((int)(long)lang._handle) & 0xFFFF) == lcid)
             {
                 return lang;
             }
@@ -113,7 +113,7 @@ public sealed class InputLanguage
     /// <summary>
     ///  Hash code for this input language.
     /// </summary>
-    public override int GetHashCode() => unchecked((int)(long)handle);
+    public override int GetHashCode() => unchecked((int)(long)_handle);
 
     private static string PadWithZeroes(string input, int length)
     {

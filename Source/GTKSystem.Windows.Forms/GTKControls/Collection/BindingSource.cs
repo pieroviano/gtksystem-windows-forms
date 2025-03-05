@@ -14,79 +14,79 @@ namespace System.Windows.Forms;
 [Description("DescriptionBindingSource")]
 public class BindingSource : Component, IBindingListView, ITypedList, ICancelAddNew, ISupportInitializeNotification, ICurrencyManagerProvider
 {
-    private static readonly object eventAddingnew;
+    internal static readonly object EventAddingNew;
 
-    private static readonly object eventBindingcomplete;
+    internal static readonly object EventBindingComplete;
 
-    private static readonly object eventCurrentchanged;
+    internal static readonly object EventCurrentChanged;
 
-    private static readonly object eventCurrentitemchanged;
+    internal static readonly object EventCurrentItemChanged;
 
-    private static readonly object eventDataerror;
+    internal static readonly object EventDataError;
 
-    private static readonly object eventDatamemberchanged;
+    internal static readonly object EventDataMemberChanged;
 
-    private static readonly object eventDatasourcechanged;
+    internal static readonly object EventDataSourceChanged;
 
-    private static readonly object eventListchanged;
+    internal static readonly object EventListChanged;
 
-    private static readonly object eventPositionchanged;
+    internal static readonly object EventPositionChanged;
 
-    private static readonly object eventInitialized;
+    internal static readonly object EventInitialized;
 
-    private object? dataSource;
+    private object? _dataSource;
 
-    private string? dataMember;
+    private string? _dataMember;
 
-    private string? sort;
+    private string? _sort;
 
-    private string? filter;
+    private string? _filter;
 
-    private readonly CurrencyManager? currencyManager;
+    private readonly CurrencyManager? _currencyManager;
 
-    private bool raiseListChangedEvents = true;
+    private bool _raiseListChangedEvents = true;
 
-    private bool parentsCurrentItemChanging;
+    private bool _parentsCurrentItemChanging;
 
-    private bool disposedOrFinalized;
+    private bool _disposedOrFinalized;
 
     private IList _innerList;
 
-    private bool isBindingList;
+    private bool _isBindingList;
 
-    private bool listRaisesItemChangedEvents;
+    private bool _listRaisesItemChangedEvents;
 
-    private bool listExtractedFromEnumerable;
+    private bool _listExtractedFromEnumerable;
 
-    private Type? itemType;
+    private Type? _itemType;
 
-    private ConstructorInfo? itemConstructor;
+    private ConstructorInfo? _itemConstructor;
 
-    private PropertyDescriptorCollection? itemShape;
+    private PropertyDescriptorCollection? _itemShape;
 
-    private Dictionary<string, BindingSource>? relatedBindingSources;
+    private Dictionary<string, BindingSource>? _relatedBindingSources;
 
-    private bool allowNewIsSet;
+    private bool _allowNewIsSet;
 
-    private bool allowNewSetValue = true;
+    private bool _allowNewSetValue = true;
 
-    private object? currentItemHookedForItemChange;
+    private object? _currentItemHookedForItemChange;
 
-    private object? lastCurrentItem;
+    private object? _lastCurrentItem;
 
-    private readonly EventHandler listItemPropertyChangedHandler;
+    private readonly EventHandler _listItemPropertyChangedHandler;
 
-    private int addNewPos = -1;
+    private int _addNewPos = -1;
 
-    private bool initializing;
+    private bool _initializing;
 
-    private bool needToSetList;
+    private bool _needToSetList;
 
-    private bool recursionDetectionFlag;
+    private bool _recursionDetectionFlag;
 
-    private bool innerListChanging;
+    private bool _innerListChanging;
 
-    private bool endingEdit;
+    private bool _endingEdit;
 
     /// <summary>Gets a value indicating whether items in the underlying list can be edited.</summary>
     /// <returns>true to indicate list items can be edited; otherwise, false.</returns>
@@ -95,7 +95,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            if (isBindingList)
+            if (_isBindingList)
             {
                 return ((IBindingList)List).AllowEdit;
             }
@@ -114,16 +114,16 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         get => AllowNewInternal(true);
         set
         {
-            if (allowNewIsSet && value == allowNewSetValue)
+            if (_allowNewIsSet && value == _allowNewSetValue)
             {
                 return;
             }
-            if (value && !isBindingList && !IsListWriteable(false))
+            if (value && !_isBindingList && !IsListWriteable(false))
             {
                 throw new InvalidOperationException("NoAllowNewOnReadOnlyList");
             }
-            allowNewIsSet = true;
-            allowNewSetValue = value;
+            _allowNewIsSet = true;
+            _allowNewSetValue = value;
             OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
         }
     }
@@ -135,7 +135,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            if (isBindingList)
+            if (_isBindingList)
             {
                 return ((IBindingList)List).AllowRemove;
             }
@@ -157,13 +157,13 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             int count;
             try
             {
-                if (!disposedOrFinalized)
+                if (!_disposedOrFinalized)
                 {
-                    if (recursionDetectionFlag)
+                    if (_recursionDetectionFlag)
                     {
                         throw new InvalidOperationException("BindingSourceRecursionDetected");
                     }
-                    recursionDetectionFlag = true;
+                    _recursionDetectionFlag = true;
                     count = List.Count;
                 }
                 else
@@ -173,7 +173,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             }
             finally
             {
-                recursionDetectionFlag = false;
+                _recursionDetectionFlag = false;
             }
             return count;
         }
@@ -191,11 +191,11 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            if (currencyManager is { Count: <= 0 })
+            if (_currencyManager is { Count: <= 0 })
             {
                 return null;
             }
-            return currencyManager?.Current;
+            return _currencyManager?.Current;
         }
     }
 
@@ -207,16 +207,16 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceDataMemberDescr")]
     public string? DataMember
     {
-        get => dataMember;
+        get => _dataMember;
         set
         {
             if (value == null)
             {
                 value = string.Empty;
             }
-            if (dataMember == null || !dataMember.Equals(value))
+            if (_dataMember == null || !_dataMember.Equals(value))
             {
-                dataMember = value;
+                _dataMember = value;
                 ResetList();
                 OnDataMemberChanged(EventArgs.Empty);
             }
@@ -232,14 +232,14 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceDataSourceDescr")]
     public object? DataSource
     {
-        get => dataSource;
+        get => _dataSource;
         set
         {
-            if (dataSource != value)
+            if (_dataSource != value)
             {
                 ThrowIfBindingSourceRecursionDetected(value);
                 UnwireDataSource();
-                dataSource = value;
+                _dataSource = value;
                 ClearInvalidDataMember();
                 ResetList();
                 WireDataSource();
@@ -255,10 +255,10 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceFilterDescr")]
     public virtual string? Filter
     {
-        get => filter;
+        get => _filter;
         set
         {
-            filter = value;
+            _filter = value;
             InnerListFilter = value;
         }
     }
@@ -276,7 +276,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         }
         set
         {
-            if (initializing || DesignMode)
+            if (_initializing || DesignMode)
             {
                 return;
             }
@@ -313,7 +313,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         }
         set
         {
-            if (initializing || DesignMode)
+            if (_initializing || DesignMode)
             {
                 return;
             }
@@ -352,7 +352,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <summary>Gets a value indicating whether the list binding is suspended.</summary>
     /// <returns>true to indicate the binding is suspended; otherwise, false. </returns>
     [Browsable(false)]
-    public bool IsBindingSuspended => currencyManager is { IsBindingSuspended: true };
+    public bool IsBindingSuspended => _currencyManager is { IsBindingSuspended: true };
 
     /// <summary>Gets a value indicating whether the underlying list has a fixed size.</summary>
     /// <returns>true if the underlying list has a fixed size; otherwise, false.</returns>
@@ -371,7 +371,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            if (!isBindingList)
+            if (!_isBindingList)
             {
                 return false;
             }
@@ -396,7 +396,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         set
         {
             List[index] = value;
-            if (!isBindingList)
+            if (!_isBindingList)
             {
                 OnSimpleListChanged(ListChangedType.ItemChanged, index);
             }
@@ -421,12 +421,12 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [DefaultValue(-1)]
     public int Position
     {
-        get => currencyManager?.Position??0;
+        get => _currencyManager?.Position??0;
         set
         {
-            if (currencyManager != null && currencyManager.Position != value)
+            if (_currencyManager != null && _currencyManager.Position != value)
             {
-                currencyManager.Position = value;
+                _currencyManager.Position = value;
             }
         }
     }
@@ -437,8 +437,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [DefaultValue(true)]
     public bool RaiseListChangedEvents
     {
-        get => raiseListChangedEvents;
-        set => raiseListChangedEvents = value;
+        get => _raiseListChangedEvents;
+        set => _raiseListChangedEvents = value;
     }
 
     /// <summary>Gets or sets the column names used for sorting, and the sort order for viewing the rows in the data source.</summary>
@@ -448,10 +448,10 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceSortDescr")]
     public string? Sort
     {
-        get => sort;
+        get => _sort;
         set
         {
-            sort = value;
+            _sort = value;
             InnerListSort = value;
         }
     }
@@ -481,7 +481,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            if (!isBindingList)
+            if (!_isBindingList)
             {
                 return ListSortDirection.Ascending;
             }
@@ -497,7 +497,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            if (!isBindingList)
+            if (!_isBindingList)
             {
                 return null;
             }
@@ -543,13 +543,13 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Gets a value indicating whether the data source supports searching with the <see cref="M:System.Windows.Forms.BindingSource.Find(System.ComponentModel.PropertyDescriptor,System.Object)" /> method.</summary>
-    /// <returns>true if the list is a <see cref="T:System.ComponentModel.IBindingList" /> and supports the searching with the <see cref="Overload:System.Windows.Forms.BindingSource.Find" /> method; otherwise, false.</returns>
+    /// <returns>true if the list is a <see cref="T:System.ComponentModel.IBindingList" /> and supports the searching with the System.Windows.Forms.BindingSource.Find method; otherwise, false.</returns>
     [Browsable(false)]
     public virtual bool SupportsSearching
     {
         get
         {
-            if (!isBindingList)
+            if (!_isBindingList)
             {
                 return false;
             }
@@ -564,7 +564,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            if (!isBindingList)
+            if (!_isBindingList)
             {
                 return false;
             }
@@ -579,20 +579,20 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     /// <summary>Gets a value indicating whether the <see cref="T:System.Windows.Forms.BindingSource" /> is initialized.</summary>
     /// <returns>true to indicate the <see cref="T:System.Windows.Forms.BindingSource" /> is initialized; otherwise, false.</returns>
-    bool ISupportInitializeNotification.IsInitialized => !initializing;
+    bool ISupportInitializeNotification.IsInitialized => !_initializing;
 
     static BindingSource()
     {
-        eventAddingnew = new object();
-        eventBindingcomplete = new object();
-        eventCurrentchanged = new object();
-        eventCurrentitemchanged = new object();
-        eventDataerror = new object();
-        eventDatamemberchanged = new object();
-        eventDatasourcechanged = new object();
-        eventListchanged = new object();
-        eventPositionchanged = new object();
-        eventInitialized = new object();
+        EventAddingNew = new object();
+        EventBindingComplete = new object();
+        EventCurrentChanged = new object();
+        EventCurrentItemChanged = new object();
+        EventDataError = new object();
+        EventDataMemberChanged = new object();
+        EventDataSourceChanged = new object();
+        EventListChanged = new object();
+        EventPositionChanged = new object();
+        EventInitialized = new object();
     }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Windows.Forms.BindingSource" /> class to the default property values.</summary>
@@ -605,12 +605,12 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="dataMember">The specific column or list name within the data source to bind to.</param>
     public BindingSource(object? dataSource, string? dataMember)
     {
-        this.dataSource = dataSource;
-        this.dataMember = dataMember;
+        _dataSource = dataSource;
+        _dataMember = dataMember;
         _innerList = new ArrayList();
-        currencyManager = new CurrencyManager(this);
-        WireCurrencyManager(currencyManager);
-        listItemPropertyChangedHandler = ListItem_PropertyChanged;
+        _currencyManager = new CurrencyManager(this);
+        WireCurrencyManager(_currencyManager);
+        _listItemPropertyChangedHandler = ListItem_PropertyChanged;
         ResetList();
         WireDataSource();
     }
@@ -627,21 +627,21 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Adds an existing item to the internal list.</summary>
-    /// <returns>The zero-based index at which <paramref name=nameof(value) /> was added to the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. </returns>
-    /// <param name=nameof(value)>An <see cref="T:System.Object" /> to be added to the internal list.</param>
+    /// <returns>The zero-based index at which <paramref name="value" /> was added to the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. </returns>
+    /// <param name="value">An <see cref="T:System.Object" /> to be added to the internal list.</param>
     /// <exception cref="T:System.InvalidOperationException">
-    ///   <paramref name=nameof(value) /> differs in type from the existing items in the underlying list.</exception>
+    ///   <paramref name="value" /> differs in type from the existing items in the underlying list.</exception>
     public virtual int Add(object? value)
     {
-        if (dataSource == null && List.Count == 0)
+        if (_dataSource == null && List.Count == 0)
         {
             SetList(CreateBindingList(value == null ? typeof(object) : value.GetType()), true, true);
         }
-        if (value != null && itemType != null && !itemType.IsInstanceOfType(value))
+        if (value != null && _itemType != null && !_itemType.IsInstanceOfType(value))
         {
             throw new InvalidOperationException("BindingSourceItemTypeMismatchOnAdd");
         }
-        if (value == null && itemType is { IsValueType: true })
+        if (value == null && _itemType is { IsValueType: true })
         {
             throw new InvalidOperationException("BindingSourceItemTypeIsValueType");
         }
@@ -661,9 +661,9 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         }
         if (!AllowNewInternal(true))
         {
-            throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedToSetAllowNew {0}",  itemType == null ? "(null)" : itemType.FullName ));
+            throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedToSetAllowNew {0}",  _itemType == null ? "(null)" : _itemType.FullName ));
         }
-        var num = addNewPos;
+        var num = _addNewPos;
         EndEdit();
         if (num != -1)
         {
@@ -675,45 +675,45 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         var newObject = addingNewEventArg.NewObject;
         if (newObject == null)
         {
-            if (isBindingList)
+            if (_isBindingList)
             {
                 newObject = (List as IBindingList)?.AddNew();
                 Position = Count - 1;
                 return newObject;
             }
-            if (itemConstructor == null)
+            if (_itemConstructor == null)
             {
-                throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedAParameterlessConstructor {0}", itemType == null ? "(null)" : itemType.FullName ));
+                throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedAParameterlessConstructor {0}", _itemType == null ? "(null)" : _itemType.FullName ));
             }
-            newObject = itemConstructor.Invoke(null);
+            newObject = _itemConstructor.Invoke(null);
         }
         if (List.Count <= count)
         {
-            addNewPos = Add(newObject);
-            Position = addNewPos;
+            _addNewPos = Add(newObject);
+            Position = _addNewPos;
         }
         else
         {
-            addNewPos = Position;
+            _addNewPos = Position;
         }
         return newObject;
     }
 
     private bool AllowNewInternal(bool checkconstructor)
     {
-        if (disposedOrFinalized)
+        if (_disposedOrFinalized)
         {
             return false;
         }
-        if (allowNewIsSet)
+        if (_allowNewIsSet)
         {
-            return allowNewSetValue;
+            return _allowNewSetValue;
         }
-        if (listExtractedFromEnumerable)
+        if (_listExtractedFromEnumerable)
         {
             return false;
         }
-        if (!isBindingList)
+        if (!_isBindingList)
         {
             return IsListWriteable(checkconstructor);
         }
@@ -727,7 +727,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual void ApplySort(PropertyDescriptor property, ListSortDirection sortDirection)
     {
-        if (!isBindingList)
+        if (!_isBindingList)
         {
             throw new NotSupportedException("OperationRequiresIBindingList");
         }
@@ -765,7 +765,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <summary>Cancels the current edit operation.</summary>
     public void CancelEdit()
     {
-        currencyManager?.CancelCurrentEdit();
+        _currencyManager?.CancelCurrentEdit();
     }
 
     /// <summary>Removes all elements from the list.</summary>
@@ -780,14 +780,14 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         if (!IsDataMemberValid())
         {
-            dataMember = "";
+            _dataMember = "";
             OnDataMemberChanged(EventArgs.Empty);
         }
     }
 
     /// <summary>Determines whether an object is an item in the list.</summary>
-    /// <returns>true if the <paramref name=nameof(value) /> parameter is found in the <see cref="P:System.Windows.Forms.BindingSource.List" />; otherwise, false.</returns>
-    /// <param name=nameof(value)>The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
+    /// <returns>true if the <paramref name="value" /> parameter is found in the <see cref="P:System.Windows.Forms.BindingSource.List" />; otherwise, false.</returns>
+    /// <param name="value">The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
     public virtual bool Contains(object? value)
     {
         return List.Contains(value);
@@ -877,49 +877,49 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             UnwireDataSource();
             UnwireInnerList();
             UnhookItemChangedEventsForOldCurrent();
-            UnwireCurrencyManager(currencyManager);
-            dataSource = null;
-            sort = null;
-            dataMember = null;
+            UnwireCurrencyManager(_currencyManager);
+            _dataSource = null;
+            _sort = null;
+            _dataMember = null;
             _innerList.Clear();
-            isBindingList = false;
-            needToSetList = true;
-            raiseListChangedEvents = false;
+            _isBindingList = false;
+            _needToSetList = true;
+            _raiseListChangedEvents = false;
         }
-        disposedOrFinalized = true;
+        _disposedOrFinalized = true;
         base.Dispose(disposing);
     }
 
     /// <summary>Applies pending changes to the underlying data source.</summary>
     public void EndEdit()
     {
-        if (endingEdit)
+        if (_endingEdit)
         {
             return;
         }
         try
         {
-            endingEdit = true;
-            currencyManager?.EndCurrentEdit();
+            _endingEdit = true;
+            _currencyManager?.EndCurrentEdit();
         }
         finally
         {
-            endingEdit = false;
+            _endingEdit = false;
         }
     }
 
     private void EndInitCore()
     {
-        initializing = false;
+        _initializing = false;
         EnsureInnerList();
         OnInitialized();
     }
 
     private void EnsureInnerList()
     {
-        if (!initializing && needToSetList)
+        if (!_initializing && _needToSetList)
         {
-            needToSetList = false;
+            _needToSetList = false;
             ResetList();
         }
     }
@@ -934,13 +934,13 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     public int Find(string propertyName, object key)
     {
         PropertyDescriptor? propertyDescriptor;
-        if (itemShape == null)
+        if (_itemShape == null)
         {
             propertyDescriptor = null;
         }
         else
         {
-            propertyDescriptor = itemShape.Find(propertyName, true);
+            propertyDescriptor = _itemShape.Find(propertyName, true);
         }
         var propertyDescriptor1 = propertyDescriptor;
         if (propertyDescriptor1 == null)
@@ -957,7 +957,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <exception cref="T:System.NotSupportedException">The underlying list is not of type <see cref="T:System.ComponentModel.IBindingList" />.</exception>
     public virtual int Find(PropertyDescriptor prop, object key)
     {
-        if (!isBindingList)
+        if (!_isBindingList)
         {
             throw new NotSupportedException("OperationRequiresIBindingList");
         }
@@ -976,12 +976,12 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="listAccessors">An array of <see cref="T:System.ComponentModel.PropertyDescriptor" /> objects to find in the list as bindable.</param>
     public virtual PropertyDescriptorCollection? GetItemProperties(PropertyDescriptor[]? listAccessors)
     {
-        var list = ListBindingHelper.GetList(dataSource);
-        if (!(list is ITypedList) || string.IsNullOrEmpty(dataMember))
+        var list = ListBindingHelper.GetList(_dataSource);
+        if (!(list is ITypedList) || string.IsNullOrEmpty(_dataMember))
         {
             return ListBindingHelper.GetListItemProperties(List, listAccessors);
         }
-        return ListBindingHelper.GetListItemProperties(list, dataMember, listAccessors);
+        return ListBindingHelper.GetListItemProperties(list, _dataMember, listAccessors);
     }
 
     private static IList? GetListFromEnumerable(IEnumerable enumerable)
@@ -1023,11 +1023,11 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     private BindingSource GetRelatedBindingSource(string? member)
     {
         BindingSource item;
-        if (relatedBindingSources == null)
+        if (_relatedBindingSources == null)
         {
-            relatedBindingSources = new Dictionary<string, BindingSource>();
+            _relatedBindingSources = new Dictionary<string, BindingSource>();
         }
-        var enumerator = relatedBindingSources.Keys.GetEnumerator();
+        var enumerator = _relatedBindingSources.Keys.GetEnumerator();
         try
         {
             while (enumerator.MoveNext())
@@ -1037,13 +1037,13 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
                 {
                     continue;
                 }
-                item = relatedBindingSources[current];
+                item = _relatedBindingSources[current];
                 return item;
             }
             var bindingSources = new BindingSource(this, member);
             if (member != null)
             {
-                relatedBindingSources[member] = bindingSources;
+                _relatedBindingSources[member] = bindingSources;
             }
 
             return bindingSources;
@@ -1062,7 +1062,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         EnsureInnerList();
         if (string.IsNullOrEmpty(member))
         {
-            return currencyManager;
+            return _currencyManager;
         }
         if ((member?.IndexOf(".", StringComparison.Ordinal)??-1) != -1)
         {
@@ -1073,21 +1073,21 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void HookItemChangedEventsForNewCurrent()
     {
-        if (!listRaisesItemChangedEvents)
+        if (!_listRaisesItemChangedEvents)
         {
             if (Position >= 0 && Position <= Count - 1)
             {
-                currentItemHookedForItemChange = Current;
-                WirePropertyChangedEvents(currentItemHookedForItemChange);
+                _currentItemHookedForItemChange = Current;
+                WirePropertyChangedEvents(_currentItemHookedForItemChange);
                 return;
             }
-            currentItemHookedForItemChange = null;
+            _currentItemHookedForItemChange = null;
         }
     }
 
     /// <summary>Searches for the specified object and returns the index of the first occurrence within the entire list.</summary>
-    /// <returns>The zero-based index of the first occurrence of the <paramref name=nameof(value) /> parameter; otherwise, -1 if <paramref name=nameof(value) /> is not in the list.</returns>
-    /// <param name=nameof(value)>The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
+    /// <returns>The zero-based index of the first occurrence of the <paramref name="value" /> parameter; otherwise, -1 if <paramref name="value" /> is not in the list.</returns>
+    /// <param name="value">The <see cref="T:System.Object" /> to locate in the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property. The value can be null. </param>
     public virtual int IndexOf(object value)
     {
         return List.IndexOf(value);
@@ -1095,23 +1095,23 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void InnerList_ListChanged(object sender, ListChangedEventArgs e)
     {
-        if (!innerListChanging)
+        if (!_innerListChanging)
         {
             try
             {
-                innerListChanging = true;
+                _innerListChanging = true;
                 OnListChanged(e);
             }
             finally
             {
-                innerListChanging = false;
+                _innerListChanging = false;
             }
         }
     }
 
     /// <summary>Inserts an item into the list at the specified index.</summary>
-    /// <param name="index">The zero-based index at which <paramref name=nameof(value) /> should be inserted. </param>
-    /// <param name=nameof(value)>The <see cref="T:System.Object" /> to insert. The value can be null. </param>
+    /// <param name="index">The zero-based index at which <paramref name="value" /> should be inserted. </param>
+    /// <param name="value">The <see cref="T:System.Object" /> to insert. The value can be null. </param>
     /// <exception cref="T:System.ArgumentOutOfRangeException">
     ///   <paramref name="index" /> is less than zero or greater than <see cref="P:System.Windows.Forms.BindingSource.Count" />.</exception>
     /// <exception cref="T:System.NotSupportedException">The list is read-only or has a fixed size.</exception>
@@ -1123,15 +1123,15 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private bool IsDataMemberValid()
     {
-        if (initializing)
+        if (_initializing)
         {
             return true;
         }
-        if (string.IsNullOrEmpty(dataMember))
+        if (string.IsNullOrEmpty(_dataMember))
         {
             return true;
         }
-        if (dataMember != null && ListBindingHelper.GetListItemProperties(dataSource)?[dataMember] != null)
+        if (_dataMember != null && ListBindingHelper.GetListItemProperties(_dataSource)?[_dataMember] != null)
         {
             return true;
         }
@@ -1148,13 +1148,13 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         {
             return true;
         }
-        return itemConstructor != null;
+        return _itemConstructor != null;
     }
 
     private void ListItem_PropertyChanged(object sender, EventArgs e)
     {
         int num;
-        num = sender != currentItemHookedForItemChange ? ((IList)this).IndexOf(sender) : Position;
+        num = sender != _currentItemHookedForItemChange ? ((IList)this).IndexOf(sender) : Position;
         OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, num));
     }
 
@@ -1186,7 +1186,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
     protected virtual void OnAddingNew(AddingNewEventArgs e)
     {
-        var item = (AddingNewEventHandler)Events[eventAddingnew];
+        var item = (AddingNewEventHandler)Events[EventAddingNew];
         if (item != null)
         {
             item(this, e);
@@ -1197,7 +1197,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">A <see cref="T:System.Windows.Forms.BindingCompleteEventArgs" />  that contains the event data. </param>
     protected virtual void OnBindingComplete(BindingCompleteEventArgs e)
     {
-        var item = (BindingCompleteEventHandler)Events[eventBindingcomplete];
+        var item = (BindingCompleteEventHandler)Events[EventBindingComplete];
         if (item != null)
         {
             item(this, e);
@@ -1210,7 +1210,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         UnhookItemChangedEventsForOldCurrent();
         HookItemChangedEventsForNewCurrent();
-        var item = (EventHandler)Events[eventCurrentchanged];
+        var item = (EventHandler)Events[EventCurrentChanged];
         if (item != null)
         {
             item(this, e);
@@ -1221,7 +1221,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
     protected virtual void OnCurrentItemChanged(EventArgs e)
     {
-        var item = (EventHandler)Events[eventCurrentitemchanged];
+        var item = (EventHandler)Events[EventCurrentItemChanged];
         if (item != null)
         {
             item(this, e);
@@ -1232,7 +1232,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">A <see cref="T:System.Windows.Forms.BindingManagerDataErrorEventArgs" /> that contains the event data. </param>
     protected virtual void OnDataError(BindingManagerDataErrorEventArgs e)
     {
-        var item = Events[eventDataerror] as BindingManagerDataErrorEventHandler;
+        var item = Events[EventDataError] as BindingManagerDataErrorEventHandler;
         if (item != null)
         {
             item(this, e);
@@ -1243,7 +1243,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
     protected virtual void OnDataMemberChanged(EventArgs e)
     {
-        var item = Events[eventDatamemberchanged] as EventHandler;
+        var item = Events[EventDataMemberChanged] as EventHandler;
         if (item != null)
         {
             item(this, e);
@@ -1254,7 +1254,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
     protected virtual void OnDataSourceChanged(EventArgs e)
     {
-        var item = Events[eventDatasourcechanged] as EventHandler;
+        var item = Events[EventDataSourceChanged] as EventHandler;
         if (item != null)
         {
             item(this, e);
@@ -1263,7 +1263,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void OnInitialized()
     {
-        var item = (EventHandler)Events[eventInitialized];
+        var item = (EventHandler)Events[EventInitialized];
         if (item != null)
         {
             item(this, EventArgs.Empty);
@@ -1274,11 +1274,11 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
     protected virtual void OnListChanged(ListChangedEventArgs e)
     {
-        if (!raiseListChangedEvents || initializing)
+        if (!_raiseListChangedEvents || _initializing)
         {
             return;
         }
-        var item = (ListChangedEventHandler)Events[eventListchanged];
+        var item = (ListChangedEventHandler)Events[EventListChanged];
         if (item != null)
         {
             item(this, e);
@@ -1289,7 +1289,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">A <see cref="T:System.ComponentModel.ListChangedEventArgs" /> that contains the event data.</param>
     protected virtual void OnPositionChanged(EventArgs e)
     {
-        var item = (EventHandler)Events[eventPositionchanged];
+        var item = (EventHandler)Events[EventPositionChanged];
         if (item != null)
         {
             item(this, e);
@@ -1298,7 +1298,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void OnSimpleListChanged(ListChangedType listChangedType, int newIndex)
     {
-        if (!isBindingList)
+        if (!_isBindingList)
         {
             OnListChanged(new ListChangedEventArgs(listChangedType, newIndex));
         }
@@ -1306,33 +1306,33 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void ParentCurrencyManager_CurrentItemChanged(object sender, EventArgs e)
     {
-        if (initializing)
+        if (_initializing)
         {
             return;
         }
-        if (parentsCurrentItemChanging)
+        if (_parentsCurrentItemChanging)
         {
             return;
         }
         try
         {
-            parentsCurrentItemChanging = true;
-            currencyManager?.PullData(out _);
+            _parentsCurrentItemChanging = true;
+            _currencyManager?.PullData(out _);
         }
         finally
         {
-            parentsCurrentItemChanging = false;
+            _parentsCurrentItemChanging = false;
         }
         var manager = (CurrencyManager)sender;
-        if (!string.IsNullOrEmpty(dataMember))
+        if (!string.IsNullOrEmpty(_dataMember))
         {
             object? list = null;
             IList? lists = null;
             if (manager.Count > 0)
             {
-                if (dataMember != null)
+                if (_dataMember != null)
                 {
-                    var item = manager.GetItemProperties()?[dataMember];
+                    var item = manager.GetItemProperties()?[_dataMember];
                     if (item != null)
                     {
                         var managerCurrent = manager.Current;
@@ -1351,14 +1351,14 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             }
             else if (list == null)
             {
-                SetList(CreateBindingList(itemType), false, false);
+                SetList(CreateBindingList(_itemType), false, false);
             }
             else
             {
                 SetList(WrapObjectInBindingList(list), false, false);
             }
-            var flag1 = lastCurrentItem == null || manager.Count == 0 || lastCurrentItem != manager.Current ? true : Position >= Count;
-            lastCurrentItem = manager.Count > 0 ? manager.Current : null;
+            var flag1 = _lastCurrentItem == null || manager.Count == 0 || _lastCurrentItem != manager.Current ? true : Position >= Count;
+            _lastCurrentItem = manager.Count > 0 ? manager.Current : null;
             if (flag1)
             {
                 Position = Count > 0 ? 0 : -1;
@@ -1380,7 +1380,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             return new ListSortDescriptionCollection();
         }
         var arrayLists = new ArrayList();
-        var itemProperties = currencyManager?.GetItemProperties();
+        var itemProperties = _currencyManager?.GetItemProperties();
         var strArrays = sortString?.Split(',')??[];
         for (var i = 0; i < strArrays.Length; i++)
         {
@@ -1417,7 +1417,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     }
 
     /// <summary>Removes the specified item from the list.</summary>
-    /// <param name=nameof(value)>The item to remove from the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property.</param>
+    /// <param name="value">The item to remove from the underlying list represented by the <see cref="P:System.Windows.Forms.BindingSource.List" /> property.</param>
     /// <exception cref="T:System.NotSupportedException">The underlying list has a fixed size or is read-only. </exception>
     public virtual void Remove(object value)
     {
@@ -1460,7 +1460,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <exception cref="T:System.NotSupportedException">The underlying list does not support filtering.</exception>
     public virtual void RemoveFilter()
     {
-        filter = null;
+        _filter = null;
         var list = List as IBindingListView;
         if (list != null)
         {
@@ -1472,8 +1472,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <exception cref="T:System.NotSupportedException">The underlying list does not support sorting.</exception>
     public virtual void RemoveSort()
     {
-        sort = null;
-        if (isBindingList)
+        _sort = null;
+        if (_isBindingList)
         {
             ((IBindingList)List).RemoveSort();
         }
@@ -1483,8 +1483,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public virtual void ResetAllowNew()
     {
-        allowNewIsSet = false;
-        allowNewSetValue = true;
+        _allowNewIsSet = false;
+        _allowNewSetValue = true;
     }
 
     /// <summary>Causes a control bound to the <see cref="T:System.Windows.Forms.BindingSource" /> to reread all the items in the list and refresh their displayed values. </summary>
@@ -1514,22 +1514,22 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     private void ResetList()
     {
         object? listFromType;
-        if (initializing)
+        if (_initializing)
         {
-            needToSetList = true;
+            _needToSetList = true;
             return;
         }
-        needToSetList = false;
-        if (dataSource is Type)
+        _needToSetList = false;
+        if (_dataSource is Type)
         {
-            listFromType = GetListFromType(dataSource as Type);
+            listFromType = GetListFromType(_dataSource as Type);
         }
         else
         {
-            listFromType = dataSource;
+            listFromType = _dataSource;
         }
-        var list = ListBindingHelper.GetList(listFromType, dataMember);
-        listExtractedFromEnumerable = false;
+        var list = ListBindingHelper.GetList(listFromType, _dataMember);
+        _listExtractedFromEnumerable = false;
         IList? listFromEnumerable = null;
         if (!(list is IList))
         {
@@ -1542,14 +1542,14 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
                 listFromEnumerable = GetListFromEnumerable(enumerable);
                 if (listFromEnumerable != null)
                 {
-                    listExtractedFromEnumerable = true;
+                    _listExtractedFromEnumerable = true;
                 }
             }
             if (listFromEnumerable == null)
             {
                 if (list == null)
                 {
-                    var listItemType = ListBindingHelper.GetListItemType(dataSource, dataMember);
+                    var listItemType = ListBindingHelper.GetListItemType(_dataSource, _dataMember);
                     listFromEnumerable = GetListFromType(listItemType) ?? CreateBindingList(listItemType);
                 }
                 else
@@ -1568,23 +1568,23 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <summary>Resumes data binding.</summary>
     public void ResumeBinding()
     {
-        currencyManager?.ResumeBinding();
+        _currencyManager?.ResumeBinding();
     }
 
     private void SetList(IList? list, bool metaDataChanged, bool applySortAndFilter)
     {
-        list ??= CreateBindingList(itemType);
+        list ??= CreateBindingList(_itemType);
         UnwireInnerList();
         UnhookItemChangedEventsForOldCurrent();
         var lists = ListBindingHelper.GetList(list) as IList ?? list;
         _innerList = lists!;
-        isBindingList = lists is IBindingList;
-        listRaisesItemChangedEvents = !(lists is IRaiseItemChangedEvents events) ? isBindingList : events.RaisesItemChangedEvents;
+        _isBindingList = lists is IBindingList;
+        _listRaisesItemChangedEvents = !(lists is IRaiseItemChangedEvents events) ? _isBindingList : events.RaisesItemChangedEvents;
         if (metaDataChanged)
         {
-            itemType = ListBindingHelper.GetListItemType(List);
-            itemShape = ListBindingHelper.GetListItemProperties(List);
-            itemConstructor = itemType?.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance, null, [], null);
+            _itemType = ListBindingHelper.GetListItemType(List);
+            _itemShape = ListBindingHelper.GetListItemProperties(List);
+            _itemConstructor = _itemType?.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance, null, [], null);
         }
         WireInnerList();
         HookItemChangedEventsForNewCurrent();
@@ -1605,13 +1605,13 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal virtual bool ShouldSerializeAllowNew()
     {
-        return allowNewIsSet;
+        return _allowNewIsSet;
     }
 
     /// <summary>Suspends data binding to prevent changes from updating the bound data source.</summary>
     public void SuspendBinding()
     {
-        currencyManager?.SuspendBinding();
+        _currencyManager?.SuspendBinding();
     }
 
     /// <summary>Adds the <see cref="T:System.ComponentModel.PropertyDescriptor" /> to the indexes used for searching.</summary>
@@ -1619,7 +1619,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <exception cref="T:System.NotSupportedException">The underlying list is not an <see cref="T:System.ComponentModel.IBindingList" />.</exception>
     void IBindingList.AddIndex(PropertyDescriptor property)
     {
-        if (!isBindingList)
+        if (!_isBindingList)
         {
             throw new NotSupportedException("OperationRequiresIBindingList");
         }
@@ -1630,7 +1630,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="prop">The <see cref="T:System.ComponentModel.PropertyDescriptor" /> to remove from the indexes used for searching.  </param>
     void IBindingList.RemoveIndex(PropertyDescriptor prop)
     {
-        if (!isBindingList)
+        if (!_isBindingList)
         {
             throw new NotSupportedException("OperationRequiresIBindingList");
         }
@@ -1641,10 +1641,10 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="position">The index of the item that was added to the collection. </param>
     void ICancelAddNew.CancelNew(int position)
     {
-        if (addNewPos >= 0 && addNewPos == position)
+        if (_addNewPos >= 0 && _addNewPos == position)
         {
-            RemoveAt(addNewPos);
-            addNewPos = -1;
+            RemoveAt(_addNewPos);
+            _addNewPos = -1;
             return;
         }
         var list = List as ICancelAddNew;
@@ -1658,9 +1658,9 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="position">The index of the item that was added to the collection. </param>
     void ICancelAddNew.EndNew(int position)
     {
-        if (addNewPos >= 0 && addNewPos == position)
+        if (_addNewPos >= 0 && _addNewPos == position)
         {
-            addNewPos = -1;
+            _addNewPos = -1;
             return;
         }
         var list = List as ICancelAddNew;
@@ -1673,7 +1673,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <summary>Signals the <see cref="T:System.Windows.Forms.BindingSource" /> that initialization is starting.</summary>
     void ISupportInitialize.BeginInit()
     {
-        initializing = true;
+        _initializing = true;
     }
 
     /// <summary>Signals the <see cref="T:System.Windows.Forms.BindingSource" /> that initialization is complete. </summary>
@@ -1701,10 +1701,10 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void UnhookItemChangedEventsForOldCurrent()
     {
-        if (!listRaisesItemChangedEvents)
+        if (!_listRaisesItemChangedEvents)
         {
-            UnwirePropertyChangedEvents(currentItemHookedForItemChange);
-            currentItemHookedForItemChange = null;
+            UnwirePropertyChangedEvents(_currentItemHookedForItemChange);
+            _currentItemHookedForItemChange = null;
         }
     }
 
@@ -1722,9 +1722,9 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void UnwireDataSource()
     {
-        if (dataSource is ICurrencyManagerProvider)
+        if (_dataSource is ICurrencyManagerProvider)
         {
-            var manager = (dataSource as ICurrencyManagerProvider)?.CurrencyManager;
+            var manager = (_dataSource as ICurrencyManagerProvider)?.CurrencyManager;
             if (manager != null)
             {
                 manager.CurrentItemChanged -= ParentCurrencyManager_CurrentItemChanged;
@@ -1743,11 +1743,11 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void UnwirePropertyChangedEvents(object? item)
     {
-        if (item != null && itemShape != null)
+        if (item != null && _itemShape != null)
         {
-            for (var i = 0; i < itemShape.Count; i++)
+            for (var i = 0; i < _itemShape.Count; i++)
             {
-                itemShape[i].RemoveValueChanged(item, listItemPropertyChangedHandler);
+                _itemShape[i].RemoveValueChanged(item, _listItemPropertyChangedHandler);
             }
         }
     }
@@ -1766,9 +1766,9 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void WireDataSource()
     {
-        if (dataSource is ICurrencyManagerProvider)
+        if (_dataSource is ICurrencyManagerProvider)
         {
-            var manager = (dataSource as ICurrencyManagerProvider)?.CurrencyManager;
+            var manager = (_dataSource as ICurrencyManagerProvider)?.CurrencyManager;
             if (manager != null)
             {
                 manager.CurrentItemChanged += ParentCurrencyManager_CurrentItemChanged;
@@ -1787,11 +1787,11 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     private void WirePropertyChangedEvents(object? item)
     {
-        if (item != null && itemShape != null)
+        if (item != null && _itemShape != null)
         {
-            for (var i = 0; i < itemShape.Count; i++)
+            for (var i = 0; i < _itemShape.Count; i++)
             {
-                itemShape[i].AddValueChanged(item, listItemPropertyChangedHandler);
+                _itemShape[i].AddValueChanged(item, _listItemPropertyChangedHandler);
             }
         }
     }
@@ -1810,8 +1810,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceAddingNewEventHandlerDescr")]
     public event AddingNewEventHandler AddingNew
     {
-        add => Events.AddHandler(eventAddingnew, value);
-        remove => Events.RemoveHandler(eventAddingnew, value);
+        add => Events.AddHandler(EventAddingNew, value);
+        remove => Events.RemoveHandler(EventAddingNew, value);
     }
 
     /// <summary>Occurs when all the clients have been bound to this <see cref="T:System.Windows.Forms.BindingSource" />.</summary>
@@ -1819,8 +1819,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceBindingCompleteEventHandlerDescr")]
     public event BindingCompleteEventHandler BindingComplete
     {
-        add => Events.AddHandler(eventBindingcomplete, value);
-        remove => Events.RemoveHandler(eventBindingcomplete, value);
+        add => Events.AddHandler(EventBindingComplete, value);
+        remove => Events.RemoveHandler(EventBindingComplete, value);
     }
 
     /// <summary>Occurs when the currently bound item changes.</summary>
@@ -1828,8 +1828,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceCurrentChangedEventHandlerDescr")]
     public event EventHandler CurrentChanged
     {
-        add => Events.AddHandler(eventCurrentchanged, value);
-        remove => Events.RemoveHandler(eventCurrentchanged, value);
+        add => Events.AddHandler(EventCurrentChanged, value);
+        remove => Events.RemoveHandler(EventCurrentChanged, value);
     }
 
     /// <summary>Occurs when a property value of the <see cref="P:System.Windows.Forms.BindingSource.Current" /> property has changed.</summary>
@@ -1837,8 +1837,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceCurrentItemChangedEventHandlerDescr")]
     public event EventHandler CurrentItemChanged
     {
-        add => Events.AddHandler(eventCurrentitemchanged, value);
-        remove => Events.RemoveHandler(eventCurrentitemchanged, value);
+        add => Events.AddHandler(EventCurrentItemChanged, value);
+        remove => Events.RemoveHandler(EventCurrentItemChanged, value);
     }
 
     /// <summary>Occurs when a currency-related exception is silently handled by the <see cref="T:System.Windows.Forms.BindingSource" />.</summary>
@@ -1846,8 +1846,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceDataErrorEventHandlerDescr")]
     public event BindingManagerDataErrorEventHandler DataError
     {
-        add => Events.AddHandler(eventDataerror, value);
-        remove => Events.RemoveHandler(eventDataerror, value);
+        add => Events.AddHandler(EventDataError, value);
+        remove => Events.RemoveHandler(EventDataError, value);
     }
 
     /// <summary>Occurs when the <see cref="P:System.Windows.Forms.BindingSource.DataMember" /> property value has changed.</summary>
@@ -1855,8 +1855,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceDataMemberChangedEventHandlerDescr")]
     public event EventHandler DataMemberChanged
     {
-        add => Events.AddHandler(eventDatamemberchanged, value);
-        remove => Events.RemoveHandler(eventDatamemberchanged, value);
+        add => Events.AddHandler(EventDataMemberChanged, value);
+        remove => Events.RemoveHandler(EventDataMemberChanged, value);
     }
 
     /// <summary>Occurs when the <see cref="P:System.Windows.Forms.BindingSource.DataSource" /> property value has changed.</summary>
@@ -1864,8 +1864,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceDataSourceChangedEventHandlerDescr")]
     public event EventHandler DataSourceChanged
     {
-        add => Events.AddHandler(eventDatasourcechanged, value);
-        remove => Events.RemoveHandler(eventDatasourcechanged, value);
+        add => Events.AddHandler(EventDataSourceChanged, value);
+        remove => Events.RemoveHandler(EventDataSourceChanged, value);
     }
 
     /// <summary>Occurs when the underlying list changes or an item in the list changes.</summary>
@@ -1873,8 +1873,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourceListChangedEventHandlerDescr")]
     public event ListChangedEventHandler ListChanged
     {
-        add => Events.AddHandler(eventListchanged, value);
-        remove => Events.RemoveHandler(eventListchanged, value);
+        add => Events.AddHandler(EventListChanged, value);
+        remove => Events.RemoveHandler(EventListChanged, value);
     }
 
     /// <summary>Occurs after the value of the <see cref="P:System.Windows.Forms.BindingSource.Position" /> property has changed.</summary>
@@ -1882,14 +1882,14 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [Description("BindingSourcePositionChangedEventHandlerDescr")]
     public event EventHandler PositionChanged
     {
-        add => Events.AddHandler(eventPositionchanged, value);
-        remove => Events.RemoveHandler(eventPositionchanged, value);
+        add => Events.AddHandler(EventPositionChanged, value);
+        remove => Events.RemoveHandler(EventPositionChanged, value);
     }
 
     /// <summary>Occurs when the <see cref="T:System.Windows.Forms.BindingSource" /> is initialized.</summary>
     event EventHandler ISupportInitializeNotification.Initialized
     {
-        add => Events.AddHandler(eventInitialized, value);
-        remove => Events.RemoveHandler(eventInitialized, value);
+        add => Events.AddHandler(EventInitialized, value);
+        remove => Events.RemoveHandler(EventInitialized, value);
     }
 }

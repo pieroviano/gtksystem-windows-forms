@@ -7,15 +7,15 @@ namespace System.Windows.Forms;
 /// <filterpriority>2</filterpriority>
 public class PropertyManager : BindingManagerBase
 {
-    private object? dataSource;
+    private object? _dataSource;
 
-    private string? propName;
+    private string? _propName;
 
-    private PropertyDescriptor? propInfo;
+    private PropertyDescriptor? _propInfo;
 
-    private bool bound;
+    private bool _bound;
 
-    internal override Type? BindType => dataSource?.GetType();
+    internal override Type? BindType => _dataSource?.GetType();
 
     /// <returns>The number of rows managed by the <see cref="T:System.Windows.Forms.BindingManagerBase" />.</returns>
     /// <filterpriority>1</filterpriority>
@@ -24,11 +24,11 @@ public class PropertyManager : BindingManagerBase
     /// <summary>Gets the object to which the data-bound property belongs.</summary>
     /// <returns>An <see cref="T:System.Object" /> that represents the object to which the property belongs.</returns>
     /// <filterpriority>1</filterpriority>
-    public override object? Current => dataSource;
+    public override object? Current => _dataSource;
 
-    internal override object? DataSource => dataSource;
+    internal override object? DataSource => _dataSource;
 
-    internal override bool IsBinding => dataSource != null;
+    internal override bool IsBinding => _dataSource != null;
 
     /// <returns>A zero-based index that specifies a position in the underlying list.</returns>
     /// <filterpriority>1</filterpriority>
@@ -56,7 +56,7 @@ public class PropertyManager : BindingManagerBase
 
     private void Init(object? source, string? name)
     {
-        propName = name;
+        _propName = name;
         SetDataSource(source);
     }
 
@@ -88,14 +88,14 @@ public class PropertyManager : BindingManagerBase
 
     internal override PropertyDescriptorCollection? GetItemProperties(PropertyDescriptor?[]? listAccessors)
     {
-        return ListBindingHelper.GetListItemProperties(dataSource, listAccessors);
+        return ListBindingHelper.GetListItemProperties(_dataSource, listAccessors);
     }
 
     internal override string? GetListName()
     {
-        if (dataSource != null)
+        if (_dataSource != null)
         {
-            return string.Concat(TypeDescriptor.GetClassName(dataSource), ".", propName);
+            return string.Concat(TypeDescriptor.GetClassName(_dataSource), ".", _propName);
         }
         return null;
     }
@@ -112,8 +112,8 @@ public class PropertyManager : BindingManagerBase
     protected internal override void OnCurrentChanged(EventArgs ea)
     {
         PushData();
-        onCurrentChangedHandler?.Invoke(this, ea);
-        onCurrentItemChangedHandler?.Invoke(this, ea);
+        OnCurrentChangedHandler?.Invoke(this, ea);
+        OnCurrentItemChangedHandler?.Invoke(this, ea);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.CurrentItemChanged" /> event.</summary>
@@ -121,7 +121,7 @@ public class PropertyManager : BindingManagerBase
     protected internal override void OnCurrentItemChanged(EventArgs ea)
     {
         PushData();
-        onCurrentItemChangedHandler?.Invoke(this, ea);
+        OnCurrentItemChangedHandler?.Invoke(this, ea);
     }
 
     private void PropertyChanged(object? sender, EventArgs ea)
@@ -141,16 +141,16 @@ public class PropertyManager : BindingManagerBase
     public override void ResumeBinding()
     {
         OnCurrentChanged(new EventArgs());
-        if (!bound)
+        if (!_bound)
         {
             try
             {
-                bound = true;
+                _bound = true;
                 UpdateIsBinding();
             }
             catch
             {
-                bound = false;
+                _bound = false;
                 UpdateIsBinding();
                 throw;
             }
@@ -159,20 +159,20 @@ public class PropertyManager : BindingManagerBase
 
     private protected override void SetDataSource(object? source)
     {
-        if (dataSource != null && !string.IsNullOrEmpty(propName))
+        if (_dataSource != null && !string.IsNullOrEmpty(_propName))
         {
-            propInfo?.RemoveValueChanged(dataSource, PropertyChanged);
-            propInfo = null;
+            _propInfo?.RemoveValueChanged(_dataSource, PropertyChanged);
+            _propInfo = null;
         }
-        dataSource = source;
-        if (dataSource != null && !string.IsNullOrEmpty(propName))
+        _dataSource = source;
+        if (_dataSource != null && !string.IsNullOrEmpty(_propName))
         {
-            propInfo = TypeDescriptor.GetProperties(source).Find(propName??string.Empty, true);
-            if (propInfo == null)
+            _propInfo = TypeDescriptor.GetProperties(source).Find(_propName??string.Empty, true);
+            if (_propInfo == null)
             {
                 throw new ArgumentException("PropertyManagerPropDoesNotExist");
             }
-            propInfo.AddValueChanged(source!, PropertyChanged);
+            _propInfo.AddValueChanged(source!, PropertyChanged);
         }
     }
 
@@ -181,16 +181,16 @@ public class PropertyManager : BindingManagerBase
     public override void SuspendBinding()
     {
         EndCurrentEdit();
-        if (bound)
+        if (_bound)
         {
             try
             {
-                bound = false;
+                _bound = false;
                 UpdateIsBinding();
             }
             catch
             {
-                bound = true;
+                _bound = true;
                 UpdateIsBinding();
                 throw;
             }

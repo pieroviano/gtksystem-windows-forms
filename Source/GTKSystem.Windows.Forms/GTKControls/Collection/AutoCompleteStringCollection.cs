@@ -32,11 +32,11 @@ namespace System.Windows.Forms;
 
 public class AutoCompleteStringCollection : IList
 {
-    private readonly ArrayList list;
+    private readonly ArrayList _list;
 
     public AutoCompleteStringCollection ()
     {
-        list = new ArrayList ();
+        _list = new ArrayList ();
     }
 
     public event CollectionChangeEventHandler? CollectionChanged;
@@ -53,7 +53,7 @@ public class AutoCompleteStringCollection : IList
 
     public IEnumerator GetEnumerator ()
     {
-        return list.GetEnumerator ();
+        return _list.GetEnumerator ();
     }
 
     #endregion
@@ -62,17 +62,17 @@ public class AutoCompleteStringCollection : IList
 
     void ICollection.CopyTo (Array array, int index)
     {
-        list.CopyTo (array, index);
+        _list.CopyTo (array, index);
     }
 
     public void CopyTo (string[] array, int index)
     {
-        list.CopyTo (array, index);
+        _list.CopyTo (array, index);
     }
 
     public int Count
     {
-        get { return list.Count; }
+        get { return _list.Count; }
     }
 
     public bool IsSynchronized
@@ -98,7 +98,7 @@ public class AutoCompleteStringCollection : IList
     {
         if (value != null)
         {
-            int index = list.Add (value);
+            int index = _list.Add (value);
             OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
             return index;
         }
@@ -111,13 +111,13 @@ public class AutoCompleteStringCollection : IList
         if (value == null)
             throw new ArgumentNullException (nameof(value), @"Argument cannot be null!");
 
-        list.AddRange (value);
+        _list.AddRange (value);
         OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, null));
     }
 
     public void Clear ()
     {
-        list.Clear ();
+        _list.Clear ();
         OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, null));
     }
 
@@ -128,7 +128,7 @@ public class AutoCompleteStringCollection : IList
 
     public bool Contains (string? value)
     {
-        return list.Contains (value);
+        return _list.Contains (value);
     }
 
     int IList.IndexOf (object value)
@@ -138,7 +138,7 @@ public class AutoCompleteStringCollection : IList
 
     public int IndexOf (string value)
     {
-        return list.IndexOf (value);
+        return _list.IndexOf (value);
     }
 
     void IList.Insert (int index, object value)
@@ -148,7 +148,7 @@ public class AutoCompleteStringCollection : IList
 
     public void Insert (int index, string value)
     {
-        list.Insert (index, value);
+        _list.Insert (index, value);
         OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
     }
 
@@ -174,14 +174,14 @@ public class AutoCompleteStringCollection : IList
 
     public void Remove (string value)
     {
-        list.Remove (value);
+        _list.Remove (value);
         OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
     }
 
     public void RemoveAt (int index)
     {
         string value = this[index];
-        list.RemoveAt (index);
+        _list.RemoveAt (index);
         OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
     }
 
@@ -193,10 +193,10 @@ public class AutoCompleteStringCollection : IList
 
     public string this[int index]
     {
-        get { return (string)list[index]; }
+        get { return (string)_list[index]; }
         set {
-            OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, list[index]));
-            list[index] = value;
+            OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, _list[index]));
+            _list[index] = value;
             OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
         }
     }

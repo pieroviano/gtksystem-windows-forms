@@ -16,31 +16,31 @@ namespace System.Windows.Forms;
 /// </summary>
 public class KeysConverter : TypeConverter, IComparer
 {
-    private IDictionary? keyNames;
-    private List<string>? displayOrder;
-    private StandardValuesCollection? values;
+    private IDictionary? _keyNames;
+    private List<string>? _displayOrder;
+    private StandardValuesCollection? _values;
 
-    private const Keys firstDigit = Keys.D0;
-    private const Keys lastDigit = Keys.D9;
-    private const Keys firstAscii = Keys.A;
-    private const Keys lastAscii = Keys.Z;
-    private const Keys firstNumpadDigit = Keys.NumPad0;
-    private const Keys lastNumpadDigit = Keys.NumPad9;
+    private const Keys FirstDigit = Keys.D0;
+    private const Keys LastDigit = Keys.D9;
+    private const Keys FirstAscii = Keys.A;
+    private const Keys LastAscii = Keys.Z;
+    private const Keys FirstNumpadDigit = Keys.NumPad0;
+    private const Keys LastNumpadDigit = Keys.NumPad9;
 
     private void AddKey(string key, Keys value)
     {
-        if (keyNames != null)
+        if (_keyNames != null)
         {
-            keyNames[key] = value;
+            _keyNames[key] = value;
         }
 
-        displayOrder?.Add(key);
+        _displayOrder?.Add(key);
     }
 
     private void Initialize()
     {
-        keyNames = new Hashtable(34);
-        displayOrder = new List<string>(34);
+        _keyNames = new Hashtable(34);
+        _displayOrder = new List<string>(34);
 
         //AddKey(SR.toStringEnter, Keys.Return);
         //AddKey("F12", Keys.F12);
@@ -89,12 +89,12 @@ public class KeysConverter : TypeConverter, IComparer
     {
         get
         {
-            if (keyNames == null)
+            if (_keyNames == null)
             {
-                Debug.Assert(displayOrder == null);
+                Debug.Assert(_displayOrder == null);
                 Initialize();
             }
-            return keyNames!;
+            return _keyNames!;
         }
     }
 
@@ -102,12 +102,12 @@ public class KeysConverter : TypeConverter, IComparer
     {
         get
         {
-            if (displayOrder == null)
+            if (_displayOrder == null)
             {
-                Debug.Assert(keyNames == null);
+                Debug.Assert(_keyNames == null);
                 Initialize();
             }
-            return displayOrder!;
+            return _displayOrder!;
         }
     }
 
@@ -183,7 +183,14 @@ public class KeysConverter : TypeConverter, IComparer
                     // Key was not found in our table.  See if it is a valid value in
                     // the Keys enum.
                     //
-                    obj = Enum.Parse(typeof(Keys), tokens[i]);
+                    if (!Enum.TryParse<Keys>(tokens[i], out var v))
+                    {
+                        obj = null;
+                    }
+                    else
+                    {
+                        obj = v;
+                    }
                 }
 
                 if (obj != null)
@@ -276,7 +283,7 @@ public class KeysConverter : TypeConverter, IComparer
                 for (var i = 0; i < DisplayOrder.Count; i++)
                 {
                     var keyString = DisplayOrder[i];
-                    var keyValue = (Keys)keyNames![keyString];
+                    var keyValue = (Keys)_keyNames![keyString];
                     if (((int)keyValue & (int)modifiers) != 0)
                     {
 
@@ -312,7 +319,7 @@ public class KeysConverter : TypeConverter, IComparer
                 for (var i = 0; i < DisplayOrder.Count; i++)
                 {
                     var keyString = DisplayOrder[i];
-                    var keyValue = (Keys)keyNames![keyString];
+                    var keyValue = (Keys)_keyNames![keyString];
                     if (keyValue.Equals(keyOnly))
                     {
 
@@ -371,7 +378,7 @@ public class KeysConverter : TypeConverter, IComparer
     /// </summary>
     public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
     {
-        if (values == null)
+        if (_values == null)
         {
             var list = new ArrayList();
 
@@ -384,9 +391,9 @@ public class KeysConverter : TypeConverter, IComparer
 
             list.Sort(this);
 
-            values = new StandardValuesCollection(list.ToArray());
+            _values = new StandardValuesCollection(list.ToArray());
         }
-        return values;
+        return _values;
     }
 
     /// <summary>

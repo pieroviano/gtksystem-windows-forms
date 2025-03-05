@@ -9,11 +9,11 @@ internal partial class PropertyStore
 {
     private sealed class ColorWrapper
     {
-        public Color color;
+        public Color Color;
 
         public ColorWrapper(Color color)
         {
-            this.color = color;
+            Color = color;
         }
     }
 }

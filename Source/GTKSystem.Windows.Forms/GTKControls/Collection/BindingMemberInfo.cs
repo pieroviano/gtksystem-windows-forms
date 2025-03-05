@@ -10,7 +10,7 @@ public readonly struct BindingMemberInfo : IEquatable<BindingMemberInfo>
 
     public string BindingField => _dataField ?? string.Empty;
 
-    public string BindingMember => (BindingPath?.Length??0) > 0
+    public string BindingMember => (BindingPath.Length) > 0
         ? $"{BindingPath}.{BindingField}"
         : BindingField;
 

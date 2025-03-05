@@ -12,17 +12,17 @@ public abstract class BindingManagerBase
     private BindingsCollection? _bindings;
     private bool _pullingData;
 
-    protected EventHandler? onCurrentChangedHandler; // Don't rename (breaking change)
+    protected EventHandler? OnCurrentChangedHandler; // Don't rename (breaking change)
 
-    protected EventHandler? onCurrentItemChangedHandler; // Don't rename (breaking change)
+    protected EventHandler? OnCurrentItemChangedHandler; // Don't rename (breaking change)
 
-    protected EventHandler? onPositionChangedHandler; // Don't rename (breaking change)
+    protected EventHandler? OnPositionChangedHandler; // Don't rename (breaking change)
 
     // Hook BindingComplete events on all owned Binding objects, and propagate those events through our own BindingComplete event
     private BindingCompleteEventHandler? _onBindingCompleteHandler;
 
     // same deal about the new currentItemChanged event
-    private protected EventHandler? _onCurrentItemChangedHandler;
+    private protected EventHandler? OnCurrentItemChangedValueHandler;
 
     // Event handler for the DataError event
     private BindingManagerDataErrorEventHandler? _onDataErrorHandler;
@@ -206,14 +206,14 @@ public abstract class BindingManagerBase
 
     public event EventHandler? CurrentChanged
     {
-        add => onCurrentChangedHandler += value;
-        remove => onCurrentChangedHandler -= value;
+        add => OnCurrentChangedHandler += value;
+        remove => OnCurrentChangedHandler -= value;
     }
 
     public event EventHandler? CurrentItemChanged
     {
-        add => _onCurrentItemChangedHandler += value;
-        remove => _onCurrentItemChangedHandler -= value;
+        add => OnCurrentItemChangedValueHandler += value;
+        remove => OnCurrentItemChangedValueHandler -= value;
     }
 
     public event BindingManagerDataErrorEventHandler? DataError
@@ -233,8 +233,8 @@ public abstract class BindingManagerBase
 
     public event EventHandler? PositionChanged
     {
-        add => onPositionChangedHandler += value;
-        remove => onPositionChangedHandler -= value;
+        add => OnPositionChangedHandler += value;
+        remove => OnPositionChangedHandler -= value;
     }
 
     protected abstract void UpdateIsBinding();

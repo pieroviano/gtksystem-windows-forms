@@ -16,9 +16,9 @@ namespace System.Windows.Forms
 
         private static string AppDataDirectory { get {
                 var assemblyFullName = Assembly.GetEntryAssembly()?.FullName.Split(',');
-                var _namespace = assemblyFullName?[0];
+                var namespaceValue = assemblyFullName?[0];
                 var assembly = Assembly.GetExecutingAssembly().GetName();
-                return Path.Combine(_namespace??string.Empty, assembly.Name, assembly.Version.ToString());
+                return Path.Combine(namespaceValue??string.Empty, assembly.Name, assembly.Version.ToString());
             }
         }
 
@@ -40,7 +40,7 @@ namespace System.Windows.Forms
         }
         public static string StartupPath => Directory.GetCurrentDirectory();
 
-        private static readonly object internalSyncObject = new();
+        internal static readonly object InternalSyncObject = new();
 
         public static CultureInfo CurrentCulture
         {
@@ -212,8 +212,8 @@ namespace System.Windows.Forms
                                 {
                                     try
                                     {
-                                        var _themefolder = Path.GetFullPath(themefolder);
-                                        Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", _themefolder);
+                                        var themeFolderValue = Path.GetFullPath(themefolder);
+                                        Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", themeFolderValue);
                                     }
                                     catch (Exception ex)
                                     {
@@ -344,9 +344,9 @@ namespace System.Windows.Forms
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public static void Exit(CancelEventArgs e)
+        public static void Exit(CancelEventArgs? e)
         {
-            lock (internalSyncObject)
+            lock (InternalSyncObject)
             {
                 if (e == null)
                 {
@@ -364,17 +364,17 @@ namespace System.Windows.Forms
 
         public static void ExitThread()
         {
-            lock (internalSyncObject)
+            lock (InternalSyncObject)
             {
                 Gtk.Application.Quit();
             }
         }
     }
 
-    public static class InitAppliction
+    public static class InitApplication
     {
-        private static Gtk.Application? app = Application.Init();
-        static InitAppliction()
+        private static Gtk.Application? _app = Application.Init();
+        static InitApplication()
         {
         }
     }

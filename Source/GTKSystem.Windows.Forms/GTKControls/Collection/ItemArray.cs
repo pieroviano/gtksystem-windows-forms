@@ -21,7 +21,7 @@ namespace System.Windows.Forms;
 /// </summary>
 internal partial class ItemArray : IComparer<Entry>
 {
-    private static int lastMask = 1;
+    internal static int LastMask = 1;
 
     private readonly ListControl _listControl;
     private readonly List<Entry> _entries;
@@ -66,8 +66,8 @@ internal partial class ItemArray : IComparer<Entry>
     /// </summary>
     public static int CreateMask()
     {
-        var mask = lastMask;
-        lastMask <<= 1;
+        var mask = LastMask;
+        LastMask <<= 1;
         //Debug.Assert(s_lastMask > mask, "We have overflowed our state mask.");
         return mask;
     }

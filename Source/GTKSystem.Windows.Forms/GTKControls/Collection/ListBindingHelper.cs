@@ -10,7 +10,7 @@ internal class ListBindingHelper
     /// <returns>The name of the list in the data source, as described by <paramref name="listAccessors" />, orthe name of the data source type.</returns>
     /// <param name="list">The data source to examine for the list name.</param>
     /// <param name="listAccessors">An array of <see cref="T:System.ComponentModel.PropertyDescriptor" /> objects to find in the data source. This can be null.</param>
-    public static string? GetListName(object list, PropertyDescriptor[] listAccessors)
+    public static string? GetListName(object? list, PropertyDescriptor[]? listAccessors)
     {
         string? listNameFromType;
         if (list == null)
@@ -231,7 +231,7 @@ internal class ListBindingHelper
             else if (firstItemByEnumerable != null)
             {
                 properties = TypeDescriptor.GetProperties(firstItemByEnumerable, BrowsableAttributeList);
-                if (!(enumerable is IList) && (properties == null || properties.Count == 0))
+                if (!(enumerable is IList) && (properties.Count == 0))
                 {
                     properties = TypeDescriptor.GetProperties(enumerable, BrowsableAttributeList);
                 }
@@ -499,17 +499,17 @@ internal class ListBindingHelper
         }
         return obj;
     }
-    private static Attribute[]? browsableAttribute;
+    private static Attribute[]? _browsableAttribute;
 
     private static Attribute[] BrowsableAttributeList
     {
         get
         {
-            if (browsableAttribute == null)
+            if (_browsableAttribute == null)
             {
-                browsableAttribute = [new BrowsableAttribute(true)];
+                _browsableAttribute = [new BrowsableAttribute(true)];
             }
-            return browsableAttribute;
+            return _browsableAttribute;
         }
     }
 }

@@ -5,11 +5,11 @@ namespace System.Windows.Forms;
 [DefaultEvent("CollectionChanged")]
 internal class ListManagerBindingsCollection : BindingsCollection
 {
-    private readonly BindingManagerBase? bindingManagerBase;
+    private readonly BindingManagerBase? _bindingManagerBase;
 
     internal ListManagerBindingsCollection(BindingManagerBase? bindingManagerBase)
     {
-        this.bindingManagerBase = bindingManagerBase;
+        _bindingManagerBase = bindingManagerBase;
     }
 
     protected override void AddCore(Binding dataBinding)
@@ -18,7 +18,7 @@ internal class ListManagerBindingsCollection : BindingsCollection
         {
             throw new ArgumentNullException("dataBinding");
         }
-        if (dataBinding.BindingManagerBase == bindingManagerBase)
+        if (dataBinding.BindingManagerBase == _bindingManagerBase)
         {
             throw new ArgumentException(nameof(dataBinding));
         }
@@ -26,7 +26,7 @@ internal class ListManagerBindingsCollection : BindingsCollection
         {
             throw new ArgumentException(nameof(dataBinding));
         }
-        dataBinding.SetListManager(bindingManagerBase);
+        dataBinding.SetListManager(_bindingManagerBase);
         base.AddCore(dataBinding);
     }
 
@@ -42,7 +42,7 @@ internal class ListManagerBindingsCollection : BindingsCollection
 
     protected override void RemoveCore(Binding dataBinding)
     {
-        if (dataBinding.BindingManagerBase != bindingManagerBase)
+        if (dataBinding.BindingManagerBase != _bindingManagerBase)
         {
             throw new ArgumentException(nameof(dataBinding));
         }
