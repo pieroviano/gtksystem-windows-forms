@@ -1,10 +1,10 @@
-using Gtk;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Gdk;
+using Gtk;
 
 namespace System.Drawing;
 
@@ -341,83 +341,82 @@ public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,M
         return this;
     }
 
-    /// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Image" /> and optionally releases the managed resources.</summary>
-    /// <param name="disposing">
-    ///   <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-    protected override void Dispose(bool disposing)
-    {
-        pixbuf?.Dispose();
-        pixbufData = null;
-    }
-    private ImageFormat? GetImageFormat(string extension)
-    {
-        if (extension == ".memorybmp")
-        {
-            RawFormat = ImageFormat.MemoryBmp;
+		/// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Image" /> and optionally releases the managed resources.</summary>
+		/// <param name="disposing">
+		///   <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
+		protected new virtual void Dispose(bool disposing)
+		{
+            if (Pixbuf != null)
+                Pixbuf.Dispose();
+            if (PixbufData != null)
+                PixbufData = null;
+			base.Dispose(disposing);
         }
-        else if (extension == ".bmp")
-        {
-            RawFormat = ImageFormat.Bmp;
+		private ImageFormat GetImageFormat(string extension)
+		{
+            if (extension == ".memorybmp")
+            {
+                RawFormat = ImageFormat.MemoryBmp;
+            }
+            else if (extension == ".bmp")
+            {
+                RawFormat = ImageFormat.Bmp;
+            }
+            else if (extension == ".emf")
+            {
+                RawFormat = ImageFormat.Emf;
+            }
+            else if (extension == ".wmf")
+            {
+                RawFormat = ImageFormat.Wmf;
+            }
+            else if (extension == ".gif")
+            {
+                RawFormat = ImageFormat.Gif;
+            }
+            else if (extension == ".jpeg")
+            {
+                RawFormat = ImageFormat.Jpeg;
+            }
+            else if (extension == ".png")
+            {
+                RawFormat = ImageFormat.Png;
+            }
+            else if (extension == ".tiff")
+            {
+                RawFormat = ImageFormat.Tiff;
+            }
+            else if (extension == ".exif")
+            {
+                RawFormat = ImageFormat.Exif;
+            }
+            else if (extension == ".icon")
+            {
+                RawFormat = ImageFormat.Icon;
+            }
+            else if (extension == ".heif")
+            {
+                RawFormat = ImageFormat.Heif;
+            }
+            else if (extension == ".webp")
+            {
+                RawFormat = ImageFormat.Webp;
+            }
+			return RawFormat;
         }
-        else if (extension == ".emf")
-        {
-            RawFormat = ImageFormat.Emf;
+		/// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file or stream.</summary>
+		/// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
+		/// <exception cref="T:System.ArgumentNullException">
+		///   <paramref name="filename" /> is <see langword="null." /></exception>
+		/// <exception cref="T:System.Runtime.InteropServices.ExternalException">The image was saved with the wrong image format.
+		/// -or-
+		/// The image was saved to the same file it was created from.</exception>
+		public void Save(string filename)
+		{
+			var extension = IO.Path.GetExtension(filename)?.ToLower();
+			GetImageFormat(extension??string.Empty);
+            Save(filename, RawFormat);
         }
-        else if (extension == ".wmf")
-        {
-            RawFormat = ImageFormat.Wmf;
-        }
-        else if (extension == ".gif")
-        {
-            RawFormat = ImageFormat.Gif;
-        }
-        else if (extension == ".jpeg")
-        {
-            RawFormat = ImageFormat.Jpeg;
-        }
-        else if (extension == ".png")
-        {
-            RawFormat = ImageFormat.Png;
-        }
-        else if (extension == ".tiff")
-        {
-            RawFormat = ImageFormat.Tiff;
-        }
-        else if (extension == ".exif")
-        {
-            RawFormat = ImageFormat.Exif;
-        }
-        else if (extension == ".icon")
-        {
-            RawFormat = ImageFormat.Icon;
-        }
-        else if (extension == ".heif")
-        {
-            RawFormat = ImageFormat.Heif;
-        }
-        else if (extension == ".webp")
-        {
-            RawFormat = ImageFormat.Webp;
-        }
-        return RawFormat;
-    }
-    /// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file or stream.</summary>
-    /// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
-    /// <exception cref="T:System.ArgumentNullException">
-    ///   <paramref name="filename" /> is <see langword="null." /></exception>
-    /// <exception cref="T:System.Runtime.InteropServices.ExternalException">The image was saved with the wrong image format.
-    /// -or-
-    /// The image was saved to the same file it was created from.</exception>
-    public void Save(string filename)
-    {
-        var extension = IO.Path.GetExtension(filename)?.ToLower();
-        if (extension != null)
-        {
-            GetImageFormat(extension);
-        }
-
-        Save(filename, RawFormat);
-    }
 
     /// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file in the specified format.</summary>
     /// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
@@ -657,11 +656,11 @@ public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,M
 
     }
 
-    public new void Dispose()
-    {
-        Dispose(true);
+        public new void Dispose()
+        {
+			Dispose(true);
+        }
     }
-}
 
 
 public class GtkImageConverter : TypeConverter

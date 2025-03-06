@@ -1,15 +1,14 @@
-﻿using System.ComponentModel;
+﻿using Gtk;
+using System.ComponentModel;
 using System.Drawing;
-using Gtk;
 
 namespace System.Windows.Forms;
 
 public class FontDialog : CommonDialog
 {
-    public FontChooserDialog? fontChooserDialog;
     public FontDialog()
     {
-        Init();
+        Reset();
     }
 
     private void Init()
@@ -38,25 +37,21 @@ public class FontDialog : CommonDialog
         _font = null;
     }
 
+    internal static Window? ActiveWindow = null;
     protected override bool RunDialog(IWin32Window? owner)
     {
-        if (fontChooserDialog == null)
+        FontChooserDialog? fontChooserDialog = null;
+        if (owner is Form ownerform)
         {
-            if (owner is Form ownerform)
-            {
-                fontChooserDialog =
-                    new FontChooserDialog(Properties.Resources.FontDialog_RunDialog_Select_font,
-                        ownerform.self);
-                fontChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
-            }
-            else
-            {
-                fontChooserDialog =
-                    new FontChooserDialog(Properties.Resources.FontDialog_RunDialog_Select_font,
-                        null);
-                fontChooserDialog.WindowPosition = WindowPosition.Center;
-            }
+            fontChooserDialog = new FontChooserDialog("选择字体", ownerform.self);
+            fontChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
         }
+        else
+        {
+            fontChooserDialog = new FontChooserDialog("选择字体", null);
+            fontChooserDialog.WindowPosition = WindowPosition.Center;
+        }
+        fontChooserDialog.IconName = "font-x-generic";
         fontChooserDialog.KeepAbove = true;
         if (null != _font)
             fontChooserDialog.Font = _font.Name + " " + (int)_font.Size;
@@ -81,18 +76,10 @@ public class FontDialog : CommonDialog
         }
         _font = new Font(fontChooserDialog.FontDesc.Family, (int)(fontChooserDialog.FontDesc.Size / Pango.Scale.PangoScale), fontStyle);
 
-        fontChooserDialog.HideOnDelete();
+        fontChooserDialog.Dispose();
+        fontChooserDialog.Destroy();
         return res == -5;
     }
 
-    public override string ToString() => $"{_font?.Name} {_font?.Size}";
-    protected override void Dispose(bool disposing)
-    {
-        if (fontChooserDialog != null)
-        {
-            fontChooserDialog.Destroy();
-            fontChooserDialog = null;
-        }
-        base.Dispose(disposing);
-    }
+    public override string ToString() => $"{_font?.Name} {_font?.Size}"; 
 }

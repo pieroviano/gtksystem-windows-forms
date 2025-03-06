@@ -252,40 +252,40 @@ public class DataGridView : ScrollableControl
         }
         _columns.Invalidate();
 
-        if (_columns.Count > 0)
-        {
-            foreach (DataRow dr in dt.Rows)
+            if (_columns.Count > 0)
             {
-                var newRow = new DataGridViewRow();
-                foreach (var col in _columns)
+                foreach (DataRow dr in dt.Rows)
                 {
-                    var cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
-                    newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
+                    var newRow = new DataGridViewRow();
+                    foreach (var col in _columns)
+                    {
+                        var cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
+                        newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
+                    }
+                    _rows.Add(newRow);
                 }
-                _rows.Add(newRow);
             }
         }
-    }
-    private void LoadListSource()
-    {
-        var _type = _DataSource?.GetType();
-        var _entityType = _type?.GetGenericArguments();
-        if ((_entityType?.Length??0) == 1)
+        private void LoadListSource()
         {
-            var pros = _entityType![0].GetProperties();
-            foreach (var pro in pros)
+            var _type = _DataSource.GetType();
+            var _entityType = _type.GetGenericArguments();
+            if (_entityType.Length == 1)
             {
-                if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
+                var pros = _entityType[0].GetProperties(BindingFlags.Public|BindingFlags.Instance);
+                foreach (var pro in pros)
                 {
-                    if (pro.PropertyType.Name == "Boolean")
-                        _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
-                    else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
-                        _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
-                    else
-                        _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                    if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
+                    {
+                        if (pro.PropertyType.Name == "Boolean")
+                            _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                        else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
+                            _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                        else
+                            _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                    }
                 }
-            }
-            _columns.Invalidate();
+                _columns.Invalidate();
 
             if (_columns.Count > 0)
             {

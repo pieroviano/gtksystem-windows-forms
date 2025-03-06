@@ -140,22 +140,21 @@ public sealed class Cursor : IDisposable, ISerializable
 
     public static bool operator !=(Cursor? left, Cursor? right) => !(left == right);
 
-    public override int GetHashCode()
-    {
-        if (_cursorData != null)
+        public override int GetHashCode()
         {
-            return _cursorData.GetHashCode();
+            if (_cursorData != null)
+            {
+                return _cursorData.GetHashCode();
+            }
+
+            if (_handle != IntPtr.Zero)
+            {
+                return _handle.GetHashCode();
+            }
+
+            return 0;
+
         }
-
-        var intPtr = GetHandle();
-        if (intPtr != default)
-        {
-            return intPtr.GetHashCode();
-        }
-
-        return 0;
-
-    }
 
     private IntPtr GetHandle()
     {

@@ -23,37 +23,38 @@ public partial class Form4 : Form
         button4.Click += Button4_Click;
     }
 
-    private void Button4_Click(object? sender, EventArgs e)
-    {
-        splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
-    }
-
-    Point panel1Location = new Point();
-    private void Form4_Shown(object? sender, EventArgs e)
-    {
-
-    }
-
-    private void button3_Click(object sender, EventArgs e)
-    {
-        OpenFileDialog ofd = new OpenFileDialog();
-        ofd.Filter = "jpg|*.jpg;png|*.png";
-        ofd.Multiselect = true;
-        ofd.Title = "测试打开文件";
-
-        DialogResult dialogResult = ofd.ShowDialog(this);
-        Console.WriteLine("dialogResult:" + dialogResult.ToString());
-        Console.WriteLine("FileName:" + ofd.FileName);
-        foreach (string file in ofd.FileNames)
+        private void Button4_Click(object? sender, EventArgs e)
         {
-            Console.WriteLine("FileNames:" + file);
+            //propertyGrid1.SelectedObject = sender;
+            splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
         }
-        Console.WriteLine("SafeFileName:" + ofd.SafeFileName);
-        foreach (string file in ofd.SafeFileNames)
+
+        Point panel1Location = new Point();
+        private void Form4_Shown(object? sender, EventArgs e)
         {
-            Console.WriteLine("SafeFileNames:" + file);
+           
         }
-    }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "图像文件(.jpg)|*.jpg;图像文件(.png)|*.png";
+            ofd.Multiselect = true;
+            ofd.Title = "测试打开文件";
+            ofd.DefaultExt = ".jpg";
+            DialogResult dialogResult = ofd.ShowDialog(this);
+            Console.WriteLine("dialogResult:" + dialogResult.ToString());
+            Console.WriteLine("FileName:" + ofd.FileName);
+            foreach (string file in ofd.FileNames)
+            {
+                Console.WriteLine("FileNames:" + file);
+            }
+            Console.WriteLine("SafeFileName:" + ofd.SafeFileName);
+            foreach (string file in ofd.SafeFileNames)
+            {
+                Console.WriteLine("SafeFileNames:" + file);
+            }
+        }
 
     private void button6_Click(object sender, EventArgs e)
     {

@@ -208,7 +208,7 @@ public class MessageBox
         else
         {
             var window = Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
-            if(window != null)
+            if (window != null)
             {
                 activeWindow = window;
             }
@@ -216,29 +216,58 @@ public class MessageBox
             irun = ShowCore(activeWindow, WindowPosition.CenterOnParent, text, caption, buttons, icon);
         }
 
-            var resp = (ResponseType)Enum.Parse(typeof(ResponseType), irun.ToString());
-            if (resp == ResponseType.Yes)
-                return DialogResult.Yes;
-            if (resp == ResponseType.No)
-                return DialogResult.No;
-            if (resp == ResponseType.Ok)
-                return DialogResult.OK;
-            if (resp == ResponseType.Cancel)
-                return DialogResult.Cancel;
-            if (resp == ResponseType.Reject)
-                return DialogResult.Abort;
-            if (resp == ResponseType.Help)
-                return DialogResult.Retry;
-            if (resp == ResponseType.Close)
-                return DialogResult.Ignore;
-            if (resp == ResponseType.None)
-                return DialogResult.None;
-            if (resp == ResponseType.DeleteEvent)
-                return DialogResult.None;
+        var resp = (ResponseType)Enum.Parse(typeof(ResponseType), irun.ToString());
+        if (resp == ResponseType.Yes)
+            return DialogResult.Yes;
+        if (resp == ResponseType.No)
+            return DialogResult.No;
+        if (resp == ResponseType.Ok)
+            return DialogResult.OK;
+        if (resp == ResponseType.Cancel)
+            return DialogResult.Cancel;
+        if (resp == ResponseType.Reject)
+            return DialogResult.Abort;
+        if (resp == ResponseType.Help)
+            return DialogResult.Retry;
+        if (resp == ResponseType.Close)
+            return DialogResult.Ignore;
+        if (resp == ResponseType.None)
             return DialogResult.None;
+        if (resp == ResponseType.DeleteEvent)
+            return DialogResult.None;
+        return DialogResult.None;
     }
 
-    private static int ShowCore(Window? owner, WindowPosition position, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+    private static int ShowMessageDialogCore(Window owner, WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
+    {
+        var buttonsType = ButtonsType.Close;
+        if (buttons == MessageBoxButtons.OK)
+            buttonsType = ButtonsType.Ok;
+        else if (buttons == MessageBoxButtons.OKCancel)
+            buttonsType = ButtonsType.OkCancel;
+        else if (buttons == MessageBoxButtons.YesNo)
+            buttonsType = ButtonsType.YesNo;
+        else if (buttons == MessageBoxButtons.YesNoCancel)
+            buttonsType = ButtonsType.YesNo;
+        else if (buttons == MessageBoxButtons.AbortRetryIgnore)
+            buttonsType = ButtonsType.OkCancel;
+        else if (buttons == MessageBoxButtons.RetryCancel)
+            buttonsType = ButtonsType.OkCancel;
+
+
+        var dia = new MessageDialog(owner, DialogFlags.DestroyWithParent, MessageType.Info, buttonsType, text);
+        dia.SetPosition(position);
+        dia.StyleContext.AddClass("DefaultThemeStyle");
+        dia.StyleContext.AddClass("MessageBox");
+        dia.BorderWidth = 10;
+        dia.KeepAbove = true;
+        dia.KeepBelow = false;
+        dia.Title = caption;
+        dia.Response += Dia_Response;
+        return dia.Run();
+    }
+
+    private static int ShowCore(Window owner, WindowPosition position, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
     {
         var dia = new Dialog(caption, owner, DialogFlags.DestroyWithParent);
         dia.KeepAbove = true;
@@ -260,14 +289,15 @@ public class MessageBox
         var msgbox = new Box(Gtk.Orientation.Horizontal, 10);
         msgbox.Valign = Align.Start;
         msgbox.Halign = Align.Fill;
+
         if (icon == MessageBoxIcon.Question)
-            msgbox.PackStart(Image.NewFromIconName("dialog-question", IconSize.Dialog), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-question.png"), false, false, 5);
         else if (icon == MessageBoxIcon.Warning || icon == MessageBoxIcon.Exclamation)
-            msgbox.PackStart(Image.NewFromIconName("dialog-warning", IconSize.Dialog), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-warning.png"), false, false, 5);
         else if (icon == MessageBoxIcon.Information || icon == MessageBoxIcon.Asterisk)
-            msgbox.PackStart(Image.NewFromIconName("dialog-information", IconSize.Dialog), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-information.png"), false, false, 5);
         else if (icon == MessageBoxIcon.Error || icon == MessageBoxIcon.Stop || icon == MessageBoxIcon.Hand)
-            msgbox.PackStart(Image.NewFromIconName("dialog-error", IconSize.Dialog), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-error.png"), false, false, 5);
         var content = new Gtk.Label(text) { MarginEnd = 30 };
         content.Halign = Align.Fill;
         content.Valign = Align.Start;
@@ -278,7 +308,7 @@ public class MessageBox
             maxwidth = rectangle.Width / 2;
         }
         var pag = content.CreatePangoLayout(text);
-        pag.GetPixelSize(out var width, out _);
+        pag.GetPixelSize(out var width, out var height);
         if (width > maxwidth)
         {
             dia.SetSizeRequest(maxwidth, 100);
@@ -290,9 +320,7 @@ public class MessageBox
         msgbox.PackStart(content, false, true, 5);
         dia.ContentArea.PackStart(msgbox, false, true, 0);
 
-        var iconTheme = new IconTheme();
-        var pixbuf = iconTheme.LoadIcon("dialog-information", 16, IconLookupFlags.DirLtr);
-        dia.Icon = pixbuf;
+        dia.Icon = new Gdk.Pixbuf(typeof(MessageBox).Assembly, "GTKSystem.Windows.Forms.Resources.System.help-faq.png");
         if (buttons == MessageBoxButtons.OK)
         {
             dia.AddButton(Properties.Resources.MessageBox_ShowCore_OK, ResponseType.Ok);
@@ -328,14 +356,14 @@ public class MessageBox
             dia.AddButton(Properties.Resources.MessageBox_ShowCore_Cancel,
                 ResponseType.Cancel);
         }
-
         dia.ShowAll();
         return dia.Run();
     }
 
-    private static void Dia_Response(object? o, ResponseArgs args)
+    private static void Dia_Response(object o, ResponseArgs args)
     {
-        if (o is Dialog dia)
+        var dia = (Dialog?)o;
+        if (dia != null)
         {
             dia.PangoContext.Dispose();
             dia.Dispose();

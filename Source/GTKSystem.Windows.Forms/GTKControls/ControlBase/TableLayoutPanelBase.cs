@@ -1,5 +1,4 @@
-﻿using Cairo;
-using Gtk;
+﻿using Gtk;
 
 namespace System.Windows.Forms;
 
@@ -22,29 +21,25 @@ public sealed class TableLayoutPanelBase : Grid, IControlGtk
         BorderWidth = 0;
         Vexpand = false;
         Hexpand = false;
-        HscrollbarPolicy = PolicyType.External;
-        VscrollbarPolicy = PolicyType.External;
+        HScrollBarPolicy = PolicyType.External;
+        VScrollBarPolicy = PolicyType.External;
 
-        Add(grid);
-    }
+            Add(grid);
+        }
+    
+    public PolicyType VScrollBarPolicy { get; set; }
 
-    public PolicyType VscrollbarPolicy { get; set; }
+    public PolicyType HScrollBarPolicy { get; set; }
 
-    public PolicyType HscrollbarPolicy { get; set; }
-
-    public void AddClass(string cssClass)
-    {
-        Override.AddClass(cssClass);
+        protected override void OnShown()
+        {
+            Override.OnAddClass();
+            base.OnShown();
+        }
+        protected override bool OnDrawn(Cairo.Context cr)
+        {
+            var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+            Override.OnPaint(cr, rec);
+            return base.OnDrawn(cr);
+        }
     }
-    protected override void OnShown()
-    {
-        Override.OnAddClass();
-        base.OnShown();
-    }
-    protected override bool OnDrawn(Context cr)
-    {
-        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
-        Override.OnPaint(cr, rec);
-        return base.OnDrawn(cr);
-    }
-}

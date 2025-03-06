@@ -189,7 +189,7 @@ public class ColumnHeader : Component, ICloneable
 
     //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
     //{
-    //	throw null;
+    //	throw new NotImplementedException();
     //}
 
     public object Clone()

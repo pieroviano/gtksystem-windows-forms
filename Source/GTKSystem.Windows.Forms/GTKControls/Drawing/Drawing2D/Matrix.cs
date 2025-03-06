@@ -3,12 +3,12 @@ namespace System.Drawing.Drawing2D;
 /// <summary>Encapsulates a 3-by-3 affine matrix that represents a geometric transform. This class cannot be inherited.</summary>
 public sealed class Matrix : MarshalByRefObject, IDisposable
 {
-    public Rectangle Rect { get; }
-    public Point[]? Plgpts { get; }
-
     /// <summary>Gets an array of floating-point values that represents the elements of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
     /// <returns>An array of floating-point values that represents the elements of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</returns>
-    public float[] Elements => throw new NotImplementedException();
+    public float[] Elements
+    {
+        get { throw new NotImplementedException(); }
+    }
 
     /// <summary>Gets a value indicating whether this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is the identity matrix.</summary>
     /// <returns>This property is <see langword="true" /> if this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is identity; otherwise, <see langword="false" />.</returns>
@@ -20,19 +20,11 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
 
     /// <summary>Gets the x translation value (the dx value, or the element in the third row and first column) of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
     /// <returns>The x translation value of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</returns>
-    public float OffsetX
-    {
-        get;
-        internal set;
-    }
+    public float OffsetX { get; internal set; }
 
     /// <summary>Gets the y translation value (the dy value, or the element in the third row and second column) of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
     /// <returns>The y translation value of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</returns>
-    public float OffsetY
-    {
-        get;
-        internal set;
-    }
+    public float OffsetY { get; internal set; }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> class as the identity matrix.</summary>
     public Matrix()
@@ -44,11 +36,11 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     /// <param name="plgpts">An array of three <see cref="T:System.Drawing.Point" /> structures that represents the points of a parallelogram to which the upper-left, upper-right, and lower-left corners of the rectangle is to be transformed. The lower-right corner of the parallelogram is implied by the first three corners.</param>
     public Matrix(Rectangle rect, Point[]? plgpts)
     {
-        Rect = rect;
+        RectF = rect;
         Plgpts = plgpts;
-        //plgpts：一个由三个 PointF 结构构成的数组，该数组表示矩形的左上角、右上角和左下角将变换为的平行四边形的三个点。 平行四边形的右下角的位置可从前三个角的位置导出
-        //此方法初始化新的 Matrix ，使其表示几何转换，该转换由 rect 参数指定的矩形映射到参数中 plgpts 三个点定义的并行四边形。 矩形的左上角映射到数组中的 plgpts 第一个点，右上角映射到第二个点，左下角映射到第三个点。 前三个平行四边形右下角点隐含。
     }
+
+    public Point[]? Plgpts { get; set; }
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> class to the geometric transform defined by the specified rectangle and array of points.</summary>
     /// <param name="rect">A <see cref="T:System.Drawing.RectangleF" /> structure that represents the rectangle to be transformed.</param>
@@ -57,9 +49,6 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     {
         RectF = rect;
         Plgptsf = plgpts;
-        //plgpts：一个由三个 PointF 结构构成的数组，该数组表示矩形的左上角、右上角和左下角将变换为的平行四边形的三个点。 平行四边形的右下角的位置可从前三个角的位置导出
-        //此方法初始化新的 Matrix ，使其表示几何转换，该转换由 rect 参数指定的矩形映射到参数中 plgpts 三个点定义的并行四边形。 矩形的左上角映射到数组中的 plgpts 第一个点，右上角映射到第二个点，左下角映射到第三个点。 前三个平行四边形右下角点隐含。
-
     }
 
     public PointF[]? Plgptsf { get; set; }
@@ -78,8 +67,6 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
         //[m11,m12,0]
         //[m21,m22,0]
         //[dx,dy,1]
-        // 矩阵的第三列是[0,0,1]，固定值
-        //其中M11,M22影响缩放，dx=OffsetX,dy=OffsetY影响平移，M12,M21(和M11，M22)一起影响旋转等。
 
         M11 = m11;
         M12 = m12;
@@ -88,6 +75,7 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
         Dx = dx;
         Dy = dy;
     }
+
     public float M11 { get; set; } = 1;
     public float M12 { get; set; }
     public float M21 { get; set; }
@@ -111,31 +99,31 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     public bool InvertValue { get; set; }
     public Matrix? MultiplyValue { get; set; }
 
-        /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
-        /// <returns>The <see cref="T:System.Drawing.Drawing2D.Matrix" /> that this method creates.</returns>
-        public Matrix Clone()
-		{
-            return null;
-   //         Matrix m = new Matrix();
-			//m.initMatrix = this.initMatrix;
-			//m.initRectangle = this.initRectangle;
-			//m.initPointF = this.initPointF;
-			//m.vectorTransformPoints = this.vectorTransformPoints;
-			//m.transformVectors = this.transformVectors;
-			//m.transformPoints = this.transformPoints;
-			//m.shearX = this.shearX;
-			//m.shearY = this.shearY;
-			//m.angle = this.angle;
-			//m.scaleX = this.scaleX;
-			//m.scaleY = this.scaleY;
-			//m.rotateAtPoint = this.rotateAtPoint;
-			//m.order = this.order;
-			//m.dx = this.dx;
-			//m.dy = this.dy;
-			//m.m11 = this.m11;
-			//m.m12 = this.m12;
-			//m.m21 = this.m21;
-			//m.m22 = this.m22;
+    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
+    /// <returns>The <see cref="T:System.Drawing.Drawing2D.Matrix" /> that this method creates.</returns>
+    public Matrix Clone()
+    {
+        return null!;
+        //         Matrix m = new Matrix();
+        //m.initMatrix = this.initMatrix;
+        //m.initRectangle = this.initRectangle;
+        //m.initPointF = this.initPointF;
+        //m.vectorTransformPoints = this.vectorTransformPoints;
+        //m.transformVectors = this.transformVectors;
+        //m.transformPoints = this.transformPoints;
+        //m.shearX = this.shearX;
+        //m.shearY = this.shearY;
+        //m.angle = this.angle;
+        //m.scaleX = this.scaleX;
+        //m.scaleY = this.scaleY;
+        //m.rotateAtPoint = this.rotateAtPoint;
+        //m.order = this.order;
+        //m.dx = this.dx;
+        //m.dy = this.dy;
+        //m.m11 = this.m11;
+        //m.m12 = this.m12;
+        //m.m21 = this.m21;
+        //m.m22 = this.m22;
 
         //return m;
     }
@@ -168,22 +156,20 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     /// <summary>Tests whether the specified object is a <see cref="T:System.Drawing.Drawing2D.Matrix" /> and is identical to this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
     /// <param name="obj">The object to test.</param>
     /// <returns>This method returns <see langword="true" /> if <paramref name="obj" /> is the specified <see cref="T:System.Drawing.Drawing2D.Matrix" /> identical to this <see cref="T:System.Drawing.Drawing2D.Matrix" />; otherwise, <see langword="false" />.</returns>
-#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public override bool Equals(object? obj)
-#pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
-        return IsEqual(obj);
+        return this.GetHashCode() == obj?.GetHashCode();
     }
 
-    private bool IsEqual(object? obj)
+    public override int GetHashCode()
     {
-        return GetHashCode() == obj?.GetHashCode();
+        return base.GetHashCode();
     }
 
     /// <summary>Inverts this <see cref="T:System.Drawing.Drawing2D.Matrix" />, if it is invertible.</summary>
     public void Invert()
     {
-        InvertValue = true;
+        this.InvertValue = true;
     }
 
     /// <summary>Multiplies this <see cref="T:System.Drawing.Drawing2D.Matrix" /> by the matrix specified in the <paramref name="matrix" /> parameter, by prepending the specified <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
@@ -326,7 +312,6 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     /// <param name="pts">An array of <see cref="T:System.Drawing.Point" /> structures that represents the points to transform.</param>
     public void TransformVectors(PointF[] pts)
     {
-        //将数组中的每个矢量与矩阵相乘。 该矩阵的转换元素（第三行）被忽略。
         //         this.m11 = this.m11 * pts[0].X + this.m11 * pts[1].X;
         //this.m12 = this.m12 * pts[0].Y + this.m12 * pts[1].Y;
 
@@ -366,7 +351,6 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     /// <param name="pts">An array of <see cref="T:System.Drawing.Point" /> structures that represents the points to transform.</param>
     public void VectorTransformPoints(Point[] pts)
     {
-        //将数组中的每个矢量与矩阵相乘。 该矩阵的转换元素（第三行）被忽略。
         //         this.m11 = this.m11 * pts[0].X + this.m11 * pts[1].X;
         //this.m12 = this.m12 * pts[0].Y + this.m12 * pts[1].Y;
 

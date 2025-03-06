@@ -15,7 +15,7 @@ internal sealed class RuntimeResourceSet : ResourceSet, IEnumerable
 
     private bool _haveReadFromReader;
 
-    private IResourceReader? Reader => _defaultReader;
+		private IResourceReader Reader => _defaultReader;
 
     internal RuntimeResourceSet(IResourceReader reader)
     {

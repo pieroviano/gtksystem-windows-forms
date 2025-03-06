@@ -13,10 +13,9 @@ namespace System.Windows.Forms;
 
 public class ColorDialog : CommonDialog
 {
-    public ColorChooserDialog? colorChooserDialog;
-    private int[] customColors = [];
+    private int[]? customColors;
 
-    [DefaultValue(true)] public virtual bool AllowFullOpen { get; set; } = true;
+    public virtual bool AllowFullOpen { get; set; } = true;
 
     [DefaultValue(false)]
     public virtual bool AnyColor { get; set; }
@@ -56,24 +55,23 @@ public class ColorDialog : CommonDialog
     {
         Color = Color.Black;
     }
-    protected override bool RunDialog(IWin32Window? owner)
+    protected override bool RunDialog(IWin32Window owner)
     {
-        if (colorChooserDialog == null)
+        ColorChooserDialog? colorChooserDialog = null;
+        if (owner is Form ownerform)
         {
-            if (owner is Form ownerform)
-            {
-                colorChooserDialog = new ColorChooserDialog(
-                    Properties.Resources.ColorDialog_RunDialog_Choose_color, ownerform.self);
-                colorChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
-            }
-            else
-            {
-                colorChooserDialog =
-                    new ColorChooserDialog(
-                        Properties.Resources.ColorDialog_RunDialog_Choose_color, null);
-                colorChooserDialog.WindowPosition = WindowPosition.Center;
-            }
+            colorChooserDialog = new ColorChooserDialog(
+                Properties.Resources.ColorDialog_RunDialog_Choose_color, ownerform.self);
+            colorChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
         }
+        else
+        {
+            colorChooserDialog =
+                new ColorChooserDialog(
+                    Properties.Resources.ColorDialog_RunDialog_Choose_color, null);
+            colorChooserDialog.WindowPosition = WindowPosition.Center;
+        }
+        colorChooserDialog.IconName = "image-x-generic";
         colorChooserDialog.KeepAbove = true;
         if (Color.Name != "0")
             colorChooserDialog.Rgba = new Gdk.RGBA() { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
@@ -82,18 +80,10 @@ public class ColorDialog : CommonDialog
         var res = colorChooserDialog.Run();
         var colorSelection = colorChooserDialog.Rgba;
         Color = Color.FromArgb((int)(colorSelection.Alpha * 255), (int)Math.Round(colorSelection.Red * 255, 0), (int)Math.Round(colorSelection.Green * 255, 0), (int)Math.Round(colorSelection.Blue * 255, 0));
-        colorChooserDialog.HideOnDelete();
+        colorChooserDialog.Dispose();
+        colorChooserDialog.Destroy();
         return res == -5;
     }
 
     public override string ToString() { return Color.Name; }
-    protected override void Dispose(bool disposing)
-    {
-        if (colorChooserDialog != null)
-        {
-            colorChooserDialog.Destroy();
-            colorChooserDialog = null;
-        }
-        base.Dispose(disposing);
-    }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 
-#nullable disable
 namespace System.Drawing;
 
 /// <summary>Specifies the known system colors.</summary>

@@ -47,7 +47,6 @@ using System.Runtime.CompilerServices;
 namespace System.Drawing;
 // xxHash32 is used for the hash code.
 // https://github.com/Cyan4973/xxHash
-
 public struct HashCode
 {
     private static readonly uint s_seed = GenerateGlobalSeed();
