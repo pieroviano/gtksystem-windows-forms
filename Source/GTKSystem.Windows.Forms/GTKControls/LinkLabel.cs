@@ -34,7 +34,7 @@ public class LinkLabel: Control
         Click?.Invoke(this, e);
     }
     public override event EventHandler? Click;
-    public override string? Text { get => string.IsNullOrEmpty(self.Label)? self.Uri : self.Label;
+    public override string Text { get => string.IsNullOrEmpty(self.Label)? self.Uri : self.Label;
         set { self.Label = value; self.Uri = value; } }
          
 
@@ -110,7 +110,7 @@ public class LinkLabel: Control
             }
             else
             {
-                owner.Text = value?.ToString();
+                owner.Text = value?.ToString()??string.Empty;
             }
             return 1;
         }
@@ -122,7 +122,7 @@ public class LinkLabel: Control
 
         public bool Contains(object? value)
         {
-            return (owner.Text??string.Empty).Contains(value?.ToString());
+            return (owner.Text??string.Empty).Contains(value?.ToString()??string.Empty);
         }
 
         public void CopyTo(Array array, int index)

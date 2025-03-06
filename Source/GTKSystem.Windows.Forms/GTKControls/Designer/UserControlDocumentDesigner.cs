@@ -9,6 +9,4 @@ namespace System.Windows.Forms.Designer;
 ///  <para>Provides a base implementation of a designer for user controls.</para>
 /// </summary>
 [ToolboxItemFilter("System.Windows.Forms.UserControl", ToolboxItemFilterType.Custom)]
-internal class UserControlDocumentDesigner : DocumentDesigner
-{
-}
+internal class UserControlDocumentDesigner : DocumentDesigner;

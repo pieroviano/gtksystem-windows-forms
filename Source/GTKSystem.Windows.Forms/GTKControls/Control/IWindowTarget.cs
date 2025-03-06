@@ -1,5 +1,3 @@
 ﻿namespace System.Windows.Forms;
 
-public interface IWindowTarget
-{
-}
+public interface IWindowTarget;

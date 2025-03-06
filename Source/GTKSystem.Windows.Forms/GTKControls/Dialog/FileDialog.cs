@@ -137,25 +137,25 @@ public abstract class FileDialog : CommonDialog
         if (!string.IsNullOrWhiteSpace(DefaultExt))
         {
             DefaultExt = DefaultExt.Trim('.');
-            FileFilter filter = new FileFilter();
+            var filter = new FileFilter();
             filter.AddMimeType(DefaultExt);
             filter.AddPattern($"*.{DefaultExt}");
             fileDialog.Filter = filter;
         }
         if (_filter != null)
         {
-            string[] filters = _filter.Split(';');
-            foreach (string filter in filters)
+            var filters = _filter.Split(';');
+            foreach (var filter in filters)
             {
-                string[] pattern = filter.Split('|');
-                FileFilter ffilter = new FileFilter();
+                var pattern = filter.Split('|');
+                var ffilter = new FileFilter();
                 ffilter.AddMimeType(pattern[0]);
                 ffilter.AddPattern(pattern[1]);
                 fileDialog.AddFilter(ffilter);
             }
         }
 
-        int response = fileDialog.Run();
+        var response = fileDialog.Run();
         FileName = fileDialog.Filename;
         FileNames = fileDialog.Filenames.Clone() as string[];
         SelectedDirectory = fileDialog.Filename;

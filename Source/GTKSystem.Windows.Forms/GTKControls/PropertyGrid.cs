@@ -5,13 +5,13 @@
  * author:chenhongjin
  */
 
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms.ComponentModel;
 using System.Windows.Forms.Design;
+using System.Windows.Forms.Microsoft.Win32;
 using System.Windows.Forms.PropertyGridInternal;
 
 namespace System.Windows.Forms;
@@ -61,7 +61,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
         set
         {
             _selectedObjects = value is null ? Array.Empty<object>() : (object[])value.Clone();
-            //只支持一个对象
+            // Only supports one object
             _propertyView.LoadPropertyInfo(_selectedObjects[0]);
         }
     }
@@ -74,7 +74,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     }
 
     [Browsable(true)]
-    [Description("控件的大小（以像素为单位）。")]
+    [Description("The size of the control in pixels.")]
     public override Size Size
     {
         get => base.Size;

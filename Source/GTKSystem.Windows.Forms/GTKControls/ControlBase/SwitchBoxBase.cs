@@ -1,11 +1,9 @@
-﻿using System.Windows.Forms;
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase;
+﻿namespace System.Windows.Forms;
 
 public sealed class SwitchBoxBase : Gtk.Switch, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
-    public SwitchBoxBase() : base()
+    public SwitchBoxBase()
     {
         Override = new GtkControlOverride(this);
         Override.AddClass("SwitchBox");

@@ -25,7 +25,7 @@ public class TableLayoutControlCollection : Control.ControlCollection
         control.Widget.Valign = Align.Start;
         control.Widget.Halign = Align.Start;
         control.Widget.Hexpand = false;
-        if (Container.grid.GetChildAt(column, row) is Viewport view)
+        if (Container?.grid.GetChildAt(column, row) is Viewport view)
         {
             view.Child = control.Widget as Widget;
         }
@@ -36,11 +36,14 @@ public class TableLayoutControlCollection : Control.ControlCollection
             viewport.Halign = Align.Fill;
             viewport.BorderWidth = 0;
             viewport.Child = control.Widget as Widget;
-            Container.grid.Attach(viewport, column, row, 1, 1);
+            Container?.grid.Attach(viewport, column, row, 1, 1);
         }
         base.Add(control);
-        Container.SetColumn(control, column);
-        Container.SetRow(control, row);
+        if (Container != null)
+        {
+            Container.SetColumn(control, column);
+            Container.SetRow(control, row);
+        }
     }
 
     public TableLayoutPanel? Container { get; }

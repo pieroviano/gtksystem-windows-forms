@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace System.Windows.Forms.PropertyGridInternal;
 
-internal partial class GridEntry : GridItem, ITypeDescriptorContext
+internal class GridEntry : GridItem, ITypeDescriptorContext
 {
     public PropertyGrid? OwnerGrid { get; set; }
     public GridEntry? _parent;
@@ -25,7 +25,8 @@ internal partial class GridEntry : GridItem, ITypeDescriptorContext
         this.value = value;
         Description = description;
     }
-    public override GridItemCollection? GridItems { get; }
+
+    public override GridItemCollection? GridItems => gridItems;
 
     public override GridItemType GridItemType { get; }
 
@@ -33,8 +34,11 @@ internal partial class GridEntry : GridItem, ITypeDescriptorContext
 
     public override GridItem? Parent { get; }
 
-    public override PropertyDescriptor? PropertyDescriptor { get; }
+    public override PropertyDescriptor? PropertyDescriptor => propertyDescriptor;
+
     internal object? value;
+    internal GridItemCollection? gridItems;
+    internal PropertyDescriptor? propertyDescriptor;
     public override object? Value => value;
 
     public override bool Select()

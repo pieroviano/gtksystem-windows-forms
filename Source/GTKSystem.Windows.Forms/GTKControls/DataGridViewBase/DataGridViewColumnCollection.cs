@@ -132,9 +132,9 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
     {
         if (Count > owner?.Store.NColumns)
         {
-            object[] columnTypes = new object[Count];
+            var columnTypes = new object[Count];
             owner.Store.Clear();
-            owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
+            owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, _ => typeof(DataGridViewCell)));
             if (owner.GridView != null)
             {
                 owner.GridView.Model = owner.Store;
@@ -146,24 +146,29 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
             {
                 owner.GridView.Model = owner.Store;
             }
-            owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
-            for (int i=0;i < owner.Store.NColumns; i++)
+
+            if (owner != null)
             {
-                owner.Store.SetSortFunc(i, (m, t1, t2) =>
+                owner.Store.DefaultSortFunc =
+                    (_, _, _) => { return 0; };
+                for (var i = 0; i < owner.Store.NColumns; i++)
                 {
-                    ((Gtk.TreeStore)m).GetSortColumnId(out var sortid, out _);
-                    var v1 = m.GetValue(t1, sortid) as DataGridViewCell;
-                    var v2 = m.GetValue(t2, sortid) as DataGridViewCell;
-                    if (v1?.Value == null || v2?.Value == null)
-                        return 0;
-                    if (int.TryParse(v1.Value.ToString(), out var rv1) &&
-                        int.TryParse(v2.Value.ToString(), out var rv2))
-                        return (rv2 - rv1);
-                    if (DateTime.TryParse(v1.Value.ToString(), out var rd1) &&
-                        DateTime.TryParse(v2.Value.ToString(), out var rd2))
-                        return (int)((rd2 - rd1).TotalSeconds);
-                    return String.Compare(v2.Value.ToString(), v1.Value.ToString(), StringComparison.Ordinal);
-                });
+                    owner.Store.SetSortFunc(i, (m, t1, t2) =>
+                    {
+                        ((Gtk.TreeStore)m).GetSortColumnId(out var sortid, out _);
+                        var v1 = m.GetValue(t1, sortid) as DataGridViewCell;
+                        var v2 = m.GetValue(t2, sortid) as DataGridViewCell;
+                        if (v1?.Value == null || v2?.Value == null)
+                            return 0;
+                        if (int.TryParse(v1.Value.ToString(), out var rv1) &&
+                            int.TryParse(v2.Value.ToString(), out var rv2))
+                            return (rv2 - rv1);
+                        if (DateTime.TryParse(v1.Value.ToString(), out var rd1) &&
+                            DateTime.TryParse(v2.Value.ToString(), out var rd2))
+                            return (int)((rd2 - rd1).TotalSeconds);
+                        return string.Compare(v2.Value.ToString(), v1.Value.ToString(), StringComparison.Ordinal);
+                    });
+                }
             }
         }
     }

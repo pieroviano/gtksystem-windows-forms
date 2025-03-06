@@ -8,7 +8,7 @@ namespace System.Windows.Forms;
 
 public partial class ListBox
 {
-    public partial class IntegerCollection : IList
+    public partial class IntegerCollection
     {
         private readonly ListBox _owner;
         private int[]? _innerArray;

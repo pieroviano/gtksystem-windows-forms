@@ -40,7 +40,7 @@ public class PrintDocument : Component
         set
         {
             _pageSetup = value;
-            PageSettings pageSettings = DefaultPageSettings;
+            var pageSettings = DefaultPageSettings;
             pageSettings.Landscape = value.Orientation == PageOrientation.Landscape ||
                                      value.Orientation == PageOrientation.ReverseLandscape;
             pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points),
@@ -140,7 +140,7 @@ public class PrintDocument : Component
 
     public void Print()
     {
-        PrintDialog printDialog = new PrintDialog();
+        var printDialog = new PrintDialog();
         printDialog.Document = this;
         printDialog.AllowPrintToFile = false;
         printDialog.PrintToFile = false;

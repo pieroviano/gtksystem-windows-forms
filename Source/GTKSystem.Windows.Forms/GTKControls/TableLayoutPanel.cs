@@ -17,7 +17,7 @@ namespace System.Windows.Forms;
 //[ProvideProperty("CellPosition", typeof(Control))]
 //[DefaultProperty("ColumnCount")]
 [DesignerCategory("Component")]
-public partial class TableLayoutPanel : ContainerControl, IExtenderProvider
+public class TableLayoutPanel : ContainerControl, IExtenderProvider
 {
     public readonly TableLayoutPanelBase self = new();
     public override object GtkControl => self;
@@ -25,7 +25,7 @@ public partial class TableLayoutPanel : ContainerControl, IExtenderProvider
     private readonly TableLayoutColumnStyleCollection _columnStyles;
     private readonly TableLayoutRowStyleCollection _rowStyles;
     public Gtk.Grid grid => self.grid;
-    public TableLayoutPanel():base()
+    public TableLayoutPanel()
     {
         _controls=new TableLayoutControlCollection(this);
         _columnStyles = new TableLayoutColumnStyleCollection();
@@ -178,7 +178,7 @@ public partial class TableLayoutPanel : ContainerControl, IExtenderProvider
     }
     bool IExtenderProvider.CanExtend(object obj)
     {
-        throw null;
+        throw new NotImplementedException();
     }
 
     [DefaultValue(1)]
@@ -254,7 +254,7 @@ public partial class TableLayoutPanel : ContainerControl, IExtenderProvider
 
     }
 
-    public Control GetControlFromPosition(int column, int row)
+    public Control? GetControlFromPosition(int column, int row)
     {
         return grid.GetChildAt(column, row).Data["Control"] as Control;
     }

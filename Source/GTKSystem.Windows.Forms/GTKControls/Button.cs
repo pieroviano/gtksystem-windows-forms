@@ -23,7 +23,7 @@ public class Button : Control
         if(Click!= null && self.IsVisible) { Click?.Invoke(this, EventArgs.Empty); }
     }
 
-    public override string? Text { get => ((Gtk.Label)self.Child).Text; set => ((Gtk.Label)self.Child).Text = value; }
+    public override string Text { get => ((Gtk.Label)self.Child).Text; set => ((Gtk.Label)self.Child).Text = value; }
 
     public override event EventHandler? Click;
     public override RightToLeft RightToLeft { get => self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No;

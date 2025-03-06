@@ -65,7 +65,7 @@ public class RichTextBox : ScrollableControl
         self.TextView.Buffer.InsertAtCursor(text);
     }
 
-    public override string? Text { get => self.TextView.Buffer.Text; set => self.TextView.Buffer.Text = value; }
+    public override string Text { get => self.TextView.Buffer.Text; set => self.TextView.Buffer.Text = value; }
     public virtual bool ReadOnly
     {
         get => self.TextView.CanFocus;

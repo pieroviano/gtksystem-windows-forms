@@ -8,7 +8,9 @@ namespace System.Windows.Forms;
 
 public class DataGridViewRowPrePaintEventArgs : HandledEventArgs
 {
+#pragma warning disable CS0169 // Field is never used
     private readonly DataGridView? _dataGridView;
+#pragma warning restore CS0169 // Field is never used
     // private DataGridViewPaintParts _paintParts;
 
     //public DataGridViewRowPrePaintEventArgs(DataGridView dataGridView,

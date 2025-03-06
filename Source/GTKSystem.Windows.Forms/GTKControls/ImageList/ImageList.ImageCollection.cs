@@ -19,10 +19,14 @@ public sealed partial class ImageList
         ///  A caching mechanism for key accessor
         ///  We use an index here rather than control so that we don't have lifetime
         ///  issues by holding on to extra references.
+#pragma warning disable CS0414 // Field is assigned but its value is never used
         private int _lastAccessedIndex = -1;
 
         // Indicates whether images are added in a batch.
+#pragma warning disable CS0169 // Field is never used
         private bool _isBatchAdd;
+#pragma warning restore CS0169 // Field is never used
+#pragma warning restore CS0414 // Field is assigned but its value is never used 
 
         /// <summary>
         ///  Returns the keys in the image list - images without keys return String.Empty.
@@ -83,15 +87,18 @@ public sealed partial class ImageList
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image this[int index]
+        public Image? this[int index]
         {
-            get => _owner._originals[index]._image as Image;
+            get => _owner?._originals?[index]._image as Image;
             set
             {
                 if (_imageInfoCollection.Count > index)
                 {
                     var bitmap = value as Bitmap;
-                    _owner._originals[index] = new Original(bitmap.Clone(), OriginalOptions.OwnsImage);
+                    if (_owner._originals != null)
+                    {
+                        _owner._originals[index] = new Original(bitmap?.Clone(), OriginalOptions.OwnsImage);
+                    }
                 }
             }
         }
@@ -129,7 +136,7 @@ public sealed partial class ImageList
         /// <summary>
         ///  Adds an image to the end of the image list with a key accessor.
         /// </summary>
-        public void Add(string key, Image image)
+        public void Add(string key, Image? image)
         {
             // Store off the name.
             var imageInfo = new ImageInfo
@@ -196,7 +203,7 @@ public sealed partial class ImageList
         private int Add(Original original, ImageInfo? imageInfo)
         {
             _imageInfoCollection.Add(imageInfo ?? new ImageInfo());
-            _owner._originals.Add(original);
+            _owner._originals?.Add(original);
             _owner.OnChangeHandle(EventArgs.Empty);
             return _imageInfoCollection.Count - 1;
         }
@@ -294,7 +301,7 @@ public sealed partial class ImageList
 
         public IEnumerator GetEnumerator()
         {
-            var images = new Image[Count];
+            var images = new Image?[Count];
             for (var i = 0; i < images.Length; ++i)
             {
                 images[i] = _owner.GetBitmap(i);
@@ -323,7 +330,7 @@ public sealed partial class ImageList
             if (index >= 0 && index < _imageInfoCollection.Count)
             {
                 _imageInfoCollection.RemoveAt(index);
-                _owner._originals.RemoveAt(index);
+                _owner._originals?.RemoveAt(index);
                 _owner.OnChangeHandle(EventArgs.Empty);
             }
         }
@@ -341,7 +348,7 @@ public sealed partial class ImageList
         }
 
         /// <summary>
-        ///  请必须把相关图片复制到目录Resources下，保持文件名与name一致
+        ///  Please copy the relevant pictures to the directory Resources and keep the file name consistent with name
         /// </summary>
         public void SetKeyName(int index, string name)
         {
@@ -349,7 +356,10 @@ public sealed partial class ImageList
             if (len > index)
             {
                 _imageInfoCollection[index].Name = name;
-                _owner._originals[index] = new Original(_owner.GetOriginalImage(name), OriginalOptions.OwnsImage);
+                if (_owner._originals != null)
+                {
+                    _owner._originals[index] = new Original(_owner.GetOriginalImage(name), OriginalOptions.OwnsImage);
+                }
             }
             else
             {

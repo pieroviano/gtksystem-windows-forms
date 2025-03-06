@@ -8,14 +8,18 @@ public class ContainerControl : ScrollableControl, IContainerControl
     {
         get
         {
-            foreach (var control in Controls)
+            if (Controls != null)
             {
-                if (control is Control con)
+                foreach (var control in Controls)
                 {
-                    if ((con.Widget.StateFlags & Gtk.StateFlags.Active) != 0 || con.Widget.IsFocus)
-                        return con;
+                    if (control is Control con)
+                    {
+                        if ((con.Widget.StateFlags & Gtk.StateFlags.Active) != 0 || con.Widget.IsFocus)
+                            return con;
+                    }
                 }
             }
+
             return activeControl;
         }
         set => ActivateControl(value);

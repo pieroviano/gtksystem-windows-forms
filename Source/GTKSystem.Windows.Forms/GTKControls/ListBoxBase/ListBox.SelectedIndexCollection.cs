@@ -8,7 +8,7 @@ namespace System.Windows.Forms;
 
 public partial class ListBox
 {
-    public partial class SelectedIndexCollection : IList
+    public partial class SelectedIndexCollection
     {
         private readonly ListBox _owner;
 

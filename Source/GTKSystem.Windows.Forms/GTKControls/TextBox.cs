@@ -119,7 +119,7 @@ public class TextBox : Control
     {
         get
         {
-            self.GetSelectionBounds(out int start, out _);
+            self.GetSelectionBounds(out var start, out _);
             return start;
         }
     }

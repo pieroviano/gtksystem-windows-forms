@@ -46,13 +46,13 @@ public partial class ComboBox
             /// </summary>
             public int Add(object item)
             {
-                int index = AddInternal(item);
+                var index = AddInternal(item);
                 NativeAdd(-1, item.ToString(), item.ToString());
                 return index;
             }
             internal int Add(string? text, string? value, object item)
             {
-                int index = AddInternal(item);
+                var index = AddInternal(item);
                 NativeAdd(-1, value, text);
                 return index;
             }
@@ -79,7 +79,7 @@ public partial class ComboBox
                 }
                 else
                 {
-                    Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
+                    var entry = item is Entry entryItem ? entryItem : new Entry(item);
                     index = InnerList.BinarySearch(index: 0, Count, entry, this);
                     if (index < 0)
                     {
@@ -97,7 +97,7 @@ public partial class ComboBox
 
             public void AddRange(params object?[] items)
             {
-                foreach (object? item in items)
+                foreach (var item in items)
                 {
                     AddInternal(item);
                     if (item is Entry entryItem)

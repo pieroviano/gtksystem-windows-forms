@@ -319,7 +319,7 @@ public class WidgetToolStrip<T> : ToolStripItem
         }
     }
 
-    public override string? Text
+    public override string Text
     {
         get
         {

@@ -137,7 +137,7 @@ public sealed class PrintDialog : CommonDialog
             }
         }catch(Exception ex)
         {
-            MessageDialog messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self,
+            var messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self,
                 DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");
             messageDialog.WindowPosition = owner == null ? WindowPosition.Center : WindowPosition.CenterOnParent;
             if (ex.Message.ToLower().Contains("doc"))

@@ -23,7 +23,9 @@ public class PaintEventArgs : EventArgs, IDisposable
     /// <summary>
     ///  See ResetGraphics()
     /// </summary>
+#pragma warning disable CS0169 // Field is never used
     private GraphicsState? _savedGraphicsState;
+#pragma warning restore CS0169 // Field is never used
 
     /// <summary>
     ///  DC (Display context) for obtaining the graphics object. Used to delay

@@ -7,9 +7,9 @@ using System.Windows.Forms.Resources.IO;
 
 namespace System.Windows.Forms.Resources;
 
-public sealed class DeserializingResourceReader : System.Resources.IResourceReader, IEnumerable, IDisposable
+public sealed class DeserializingResourceReader : System.Resources.IResourceReader
 {
-    internal sealed class ResourceEnumerator : IDictionaryEnumerator, IEnumerator
+    internal sealed class ResourceEnumerator : IDictionaryEnumerator
     {
         private const int enumDone = int.MinValue;
 
@@ -1062,13 +1062,13 @@ public sealed class DeserializingResourceReader : System.Resources.IResourceRead
         }
         if (obj?.GetType() != type)
         {
-            throw new BadImageFormatException(Messages.Format(Messages.BadImageFormatResTypeSerBlobMismatch, type?.FullName, obj.GetType().FullName));
+            throw new BadImageFormatException(Messages.Format(Messages.BadImageFormatResTypeSerBlobMismatch, type?.FullName, obj?.GetType().FullName));
         }
         return obj;
     }
     internal class ImageListSerializationBinder : SerializationBinder
     {
-        public override Type BindToType(string assemblyName, string typeName)
+        public override Type? BindToType(string assemblyName, string typeName)
         {
             return Type.GetType(typeName);
         }

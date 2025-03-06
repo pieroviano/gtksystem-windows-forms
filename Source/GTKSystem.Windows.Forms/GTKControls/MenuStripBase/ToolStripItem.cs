@@ -178,7 +178,7 @@ public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArr
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-    public ArrangedElementCollection? Children => throw new NotImplementedException();
+    public ArrangedElementCollection Children => throw new NotImplementedException();
 
     public virtual event EventHandler? Click;
     public virtual event EventHandler? CheckedChanged;

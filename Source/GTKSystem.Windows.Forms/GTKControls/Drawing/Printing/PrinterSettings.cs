@@ -10,7 +10,7 @@ public class PrinterSettings : ICloneable
 {
     private readonly string _driverName = "";
 
-    private readonly PageSettings? _defaultPageSettings;
+    private readonly PageSettings _defaultPageSettings;
     private int _maxPage = 9999;
     private int _minPage;
     private PrintRange _printRange;
@@ -38,7 +38,7 @@ public class PrinterSettings : ICloneable
         set;
     }
 
-    public PageSettings? DefaultPageSettings => _defaultPageSettings;
+    public PageSettings DefaultPageSettings => _defaultPageSettings;
 
     // As far as I can tell, Windows no longer pays attention to driver names and output ports.
     // But I'm leaving this code in place in case I'm wrong.

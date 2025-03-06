@@ -7,7 +7,4 @@ namespace System.Windows.Forms.Design;
 ///  The ScrollableControlDesigner class builds on the ParentControlDesigner, and adds the implementation
 ///  of IWinFormsDesigner so that the designer can be hosted as a document.
 /// </summary>
-public class ScrollableControlDesigner : ParentControlDesigner
-{
-
-}
+public class ScrollableControlDesigner : ParentControlDesigner;

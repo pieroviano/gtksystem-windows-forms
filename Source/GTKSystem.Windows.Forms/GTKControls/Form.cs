@@ -295,7 +295,7 @@ public class Form : ContainerControl, IWin32Window
     public event FormClosingEventHandler? FormClosing;
     public event FormClosedEventHandler? FormClosed;
     public override event EventHandler? Load;
-    public override string? Text
+    public override string Text
     {
         get => self.Title;
         set => self.Title = value;
@@ -431,9 +431,7 @@ public class Form : ContainerControl, IWin32Window
 
     }
 
-    public class MdiLayout
-    {
-    }
+    public class MdiLayout;
 }
 
 public class BindingContext : ContextBoundObject

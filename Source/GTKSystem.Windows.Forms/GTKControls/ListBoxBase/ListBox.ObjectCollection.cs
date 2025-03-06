@@ -252,7 +252,7 @@ public partial class ListBox
         /// <summary>
         ///  Returns an enumerator for the ListBox Items collection.
         /// </summary>
-        public IEnumerator GetEnumerator() => InnerArray.GetEnumerator(0);
+        public IEnumerator GetEnumerator() => InnerArray.GetEnumerator();
 
         public int IndexOf(object? value)
         {

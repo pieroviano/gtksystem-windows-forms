@@ -12,7 +12,7 @@ public struct Padding
     /// <summary>
     ///     Provides a System.Windows.Forms.Padding object with no padding.
     /// </summary>
-    public static readonly Padding Empty;
+    public static Padding Empty => default;
 
     /// <summary>
     ///     Initializes a new instance of the System.Windows.Forms.Padding class using the
@@ -184,7 +184,7 @@ public struct Padding
     /// <returns>
     ///     true if the System.Windows.Forms.Padding objects are equivalent; otherwise, false.
     /// </returns>
-    public override bool Equals(object other)
+    public override bool Equals(object? other)
     {
         return false;
     }

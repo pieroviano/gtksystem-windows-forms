@@ -364,7 +364,7 @@ public partial class ListBox : ListControl
     }
 
     [Browsable(false)]
-    public override string? Text
+    public override string Text
     {
         get
         {

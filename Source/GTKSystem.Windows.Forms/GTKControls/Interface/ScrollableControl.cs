@@ -4,7 +4,7 @@ using System.Drawing;
 namespace System.Windows.Forms;
 
 [Designer("System.Windows.Forms.Design.ScrollableControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-public class ScrollableControl : Control, IArrangedElement, IComponent, IDisposable
+public class ScrollableControl : Control
 {
 
     protected const int scrollStateAutoScrolling = 1;
@@ -37,14 +37,35 @@ public class ScrollableControl : Control, IArrangedElement, IComponent, IDisposa
         set
         {
             autoScroll = value;
-            if(scrollbase != null) { scrollbase.AutoScroll = value; }
+            if (scrollbase != null) { scrollbase.AutoScroll = value; }
         }
     }
     //public VScrollProperties VerticalScroll { get; }
     //public DockPaddingEdges DockPadding { get; }
     //public HScrollProperties HorizontalScroll { get; }
-    protected bool VScroll { get => scrollbase.VScroll; set => scrollbase.VScroll = value; }
-    protected bool HScroll { get => scrollbase.HScroll; set => scrollbase.HScroll = value; }
+    protected bool VScroll
+    {
+        get => scrollbase?.VScroll ?? false;
+        set
+        {
+            if (scrollbase != null)
+            {
+                scrollbase.VScroll = value;
+            }
+        }
+    }
+
+    protected bool HScroll
+    {
+        get => scrollbase?.HScroll??false;
+        set
+        {
+            if (scrollbase != null)
+            {
+                scrollbase.HScroll = value;
+            }
+        }
+    }
 
     public virtual event ScrollEventHandler? Scroll
     {

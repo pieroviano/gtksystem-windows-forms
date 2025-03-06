@@ -2,7 +2,4 @@
 
 namespace System.Windows.Forms;
 
-internal class FormsWidget : Widget
-{
-
-}
+internal class FormsWidget : Widget;

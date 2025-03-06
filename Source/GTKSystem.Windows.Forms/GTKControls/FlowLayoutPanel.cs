@@ -64,22 +64,25 @@ public class FlowLayoutPanel : Control, IExtenderProvider
         {
             _owner = owner;
         }
-        public override void Add(Control control)
+        public override void Add(Control? control)
         {
             var box = new FlowBoxChild();
             box.Valign = Align.Start;
             box.Halign = Align.Start;
             box.Expand = false;
-            control.Location = new Drawing.Point(0, 0);
-            control.LockLocation = true;
-            control.Parent = _owner;
-            var widg = control.Widget;
-            widg.Valign = Align.Start;
-            widg.Halign = Align.Start;
-            widg.Expand = false;
-            if (widg is Widget widget) box.Add(widget);
-            _owner?.self.Add(box);
-            AddWidget(box, control);
+            if (control != null)
+            {
+                control.Location = new Drawing.Point(0, 0);
+                control.LockLocation = true;
+                control.Parent = _owner;
+                var widg = control.Widget;
+                widg.Valign = Align.Start;
+                widg.Halign = Align.Start;
+                widg.Expand = false;
+                if (widg is Widget widget) box.Add(widget);
+                _owner?.self.Add(box);
+                AddWidget(box, control);
+            }
         }
     }
 }

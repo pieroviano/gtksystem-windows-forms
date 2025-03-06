@@ -9,7 +9,6 @@ using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
-using System.Reflection;
 
 namespace System.Windows.Forms;
 
@@ -136,7 +135,7 @@ public partial class ComboBox : ListControl
     public object? SelectedItem
     {
         get => SelectedIndex == -1 ? null : itemsData[SelectedIndex];
-        set { int _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } }
+        set { var _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } }
     }
     internal int _selectedIndex;
     public override int SelectedIndex
@@ -155,7 +154,7 @@ public partial class ComboBox : ListControl
     {
         if (item is ObjectCollection.Entry entry)
         {
-            Type? type = entry.Item?.GetType();
+            var type = entry.Item?.GetType();
             if (entry.Item is DataRow dr)
                 return dr[DisplayMember]?.ToString();
             else if (type is { IsValueType: true, IsPrimitive: true })
@@ -167,8 +166,8 @@ public partial class ComboBox : ListControl
     }
     public string NativeGetItemText(int index)
     {
-        self.Model.GetIter(out TreeIter iter, new TreePath(new int[] { index }));
-        object val = self.Model.GetValue(iter, 1);
+        self.Model.GetIter(out var iter, new TreePath(new int[] { index }));
+        var val = self.Model.GetValue(iter, 1);
         return val.ToString();
     }
     public void NativeAdd(int index, string? value, string? text)
@@ -238,9 +237,9 @@ public partial class ComboBox : ListControl
         itemsData.Clear();
         if (list.Count > 0)
         {
-            Type type = list[0].GetType();
-            PropertyInfo? valproperty = type.GetProperty(ValueMember);
-            PropertyInfo? disproperty = type.GetProperty(DisplayMember);
+            var type = list[0].GetType();
+            var valproperty = type.GetProperty(ValueMember);
+            var disproperty = type.GetProperty(DisplayMember);
             foreach (var entry in list)
                 itemsData.Add(valproperty?.GetValue(entry)?.ToString(), disproperty?.GetValue(entry)?.ToString(), entry);
         }

@@ -1,5 +1,3 @@
 ﻿namespace System.Windows.Forms;
 
-internal interface IQuickActivate
-{
-}
+internal interface IQuickActivate;

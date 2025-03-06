@@ -36,7 +36,7 @@ public sealed class OpenFileDialog : FileDialog
 
     public Stream? OpenFile()
     {
-        if (File.Exists(FileName))
+        if (FileName != null && File.Exists(FileName))
             return File.OpenRead(FileName);
         return null;
 

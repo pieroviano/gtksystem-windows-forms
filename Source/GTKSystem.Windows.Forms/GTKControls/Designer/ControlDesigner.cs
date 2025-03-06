@@ -8,6 +8,4 @@ namespace System.Windows.Forms.Design;
 /// <summary>
 ///  Provides a designer that can design components that extend Control.
 /// </summary>
-public class ControlDesigner : ComponentDesigner
-{
-}
+public class ControlDesigner : ComponentDesigner;

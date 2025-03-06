@@ -20,7 +20,7 @@ public sealed class LayoutEventArgs : EventArgs
 
     public IComponent AffectedComponent { get; }
 
-    public Control AffectedControl => AffectedComponent as Control;
+    public Control? AffectedControl => AffectedComponent as Control;
 
     public string AffectedProperty { get; }
 }

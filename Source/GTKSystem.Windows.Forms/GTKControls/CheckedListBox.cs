@@ -12,13 +12,13 @@ using Gtk;
 namespace System.Windows.Forms;
 
     [DesignerCategory("Component")]
-    public partial class CheckedListBox : ContainerControl
+    public class CheckedListBox : ContainerControl
     {
         public readonly CheckedListBoxBase self = new();
         public override object GtkControl => self;
         internal FlowBox _flow = new();
         private readonly ObjectCollection _items;
-        public CheckedListBox() : base()
+        public CheckedListBox()
         {
             _items = new ObjectCollection(this);
             _flow.Orientation = Gtk.Orientation.Horizontal;
@@ -53,13 +53,14 @@ namespace System.Windows.Forms;
         public int ItemHeight { get; set; }
         public SelectionMode SelectionMode { get; set; }
         public void ClearSelected() {
-            foreach(FlowBoxChild wi in _flow.Children) { 
+            foreach(var widget in _flow.Children) {
+                var wi = (FlowBoxChild)widget;
                 var box = ((Box)wi.Child).Children[0];
                 if (box is CheckButton check)
                 {
                     check.Active = false;
                 }
-            };
+            }
             _flow.UnselectAll();
         }
         public bool CheckOnClick { get; set; }
@@ -70,8 +71,9 @@ namespace System.Windows.Forms;
             get
             {
                 var items = new SelectedItemCollection();
-                foreach (FlowBoxChild child in _flow.Children)
+                foreach (var widget in _flow.Children)
                 {
+                    var child = (FlowBoxChild)widget;
                     if (child.IsSelected)
                         items.Add(child.Child.GetProperty("label").Val);
                 }
@@ -81,8 +83,9 @@ namespace System.Windows.Forms;
         public CheckedItemCollection CheckedItems { 
             get {
                 var items = new CheckedItemCollection();
-                foreach (FlowBoxChild child in _flow.Children)
+                foreach (var widget in _flow.Children)
                 {
+                    var child = (FlowBoxChild)widget;
                     if ((bool)child.Child.GetProperty("active"))
                         items.Add(child.Child.GetProperty("label").Val);
                 }
@@ -94,8 +97,9 @@ namespace System.Windows.Forms;
             get
             {
                 var items = new CheckedIndexCollection();
-                foreach (FlowBoxChild child in _flow.Children)
+                foreach (var widget in _flow.Children)
                 {
+                    var child = (FlowBoxChild)widget;
                     if ((bool)child.Child.GetProperty("active"))
                         items.Add(child.Index);
                 }
@@ -109,14 +113,17 @@ namespace System.Windows.Forms;
         public event EventHandler? SelectedItemChanged;
         internal void NativeAdd(CheckBox checkbox, bool isChecked, int position)
         {
-            checkbox.self.Toggled += (sender, e) =>
+            checkbox.self.Toggled += (sender, _) =>
             {
                 var box = (CheckButton)sender;
                 var item = box.Parent as FlowBoxChild;
                 if (ItemCheck != null)
                 {
-                    var checkBox = _items.GetCheckedListBoxItem(item.Index);
-                    ItemCheck(checkBox, new ItemCheckEventArgs(item.Index, box.Active ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
+                    if (item != null)
+                    {
+                        var checkBox = _items.GetCheckedListBoxItem(item.Index);
+                        ItemCheck(checkBox, new ItemCheckEventArgs(item.Index, box.Active ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
+                    }
                 }
             };
             var boxitem = new FlowBoxChild();
@@ -171,12 +178,12 @@ namespace System.Windows.Forms;
             {
                 _owner = owner;
             }
-            public override object this[int index]
+            public override object? this[int index]
             {
                 get => ((CheckBox)base[index]).Text;
-                set => ((CheckBox)base[index]).Text = value?.ToString();
+                set => ((CheckBox)base[index]).Text = value?.ToString()??string.Empty;
             }
-            public CheckBox GetCheckedListBoxItem(int index)
+            public CheckBox? GetCheckedListBoxItem(int index)
             {
                 if (index < Count)
                     return base[index] as CheckBox;
@@ -187,15 +194,15 @@ namespace System.Windows.Forms;
             {
                 return AddCore(value, false, -1);
             }
-            public int Add(object item, bool isChecked)
+            public int Add(object? item, bool isChecked)
             {
                 return AddCore(item, isChecked, -1);
             }
 
-            public int AddCore(object item, bool isChecked, int position)
+            public int AddCore(object? item, bool isChecked, int position)
             {
                 var listBoxItem = new CheckBox();
-                listBoxItem.Text=item.ToString();
+                listBoxItem.Text=item?.ToString()??string.Empty;
                 listBoxItem.Checked = isChecked;
                 _owner.NativeAdd(listBoxItem, isChecked, position);
                 if (position < 0)
@@ -232,16 +239,8 @@ namespace System.Windows.Forms;
         }
     }
 
-    public class CheckedIndexCollection : List<int>
-    {
-    }
+    public class CheckedIndexCollection : List<int>;
 
-    public class CheckedItemCollection : List<object>
-    {
-
-    }
-    public class SelectedItemCollection : List<object>
-    {
-
-    }
+    public class CheckedItemCollection : List<object>;
+    public class SelectedItemCollection : List<object>;
 }

@@ -14,7 +14,7 @@ public class Label : Control
 {
     public readonly LabelBase self = new();
     public override object GtkControl => self;
-    public override string? Text { get => self.Text; set => self.Text = value;
+    public override string Text { get => self.Text; set => self.Text = value;
     }
     public override RightToLeft RightToLeft { get => self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No;
         set => self.Direction = value == RightToLeft.Yes ?  Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr;

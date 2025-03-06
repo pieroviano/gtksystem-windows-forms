@@ -38,7 +38,7 @@ public class TabPage : ContainerControl
         get => DockStyle.Fill;
         set => base.Dock = DockStyle.Fill;
     }
-    public override string? Text { get => _tabLabel.Text;
+    public override string Text { get => _tabLabel.Text;
         set => _tabLabel.Text = value;
     }
     public Gtk.Label TabLabel => _tabLabel;

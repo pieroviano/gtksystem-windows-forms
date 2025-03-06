@@ -1,5 +1,3 @@
 ﻿namespace System.Windows.Forms;
 
-public class GetChildAtPointSkip
-{
-}
+public class GetChildAtPointSkip;

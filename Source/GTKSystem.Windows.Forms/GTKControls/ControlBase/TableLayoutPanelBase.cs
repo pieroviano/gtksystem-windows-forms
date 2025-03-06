@@ -7,7 +7,7 @@ public sealed class TableLayoutPanelBase : Grid, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public Grid grid = new();
-    public TableLayoutPanelBase() : base()
+    public TableLayoutPanelBase()
     {
         Override = new GtkControlOverride(this);
         Override.AddClass("TableLayoutPanel");

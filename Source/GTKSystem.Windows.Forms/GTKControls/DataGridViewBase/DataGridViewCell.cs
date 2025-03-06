@@ -95,18 +95,8 @@ public class DataGridViewTextBoxCell : DataGridViewCell
          
     //}
 }
-public class DataGridViewCheckBoxCell : DataGridViewCell
-{
-}
-public class DataGridViewComboBoxCell : DataGridViewCell
-{
-}
-public class DataGridViewButtonCell : DataGridViewCell
-{
-}
-public class DataGridViewImageCell : DataGridViewCell
-{
-}
-public class DataGridViewLinkCell : DataGridViewCell
-{
-}
+public class DataGridViewCheckBoxCell : DataGridViewCell;
+public class DataGridViewComboBoxCell : DataGridViewCell;
+public class DataGridViewButtonCell : DataGridViewCell;
+public class DataGridViewImageCell : DataGridViewCell;
+public class DataGridViewLinkCell : DataGridViewCell;

@@ -190,7 +190,7 @@ namespace System.Windows.Forms
 
                 if (File.Exists(themesetuppath))
                 {
-                    string[] setuptheme = File.ReadAllLines(themesetuppath, Encoding.UTF8);
+                    var setuptheme = File.ReadAllLines(themesetuppath, Encoding.UTF8);
                     var nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split('=')[1]);
                     nameValue.TryGetValue("UseDefaultStyle", out var usedef);
                     if (usedef != "false")

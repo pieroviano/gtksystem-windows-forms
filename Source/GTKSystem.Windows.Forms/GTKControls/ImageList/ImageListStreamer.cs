@@ -34,7 +34,7 @@ public sealed class ImageListStreamer : ISerializable, IDisposable
             && ms.TryGetBuffer(out var buffer)
             && buffer.Offset == 0)
         {
-            Deserialize(buffer.Array);
+            Deserialize(buffer.Array ?? []);
         }
         else
         {

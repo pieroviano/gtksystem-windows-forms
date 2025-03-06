@@ -1,5 +1,3 @@
 namespace System.Windows.Forms.Resources;
 
-internal class UnknownType
-{
-}
+internal class UnknownType;

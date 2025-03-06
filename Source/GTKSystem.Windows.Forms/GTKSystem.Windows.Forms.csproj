@@ -58,7 +58,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="GTKControls\ComboBoxBase\ComboBox.ObjectCollection.EntryEnumerator.cs" />
     <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
     <Compile Remove="GTKControls\Control\GridItem.cs" />
     <Compile Remove="GTKControls\Control\GridItemCollection.cs" />
@@ -80,6 +79,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+    <None Remove="Net4x.Gtk.Windows.Forms.props" />
     <None Remove="Resources\Cursors\aero_ew.cur" />
     <None Remove="Resources\Cursors\aero_nesw.cur" />
     <None Remove="Resources\Cursors\aero_ns.cur" />

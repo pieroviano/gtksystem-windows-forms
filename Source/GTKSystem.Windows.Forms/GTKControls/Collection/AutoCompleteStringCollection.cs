@@ -98,7 +98,7 @@ public class AutoCompleteStringCollection : IList
     {
         if (value != null)
         {
-            int index = _list.Add (value);
+            var index = _list.Add (value);
             OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
             return index;
         }
@@ -180,7 +180,7 @@ public class AutoCompleteStringCollection : IList
 
     public void RemoveAt (int index)
     {
-        string value = this[index];
+        var value = this[index];
         _list.RemoveAt (index);
         OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
     }

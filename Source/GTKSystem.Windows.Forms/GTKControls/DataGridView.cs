@@ -19,14 +19,19 @@ public class DataGridView : ScrollableControl
 {
     public readonly DataGridViewBase self = new();
     public override object GtkControl => self;
-    private readonly DataGridViewColumnCollection _columns;
-    private readonly DataGridViewRowCollection _rows;
-    private readonly ControlBindingsCollection _collect;
+    private DataGridViewColumnCollection _columns = null!;
+    private DataGridViewRowCollection _rows = null!;
+    private ControlBindingsCollection _collect = null!;
     internal TreeStore Store = new(typeof(DataGridViewCell));
 
-    public Gtk.TreeView? GridView => self.GridView;
+    public Gtk.TreeView GridView => self.GridView;
 
-    public DataGridView() : base()
+    public DataGridView()
+    {
+        Init();
+    }
+
+    private void Init()
     {
         BorderStyle = BorderStyle.FixedSingle;
         GridView.Margin = 0;
@@ -52,7 +57,7 @@ public class DataGridView : ScrollableControl
     private void Selection_Changed(object sender, EventArgs e)
     {
         _selectedBandIndexes.Clear();
-        TreePath[] treePaths = GridView.Selection.GetSelectedRows();
+        var treePaths = GridView.Selection.GetSelectedRows();
         foreach (var path in treePaths)
         {
             var idx = path.Indices.Last();
@@ -69,7 +74,10 @@ public class DataGridView : ScrollableControl
         if (CellClick != null)
         {
             var column = args.Column as DataGridViewColumn;
-            CellClick(this, new DataGridViewCellEventArgs(column.Index, args.Path.Indices.Last()));
+            if (column != null)
+            {
+                CellClick(this, new DataGridViewCellEventArgs(column.Index, args.Path.Indices.Last()));
+            }
         }
     }
 
@@ -183,7 +191,9 @@ public class DataGridView : ScrollableControl
     public DataGridViewCellStyle? RowHeadersDefaultCellStyle { get; set; }
     public override ControlBindingsCollection DataBindings => _collect;
     private object? _DataSource;
+#pragma warning disable CS0414 // Field is assigned but its value is never used
     private bool _Created;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
 
     public object? DataSource
     {
@@ -258,11 +268,11 @@ public class DataGridView : ScrollableControl
     }
     private void LoadListSource()
     {
-        var _type = _DataSource.GetType();
-        Type[] _entityType = _type.GetGenericArguments();
-        if (_entityType.Length == 1)
+        var _type = _DataSource?.GetType();
+        var _entityType = _type?.GetGenericArguments();
+        if ((_entityType?.Length??0) == 1)
         {
-            PropertyInfo[] pros = _entityType[0].GetProperties();
+            var pros = _entityType![0].GetProperties();
             foreach (var pro in pros)
             {
                 if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
@@ -279,15 +289,16 @@ public class DataGridView : ScrollableControl
 
             if (_columns.Count > 0)
             {
-                var reader = ((IEnumerable)_DataSource).GetEnumerator();
-                while (reader.MoveNext())
+                var enumerator = ((IEnumerable?)_DataSource)?.GetEnumerator();
+                using var disposable = enumerator as IDisposable;
+                while (enumerator != null && enumerator.MoveNext())
                 {
-                    var obj = reader.Current;
-                    var type = obj.GetType();
+                    var obj = enumerator.Current;
+                    var type = obj?.GetType();
                     var newRow = new DataGridViewRow();
                     foreach (var col in _columns)
                     {
-                        var cellvalue = type.GetProperty(col.DataPropertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)?.GetValue(obj);
+                        var cellvalue = type?.GetProperty(col.DataPropertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)?.GetValue(obj);
                         newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
                     }
                     _rows.Add(newRow);
@@ -309,7 +320,7 @@ public class DataGridView : ScrollableControl
                 case DataGridViewSelectionMode.CellSelect:
                 {
                     var cols = Store.NColumns;
-                    Store.Foreach(new TreeModelForeachFunc((model, path, iter) =>
+                    Store.Foreach((model, _, iter) =>
                     {
                         for (var i = 0; i < cols; i++)
                         {
@@ -318,7 +329,7 @@ public class DataGridView : ScrollableControl
                                 stcc.Add(cell);
                         }
                         return false;
-                    }));
+                    });
                     break;
                 }
 
@@ -448,6 +459,7 @@ public class DataGridView : ScrollableControl
         if (CellPainting != null)
             CellPainting(sender, e);
     }
+#pragma warning disable CS0067 // Event is never used
     [Obsolete("This event is not implemented and is developed by ourselves.")]
     public event DataGridViewCellValueEventHandler? CellValuePushed;
 
@@ -571,7 +583,7 @@ public class DataGridView : ScrollableControl
     [Obsolete("This event is not implemented and is developed by ourselves.")]
     public event DataGridViewCellCancelEventHandler? CellBeginEdit;
 
-    [Obsolete("此事件未实现，This event is not implemented and is developed by ourselves.")]
+    [Obsolete("This event is not implemented and is developed by ourselves.")]
     public event EventHandler? MultiSelectChanged;
 
     //[Obsolete("This event is not implemented and is developed by ourselves.")]

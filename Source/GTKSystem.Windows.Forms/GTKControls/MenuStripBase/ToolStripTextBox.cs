@@ -17,5 +17,5 @@ public class ToolStripTextBox : WidgetToolStrip<Gtk.MenuItem>
     }
     public override Size Size { get => base.Size; set { entry.WidthRequest = value.Width;entry.HeightRequest = value.Height; base.Size = value; } }
     public int MaxLength { get => entry.MaxLength; set => entry.MaxLength = value; }
-    public override string? Text { get => entry.Text; set => entry.Text = value; }
+    public override string Text { get => entry.Text; set => entry.Text = value; }
 }

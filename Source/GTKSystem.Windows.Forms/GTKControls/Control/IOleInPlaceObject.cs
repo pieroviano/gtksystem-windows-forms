@@ -1,5 +1,3 @@
 ﻿namespace System.Windows.Forms;
 
-internal interface IOleInPlaceObject
-{
-}
+internal interface IOleInPlaceObject;

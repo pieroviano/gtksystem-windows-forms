@@ -20,11 +20,11 @@ public sealed class DpiChangedEventArgs : CancelEventArgs
 
     }
 
-    public int DeviceDpiOld { get; }
+    public int DeviceDpiOld { get; internal set; }
 
-    public int DeviceDpiNew { get; }
+    public int DeviceDpiNew { get; internal set; }
 
-    public Rectangle SuggestedRectangle { get; }
+    public Rectangle SuggestedRectangle { get; internal set; }
 
     public override string ToString() => $"was: {DeviceDpiOld}, now: {DeviceDpiNew}";
 }

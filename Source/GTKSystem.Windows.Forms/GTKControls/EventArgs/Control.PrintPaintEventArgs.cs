@@ -10,14 +10,12 @@ public partial class Control
 {
     private sealed class PrintPaintEventArgs : PaintEventArgs
     {
-        private readonly Message _m;
-
         internal PrintPaintEventArgs(Message m, IntPtr dc, Rectangle clipRect)
             : base(dc, clipRect)
         {
-            _m = m;
+            Message = m;
         }
 
-        internal Message Message => _m;
+        public Message Message { get; }
     }
 }

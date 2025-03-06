@@ -134,7 +134,7 @@ public class MessageBox
     /// </summary>
     public static DialogResult Show(string? text, string caption)
     {
-        return ShowCore(null, text, caption, MessageBoxButtons.Ok, MessageBoxIcon.None);
+        return ShowCore(null, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ public class MessageBox
     /// </summary>
     public static DialogResult Show(string? text)
     {
-        return ShowCore(null, text, string.Empty, MessageBoxButtons.Ok, MessageBoxIcon.None);
+        return ShowCore(null, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
 
     /// <summary>
@@ -184,7 +184,7 @@ public class MessageBox
     /// </summary>
     public static DialogResult Show(IWin32Window? owner, string? text, string caption)
     {
-        return ShowCore(owner, text, caption, MessageBoxButtons.Ok, MessageBoxIcon.None);
+        return ShowCore(owner, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public class MessageBox
     /// </summary>
     public static DialogResult Show(IWin32Window? owner, string? text)
     {
-        return ShowCore(owner, text, string.Empty, MessageBoxButtons.Ok, MessageBoxIcon.None);
+        return ShowCore(owner, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
 
     private static Window? activeWindow; // Caching significance
@@ -289,48 +289,53 @@ public class MessageBox
         }
         msgbox.PackStart(content, false, true, 5);
         dia.ContentArea.PackStart(msgbox, false, true, 0);
-         
+
         var iconTheme = new IconTheme();
         var pixbuf = iconTheme.LoadIcon("dialog-information", 16, IconLookupFlags.DirLtr);
         dia.Icon = pixbuf;
-        if (buttons == MessageBoxButtons.Ok)
+        if (buttons == MessageBoxButtons.OK)
         {
-            dia.AddButton("确定", ResponseType.Ok);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_OK, ResponseType.Ok);
         }
-        else if (buttons == MessageBoxButtons.OkCancel)
+        else if (buttons == MessageBoxButtons.OKCancel)
         {
-            dia.AddButton("确定", ResponseType.Ok);
-            dia.AddButton("取消", ResponseType.Cancel);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_OK, ResponseType.Ok);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Cancel,
+                ResponseType.Cancel);
         }
         else if (buttons == MessageBoxButtons.YesNo)
         {
-            dia.AddButton("是", ResponseType.Yes);
-            dia.AddButton("否", ResponseType.No);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Yes, ResponseType.Yes);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_No, ResponseType.No);
         }
         else if (buttons == MessageBoxButtons.YesNoCancel)
         {
-            dia.AddButton("是", ResponseType.Yes);
-            dia.AddButton("否", ResponseType.No);
-            dia.AddButton("取消", ResponseType.Cancel);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Yes, ResponseType.Yes);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_No, ResponseType.No);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Cancel,
+                ResponseType.Cancel);
         }
         else if (buttons == MessageBoxButtons.AbortRetryIgnore)
         {
-            dia.AddButton("放弃", ResponseType.Reject);
-            dia.AddButton("重试", ResponseType.Help);
-            dia.AddButton("忽略", ResponseType.Close);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Reject,
+                ResponseType.Reject);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Help, ResponseType.Help);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Close, ResponseType.Close);
         }
         else if (buttons == MessageBoxButtons.RetryCancel)
         {
-            dia.AddButton("重试", ResponseType.Help);
-            dia.AddButton("取消", ResponseType.Cancel);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Help, ResponseType.Help);
+            dia.AddButton(Properties.Resources.MessageBox_ShowCore_Cancel,
+                ResponseType.Cancel);
         }
+
         dia.ShowAll();
         return dia.Run();
     }
+
     private static void Dia_Response(object? o, ResponseArgs args)
     {
-        var dia = o as Dialog;
-        if (dia != null)
+        if (o is Dialog dia)
         {
             dia.PangoContext.Dispose();
             dia.Dispose();

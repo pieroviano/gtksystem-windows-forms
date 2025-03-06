@@ -1,6 +1,4 @@
-﻿using GTKSystem.Windows.Forms.GTKControls;
-
-namespace System.Windows.Forms;
+﻿namespace System.Windows.Forms;
 
 public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
 {

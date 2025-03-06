@@ -11,7 +11,7 @@ internal partial class PropertyStore
 
         public PaddingWrapper(Padding padding)
         {
-            this.Padding = padding;
+            Padding = padding;
         }
     }
 }

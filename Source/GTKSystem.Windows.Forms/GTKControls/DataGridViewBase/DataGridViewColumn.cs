@@ -112,9 +112,7 @@ public class DataGridViewRadioColumn : DataGridViewColumn
     }
 }
 
-public class DataGridViewRadioCell : DataGridViewCell
-{
-}
+public class DataGridViewRadioCell : DataGridViewCell;
 
 public class DataGridViewComboBoxColumn : DataGridViewColumn
 {
@@ -319,7 +317,7 @@ public class DataGridViewColumn : TreeViewColumn
 
     internal virtual DataGridViewCell NewCell(object? value = null, Type? valueType = null)
     {
-        DataGridViewTextBoxCell newcell = new DataGridViewTextBoxCell();
+        var newcell = new DataGridViewTextBoxCell();
         AtrributesClone(newcell);
         newcell.Value = value;
         newcell.ValueType = valueType;
@@ -333,7 +331,7 @@ public class DataGridViewColumn : TreeViewColumn
             newcell.ReadOnly = _cellTemplate.ReadOnly;
         }
     }
-    public void SetGridViewDefaultStyle(DataGridViewCellStyle cellStyle)
+    public void SetGridViewDefaultStyle(DataGridViewCellStyle? cellStyle)
     {
         if (cellStyle is { WrapMode: DataGridViewTriState.True })
         {

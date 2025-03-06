@@ -37,10 +37,10 @@ public class ResXResourceWriter : IResourceWriter
     private static readonly TraceSwitch resValueProviderSwitch = new("ResX", "Debug the resource value provider");
 
 #pragma warning disable IDE1006 // Naming Styles (Shipped public API)
-    public static readonly string? binSerializedObjectMimeType = "application/x-microsoft.net.object.binary.base64";
+    public static readonly string binSerializedObjectMimeType = "application/x-microsoft.net.object.binary.base64";
     public static readonly string soapSerializedObjectMimeType = "application/x-microsoft.net.object.soap.base64";
-    public static readonly string? defaultSerializedObjectMimeType = binSerializedObjectMimeType;
-    public static readonly string? byteArraySerializedObjectMimeType = "application/x-microsoft.net.object.bytearray.base64";
+    public static readonly string defaultSerializedObjectMimeType = binSerializedObjectMimeType;
+    public static readonly string byteArraySerializedObjectMimeType = "application/x-microsoft.net.object.bytearray.base64";
     public static readonly string resMimeType = "text/microsoft-resx";
     public static readonly string version = "2.0";
 
@@ -194,16 +194,22 @@ public class ResXResourceWriter : IResourceWriter
             }
             else
             {
-                Debug.Assert(_fileName != null, "Nothing to output to");
-                _xmlTextWriter = new XmlTextWriter(_fileName, Encoding.UTF8);
+                if(_fileName != null) throw new InvalidOperationException("Nothing to output to");
+                if (_fileName != null)
+                {
+                    _xmlTextWriter = new XmlTextWriter(_fileName, Encoding.UTF8);
+                }
             }
 
-            _xmlTextWriter.Formatting = Formatting.Indented;
-            _xmlTextWriter.Indentation = 2;
-
-            if (!writeHeaderRequired)
+            if (_xmlTextWriter != null)
             {
-                _xmlTextWriter.WriteStartDocument(); // writes <?xml version="1.0" encoding="utf-8"?>
+                _xmlTextWriter.Formatting = Formatting.Indented;
+                _xmlTextWriter.Indentation = 2;
+
+                if (!writeHeaderRequired)
+                {
+                    _xmlTextWriter.WriteStartDocument(); // writes <?xml version="1.0" encoding="utf-8"?>
+                }
             }
         }
         else
@@ -211,64 +217,71 @@ public class ResXResourceWriter : IResourceWriter
             _xmlTextWriter.WriteStartDocument();
         }
 
-        _xmlTextWriter.WriteStartElement("root");
-        var reader = new XmlTextReader(new StringReader(resourceSchema))
+        if (_xmlTextWriter != null)
         {
-            WhitespaceHandling = WhitespaceHandling.None
-        };
-        _xmlTextWriter.WriteNode(reader, true);
-
-        _xmlTextWriter.WriteStartElement(resHeaderStr);
-        {
-            _xmlTextWriter.WriteAttributeString(nameStr, resMimeTypeStr);
-            _xmlTextWriter.WriteStartElement(valueStr);
+            _xmlTextWriter.WriteStartElement("root");
+            var reader = new XmlTextReader(new StringReader(resourceSchema))
             {
-                _xmlTextWriter.WriteString(resMimeType);
+                WhitespaceHandling = WhitespaceHandling.None
+            };
+            _xmlTextWriter.WriteNode(reader, true);
+
+            _xmlTextWriter.WriteStartElement(resHeaderStr);
+            {
+                _xmlTextWriter.WriteAttributeString(nameStr, resMimeTypeStr);
+                _xmlTextWriter.WriteStartElement(valueStr);
+                {
+                    _xmlTextWriter.WriteString(resMimeType);
+                }
+
+                _xmlTextWriter.WriteEndElement();
+            }
+
+            _xmlTextWriter.WriteEndElement();
+
+            _xmlTextWriter.WriteStartElement(resHeaderStr);
+            {
+                _xmlTextWriter.WriteAttributeString(nameStr, versionStr);
+                _xmlTextWriter.WriteStartElement(valueStr);
+                {
+                    _xmlTextWriter.WriteString(version);
+                }
+
+                _xmlTextWriter.WriteEndElement();
+            }
+
+            _xmlTextWriter.WriteEndElement();
+
+            _xmlTextWriter.WriteStartElement(resHeaderStr);
+            {
+                _xmlTextWriter.WriteAttributeString(nameStr, readerStr);
+                _xmlTextWriter.WriteStartElement(valueStr);
+                {
+                    _xmlTextWriter.WriteString(
+                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceReader), _typeNameConverter) ??
+                        string.Empty);
+                }
+
+                _xmlTextWriter.WriteEndElement();
+            }
+
+            _xmlTextWriter.WriteEndElement();
+
+            _xmlTextWriter.WriteStartElement(resHeaderStr);
+            {
+                _xmlTextWriter.WriteAttributeString(nameStr, writerStr);
+                _xmlTextWriter.WriteStartElement(valueStr);
+                {
+                    _xmlTextWriter.WriteString(
+                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceWriter), _typeNameConverter) ??
+                        string.Empty);
+                }
+
+                _xmlTextWriter.WriteEndElement();
             }
 
             _xmlTextWriter.WriteEndElement();
         }
-
-        _xmlTextWriter.WriteEndElement();
-
-        _xmlTextWriter.WriteStartElement(resHeaderStr);
-        {
-            _xmlTextWriter.WriteAttributeString(nameStr, versionStr);
-            _xmlTextWriter.WriteStartElement(valueStr);
-            {
-                _xmlTextWriter.WriteString(version);
-            }
-
-            _xmlTextWriter.WriteEndElement();
-        }
-
-        _xmlTextWriter.WriteEndElement();
-
-        _xmlTextWriter.WriteStartElement(resHeaderStr);
-        {
-            _xmlTextWriter.WriteAttributeString(nameStr, readerStr);
-            _xmlTextWriter.WriteStartElement(valueStr);
-            {
-                _xmlTextWriter.WriteString(MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceReader), _typeNameConverter));
-            }
-
-            _xmlTextWriter.WriteEndElement();
-        }
-
-        _xmlTextWriter.WriteEndElement();
-
-        _xmlTextWriter.WriteStartElement(resHeaderStr);
-        {
-            _xmlTextWriter.WriteAttributeString(nameStr, writerStr);
-            _xmlTextWriter.WriteStartElement(valueStr);
-            {
-                _xmlTextWriter.WriteString(MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceWriter), _typeNameConverter));
-            }
-
-            _xmlTextWriter.WriteEndElement();
-        }
-
-        _xmlTextWriter.WriteEndElement();
 
         _initialized = true;
     }
@@ -466,7 +479,7 @@ public class ResXResourceWriter : IResourceWriter
                     else if (typeObject != null)
                     {
                         assemblyName = GetFullName(MultitargetUtil.GetAssemblyQualifiedName(typeObject, _typeNameConverter));
-                        alias = GetAliasFromName(new AssemblyName(assemblyName));
+                        alias = GetAliasFromName(new AssemblyName(assemblyName ?? string.Empty));
                     }
                 }
                 catch (Exception ex)
@@ -476,7 +489,7 @@ public class ResXResourceWriter : IResourceWriter
             }
             else
             {
-                alias = GetAliasFromName(new AssemblyName(GetFullName(type)));
+                alias = GetAliasFromName(new AssemblyName(GetFullName(type) ?? string.Empty));
             }
         }
 
@@ -484,7 +497,7 @@ public class ResXResourceWriter : IResourceWriter
         {
             Writer.WriteStartElement(elementName);
             {
-                Writer.WriteAttributeString(nameStr, name);
+                Writer.WriteAttributeString(nameStr, name ?? string.Empty);
 
                 if (!string.IsNullOrEmpty(alias) && !string.IsNullOrEmpty(type) && elementName == dataStr)
                 {

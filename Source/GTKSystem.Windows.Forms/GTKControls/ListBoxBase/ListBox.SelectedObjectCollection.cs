@@ -15,7 +15,9 @@ public partial class ListBox
         internal static int selectedObjectMask = ItemArray.CreateMask();
 
         private readonly ListBox _owner;
+#pragma warning disable CS0414 // Field is assigned but its value is never used
         private bool _stateDirty;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
         private int _lastVersion;
         private int _count;
 

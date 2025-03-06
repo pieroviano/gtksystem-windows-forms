@@ -10,13 +10,13 @@ public enum MessageBoxButtons
     ///  Specifies that the message box contains an OK button. This field is
     ///  constant.
     /// </summary>
-    Ok = 0x00000000,
+    OK = 0x00000000,
 
     /// <summary>
     ///  Specifies that the message box contains OK and Cancel buttons. This
     ///  field is constant.
     /// </summary>
-    OkCancel = 0x00000001,
+    OKCancel = 0x00000001,
 
     /// <summary>
     ///  Specifies that the message box contains Abort, Retry, and Ignore

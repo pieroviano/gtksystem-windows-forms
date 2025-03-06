@@ -78,11 +78,11 @@ public class DataGridViewCellPaintingEventArgs : HandledEventArgs
 
     public void Paint(Rectangle clipBounds, DataGridViewPaintParts paintParts)
     {
-        if (RowIndex < -1 || RowIndex >= _dataGridView.Rows.Count)
+        if (RowIndex < -1 || RowIndex >= (_dataGridView?.Rows.Count??0))
         {
             throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_RowIndexOutOfRange");
         }
-        if (ColumnIndex < -1 || ColumnIndex >= _dataGridView.Columns.Count)
+        if (ColumnIndex < -1 || ColumnIndex >= (_dataGridView?.Columns.Count??0))
         {
             throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_ColumnIndexOutOfRange");
         }
@@ -102,11 +102,11 @@ public class DataGridViewCellPaintingEventArgs : HandledEventArgs
 
     public void PaintBackground(Rectangle clipBounds, bool cellsPaintSelectionBackground)
     {
-        if (RowIndex < -1 || RowIndex >= _dataGridView.Rows.Count)
+        if (RowIndex < -1 || RowIndex >= (_dataGridView?.Rows.Count??0))
         {
             throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_RowIndexOutOfRange");
         }
-        if (ColumnIndex < -1 || ColumnIndex >= _dataGridView.Columns.Count)
+        if (ColumnIndex < -1 || ColumnIndex >= (_dataGridView?.Columns.Count??0))
         {
             throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_ColumnIndexOutOfRange");
         }
@@ -131,11 +131,11 @@ public class DataGridViewCellPaintingEventArgs : HandledEventArgs
 
     public void PaintContent(Rectangle clipBounds)
     {
-        if (RowIndex < -1 || RowIndex >= _dataGridView.Rows.Count)
+        if (RowIndex < -1 || RowIndex >= (_dataGridView?.Rows.Count ?? 0))
         {
             throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_RowIndexOutOfRange");
         }
-        if (ColumnIndex < -1 || ColumnIndex >= _dataGridView.Columns.Count)
+        if (ColumnIndex < -1 || ColumnIndex >= (_dataGridView?.Columns.Count ?? 0))
         {
             throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_ColumnIndexOutOfRange");
         }

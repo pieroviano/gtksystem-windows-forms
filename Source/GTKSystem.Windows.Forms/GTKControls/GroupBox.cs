@@ -31,7 +31,7 @@ public class GroupBox : ContainerControl
             self.Child = contaner;
         }
     }
-    public override string? Text { get => self.Label;
+    public override string Text { get => self.Label;
         set => self.Label = value;
     }
     public override ControlCollection? Controls => _controls;

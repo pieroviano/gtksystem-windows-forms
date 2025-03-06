@@ -207,7 +207,7 @@ public class TabControl : ContainerControl
         {
             var tp = new TabPage();
             tp.Name = key;
-            tp.Text = text;
+            tp.Text = text??string.Empty;
             Add(tp);
         }
 

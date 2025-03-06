@@ -22,9 +22,11 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     private static readonly Color fakeTransparencyColor = Color.FromArgb(0x0d, 0x0b, 0x0c);
     private static readonly Size defaultImageSize = new(16, 16);
 
+#pragma warning disable CS0169 // Field is never used
     private static int maxImageWidth;
     private static int maxImageHeight;
     private static bool isScalingInitialized;
+#pragma warning restore CS0169 // Field is never used
 
     private NativeImageList? _nativeImageList;
 
@@ -113,14 +115,14 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
         }
     }
 
-    internal Image GetOriginalImage(string name)
+    internal Image? GetOriginalImage(string name)
     {
         var direc = Directory.GetCurrentDirectory();
         var path1 = $"{direc}/Resources";
         var value = ImageStream;
-        if (value.ResourceInfo != null)
+        if (value?.ResourceInfo != null)
         {
-            //这里加载图像数据
+            // Load image data here
             var path2 = $"{path1}/{value.ResourceInfo.ResourceName}/{name}";
             if (File.Exists(path2))
             {
@@ -135,7 +137,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     }
     private Bitmap ScaleSimpleBitmap(Image? bitmp)
     {
-        var pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+        var pixbuf = new Gdk.Pixbuf(bitmp?.PixbufData);
         var w = Math.Max(16, Math.Min(ImageSize.Width, 200));
         var h = Math.Max(16, Math.Min(ImageSize.Height, 200));
         var newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
@@ -168,7 +170,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     {
         ownsBitmap = false;
         var bitmp = original._image as Bitmap;
-        var pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+        var pixbuf = new Gdk.Pixbuf(bitmp?.PixbufData);
         var w = Math.Max(16, Math.Min(ImageSize.Width, 200));
         var h = Math.Max(16, Math.Min(ImageSize.Height, 200));
         var newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
@@ -196,7 +198,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     {
         if (HandleCreated)
         {
-            _nativeImageList.Dispose();
+            _nativeImageList?.Dispose();
             _nativeImageList = null;
             _originals = [];
         }
@@ -225,7 +227,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
                     }
                 }
                 _originals.Clear();
-                _imageCollection.Clear();
+                _imageCollection?.Clear();
             }
 
             DestroyHandle();
@@ -333,15 +335,15 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     /// </summary>
     // NOTE: forces handle creation, so doesn't return things from the original list
 
-    public Bitmap GetBitmap(int index)
+    public Bitmap? GetBitmap(int index)
     {
         try
         {
-            return _originals[index]._image as Bitmap;
+            return _originals?[index]._image as Bitmap;
         }
         catch (IndexOutOfRangeException ex)
         {
-            throw new IndexOutOfRangeException("索引超出范围，请检查序号是否在ImageList的数据范围内，把相关图片保存到Resources目录下。", ex);
+            throw new IndexOutOfRangeException("The index is out of range. Please check whether the serial number is within the data range of ImageList and save the relevant images to the Resources directory.", ex);
         }
         catch (Exception ex)
         {
@@ -353,7 +355,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
         var index = _imageCollection.IndexOfKey(name);
         if (index == -1)
         {
-            throw new FileNotFoundException($"“{name}”未加载，请把相关图片保存到Resources目录下。", name);
+            throw new FileNotFoundException($"\"{name}\" is not loaded. Please save the relevant pictures to the Resources directory.", name);
         }
         return GetBitmap(index);
     }

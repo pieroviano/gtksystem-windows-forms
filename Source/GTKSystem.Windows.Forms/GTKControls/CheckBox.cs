@@ -10,7 +10,7 @@ using System.ComponentModel;
 namespace System.Windows.Forms;
 
 [DesignerCategory("Component")]
-public partial class CheckBox : Control
+public class CheckBox : Control
 {
     public readonly CheckBoxBase self = new();
     public override object GtkControl => self;
@@ -32,7 +32,7 @@ public partial class CheckBox : Control
         if (CheckedChanged != null && self.IsVisible)
             CheckedChanged(this, EventArgs.Empty);
         if (CheckStateChanged != null && self.IsVisible)
-            CheckStateChanged(this, EventArgs.Empty);
+            CheckStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public override string Text

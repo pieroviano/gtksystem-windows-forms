@@ -262,7 +262,7 @@ public class DataGridViewRowCollection : IList
 
     public virtual int AddCopies(int indexSource, int count)
     {
-        DataGridViewRow[] arr = new DataGridViewRow[count];
+        var arr = new DataGridViewRow[count];
         items.CopyTo(0, arr, indexSource, count);
         AddRange(arr);
         return count;
@@ -481,7 +481,7 @@ public class DataGridViewRowCollection : IList
 
     public virtual void Insert(int rowIndex, int count)
     {
-        DataGridViewRow[] rows = new DataGridViewRow[count];
+        var rows = new DataGridViewRow[count];
         for (var r = 0; r < count; r++)
         {
             if (dataGridView != null)

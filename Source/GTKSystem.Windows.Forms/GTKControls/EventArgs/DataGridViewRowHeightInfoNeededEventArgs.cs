@@ -6,8 +6,10 @@ namespace System.Windows.Forms;
 
 public class DataGridViewRowHeightInfoNeededEventArgs : EventArgs
 {
+#pragma warning disable CS0414 // Field is assigned but its value is never used
     private int _height;
     private int _minimumHeight;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
 
     internal DataGridViewRowHeightInfoNeededEventArgs()
     {

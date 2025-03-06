@@ -9,6 +9,4 @@ namespace System.Windows.Forms.Resources;
 ///  It is a placeholder that is written into the file.  On read, it is replaced
 ///  with null.
 /// </summary>
-internal sealed class ResXNullRef
-{
-}
+internal sealed class ResXNullRef;

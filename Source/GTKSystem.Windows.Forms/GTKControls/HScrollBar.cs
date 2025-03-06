@@ -13,7 +13,7 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class HScrollBar : ScrollBar
 {
-    public ScrollbarBase<HScrollbar>? self = new(Gtk.Orientation.Horizontal);
-    public override object? GtkControl => self;
+    public ScrollbarBase<HScrollbar> self = new(Gtk.Orientation.Horizontal);
+    public override object GtkControl => self;
     public override Adjustment Adjustment => self.Adjustment;
 }

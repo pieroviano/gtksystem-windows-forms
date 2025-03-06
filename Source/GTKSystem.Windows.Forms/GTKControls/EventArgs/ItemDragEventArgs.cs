@@ -16,7 +16,7 @@ public class ItemDragEventArgs : EventArgs
     {
     }
 
-    public ItemDragEventArgs(MouseButtons button, object item)
+    public ItemDragEventArgs(MouseButtons button, object? item)
     {
         Button = button;
         Item = item;
@@ -24,5 +24,5 @@ public class ItemDragEventArgs : EventArgs
 
     public MouseButtons Button { get; }
 
-    public object Item { get; }
+    public object? Item { get; }
 }

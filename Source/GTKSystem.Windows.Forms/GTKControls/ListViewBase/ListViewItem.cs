@@ -281,25 +281,25 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 
     public ListViewItem(string? text)
     {
-        InitListViewItem(text, -1, "", null, null, null, null);
+        InitListViewItem(text??string.Empty, -1, "", null, null, null, null);
     }
 
     public ListViewItem(string? text, int imageIndex)
     {
-        InitListViewItem(text, imageIndex, "", null, null, null, null);
+        InitListViewItem(text ?? string.Empty, imageIndex, "", null, null, null, null);
     }
 
-    public ListViewItem(string?[] items)
+    public ListViewItem(string[] items)
     {
-        InitListViewItem(items, -1, "", null, null, null, null);
+        InitListViewItem(items??[], -1, "", null, null, null, null);
     }
 
-    public ListViewItem(string?[] items, int imageIndex)
+    public ListViewItem(string[] items, int imageIndex)
     {
         InitListViewItem(items, imageIndex, "", null, null, null, null);
     }
 
-    public ListViewItem(string?[] items, int imageIndex, Color foreColor, Color backColor, Font? font)
+    public ListViewItem(string[] items, int imageIndex, Color foreColor, Color backColor, Font? font)
     {
         InitListViewItem(items, imageIndex, "", foreColor, backColor, font, null);
     }
@@ -316,81 +316,80 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 
     public ListViewItem(string? text, ListViewGroup? group)
     {
-        InitListViewItem(text, -1, null, null, null, null, group);
+        InitListViewItem(text ?? string.Empty, -1, null, null, null, null, group);
     }
 
     public ListViewItem(string? text, int imageIndex, ListViewGroup? group)
     {
-        InitListViewItem(text, imageIndex, null, null, null, null, group);
+        InitListViewItem(text ?? string.Empty, imageIndex, null, null, null, null, group);
     }
 
-    public ListViewItem(string?[] items, ListViewGroup? group)
+    public ListViewItem(string[] items, ListViewGroup? group)
     {
         InitListViewItem(items, -1, "", null, null, null, group);
     }
 
-    public ListViewItem(string?[] items, int imageIndex, ListViewGroup? group)
+    public ListViewItem(string[] items, int imageIndex, ListViewGroup? group)
     {
         InitListViewItem(items, imageIndex, "", null, null, null, group);
     }
 
-    public ListViewItem(string?[] items, int imageIndex, Color foreColor, Color backColor, Font? font,
+    public ListViewItem(string[] items, int imageIndex, Color foreColor, Color backColor, Font? font,
         ListViewGroup? group)
     {
         InitListViewItem(items, imageIndex, "", foreColor, backColor, font, group);
     }
 
-    public ListViewItem(ListViewSubItem[] subItems, int imageIndex, ListViewGroup group)
+    public ListViewItem(ListViewSubItem[] subItems, int imageIndex, ListViewGroup? group)
     {
         InitListViewItem(subItems, imageIndex, "", null, null, null, group);
     }
 
     public ListViewItem(string? text, string? imageKey)
     {
-        InitListViewItem(text, -1, imageKey, null, null, null, null);
+        InitListViewItem(text ?? string.Empty, -1, imageKey, null, null, null, null);
     }
 
-    public ListViewItem(string?[] items, string? imageKey)
+    public ListViewItem(string[] items, string? imageKey)
     {
         InitListViewItem(items, -1, imageKey, null, null, null, null);
     }
 
-    public ListViewItem(string?[] items, string? imageKey, Color foreColor, Color backColor, Font? font)
+    public ListViewItem(string[] items, string? imageKey, Color foreColor, Color backColor, Font? font)
     {
         InitListViewItem(items, -1, imageKey, foreColor, backColor, font, null);
     }
 
-    public ListViewItem(ListViewSubItem[] subItems, string imageKey)
+    public ListViewItem(ListViewSubItem[] subItems, string? imageKey)
     {
         InitListViewItem(subItems, -1, imageKey, null, null, null, null);
     }
 
     public ListViewItem(string? text, string? imageKey, ListViewGroup? group)
     {
-        InitListViewItem(text, -1, imageKey, null, null, null, group);
+        InitListViewItem(text ?? string.Empty, -1, imageKey, null, null, null, group);
     }
 
-    public ListViewItem(string?[] items, string? imageKey, ListViewGroup? group)
+    public ListViewItem(string[] items, string? imageKey, ListViewGroup? group)
     {
         InitListViewItem(items, -1, imageKey, null, null, null, group);
     }
 
-    public ListViewItem(string?[] items, string? imageKey, Color foreColor, Color backColor, Font? font,
+    public ListViewItem(string[] items, string? imageKey, Color foreColor, Color backColor, Font? font,
         ListViewGroup? group)
     {
         InitListViewItem(items, -1, imageKey, foreColor, backColor, font, group);
     }
 
-    public ListViewItem(ListViewSubItem[] subItems, string imageKey, ListViewGroup group)
+    public ListViewItem(ListViewSubItem[] subItems, string? imageKey, ListViewGroup? group)
     {
         InitListViewItem(subItems, -1, imageKey, null, null, null, group);
     }
 
-    internal void InitListViewItem(string text, int imageIndex, string imageKey, Color? foreColor, Color? backColor,
-        Font font, ListViewGroup group)
+    internal void InitListViewItem(string text, int imageIndex, string? imageKey, Color? foreColor, Color? backColor,
+        Font? font, ListViewGroup? group)
     {
-        _subitems = new ListViewSubItemCollection(this);
-        _subitems.Add(text);
+        _subitems = new ListViewSubItemCollection(this) { text };
         Text = text;
         ImageIndex = imageIndex;
         ImageKey = imageKey;
@@ -400,20 +399,22 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         Group = group;
     }
 
-    internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color? foreColor,
-        Color? backColor, Font font, ListViewGroup group)
+    internal void InitListViewItem(string[] items, int imageIndex, string? imageKey, Color? foreColor,
+        Color? backColor, Font? font, ListViewGroup? group)
     {
         InitListViewItem(items.Length > 0 ? items[0] : "", imageIndex, imageKey, foreColor, backColor, font, group);
+        _subitems ??= new ListViewSubItemCollection(this);
         foreach (var item in items)
             _subitems.Add(item);
 
     }
 
-    internal void InitListViewItem(ListViewSubItem[] subItems, int imageIndex, string imageKey, Color? foreColor,
-        Color? backColor, Font font, ListViewGroup group)
+    internal void InitListViewItem(ListViewSubItem[] subItems, int imageIndex, string? imageKey, Color? foreColor,
+        Color? backColor, Font? font, ListViewGroup? group)
     {
         InitListViewItem(subItems.Length > 0 ? subItems[0].Text : "", imageIndex, imageKey, foreColor, backColor,
             font, group);
+        _subitems ??= new ListViewSubItemCollection(this);
         foreach (var item in subItems)
             _subitems.Add(item);
     }
@@ -426,7 +427,7 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 
     public virtual object Clone()
     {
-        return null;
+        return null!;
     }
 
     public virtual void EnsureVisible()

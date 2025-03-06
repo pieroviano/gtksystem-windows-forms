@@ -8,6 +8,7 @@
 using GLib;
 using Gtk;
 using System.ComponentModel;
+using Image = System.Drawing.Image;
 
 namespace System.Windows.Forms;
 
@@ -75,12 +76,12 @@ public class TreeView : ScrollableControl
             {
                 if (string.IsNullOrWhiteSpace(ImageKey))
                 {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
-                    rendererPixbuf.Pixbuf = image.Pixbuf;
+                    Image? image = ImageList.GetBitmap(ImageIndex);
+                    rendererPixbuf.Pixbuf = image?.Pixbuf;
                 }
                 else
                 {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
+                    Image image = ImageList.GetBitmap(ImageKey);
                     rendererPixbuf.Pixbuf = image.Pixbuf;
                 }
             }
@@ -253,9 +254,9 @@ public class TreeView : ScrollableControl
         public bool ShowNodeToolsTips { get; set; }
         public bool ShowPlusMinus { get; set; } = true;
         public bool ShowRootLines { get; set; } = true;
-        public object SelectedItem => SelectedNode.Text;
+        public object? SelectedItem => SelectedNode?.Text;
 
-        public object SelectedValue => SelectedNode.Text;
+        public object? SelectedValue => SelectedNode?.Text;
 
         [DefaultValue("\\")]
     public string PathSeparator
@@ -331,7 +332,7 @@ public class TreeView : ScrollableControl
             set
             {
                 if (value < (_treeView.ImageList?.Images.Count ?? 0))
-                    Pixbuf = _treeView.ImageList?.Images[value].Pixbuf;
+                    Pixbuf = _treeView.ImageList?.Images[value]?.Pixbuf;
             }
         }
         [Property("pixbufkey")]

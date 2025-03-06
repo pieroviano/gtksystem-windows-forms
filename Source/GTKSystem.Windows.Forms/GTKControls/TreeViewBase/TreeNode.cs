@@ -3,13 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Runtime.Serialization;
-using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Forms;
 
 public class TreeNode : ICloneable, ISerializable, IEquatable<TreeNode>
 {
-    //格式，各级索引并集：0,1,2,3....
+    // Format, union of indexes at all levels： 0,1,2,3....
     private string index = "";
     public string Index { get => index;
         internal set => index = value ?? "";
@@ -48,7 +47,7 @@ public class TreeNode : ICloneable, ISerializable, IEquatable<TreeNode>
     public TreeNode(TreeNode? node) : this()
     {
         parent = node;
-        treeView = node.TreeView;
+        treeView = node?.TreeView;
     }
     public TreeNode(string text, int pImageIndex, int pSelectedImageIndex) : this(text)
     {
@@ -168,7 +167,7 @@ public class TreeNode : ICloneable, ISerializable, IEquatable<TreeNode>
     }
     public object Clone()
     {
-        return null;
+        return null!;
     }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -176,7 +175,7 @@ public class TreeNode : ICloneable, ISerializable, IEquatable<TreeNode>
         //throw new NotImplementedException();
     }
 
-    public bool Equals([AllowNull] TreeNode other)
+    public bool Equals(TreeNode? other)
     {
         return other != null && other.Index == Index && other.Name == Name && other.Text == Text && other.Level == Level;
     }

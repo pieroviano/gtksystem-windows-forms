@@ -42,7 +42,7 @@ public class RadioButton : Control
     }
     public event EventHandler? CheckedChanged;
 
-    public override string? Text { get => self.Label;
+    public override string Text { get => self.Label;
         set => self.Label = value;
     }
     public bool Checked { get => self.Active;

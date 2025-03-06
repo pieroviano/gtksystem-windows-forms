@@ -192,7 +192,7 @@ public class PrintPreviewControl : Control
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Bindable(false)]
-    public override string? Text
+    public override string Text
     {
         get => base.Text;
         set => base.Text = value;

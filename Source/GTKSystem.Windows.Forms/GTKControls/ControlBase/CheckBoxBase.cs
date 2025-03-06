@@ -3,7 +3,7 @@
 public sealed class CheckBoxBase : Gtk.CheckButton, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
-        public CheckBoxBase() : base()
+        public CheckBoxBase()
         {
             Override = new GtkControlOverride(this);
             Override.AddClass("CheckBox");

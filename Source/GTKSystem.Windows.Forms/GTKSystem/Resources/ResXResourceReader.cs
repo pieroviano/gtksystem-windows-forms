@@ -249,12 +249,15 @@ public partial class ResXResourceReader : IResourceReader
                 }
                 else if (_fileName != null || _stream != null)
                 {
-                    if (_stream is null)
+                    if (_fileName != null)
                     {
-                        _stream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        _stream ??= new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                     }
 
-                    contentReader = new XmlTextReader(_stream);
+                    if (_stream != null)
+                    {
+                        contentReader = new XmlTextReader(_stream);
+                    }
                 }
 
                 SetupNameTable(contentReader);
@@ -567,16 +570,19 @@ public partial class ResXResourceReader : IResourceReader
         var alias = reader?[ResXResourceWriter.aliasStr];
         var typeName = reader?[ResXResourceWriter.nameStr];
 
-        var assemblyName = new AssemblyName(typeName);
-
-        if (string.IsNullOrEmpty(alias))
+        if (typeName != null)
         {
-            alias = assemblyName.Name;
-        }
+            var assemblyName = new AssemblyName(typeName);
 
-        if (alias != null)
-        {
-            _aliasResolver.PushAlias(alias, assemblyName);
+            if (string.IsNullOrEmpty(alias))
+            {
+                alias = assemblyName.Name;
+            }
+
+            if (alias != null)
+            {
+                _aliasResolver.PushAlias(alias, assemblyName);
+            }
         }
     }
 

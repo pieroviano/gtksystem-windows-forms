@@ -16,10 +16,10 @@ public sealed class SaveFileDialog : FileDialog
     }
     public Stream OpenFile()
     {
-        string? filename = FileName;
+        var filename = FileName;
         if(string.IsNullOrEmpty(filename))
         {
-            throw new ArgumentNullException(@"filename");
+            throw new ArgumentNullException(nameof(filename));
         }
         return new FileStream(filename, FileMode.Create, FileAccess.ReadWrite);
     }

@@ -160,7 +160,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             OnLoad(e);
             if (Controls != null)
             {
-                foreach (object item in Controls)
+                foreach (var item in Controls)
                 {
                     if (item is Control control)
                     {
