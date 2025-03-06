@@ -66,3 +66,8 @@ $RECYCLE.BIN/
 /Source/System.Resources.Extensions/obj/System.Resources.Extensions.csproj.nuget.dgspec.json
 /Source/System.Resources.Extensions/obj/System.Resources.Extensions.csproj.nuget.g.props
 /GTKWinFormsApp.sln.DotSettings.user
+/Source/GTKSystem.Drawing/obj/GTKSystem.Drawing.csproj.nuget.dgspec.json
+/Source/GTKSystem.Drawing/obj/GTKSystem.Drawing.csproj.nuget.g.props
+/Source/GTKSystem.Drawing/obj/GTKSystem.Drawing.csproj.nuget.g.targets
+/Source/GTKSystem.Drawing/obj/project.assets.json
+/Source/GTKSystem.Drawing/obj/project.nuget.cache
