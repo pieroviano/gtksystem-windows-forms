@@ -17,7 +17,7 @@ https://www.gtkapp.com；
 https://gitee.com/easywebfactory/gtksystem-windows-forms；
 https://github.com/easywebfactory/gtksystem-windows-forms；
 	  </Description>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://gitee.com/easywebfactory/gtksystem-windows-forms</RepositoryUrl>
 	  <PackAsTool>False</PackAsTool>
