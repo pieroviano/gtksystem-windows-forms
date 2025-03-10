@@ -23,8 +23,6 @@ namespace GTKWinFormsApp
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -497,7 +495,6 @@ namespace GTKWinFormsApp
             PerformLayout();
         }
 
-        #endregion
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStrip toolStrip2;

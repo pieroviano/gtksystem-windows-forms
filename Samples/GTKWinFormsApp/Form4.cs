@@ -10,16 +10,11 @@ public partial class CommonDialogsForm : Form
 {
     public CommonDialogsForm()
     {
-        TreeNode treeNode1;
-        TreeNode treeNode2;
-        TreeNode treeNode3;
-        TreeNode treeNode4;
-        TreeNode treeNode5;
-        treeNode1 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_1);
-        treeNode2 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_2, new TreeNode[] { treeNode1 });
-        treeNode3 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_3);
-        treeNode4 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_4, new TreeNode[] { treeNode2, treeNode3 });
-        treeNode5 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_5);
+        var treeNode1 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_1);
+        var treeNode2 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_2, new TreeNode[] { treeNode1 });
+        var treeNode3 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_3);
+        var treeNode4 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_4, new TreeNode[] { treeNode2, treeNode3 });
+        var treeNode5 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_5);
         InitializeComponent();
         treeNode1.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_1;
         treeNode1.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_1;

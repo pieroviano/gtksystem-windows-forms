@@ -27,8 +27,6 @@ namespace GTKWinFormsApp
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
         /// <summary>
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
@@ -885,8 +883,6 @@ namespace GTKWinFormsApp
             splitContainer2.ResumeLayout(false);
             ResumeLayout(false);
         }
-
-        #endregion
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox comboBox1;
