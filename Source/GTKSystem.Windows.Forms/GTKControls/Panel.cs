@@ -16,7 +16,7 @@ public class Panel : ScrollableControl
     public readonly PanelBase self = new();
     public override object GtkControl => self;
     public Overlay contaner = new();
-    private readonly ControlCollection? _controls;
+    private readonly ControlCollection _controls = null!;
     public Panel()
     {
         _controls = new ControlCollection(this, contaner);
@@ -29,7 +29,7 @@ public class Panel : ScrollableControl
         contaner.Add(new Fixed { Halign = Align.Fill, Valign = Align.Fill });
         self.Add(contaner);
     }
-    public override ControlCollection? Controls => _controls;
+    public override ControlCollection Controls => _controls!;
     public override Padding Padding
     {
         get => base.Padding;

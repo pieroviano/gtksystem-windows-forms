@@ -17,7 +17,7 @@ public class UserControl : ContainerControl
     public readonly UserControlBase self = new();
     public override object GtkControl => self;
     private readonly Overlay? contaner;
-    private readonly ControlCollection? _controls;
+    private readonly ControlCollection _controls = null!;
 
     public UserControl()
     {
@@ -63,7 +63,7 @@ public class UserControl : ContainerControl
     public override event EventHandler? Load;
     public Drawing.SizeF AutoScaleDimensions { get; set; }
     public AutoScaleMode AutoScaleMode { get; set; }
-    public override ControlCollection? Controls => _controls;
+    public override ControlCollection Controls => _controls!;
 
     protected override void OnPaint(PaintEventArgs e)
     {

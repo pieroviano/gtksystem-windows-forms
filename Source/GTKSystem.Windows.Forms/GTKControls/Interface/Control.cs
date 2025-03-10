@@ -50,6 +50,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public Control()
     {
+        Controls = new ControlCollection(this);
         Init();
     }
 
@@ -969,7 +970,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         ContextMenuStripChanged?.Invoke(this, eventArgs);
     }
 
-    public virtual ControlCollection? Controls { get; set; }
+    public virtual ControlCollection Controls { get; set; }
 
     public virtual bool Created => created;
     internal bool created;

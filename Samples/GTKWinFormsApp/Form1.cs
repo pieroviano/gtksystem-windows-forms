@@ -88,7 +88,7 @@ public partial class TestDataForm : Form
     {
         List<TreeNode> children = new List<TreeNode>();
         var list = data.Where(w => w.parent == treeID);
-        foreach (TestDataMode d in list)
+        foreach (var d in list)
         {
             var node = new TreeNode(d.name) { Name = d.treeID };
             IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
@@ -111,7 +111,7 @@ public partial class TestDataForm : Form
     {
         Console.WriteLine(treeView1.SelectedNode?.Text);
         // b.Title = "test2";
-        DialogResult result = MessageBox.Show(Resources.TestDataForm_button1_1, Resources.TestDataForm_button1_2, MessageBoxButtons.YesNo);
+        var result = MessageBox.Show(Resources.TestDataForm_button1_1, Resources.TestDataForm_button1_2, MessageBoxButtons.YesNo);
         if (result == DialogResult.No)
         {
             return;
@@ -186,7 +186,7 @@ public partial class TestDataForm : Form
             PIC1 = "",
             PIC = Image.FromFile("Resources/timg2.jpg")
         });
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
             data.Add(new TestEntity()
             {
                 ID = i + 7,
@@ -237,7 +237,7 @@ public partial class TestDataForm : Form
 
     private void button2_Click(object sender, EventArgs e)
     {
-        ColorDialog cd = new ColorDialog();
+        var cd = new ColorDialog();
         if (textBox1.Text.Length >= 6)
         {
             try
@@ -246,7 +246,7 @@ public partial class TestDataForm : Form
             }
             catch { }
         }
-        DialogResult result = cd.ShowDialog(this);
+        var result = cd.ShowDialog(this);
 
         if (result == DialogResult.OK)
         {
@@ -270,7 +270,7 @@ public partial class TestDataForm : Form
 
     private void toolStripMenuItem1_Click(object sender, EventArgs e)
     {
-        ToolStripItem menu = sender as ToolStripItem;
+        var menu = sender as ToolStripItem;
         Console.WriteLine(menu.Text);
     }
 
@@ -358,7 +358,7 @@ public partial class TestDataForm : Form
         if (e.RowIndex > -1)
         //    if (dataGridView1.Rows.Count > 0 && dataGridView1.Rows[e.RowIndex].Cells.Count>0)
         {
-            DataGridViewCell cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            var cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
             Console.WriteLine($"{cell.Value},{cell.Selected}");
         }
         //foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -489,7 +489,7 @@ public partial class TestDataForm : Form
 
         if (GTKWinFormsApp.Properties.Resources.timg6 != null)
         {
-            MemoryStream? mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
+            var mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
 
             //g.DrawImage(new Bitmap(mem), new Point(0, 0));
             g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
@@ -498,19 +498,19 @@ public partial class TestDataForm : Form
 
         g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
         // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
-        List<PointF> Rps = new List<PointF>();
-        List<PointF> rps = new List<PointF>();
+        var Rps = new List<PointF>();
+        var rps = new List<PointF>();
         float R = 50;
-        double rad = Math.PI / 180;
-        float r = (float)(R * Math.Sin(18 * R) / Math.Cos(36 * R));
+        var rad = Math.PI / 180;
+        var r = (float)(R * Math.Sin(18 * R) / Math.Cos(36 * R));
         float x = pictureBox2.Width / 2;
         float y = pictureBox2.Height / 2;
-        for (int k = 0; k < 5; k++)
+        for (var k = 0; k < 5; k++)
         {
             Rps.Add(new PointF(x - (R * (float)Math.Cos((90 + k * 72) * rad)), y - (R * (float)Math.Sin((90 + k * 72) * rad))));
             rps.Add(new PointF(x - (r * (float)Math.Cos((90 + k * 72 + 36) * rad)), y - (r * (float)Math.Sin((90 + k * 72 + 36) * rad))));
         }
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
             //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), Rps[i], rps[i]);
             //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
@@ -535,8 +535,8 @@ public partial class TestDataForm : Form
 
     private void button7_Click(object sender, EventArgs e)
     {
-        ListViewForm form = new ListViewForm();
-        DialogResult result = form.ShowDialog(this);
+        var form = new ListViewForm();
+        var result = form.ShowDialog(this);
         if (result == DialogResult.None || result == DialogResult.Cancel)
         {
             // MessageBox.Show("Close window return");

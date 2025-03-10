@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 using GTKWinFormsApp.Properties;
 
@@ -38,9 +37,21 @@ public partial class CommonDialogsForm : Form
         button3.Text = Resources.CommonDialogsForm_CommonDialogsForm_5;
         label1.Text = Resources.CommonDialogsForm_CommonDialogsForm_6;
 
+        hScrollBar1.ValueChanged += hScrollBar1_ValueChanged;
+        vScrollBar1.ValueChanged += vScrollBar1_ValueChanged;
+        button9.Click += ButtonMessageBox_Click;
         Shown += Form4_Shown;
-
         button4.Click += Button4_Click;
+        button1.Click += Button_Click;
+        button3.Click += Button_Click;
+        button6.Click += Button_Click;
+        button7.Click += Button_Click;
+        button8.Click += Button_Click;
+    }
+
+    private void Button_Click(object? sender, EventArgs e)
+    {
+        AutoClosingMessageBox.Instance.Show(((Button)sender!).Text);
     }
 
     private void Button4_Click(object? sender, EventArgs e)
@@ -48,13 +59,12 @@ public partial class CommonDialogsForm : Form
         splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock = DockStyle.Fill });
     }
 
-    Point panel1Location = new();
     private void Form4_Shown(object? sender, EventArgs e)
     {
 
     }
 
-    private void button3_Click(object sender, EventArgs e)
+    private void ButtonOpenFile_Click(object sender, EventArgs e)
     {
         var ofd = new OpenFileDialog();
         ofd.Filter = "jpg|*.jpg;png|*.png";
@@ -62,44 +72,51 @@ public partial class CommonDialogsForm : Form
         ofd.Title = Resources.CommonDialogsForm_button3_Click_Test_Open_File;
 
         var dialogResult = ofd.ShowDialog(this);
-        Console.WriteLine("dialogResult:" + dialogResult.ToString());
-        Console.WriteLine("FileName:" + ofd.FileName);
-        foreach (var file in ofd.FileNames)
+        Console.WriteLine(@"dialogResult:" + dialogResult.ToString());
+        Console.WriteLine(@"FileName:" + ofd.FileName);
+        if (ofd.FileNames != null)
         {
-            Console.WriteLine("FileNames:" + file);
+            foreach (var file in ofd.FileNames)
+            {
+                Console.WriteLine(@"FileNames:" + file);
+            }
         }
-        Console.WriteLine("SafeFileName:" + ofd.SafeFileName);
+
+        Console.WriteLine(@"SafeFileName:" + ofd.SafeFileName);
         foreach (var file in ofd.SafeFileNames)
         {
-            Console.WriteLine("SafeFileNames:" + file);
+            Console.WriteLine(@"SafeFileNames:" + file);
         }
     }
 
-    private void button6_Click(object sender, EventArgs e)
+    private void ButtonSaveFile_Click(object sender, EventArgs e)
     {
         var ofd = new SaveFileDialog();
         ofd.Filter = "jpg|*.jpg;png|*.png";
         ofd.Title = Resources.CommonDialogsForm_button6_Click_Test_Save_File;
 
         var dialogResult = ofd.ShowDialog();
-        Console.WriteLine("dialogResult:" + dialogResult.ToString());
-        Console.WriteLine("FileName:" + ofd.FileName);
-        foreach (var file in ofd.FileNames)
+        Console.WriteLine(@"dialogResult:" + dialogResult.ToString());
+        Console.WriteLine(@"FileName:" + ofd.FileName);
+        if (ofd.FileNames != null)
         {
-            Console.WriteLine("FileNames:" + file);
+            foreach (var file in ofd.FileNames)
+            {
+                Console.WriteLine(@"FileNames:" + file);
+            }
         }
     }
 
-    private void button7_Click(object sender, EventArgs e)
+    private void ButtonFolderBrowser_Click(object sender, EventArgs e)
     {
         var ofd = new FolderBrowserDialog();
         ofd.Description = Resources.CommonDialogsForm_button7_Click_Browse_Folder_Description;
         var dialogResult = ofd.ShowDialog();
-        Console.WriteLine("dialogResult:" + dialogResult.ToString());
-        Console.WriteLine("SelectedPath:" + ofd.SelectedPath);
+        Console.WriteLine(@"dialogResult:" + dialogResult.ToString());
+        Console.WriteLine(@"SelectedPath:" + ofd.SelectedPath);
     }
 
-    private void button8_Click(object sender, EventArgs e)
+    private void ButtonColorDialog_Click(object sender, EventArgs e)
     {
         var colorDialog = new ColorDialog();
         colorDialog.ShowDialog();
@@ -113,40 +130,22 @@ public partial class CommonDialogsForm : Form
 
     }
 
-    private void button9_Click(object sender, EventArgs e)
+    private void ButtonMessageBox_Click(object? sender, EventArgs e)
     {
-        if (Thread.CurrentThread.CurrentUICulture.Name.StartsWith("zh"))
-        {
-            MessageBox.Show("test message test message test messagetest message test message test message test messagetest message " +
-                            "test message test message test messagetest message test message test message test messagetest message test " +
-                            "message test message test messagetest message", Resources.CommonDialogsForm_button9_Click_Doubt, 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            MessageBox.Show("test message test message \ntest messagetest message", Resources.CommonDialogsForm_button9_Click_Warn, 
-                MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
-        }
-        else
-        {
-            // Display a question message box with Yes/No buttons
-            MessageBox.Show("test message test message test message test message test message test message test message test message " +
-                            "test message test message test message test message test message test message test message test message test message",
-                "Question",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            // Display a warning message box with Retry/Cancel buttons
-            MessageBox.Show("test message test message \ntest message test message",
-                "Warning",
-                MessageBoxButtons.RetryCancel,
-                MessageBoxIcon.Warning);
-        }
+        MessageBox.Show("test message test message test messagetest message test message test message test messagetest message " +
+                        "test message test message test messagetest message test message test message test messagetest message test " +
+                        "message test message test messagetest message", Resources.CommonDialogsForm_button9_Click_Doubt,
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        MessageBox.Show("test message test message \ntest messagetest message", Resources.CommonDialogsForm_button9_Click_Warn,
+            MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
     }
 
-    private void vScrollBar1_ValueChanged(object sender, EventArgs e)
+    private void vScrollBar1_ValueChanged(object? sender, EventArgs e)
     {
 
     }
 
-    private void hScrollBar1_ValueChanged(object sender, EventArgs e)
+    private void hScrollBar1_ValueChanged(object? sender, EventArgs e)
     {
 
     }

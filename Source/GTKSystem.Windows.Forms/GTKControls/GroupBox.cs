@@ -16,7 +16,7 @@ public class GroupBox : ContainerControl
     public readonly GroupBoxBase self = new();
     public override object GtkControl => self;
     private readonly Overlay? contaner = new();
-    private readonly ControlCollection? _controls;
+    private readonly ControlCollection _controls = null!;
     public GroupBox()
     {
         _controls = new ControlCollection(this, contaner);
@@ -34,7 +34,7 @@ public class GroupBox : ContainerControl
     public override string Text { get => self.Label;
         set => self.Label = value;
     }
-    public override ControlCollection? Controls => _controls;
+    public override ControlCollection Controls => _controls!;
     public override Padding Padding
     {
         get => base.Padding;

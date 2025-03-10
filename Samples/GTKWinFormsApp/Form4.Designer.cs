@@ -123,7 +123,6 @@ namespace GTKWinFormsApp
             hScrollBar1.Name = "hScrollBar1";
             hScrollBar1.Size = new System.Drawing.Size(260, 26);
             hScrollBar1.TabIndex = 8;
-            hScrollBar1.ValueChanged += hScrollBar1_ValueChanged;
             // 
             // vScrollBar1
             // 
@@ -131,7 +130,6 @@ namespace GTKWinFormsApp
             vScrollBar1.Name = "vScrollBar1";
             vScrollBar1.Size = new System.Drawing.Size(26, 216);
             vScrollBar1.TabIndex = 7;
-            vScrollBar1.ValueChanged += vScrollBar1_ValueChanged;
             // 
             // button9
             // 
@@ -141,7 +139,6 @@ namespace GTKWinFormsApp
             button9.TabIndex = 6;
             button9.Text = "警告消息";
             button9.UseVisualStyleBackColor = true;
-            button9.Click += button9_Click;
             // 
             // button8
             // 
@@ -151,7 +148,7 @@ namespace GTKWinFormsApp
             button8.TabIndex = 5;
             button8.Text = "选择颜色";
             button8.UseVisualStyleBackColor = true;
-            button8.Click += button8_Click;
+            button8.Click += ButtonColorDialog_Click;
             // 
             // button7
             // 
@@ -161,7 +158,7 @@ namespace GTKWinFormsApp
             button7.TabIndex = 4;
             button7.Text = "浏览文件夹";
             button7.UseVisualStyleBackColor = true;
-            button7.Click += button7_Click;
+            button7.Click += ButtonFolderBrowser_Click;
             // 
             // button6
             // 
@@ -171,7 +168,7 @@ namespace GTKWinFormsApp
             button6.TabIndex = 3;
             button6.Text = "保存文件";
             button6.UseVisualStyleBackColor = true;
-            button6.Click += button6_Click;
+            button6.Click += ButtonSaveFile_Click;
             // 
             // treeView1
             // 
@@ -281,7 +278,7 @@ namespace GTKWinFormsApp
             button3.TabIndex = 0;
             button3.Text = "打开文件";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            button3.Click += ButtonOpenFile_Click;
             // 
             // label1
             // 

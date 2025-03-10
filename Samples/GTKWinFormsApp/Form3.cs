@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Threading;
 using System.Windows.Forms;
 using GTKWinFormsApp.Properties;
 
@@ -43,20 +42,20 @@ public partial class GtkMainForm : Form
 
     private void AddHandlers()
     {
-        ssssToolStripMenuItem1.Click += ssssToolStripMenuItem1_Click;
+        ssssToolStripMenuItem1.Click += ShowListViewFormToolStripMenuItem_Click;
         button1.Click += button1_Click;
         trackBar1.Scroll += trackBar1_Scroll;
-        button4.Click += button4_Click;
-        button2.Click += button2_Click;
-        button3.Click += button3_Click;
+        button4.Click += ButtonShowListViewForm_Click;
+        button2.Click += ButtonShowCommonDialogsForm_Click;
+        button3.Click += ButtonPrint_Click;
         panel3.Paint += panel3_Paint;
         panel5.Scroll += panel5_Scroll;
-        Load += Form3_Load;
-        SizeChanged += Form3_SizeChanged;
-        Shown += Form3_Shown;
+        Load += GtkMainForm_Load;
+        SizeChanged += GtkMainForm_SizeChanged;
+        Shown += GtkMainForm_Shown;
     }
 
-    private void Form3_Shown(object? sender, EventArgs e)
+    private void GtkMainForm_Shown(object? sender, EventArgs e)
     {
 
         Image m = new Bitmap(500, 300);
@@ -80,7 +79,7 @@ public partial class GtkMainForm : Form
         //}
     }
 
-    private void Form3_SizeChanged(object? sender, EventArgs e)
+    private void GtkMainForm_SizeChanged(object? sender, EventArgs e)
     {
         panel1.Refresh();
         //Console.WriteLine(Width);
@@ -92,7 +91,7 @@ public partial class GtkMainForm : Form
     {
         //button1.ForeColor=Color.Red;
         //button1.BackColor=Color.Green;
-        TestDataForm f = new TestDataForm();
+        var f = new TestDataForm();
         f.Show();
     }
 
@@ -101,16 +100,17 @@ public partial class GtkMainForm : Form
         label1.Text = trackBar1.Value.ToString();
     }
 
-    private void Form3_Load(object? sender, EventArgs e)
+    private void GtkMainForm_Load(object? sender, EventArgs e)
     {
-        var result = this.BeginInvoke(new MethodInvoker(() =>
+        BeginInvoke(new MethodInvoker(() =>
         {
             System.Threading.Thread.Sleep(3000);
-            for (int i = 0; i < 100; i++)
+            for (var i = 0; i < 100; i++)
             {
+                var index = i;
                 progressBar1.Invoke(() =>
                 {
-                    progressBar1.Value = i;
+                    progressBar1.Value = index;
                 });
                 System.Threading.Thread.Sleep(20);
             }
@@ -121,7 +121,7 @@ public partial class GtkMainForm : Form
     {
         var g = e.Graphics;
 
-        GraphicsPath path = new GraphicsPath();
+        var path = new GraphicsPath();
         path.AddEllipse(90, 25, 40, 20);
 
         path.StartFigure();
@@ -140,15 +140,11 @@ public partial class GtkMainForm : Form
         path.AddRectangle(new Rectangle(30, 10, 190, 30));
         //path.CloseFigure();
 
-
-        if (Thread.CurrentThread.CurrentUICulture.Name.StartsWith("zh"))
-            path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
-        else
-            path.AddString(Resources.GtkMainForm_panel3_Paint_testText, new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
+        path.AddString(Resources.GtkMainForm_panel3_Paint_testText, new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
 
         //path.CloseAllFigures();
 
-        LinearGradientBrush? brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
+        var brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
         //g.TranslateTransform(30, 0);
         //g.RotateTransform(20);
         g.DrawPath(new Pen(brush, 2), path);
@@ -161,16 +157,16 @@ public partial class GtkMainForm : Form
         //g.FillPath(brush, path);
     }
 
-    private void ssssToolStripMenuItem1_Click(object? sender, EventArgs e)
+    private void ShowListViewFormToolStripMenuItem_Click(object? sender, EventArgs e)
     {
-        ListViewForm f1 = new ListViewForm();
+        var f1 = new ListViewForm();
         f1.Show(this);
     }
 
-    private void button2_Click(object? sender, EventArgs e)
+    private void ButtonShowCommonDialogsForm_Click(object? sender, EventArgs e)
     {
-        CommonDialogsForm f = new CommonDialogsForm();
-        DialogResult res = f.ShowDialog();
+        var f = new CommonDialogsForm();
+        var res = f.ShowDialog();
         Console.WriteLine(res);
     }
 
@@ -179,14 +175,15 @@ public partial class GtkMainForm : Form
         Console.WriteLine($"panel5_Scroll:{e.OldValue},{e.NewValue};{e.ScrollOrientation}");
     }
 
-    private void button3_Click(object? sender, EventArgs e)
+    private void ButtonPrint_Click(object? sender, EventArgs e)
     {
-        //打印
+        // Print
+        AutoClosingMessageBox.Instance.Show("ToDo");
     }
 
-    private void button4_Click(object? sender, EventArgs e)
+    private void ButtonShowListViewForm_Click(object? sender, EventArgs e)
     {
-        ListViewForm f1 = new ListViewForm();
+        var f1 = new ListViewForm();
         f1.Show(this);
     }
 }

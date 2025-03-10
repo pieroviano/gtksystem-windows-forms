@@ -107,7 +107,7 @@ public partial class ListViewForm : Form
 
     private void Form2_FormClosing(object? sender, FormClosingEventArgs e)
     {
-        DialogResult res = MessageBox.Show("Form2_FormClosing");
+        var res = MessageBox.Show("Form2_FormClosing");
         e.Cancel = res != DialogResult.OK;
     }
     private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -118,7 +118,7 @@ public partial class ListViewForm : Form
     private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
     {
         richTextBox1.Text = "";
-        foreach (ListViewItem m in listView1.CheckedItems)
+        foreach (var m in listView1.CheckedItems)
             richTextBox1.Text += $"{m.Text},Selected:{m.Selected},Checked:{m.Checked}；\n";
     }
 
@@ -130,7 +130,7 @@ public partial class ListViewForm : Form
     private void listView1_SelectedIndexChanged(object sender, EventArgs e)
     {
         richTextBox1.Text = "";
-        foreach (ListViewItem m in listView1.SelectedItems)
+        foreach (var m in listView1.SelectedItems)
             richTextBox1.Text += $"{m.Text},Selected:{m.Selected},Checked:{m.Checked}；\n";
     }
 
@@ -154,7 +154,7 @@ public partial class ListViewForm : Form
         listView1.Items.Add(new ListViewItem(Resources.ListViewForm_button1_Click_2_Add_data_to_a_specified_group)
         { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
-        ListViewItem? m = new ListViewItem(Resources.ListViewForm_button1_Click_3_This_is_a_method_to_add_multi_column_data, 0);
+        var m = new ListViewItem(Resources.ListViewForm_button1_Click_3_This_is_a_method_to_add_multi_column_data, 0);
         m.Checked = true;
         m.Selected = true;
         m.ForeColor = Color.Green;

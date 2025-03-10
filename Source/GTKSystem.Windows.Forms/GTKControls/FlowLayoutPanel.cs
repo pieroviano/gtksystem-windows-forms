@@ -52,7 +52,7 @@ public class FlowLayoutPanel : Control, IExtenderProvider
     {
 
     }
-    public override ControlCollection? Controls => _controls;
+    public override ControlCollection Controls => _controls!;
     public bool CanExtend(object? extendee)
     {
         return true;
