@@ -17,8 +17,7 @@ public partial class TestDataForm : Form
     {
         InitializeComponent();
         button1.Text = Resources.TestDataForm_TestDataForm_Load_1;
-        comboBox1.Items.AddRange(new object[]
-            { "test1", "test2", "test3333333333333333333", Resources.TestDataForm_TestDataForm_Load_2 });
+        comboBox1.Items.AddRange("test1", "test2", "test3333333333333333333", Resources.TestDataForm_TestDataForm_Load_2);
         textBox1.PlaceholderText = Resources.TestDataForm_TestDataForm_Load_2B;
         groupBox1.Text = Resources.TestDataForm_TestDataForm_Load_3;
         checkBox2.Text = Resources.TestDataForm_TestDataForm_Load_4;

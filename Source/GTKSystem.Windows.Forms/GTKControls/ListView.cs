@@ -457,7 +457,7 @@ public class ListView : ContainerControl
 
             foreach (var col in Columns)
             {
-                if (item.SubItems != null && item.SubItems.Count > col.Index)
+                if (item.SubItems != null && item.SubItems.Count > col.Index && col.Index>=0)
                 {
                     boxitem.Data.Add(col.Index, item.SubItems[col.Index].Text);
                 }

@@ -13,6 +13,10 @@ public partial class UserControl11 : UserControl
     {
         InitializeComponent();
         this.MouseWheel += UserControl11_MouseWheel;
+        button1.Click += (_, _) =>
+        {
+            AutoClosingMessageBox.Instance.Show(button1.Text);
+        };
     }
 
     private void UserControl11_MouseWheel(object sender, MouseEventArgs e)

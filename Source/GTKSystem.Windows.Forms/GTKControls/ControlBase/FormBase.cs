@@ -1,4 +1,5 @@
-﻿using Gtk;
+﻿using System.Windows.Forms.GTKSystem.Resources.Extensions;
+using Gtk;
 
 namespace System.Windows.Forms;
 
@@ -62,14 +63,14 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
         scrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
         scrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
         ContentArea.PackStart(scrollView, true, true, 0);
-        //this.Decorated = false; //删除工具栏
+        //this.Decorated = false; // Delete toolbar
         Drawn += FormBase_Drawn;
         Close += FormBase_Close;
     }
 
     private void FormBase_Close(object? sender, EventArgs e)
     {
-        var result = MessageBox.Show(this, "你正在关闭该窗口，确定要关闭吗？", "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        var result = MessageBox.Show(this, SystemResources.FormBase_FormBase_Close_1, SystemResources.FormBase_FormBase_Close_2, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         if (result == DialogResult.Yes)
         {
             Respond(ResponseType.DeleteEvent);

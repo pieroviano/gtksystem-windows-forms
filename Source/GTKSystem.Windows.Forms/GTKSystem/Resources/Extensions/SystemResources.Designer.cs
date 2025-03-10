@@ -214,6 +214,24 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are closing this window. Are you sure you want to close it?.
+        /// </summary>
+        internal static string FormBase_FormBase_Close_1 {
+            get {
+                return ResourceManager.GetString("FormBase_FormBase_Close_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Esc Key Operation Prompt.
+        /// </summary>
+        internal static string FormBase_FormBase_Close_2 {
+            get {
+                return ResourceManager.GetString("FormBase_FormBase_Close_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enumeration already finished..
         /// </summary>
         internal static string InvalidOperation_EnumEnded {
