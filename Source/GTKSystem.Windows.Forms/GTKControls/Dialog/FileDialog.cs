@@ -6,6 +6,7 @@
  */
 
 using System.ComponentModel;
+using Gtk;
 
 namespace System.Windows.Forms;
 
@@ -32,6 +33,7 @@ public abstract class FileDialog : CommonDialog
     private string[] fileNames = [];
     private string fileName = string.Empty;
     private string description = string.Empty;
+    private FileChooserDialog? _dialog;
 
     public string? Filter
     {
@@ -89,6 +91,13 @@ public abstract class FileDialog : CommonDialog
 
     public event CancelEventHandler? FileOk;
     internal Gtk.FileChooserAction ActionType { get; set; }
+    public new virtual void Dispose()
+    {
+        _dialog?.Dispose();
+        base.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
     public override void Reset()
     {
         AddExtension = true;
@@ -105,29 +114,29 @@ public abstract class FileDialog : CommonDialog
 
     protected override bool RunDialog(IWin32Window? owner)
     {
-        Gtk.FileChooserDialog? fileDialog = null;
+        _dialog = null;
         if (owner is Form ownerform)
         {
-            fileDialog = new Gtk.FileChooserDialog(System.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
-            fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+            _dialog = new Gtk.FileChooserDialog(System.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
+            _dialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
         }
         else
         {
-            fileDialog = new Gtk.FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_File, null, ActionType);
-            fileDialog.WindowPosition = Gtk.WindowPosition.Center;
+            _dialog = new Gtk.FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_File, null, ActionType);
+            _dialog.WindowPosition = Gtk.WindowPosition.Center;
         }
-        fileDialog.IconName = "document-open";
-        fileDialog.AddButton(Properties.Resources.FileDialog_RunDialog_OK, Gtk.ResponseType.Ok);
-        fileDialog.AddButton(Properties.Resources.FileDialog_RunDialog_Cancel, Gtk.ResponseType.Cancel);
-        fileDialog.SelectMultiple = Multiselect;
-        fileDialog.Title = Title ?? string.Empty;
-        fileDialog.TooltipText = Description ?? string.Empty;
+        _dialog.IconName = "document-open";
+        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_OK, Gtk.ResponseType.Ok);
+        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_Cancel, Gtk.ResponseType.Cancel);
+        _dialog.SelectMultiple = Multiselect;
+        _dialog.Title = Title ?? string.Empty;
+        _dialog.TooltipText = Description ?? string.Empty;
 
-        fileDialog.KeepAbove = true;
+        _dialog.KeepAbove = true;
         if (!string.IsNullOrWhiteSpace(SelectedDirectory))
-            fileDialog.SetCurrentFolder(SelectedDirectory);
+            _dialog.SetCurrentFolder(SelectedDirectory);
         else if (!string.IsNullOrWhiteSpace(InitialDirectory))
-            fileDialog.SetCurrentFolder(InitialDirectory);
+            _dialog.SetCurrentFolder(InitialDirectory);
 
         if (!string.IsNullOrWhiteSpace(DefaultExt))
         {
@@ -140,7 +149,7 @@ public abstract class FileDialog : CommonDialog
             }
             filter.AddPattern($"*.{extand}");
             filter.Name = extand;
-            fileDialog.Filter = filter;
+            _dialog.Filter = filter;
         }
         if (_filter != null)
         {
@@ -156,15 +165,15 @@ public abstract class FileDialog : CommonDialog
                 }
                 ffilter.AddPattern(pattern[1]);
                 ffilter.Name = $"{pattern[0]}（{pattern[1]}）";
-                fileDialog.AddFilter(ffilter);
+                _dialog.AddFilter(ffilter);
             }
         }
-        var response = fileDialog.Run();
-        FileName = fileDialog.Filename;
-        FileNames = fileDialog.Filenames.Clone() as string[];
-        SelectedDirectory = fileDialog.Filename;
-        fileDialog.Dispose();
-        fileDialog.Destroy();
+        var response = _dialog.Run();
+        FileName = _dialog.Filename;
+        FileNames = _dialog.Filenames.Clone() as string[];
+        SelectedDirectory = _dialog.Filename;
+        _dialog.Dispose();
+        _dialog.Destroy();
         return response == -5;
     }
     static readonly Dictionary<string, string> MimeMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);

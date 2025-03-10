@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Gdk;
 using Gtk;
 using GTKSystemWinFormsApp11.Properties;
@@ -61,7 +64,7 @@ public partial class GtkForm : Form
     private async Task LinkLabel1OnLinkClickedAsunc()
     {
         AutoClosingMessageBox.Instance.MessageBoxTimeout = 1000;
-        await Task.Delay(TimeSpan.FromSeconds(3));
+        await Task.Delay(TimeSpan.FromSeconds(1));
         _ = Task.Run(()=>AutoClosingMessageBox.Instance.Show(linkLabel1.Text));
     }
 }

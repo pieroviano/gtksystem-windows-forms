@@ -135,7 +135,7 @@ public sealed class PrintDialog : CommonDialog
                 var result = printOperation.Run(PrintOperationAction.PrintDialog, owner == null ? window! : ((Form)owner).self);
                 return result != PrintOperationResult.Cancel && result != PrintOperationResult.Error;
             }
-        }catch(Exception ex)
+        } catch(Exception ex)
         {
             var messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self,
                 DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");

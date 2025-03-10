@@ -20,6 +20,7 @@ public class FontDialog : CommonDialog
     public virtual bool AllowFullOpen { get; set; }
 
     private Font? _font;
+    private FontChooserDialog? _dialog;
     public Font? Font { get => _font; set => _font = value; }
 
     [DefaultValue(false)]
@@ -32,6 +33,13 @@ public class FontDialog : CommonDialog
 
     protected virtual int Options { get; } = default;
 
+    public new virtual void Dispose()
+    {
+        _dialog?.Dispose();
+        base.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
     public override void Reset()
     {
         _font = null;
@@ -40,26 +48,26 @@ public class FontDialog : CommonDialog
     internal static Window? ActiveWindow = null;
     protected override bool RunDialog(IWin32Window? owner)
     {
-        FontChooserDialog? fontChooserDialog = null;
+        _dialog = null;
         if (owner is Form ownerform)
         {
-            fontChooserDialog = new FontChooserDialog("选择字体", ownerform.self);
-            fontChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
+            _dialog = new FontChooserDialog(Properties.Resources.FontDialog_RunDialog_Select_Font, ownerform.self);
+            _dialog.WindowPosition = WindowPosition.CenterOnParent;
         }
         else
         {
-            fontChooserDialog = new FontChooserDialog("选择字体", null);
-            fontChooserDialog.WindowPosition = WindowPosition.Center;
+            _dialog = new FontChooserDialog(Properties.Resources.FontDialog_RunDialog_Select_Font, null);
+            _dialog.WindowPosition = WindowPosition.Center;
         }
-        fontChooserDialog.IconName = "font-x-generic";
-        fontChooserDialog.KeepAbove = true;
+        _dialog.IconName = "font-x-generic";
+        _dialog.KeepAbove = true;
         if (null != _font)
-            fontChooserDialog.Font = _font.Name + " " + (int)_font.Size;
+            _dialog.Font = _font.Name + " " + (int)_font.Size;
         if (FullOpen && AllowFullOpen)
-            fontChooserDialog.Fullscreen();
-        var res = fontChooserDialog.Run();
+            _dialog.Fullscreen();
+        var res = _dialog.Run();
         var fontStyle = FontStyle.Regular;
-        switch (fontChooserDialog.FontDesc.Weight)
+        switch (_dialog.FontDesc.Weight)
         {
             case Pango.Weight.Bold:
             case Pango.Weight.Ultrabold:
@@ -67,17 +75,17 @@ public class FontDialog : CommonDialog
                 fontStyle |= FontStyle.Bold;
                 break;
         }
-        switch (fontChooserDialog.FontDesc.Style)
+        switch (_dialog.FontDesc.Style)
         {
             case Pango.Style.Italic:
             case Pango.Style.Oblique:
                 fontStyle |= FontStyle.Italic;
                 break;
         }
-        _font = new Font(fontChooserDialog.FontDesc.Family, (int)(fontChooserDialog.FontDesc.Size / Pango.Scale.PangoScale), fontStyle);
+        _font = new Font(_dialog.FontDesc.Family, (int)(_dialog.FontDesc.Size / Pango.Scale.PangoScale), fontStyle);
 
-        fontChooserDialog.Dispose();
-        fontChooserDialog.Destroy();
+        _dialog.Dispose();
+        _dialog.Destroy();
         return res == -5;
     }
 

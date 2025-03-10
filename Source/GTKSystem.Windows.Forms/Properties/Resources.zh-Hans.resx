@@ -184,9 +184,6 @@
   <data name="ColorDialog_RunDialog_Choose color" xml:space="preserve">
     <value>选择颜色</value>
   </data>
-  <data name="FontDialog_RunDialog_Select font" xml:space="preserve">
-    <value>选择字体</value>
-  </data>
   <data name="PrintDialog_RunPrint_File is in use and cannot be overwritten" xml:space="preserve">
     <value>文件正在使用，无法覆盖写入</value>
   </data>
@@ -215,5 +212,8 @@
   </data>
   <data name="FileDialog_RunDialog_Cancel" xml:space="preserve">
     <value>取消</value>
+  </data>
+  <data name="FontDialog_RunDialog_Select_Font" xml:space="preserve">
+    <value>选择字体</value>
   </data>
 </root>

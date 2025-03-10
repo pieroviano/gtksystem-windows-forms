@@ -260,11 +260,11 @@ namespace System.Windows.Forms.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select font.
+        ///   Looks up a localized string similar to Select Font.
         /// </summary>
-        internal static string FontDialog_RunDialog_Select_font {
+        internal static string FontDialog_RunDialog_Select_Font {
             get {
-                return ResourceManager.GetString("FontDialog_RunDialog_Select font", resourceCulture);
+                return ResourceManager.GetString("FontDialog_RunDialog_Select_Font", resourceCulture);
             }
         }
         

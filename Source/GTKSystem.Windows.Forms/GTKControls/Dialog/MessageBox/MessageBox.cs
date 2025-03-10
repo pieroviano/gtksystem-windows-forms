@@ -371,7 +371,6 @@ internal class NonStaticMessageBox : IMessageBox
         {
             dia.PangoContext.Dispose();
             dia.Dispose();
-            dia.Destroy();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿#if NETSTANDARD
 using Gtk;
+using System.Security.Cryptography;
 
 namespace System.Windows.Forms;
 
@@ -47,6 +48,7 @@ public class AutoClosingMessageBox
             await Task.Delay(System.TimeSpan.FromMilliseconds(MessageBoxTimeout));
             if (_dialog != null)
             {
+                _dialog.PangoContext.Dispose();
                 _dialog.Dispose();
                 GC.SuppressFinalize(_dialog);
                 _dialog = null;

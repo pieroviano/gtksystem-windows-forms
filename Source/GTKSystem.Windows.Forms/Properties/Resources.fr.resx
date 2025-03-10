@@ -184,9 +184,6 @@
   <data name="ColorDialog_RunDialog_Choose color" xml:space="preserve">
     <value>Choisir une couleur</value>
   </data>
-  <data name="FontDialog_RunDialog_Select font" xml:space="preserve">
-    <value>Sélectionner une police</value>
-  </data>
   <data name="PrintDialog_RunPrint_File is in use and cannot be overwritten" xml:space="preserve">
     <value>Le fichier est en cours d'utilisation et ne peut pas être écrasé</value>
   </data>
@@ -213,5 +210,8 @@
   </data>
   <data name="FileDialog_RunDialog_Cancel" xml:space="preserve">
     <value>Annuler</value>
+  </data>
+  <data name="FontDialog_RunDialog_Select_Font" xml:space="preserve">
+    <value>Sélectionner une police</value>
   </data>
 </root>
