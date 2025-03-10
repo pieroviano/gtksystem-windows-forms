@@ -40,13 +40,15 @@ public partial class CommonDialogsForm : Form
         hScrollBar1.ValueChanged += hScrollBar1_ValueChanged;
         vScrollBar1.ValueChanged += vScrollBar1_ValueChanged;
         button9.Click += ButtonMessageBox_Click;
+        button8.Click += ButtonColorDialog_Click;
+        button7.Click += ButtonFolderBrowser_Click;
+        button6.Click += ButtonSaveFile_Click;
+        button3.Click += ButtonOpenFile_Click;
         Shown += Form4_Shown;
         button4.Click += Button4_Click;
         button1.Click += Button_Click;
-        button3.Click += Button_Click;
-        button6.Click += Button_Click;
-        button7.Click += Button_Click;
-        button8.Click += Button_Click;
+        button2.Click += Button_Click;
+        button5.Click += Button_Click;
     }
 
     private void Button_Click(object? sender, EventArgs e)
@@ -56,7 +58,9 @@ public partial class CommonDialogsForm : Form
 
     private void Button4_Click(object? sender, EventArgs e)
     {
-        splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock = DockStyle.Fill });
+        var button = new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock = DockStyle.Fill };
+        button.Click += Button_Click;
+        splitContainer1.Panel1.Controls.Add(button);
     }
 
     private void Form4_Shown(object? sender, EventArgs e)
@@ -64,7 +68,7 @@ public partial class CommonDialogsForm : Form
 
     }
 
-    private void ButtonOpenFile_Click(object sender, EventArgs e)
+    private void ButtonOpenFile_Click(object? sender, EventArgs e)
     {
         var ofd = new OpenFileDialog();
         ofd.Filter = "jpg|*.jpg;png|*.png";
@@ -89,7 +93,7 @@ public partial class CommonDialogsForm : Form
         }
     }
 
-    private void ButtonSaveFile_Click(object sender, EventArgs e)
+    private void ButtonSaveFile_Click(object? sender, EventArgs e)
     {
         var ofd = new SaveFileDialog();
         ofd.Filter = "jpg|*.jpg;png|*.png";
@@ -107,7 +111,7 @@ public partial class CommonDialogsForm : Form
         }
     }
 
-    private void ButtonFolderBrowser_Click(object sender, EventArgs e)
+    private void ButtonFolderBrowser_Click(object? sender, EventArgs e)
     {
         var ofd = new FolderBrowserDialog();
         ofd.Description = Resources.CommonDialogsForm_button7_Click_Browse_Folder_Description;
@@ -116,7 +120,7 @@ public partial class CommonDialogsForm : Form
         Console.WriteLine(@"SelectedPath:" + ofd.SelectedPath);
     }
 
-    private void ButtonColorDialog_Click(object sender, EventArgs e)
+    private void ButtonColorDialog_Click(object? sender, EventArgs e)
     {
         var colorDialog = new ColorDialog();
         colorDialog.ShowDialog();
