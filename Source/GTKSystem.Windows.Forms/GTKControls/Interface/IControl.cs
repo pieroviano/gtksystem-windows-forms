@@ -35,7 +35,7 @@ public interface IControl
     ControlBindingsCollection? DataBindings { get; }
     int DeviceDpi { get; }
     Rectangle DisplayRectangle { get; }
-    bool Disposing { get; }
+    bool IsDisposing { get; }
     DockStyle Dock { get; set; }
     bool Enabled { get; set; }
     bool Focused { get; }

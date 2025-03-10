@@ -1,8 +1,9 @@
 ﻿using System.Windows.Forms;
+using GTKWinFormsApp.Properties;
 
 namespace GTKWinFormsApp
 {
-    partial class Form2
+    partial class ListViewForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,14 +32,14 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListViewForm));
             ListViewGroup listViewGroup1 = new ListViewGroup("组头标题", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup2 = new ListViewGroup("ListViewGroup2", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup2 = new ListViewGroup(Resources.ListViewForm_ListViewForm_ListViewGroup2, HorizontalAlignment.Left);
             ListViewItem listViewItem1 = new ListViewItem(new string[] { "ListViewItem 是一个 ContentControl 且只能包含单个子元素。 但是，该子元素可以是任何视觉元素。" }, 0, System.Drawing.Color.Blue, System.Drawing.Color.FromArgb(255, 192, 255), null);
             ListViewItem listViewItem2 = new ListViewItem("ListView 派生自 ListBox。 通常，该控件的项为数据集合的成员，并且表示为 ListViewItem 对象", 0);
             ListViewItem listViewItem3 = new ListViewItem("ListView 控件提供了使用不同布局或视图中显示一组数据项的基础结构。 例如，用户可能需要在表格中显示数据项，并同时对表格的列进行排序。", 0);
-            ListViewItem listViewItem4 = new ListViewItem(new string[] { "ListView 分组", "listView1.Groups.Add()", "432321" }, 0);
-            ListViewItem listViewItem5 = new ListViewItem(new string[] { "ListView 定义视图模式", "View.SmallIcon", "View.LargeIcon", "View.Details", "View.List" }, 1);
+            ListViewItem listViewItem4 = new ListViewItem(new string[] { "ListView 分组", Resources.ListViewForm_ListViewForm_listView1_Groups_Add__, "432321" }, 0);
+            ListViewItem listViewItem5 = new ListViewItem(new string[] { "ListView 定义视图模式", "View.SmallIcon", "View.LargeIcon", Resources.ListViewForm_ListViewForm_View_Details, Resources.ListViewForm_ListViewForm_View_List }, 1);
             ListViewItem listViewItem6 = new ListViewItem("什么是 ListView？", 0);
             ListViewItem listViewItem7 = new ListViewItem(new string[] { "将数据绑定到 ListView", "listView1.Items.Add();" }, 0);
             imageList1 = new ImageList(components);
@@ -79,7 +80,7 @@ namespace GTKWinFormsApp
             listViewGroup1.Header = "组头标题";
             listViewGroup1.Name = "listViewGroup1";
             listViewGroup1.Subtitle = "组头副标题";
-            listViewGroup2.Header = "ListViewGroup2";
+            listViewGroup2.Header = Resources.ListViewForm_ListViewForm_ListViewGroup2;
             listViewGroup2.Name = "listViewGroup2";
             listViewGroup2.Subtitle = "group2";
             listView1.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2 });
@@ -209,7 +210,7 @@ namespace GTKWinFormsApp
             Controls.Add(richTextBox1);
             Controls.Add(listBox1);
             Controls.Add(listView1);
-            Name = "Form2";
+            Name = "ListViewForm";
             Text = "Form2";
             ResumeLayout(false);
             PerformLayout();

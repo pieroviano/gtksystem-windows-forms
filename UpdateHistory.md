@@ -1,163 +1,149 @@
-## Update Log
-
-## ¸üĞÂÈÕÖ¾
+ï»¿
+## æ›´æ–°æ—¥å¿—
  #### 2025/3/4 V1.3.24.63
-	1. ĞŞÕıÎÄ¼şÑ¡ÔñÆ÷ÄÚ´æ³åÍ»ÎÊÌâ
-	2. ¸üĞÂ¶Ô»°´°Í¼±ê
+	1. ä¿®æ­£æ–‡ä»¶é€‰æ‹©å™¨å†…å­˜å†²çªé—®é¢˜
+	2. æ›´æ–°å¯¹è¯çª—å›¾æ ‡
+	3. ä¿®æ­£å­çª—å£å…³é—­é—®é¢˜ã€å®¹å™¨æ»šåŠ¨æ¡ä¸æ˜¾ç¤ºé—®é¢˜
  #### 2025/2/27 V1.3.24.62
-	1. ĞŞÕıDataGridViewÅÅĞò½ûÓÃÊôĞÔ
-	2. ĞŞÕıFileDialogµÄfilenameÊôĞÔ
+	1. ä¿®æ­£DataGridViewæ’åºç¦ç”¨å±æ€§
+	2. ä¿®æ­£FileDialogçš„filenameå±æ€§
  #### 2025/2/26 V1.3.24.61
-	1. ¸üĞÂTextBox\CheckBox\ListView\DataGridView
-	2. ĞŞÕı¡¢ÓÅ»¯Ò»Ğ©¹¦ÄÜ
-	3. Ôö¼ÓSwitchBox¿ª·¢¿Ø¼ş
-	4. Ôö¼ÓPropertyGrid¿Ø¼ş
+	1. æ›´æ–°TextBox\CheckBox\ListView\DataGridView
+	2. ä¿®æ­£ã€ä¼˜åŒ–ä¸€äº›åŠŸèƒ½
+	3. å¢åŠ SwitchBoxå¼€å‘æ§ä»¶
+	4. å¢åŠ PropertyGridæ§ä»¶
  #### 2025/2/9 V1.3.24.60
-	1. ¸üĞÂListView\TabControl£¬ÓÅ»¯¹¦ÄÜ£¬ĞŞÕıListView¹ö¶¯Ìõbug
-	2. ĞŞÕıÈİÆ÷ÅÅ°æ¾«¶È¡¢»úÖÆ
-	3. Ôö¼ÓÖ§³Önetstandard2.0
+	1. æ›´æ–°ListView\TabControlï¼Œä¼˜åŒ–åŠŸèƒ½ï¼Œä¿®æ­£ListViewæ»šåŠ¨æ¡bug
+	2. ä¿®æ­£å®¹å™¨æ’ç‰ˆç²¾åº¦ã€æœºåˆ¶
+	3. å¢åŠ æ”¯æŒnetstandard2.0
 
  #### 2025/2/5 V1.3.24.59
-	1. ¸üĞÂToolStripButtonµÄÄ¬ÈÏÏÔÊ¾ÀàĞÍ
-	2. ¸üĞÂToolStrip£¬Ö§³Ö×îºóÒ»¸ö²Ëµ¥ÏîÓÒ±ß¿¿
-	3. ListView¸üĞÂºÜ´ó£¬ÊµÏÖ·½·¨Ôö¼Ó¡¢ÓÅ»¯½çÃæ
-	4. ¸üĞÂForm£¬ĞŞÕıbug
+	1. æ›´æ–°ToolStripButtonçš„é»˜è®¤æ˜¾ç¤ºç±»å‹
+	2. æ›´æ–°ToolStripï¼Œæ”¯æŒæœ€åä¸€ä¸ªèœå•é¡¹å³è¾¹é 
+	3. ListViewæ›´æ–°å¾ˆå¤§ï¼Œå®ç°æ–¹æ³•å¢åŠ ã€ä¼˜åŒ–ç•Œé¢
+	4. æ›´æ–°Formï¼Œä¿®æ­£bug
  #### 2025/1/2 V1.3.24.58
-	1. ¸üĞÂÈİÆ÷¿Ø¼şÅÅ°æ¹¦ÄÜ¡£
-	2. ¸üĞÂdatagridviewÊı¾İ¸³Öµ¹¦ÄÜ¡£
-	3. ¸üĞÂ´°Ìåclose¹Ø±Õ¹¦ÄÜ¡£
+	1. æ›´æ–°å®¹å™¨æ§ä»¶æ’ç‰ˆåŠŸèƒ½ã€‚
+	2. æ›´æ–°datagridviewæ•°æ®èµ‹å€¼åŠŸèƒ½ã€‚
+	3. æ›´æ–°çª—ä½“closeå…³é—­åŠŸèƒ½ã€‚
  #### 2024/12/20 V1.3.24.57
-	1. ¸üĞÂlistview¡¢listbox¡¢checkedlistbox¡¢datagridview¹¦ÄÜ¡£
+	1. æ›´æ–°listviewã€listboxã€checkedlistboxã€datagridviewåŠŸèƒ½ã€‚
  #### 2024/12/14 V1.3.24.56
-	1. ÊµÏÖ¿Ø¼şSizeChangeÊÂ¼ş¡£
-	2. ¸üĞÂÏûÏ¢¿òÄÚÈİ»»ĞĞ¡¢datagridview×Ô¶¯»»ĞĞ
-	3. ¸üĞÂlistviewÔöÉ¾¹¦ÄÜ
-	4. ĞŞÕıÁËÒ»Ğ©·¢ÏÖµÄÎÊÌâ
+	1. å®ç°æ§ä»¶SizeChangeäº‹ä»¶ã€‚
+	2. æ›´æ–°æ¶ˆæ¯æ¡†å†…å®¹æ¢è¡Œã€datagridviewè‡ªåŠ¨æ¢è¡Œ
+	3. æ›´æ–°listviewå¢åˆ åŠŸèƒ½
+	4. ä¿®æ­£äº†ä¸€äº›å‘ç°çš„é—®é¢˜
  #### 2024/11/7 V1.3.24.53
-	1. ÈİÆ÷¿Ø¼ş¹¦ÄÜĞŞÕı¡£
-	2. ÍêÉÆtreeview¹¦ÄÜ
-	3. ÊµÏÖImageList×é¼ş»ù±¾ÅäÖÃºÍÈ¡Í¼¹¦ÄÜ
-	4. ĞŞÕıÁËÒ»Ğ©·¢ÏÖµÄÎÊÌâ
+	1. å®¹å™¨æ§ä»¶åŠŸèƒ½ä¿®æ­£ã€‚
+	2. å®Œå–„treeviewåŠŸèƒ½
+	3. å®ç°ImageListç»„ä»¶åŸºæœ¬é…ç½®å’Œå–å›¾åŠŸèƒ½
+	4. ä¿®æ­£äº†ä¸€äº›å‘ç°çš„é—®é¢˜
  #### 2024/10/23 V1.3.24.51
-	1. [ÖØ´ó¸üĞÂ] ÈİÆ÷¿Ø¼ş¹¦ÄÜÍêÉÆºÍ´íÎóĞŞÕı¡£
-	2. Graphics/Image»æÍ¼¹¦ÄÜÍêÉÆ
-	3. ĞŞÕıÁËÒ»Ğ©·¢ÏÖµÄÎÊÌâ
+	1. [é‡å¤§æ›´æ–°] å®¹å™¨æ§ä»¶åŠŸèƒ½å®Œå–„å’Œé”™è¯¯ä¿®æ­£ã€‚
+	2. Graphics/Imageç»˜å›¾åŠŸèƒ½å®Œå–„
+	3. ä¿®æ­£äº†ä¸€äº›å‘ç°çš„é—®é¢˜
  #### 2024/10/19 V1.3.24.50
-	1. [ÖØ´ó¸üĞÂ] ÈİÆ÷²¼¾ÖÖØ¹¹£¬ÌáÉıdock/Anchor¹¦ÄÜ£¬ÓĞ¸üºÃµÄĞÔÄÜ¡¢¶à²ãÇ¶Ì×¸üÎÈ¶¨¡£
-	2. ÊµÏÖdatagridview×Ô¶¯»»ĞĞ¹¦ÄÜºÍÊôĞÔ
-	3. Ôö¼ÓFormÖÃ¶¥¡¢¼¤»î¡¢»ñÈ¡ÒÑ¿ª´°ÌåµÄ²Ù×÷¹¦ÄÜ
-	4. ĞŞÕıÁËÒ»Ğ©·¢ÏÖµÄÎÊÌâ
+	1. [é‡å¤§æ›´æ–°] å®¹å™¨å¸ƒå±€é‡æ„ï¼Œæå‡dock/AnchoråŠŸèƒ½ï¼Œæœ‰æ›´å¥½çš„æ€§èƒ½ã€å¤šå±‚åµŒå¥—æ›´ç¨³å®šã€‚
+	2. å®ç°datagridviewè‡ªåŠ¨æ¢è¡ŒåŠŸèƒ½å’Œå±æ€§
+	3. å¢åŠ Formç½®é¡¶ã€æ¿€æ´»ã€è·å–å·²å¼€çª—ä½“çš„æ“ä½œåŠŸèƒ½
+	4. ä¿®æ­£äº†ä¸€äº›å‘ç°çš„é—®é¢˜
  #### 2024/9/28 V1.3.24.49
-   1. ĞŞÕı´°ÌåpaintÊÂ¼ş£¬creategraphics·½·¨
-   2. ĞÂÔöscrollbar¡¢fontdailog¿Ø¼ş
-   3. ĞŞÕıselectindexchanged\selectvaluechanged\selectitemchangedÊÂ¼ş
+   1. ä¿®æ­£çª—ä½“paintäº‹ä»¶ï¼Œcreategraphicsæ–¹æ³•
+   2. æ–°å¢scrollbarã€fontdailogæ§ä»¶
+   3. ä¿®æ­£selectindexchanged\selectvaluechanged\selectitemchangedäº‹ä»¶
  #### 2024/8/28 V1.3.24.48
-   1. ÊµÏÖËùÓĞ¿Ø¼şÓÒ¼ü²Ëµ¥
-   2. Ôö¼ÓÖ÷ÌâÅäÖÃ¡¢ÑùÊ½ÅäÖÃ¹¦ÄÜ
+   1. å®ç°æ‰€æœ‰æ§ä»¶å³é”®èœå•
+   2. å¢åŠ ä¸»é¢˜é…ç½®ã€æ ·å¼é…ç½®åŠŸèƒ½
  #### 2024/8/28 V1.3.24.47
-   1. µ÷ÕûÓÅ»¯¿Ø¼şÎ»ÖÃ±ß¿òÊôĞÔ¾«×¼¶ÔÆë¡£
-   2. ²¹³ä²¿·Ö¿Ø¼şÊÂ¼ş
+   1. è°ƒæ•´ä¼˜åŒ–æ§ä»¶ä½ç½®è¾¹æ¡†å±æ€§ç²¾å‡†å¯¹é½ã€‚
+   2. è¡¥å……éƒ¨åˆ†æ§ä»¶äº‹ä»¶
  #### 2024/8/27 V1.3.24.46
-   1. ĞŞ¸ÄÓÅ»¯´°Ìå¹Ø±Õ·½Ê½£¬Í³Ò»windowsºÍlinux´°Ìå±êÌâÀ¸£¬Ìá¸ßÓëÔ­Éú´°Ìå¹Ø±ÕºóÖØ¿ªµÄ¼æÈİĞÔ¡£
-   2. DataGridViewÊµÏÖ±í¸ñcellstyleÑùÊ½¹¦ÄÜ£¬ĞŞ¸Ä±í¸ñÍ¼Æ¬¼ÓÔØ³ÌĞò£¬ÓÅ»¯ĞÔÄÜºÍĞŞÕıbug
-   3. ÓÅ»¯»ù´¡Êı¾İ¼¯³ÌĞò¿â
-   4. ÓÅ»¯´òÓ¡×é¼ş³ÌĞò£¬Ôö¼Ó´òÓ¡Ô¤ÀÀ¿Ø¼şºÍ´òÓ¡Ô¤ÀÀ´°¿Ú
+   1. ä¿®æ”¹ä¼˜åŒ–çª—ä½“å…³é—­æ–¹å¼ï¼Œç»Ÿä¸€windowså’Œlinuxçª—ä½“æ ‡é¢˜æ ï¼Œæé«˜ä¸åŸç”Ÿçª—ä½“å…³é—­åé‡å¼€çš„å…¼å®¹æ€§ã€‚
+   2. DataGridViewå®ç°è¡¨æ ¼cellstyleæ ·å¼åŠŸèƒ½ï¼Œä¿®æ”¹è¡¨æ ¼å›¾ç‰‡åŠ è½½ç¨‹åºï¼Œä¼˜åŒ–æ€§èƒ½å’Œä¿®æ­£bug
+   3. ä¼˜åŒ–åŸºç¡€æ•°æ®é›†ç¨‹åºåº“
+   4. ä¼˜åŒ–æ‰“å°ç»„ä»¶ç¨‹åºï¼Œå¢åŠ æ‰“å°é¢„è§ˆæ§ä»¶å’Œæ‰“å°é¢„è§ˆçª—å£
  #### 2024/7/16 V1.3.24.45
-   1. ĞŞ¸ÄÓÅ»¯¿Ø¼şÊÂ¼ş³ÌĞò
+   1. ä¿®æ”¹ä¼˜åŒ–æ§ä»¶äº‹ä»¶ç¨‹åº
  #### 2024/7/16
-   1. ĞŞÕı´ò¿ªÎÄ¼ş¶Ô»°´°¡¢ÏûÏ¢µ¯´°
+   1. ä¿®æ­£æ‰“å¼€æ–‡ä»¶å¯¹è¯çª—ã€æ¶ˆæ¯å¼¹çª—
  #### 2024/7/12
-   1. Ôö¼Ó´òÓ¡×é¼ş
-   2. ĞŞ¸´Ò»Ğ©ÎÊÌâ
+   1. å¢åŠ æ‰“å°ç»„ä»¶
+   2. ä¿®å¤ä¸€äº›é—®é¢˜
  #### 2024/7/7
-   1. ĞŞ¸ÄÒ»Ğ©¿Ø¼şÑùÊ½
+   1. ä¿®æ”¹ä¸€äº›æ§ä»¶æ ·å¼
  #### 2024/6/28
-   1. ĞŞ¸ÄÒ»Ğ©±ß¿òÑùÊ½¡¢¿Ø¼şÊó±êÊÂ¼ş
-   2. ĞŞ¸ÄÒ»Ğ©¿Ø¼şµÄÊôĞÔÖµ\´íÎó
-   3. ÖØ¹¹ÈİÆ÷¹ö¶¯´°Ìå¼Ü¹¹
+   1. ä¿®æ”¹ä¸€äº›è¾¹æ¡†æ ·å¼ã€æ§ä»¶é¼ æ ‡äº‹ä»¶
+   2. ä¿®æ”¹ä¸€äº›æ§ä»¶çš„å±æ€§å€¼\é”™è¯¯
+   3. é‡æ„å®¹å™¨æ»šåŠ¨çª—ä½“æ¶æ„
  #### 2024/6/22
-   1. ĞŞ¸ÄÒ»Ğ©bug
-   2. ĞŞ¸ÄÓÅ»¯´°¿ÚºÍ¿Ø¼şµÄresize¹¦ÄÜ
+   1. ä¿®æ”¹ä¸€äº›bug
+   2. ä¿®æ”¹ä¼˜åŒ–çª—å£å’Œæ§ä»¶çš„resizeåŠŸèƒ½
  #### 2024/6/20
-   1. ĞŞ¸ÄÒ»Ğ©bug
-   2. ĞŞ¸ÄÓÅ»¯´°¿ÚºÍ¿Ø¼şµÄresize¹¦ÄÜ
-   3. usercontrolÔö¼ÓÊó±êÊÂ¼ş 
+   1. ä¿®æ”¹ä¸€äº›bug
+   2. ä¿®æ”¹ä¼˜åŒ–çª—å£å’Œæ§ä»¶çš„resizeåŠŸèƒ½
+   3. usercontrolå¢åŠ é¼ æ ‡äº‹ä»¶ 
  #### 2024/6/19
-   1. ÑùÊ½µ÷Õû
-   2. ĞŞ¸ÄÒ»Ğ©bug
-   3. ÓÅ»¯´°¿ÚºÍ¿Ø¼şµÄresize¹¦ÄÜ
-   4. ÊµÏÖ¿Ø¼şµÄÎ»ÖÃÊôĞÔ¡¢´óĞ¡¿Éµ÷
-   5. ÊµÏÖ²¿·Ö¿Ø¼şÊó±êÑùÊ½ÊôĞÔ
+   1. æ ·å¼è°ƒæ•´
+   2. ä¿®æ”¹ä¸€äº›bug
+   3. ä¼˜åŒ–çª—å£å’Œæ§ä»¶çš„resizeåŠŸèƒ½
+   4. å®ç°æ§ä»¶çš„ä½ç½®å±æ€§ã€å¤§å°å¯è°ƒ
+   5. å®ç°éƒ¨åˆ†æ§ä»¶é¼ æ ‡æ ·å¼å±æ€§
 
-#### 2024/6/10
-1. Improved the background image display mode for controls, adding circular and transparent background image support (important).
-2. Optimized the functionality and performance of many controls.
-3. Enhanced style display programs for controls, supporting theme switching.
-4. Fixed some discovered functional or program errors.
-5. Added asynchronous image loading for `DataGridView` URLs and optimized `DataGridView` data display performance.
+ #### 2024/6/10
+   1. ä¿®æ”¹æ§ä»¶èƒŒæ™¯å›¾æ˜¾ç¤ºæ–¹å¼ï¼Œè®©å¤§éƒ¨åˆ†æ§ä»¶æ”¯æŒåœ†è§’å’ŒèƒŒæ™¯å›¾åœ†è§’æ˜¾ç¤ºï¼ˆé‡è¦ï¼‰
+   2. ä¿®æ”¹ä¼˜åŒ–äº†å¾ˆå¤šæ§ä»¶çš„åŠŸèƒ½å’Œæ€§èƒ½
+   3. ä¿®æ”¹ä¼˜åŒ–äº†æ§ä»¶çš„æ ·å¼æ˜¾ç¤ºç¨‹åºï¼Œä»¥æ”¯æŒé£æ ¼ä¸»é¢˜æ¢è‚¤æœºåˆ¶
+   4. ä¿®æ­£å‘ç°çš„ä¸€äº›åŠŸèƒ½æˆ–ç¨‹åºé”™è¯¯
+   5. DataGridViewå¢åŠ ç½‘å€å›¾ç‰‡å¼‚æ­¥åŠ è½½åŠŸèƒ½ï¼Œä¼˜åŒ–DataGridViewæ•°æ®æ˜¾ç¤ºæ€§èƒ½
+ #### 2024/5/30
+   1. (é‡è¦)ä¿®æ­£å¤šçº¿ç¨‹ç•Œé¢æ›´æ–°çš„invokeråŒæ­¥æ–¹æ³•ï¼ŒTimeræ‰§è¡Œä¸UIåŒæ­¥
+   2. ListBoxã€ListViewã€RichTextBoxèƒŒæ™¯è‰²ä¿®æ­£
+   3. å¢å¼ºé¡¹ç›®åŠŸèƒ½æ¼”ç¤ºæ¡ˆä¾‹ï¼Œæ·»åŠ å˜åŒ–æ»šåŠ¨æ•°æ®æ¼”ç¤º
+ #### 2024/5/28
+   1. ä¿®æ­£å’Œå¢åŠ äº†æ§ä»¶çš„ä¸€äº›æ–¹æ³•
+   2. æ·»åŠ GTKå¤šçº¿ç¨‹UIæ›´æ–°ç¨‹åº
+ #### 2024/5/21
+   1. combobox\listboxåŠŸèƒ½
+   2. ToolStripSeparatorä¿®æ­£
+ #### 2024/5/17
+   1. datetimepickerå¢åŠ æ—¶é—´æ•°æ®å’Œformatæ¨¡å¼
+ #### 2024/5/16
+   1. ä¿®æ­£formçª—å£æœ‰é€æ˜è¾¹çº¿çš„é—®é¢˜
+   2. å¢åŠ äº†å‡ ä¸ªæ§ä»¶å¸¸ç”¨å±æ€§
+   3. comboboxæ§ä»¶å¢åŠ DropDownæˆ–DropDownListå¯é€‰æ¨¡å¼
+   4. ä¿®æ”¹äº†VisualStudioå¼€å‘æ’ä»¶çš„åŠŸèƒ½é”™è¯¯ï¼Œæé«˜äº†å®‰è£…é€‚é…å…¼å®¹æ€§
+ #### 2024/5/11
+   1. ä¿®æ­£formå¯åŠ¨æ—¶çª—å£å¤§å°å¼‚å¸¸
+   2. buttonå¢åŠ imageå±æ€§å›¾ç‰‡
+   3. ä¿®æ­£æ§ä»¶èƒŒæ™¯ä½ç½®
+ #### 2024/5/6
+   1. å®Œå–„treeviewã€listviewåŠŸèƒ½
+   2. æ–°å¢å¼€å‘å·¥å…·GTKSystem.Windows.FormsDesigner.dll(NuGetå®‰è£…)ï¼Œç¼–è¯‘æ—¶è‡ªåŠ¨æ£€æŸ¥å¹¶ä¿®æ­£çª—ä½“è®¾è®¡å™¨é…ç½®
+   3. ä¿®æ­£datagridviewçš„å–æ•°é”™è¯¯
+ #### 2024/5/1
+  1. é‡å¤§æ›´æ–°ï¼é‡æ„æ§ä»¶çš„ç»“æ„ç¨‹åºï¼Œä¼˜åŒ–äº†å¾ˆå¤šæ§ä»¶åŠŸèƒ½å’Œæ€§èƒ½ï¼Œä¿®æ­£ä¸€äº›é”™è¯¯
+  2. ä¼˜åŒ–äº†ç»˜å›¾ã€æ§ä»¶èƒŒæ™¯åŠŸèƒ½ç¨‹åºï¼Œç»˜åˆ¶èƒŒæ™¯å›¾ä¸å†è¦†ç›–å­æ§ä»¶
+  3. ç‰¹åˆ«ä¼˜åŒ–Formç•Œé¢ç¨‹åºå’Œæ€§èƒ½
 
-#### 2024/5/30
-1. **[Important]** Fixed threading issues for UI updates, including `Timer` execution synchronization.
-2. Fixed background colors for `ListBox`, `ListView`, and `RichTextBox`.
-3. Added project demonstration examples for changing navigation data displays.
-
-#### 2024/5/28
-1. Fixed and added some methods for controls.
-2. Introduced multi-threaded UI update programs for GTK.
-
-#### 2024/5/21
-1. Added functionality for `ComboBox` and `ListBox`.
-2. Fixed issues with `ToolStripSeparator`.
-
-#### 2024/5/17
-1. Added time data and format modes for `DateTimePicker`.
-
-#### 2024/5/16
-1. Fixed issues with border lines in forms.
-2. Added some frequently used control properties.
-3. Enhanced the `ComboBox` control with selectable `DropDown` and `DropDownList` modes.
-4. Improved functionality for Visual Studio plugin features and installation compatibility.
-
-#### 2024/5/11
-1. Fixed size anomalies for forms when starting.
-2. Added `Image` property for buttons.
-3. Fixed background positions for controls.
-
-#### 2024/5/6
-1. Completed functionality for `TreeView` and `ListView`.
-2. Released the development tool `GTKSystem.Windows.FormsDesigner.dll` (NuGet installation) for auto-detection and correction of form designer configurations during compilation.
-3. Fixed data retrieval errors in `DataGridView`.
-
-#### 2024/5/1
-1. **[Major Update]** Redesigned the structure of control programs, improving functionality and fixing errors.
-2. Optimized rendering and background programs for controls to prevent child controls from overlapping background elements.
-3. Specifically enhanced form layout programs and features.
-
-#### 2024/4/20
-1. Fixed positioning issues in `Graphics` rendering.
-2. Implemented `GraphicsPath` rendering with gradient colors.
-3. Added `BeginInvoke` and `EndInvoke` methods for controls.
-4. Improved `DataGridView` and `ListBox` data loading programs.
-
-#### 2024/3/27
-1. Fixed issues with `UserControl` failing to display in the form designer.
-
-#### 2024/3/19
-1. Fixed panel content scrolling display anomalies and optimized form resizing programs.
-
-#### 2024/3/14
-1. Fixed issues with `TreeView` data loading programs.
-
-#### 2024/3/6
-1. Corrected form configuration and binding issues.
-
-#### 2024/3/2
-1. Fixed font size issues for `Label` text and added alignment properties.
-2. Enabled the use of `ImageList` in the form designer.
-
-#### 2024/2/29
-1. Added dashed lines and multi-sided shapes to `Graphics` rendering and optimized text rendering programs.
-2. Fixed some known bugs.
-
-#### 2024/2/23
-1. Implemented and fixed `DataGridView` cell data editing and retrieval functionalities.
+ #### 2024/4/20
+ 1. ä¿®æ­£graphicç»˜å›¾çš„ä½ç½®
+ 2. å®ç°graphicpathç»˜å›¾ã€æ¸å˜è‰²
+ 3. å®ç°æ§ä»¶çš„BeginInvokeå’ŒEndInvokeæ–¹æ³•
+ 4. ä¿®æ”¹DataGridViewã€ListBoxçš„æ•°æ®åŠ è½½ç¨‹åºï¼Œä¿®æ­£ä¸èƒ½åœ¨çª—å£å¯åŠ¨åŠ è½½æ•°æ®çš„é—®é¢˜
+ #### 2024/3/27
+ 1. æ”¹æ­£usercontrolåœ¨çª—ä½“è®¾è®¡å™¨ä¸Šæ‰“å¼€å‡ºç°å¼‚å¸¸çš„é—®é¢˜ï¼ˆè¿˜æ— æ³•æ˜¾ç¤ºæ§ä»¶ï¼‰
+ 2. å®ç°graphicsä¸Šçš„æ¤­åœ†ç»˜ç”»
+ #### 2024/3/19
+ 1. panelå†…å®¹æº¢å‡ºæ˜¾ç¤ºæ»šåŠ¨æ¡ï¼Œçª—å£ç¼©æ”¾ç¨‹åºä¼˜åŒ–
+ #### 2024/3/14
+ 1. ä¿®æ­£TreeViewæ•°æ®ç¨‹åºåŠ è½½
+ #### 2024/3/6
+ 1. ä¿®æ­£ä¸€äº›çª—å£é…ç½®é—®é¢˜ã€binding
+ #### 2024/3/2
+ 1. ä¿®æ­£labelæ–‡æœ¬çš„å­—ä½“å¤§å°é—®é¢˜ã€å¢åŠ å¯¹é½å±æ€§
+ 2. å®ç°imagelistå…¼å®¹ä½¿ç”¨çª—ä½“è®¾è®¡å™¨
+ #### 2024/2/29
+ 1. grahpicså¢åŠ æ›²çº¿å’Œå¤šè¾¹å½¢ç»˜å›¾ï¼Œä¼˜åŒ–æ–‡å­—ç»˜å›¾ç¨‹åº
+ 2. ä¿®æ­£ä¸€äº›éšæ€§å¼‚å¸¸ 
+ #### 2024/2/23
+ 1. å®ç°å’Œä¿®æ­£DataGridViewå•å…ƒæ§ä»¶æ•°æ®ç¼–è¾‘ã€å–æ•°åŠŸèƒ½

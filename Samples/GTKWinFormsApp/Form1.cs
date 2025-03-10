@@ -1,104 +1,204 @@
-﻿
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization.Json;
-using System.Text;
+using System.Text.Json;
 using System.Windows.Forms;
+using GTKWinFormsApp.Properties;
 
 namespace GTKWinFormsApp;
 
-public partial class Form1 : Form
+public partial class TestDataForm : Form
 {
-    public Form1()
+    public TestDataForm()
     {
-
         InitializeComponent();
-        this.Load += Form1_Load;
+        button1.Text = Resources.TestDataForm_TestDataForm_Load_1;
+        comboBox1.Items.AddRange(new object[]
+            { "test1", "test2", "test3333333333333333333", Resources.TestDataForm_TestDataForm_Load_2 });
+        textBox1.PlaceholderText = Resources.TestDataForm_TestDataForm_Load_2B;
+        groupBox1.Text = Resources.TestDataForm_TestDataForm_Load_3;
+        checkBox2.Text = Resources.TestDataForm_TestDataForm_Load_4;
+        button2.Text = Resources.TestDataForm_TestDataForm_Load_5;
+        checkedListBox1.Items.AddRange(Resources.Resources_TestDataForm_TestDataForm_Load_6.Split('|'));
+        radioButton3.Text = Resources.Resources_TestDataForm_TestDataForm_Load_7;
+        dateTimePicker1.CustomFormat = Resources.Resources_TestDataForm_TestDataForm_Load_8;
+        radioButton2.Text = Resources.Resources_TestDataForm_TestDataForm_Load_9;
+        label2.Text = Resources.TestDataForm_TestDataForm_Open_Website_A;
+        radioButton1.Text = Resources.Resources_TestDataForm_TestDataForm_Load_B;
+        maskedTextBox1.Mask = Resources.Resources_TestDataForm_TestDataForm_Load_C;
+        button7.Text = Resources.Resources_TestDataForm_TestDataForm_Load_D;
+        tabPage1.Text = Resources.Resources_TestDataForm_TestDataForm_Load_E;
+        tabPage2.Text = Resources.Resources_TestDataForm_TestDataForm_Load_F;
+        richTextBox1.Text = Resources.Resources_TestDataForm_TestDataForm_Load_G;
+        tabPage3.Text = Resources.Resources_TestDataForm_TestDataForm_Load_H;
+        toolStripMenuItem1.Text = Resources.Resources_TestDataForm_TestDataForm_Load_I;
+        toolStripMenuItem2.Text = Resources.Resources_TestDataForm_TestDataForm_Load_J;
+        MenuThreeToolStripMenuItem.Text = Resources.Resources_TestDataForm_TestDataForm_Load_K;
+        toolStripMenuItem3.Text = Resources.Resources_TestDataForm_TestDataForm_Load_L;
+        test1ToolStripMenuItem.Text = Resources.Resources_TestDataForm_TestDataForm_Load_M;
+        ThirdLevelMenu1ToolStripMenuItem.Text = Resources.Resources_TestDataForm_TestDataForm_Load_N;
+        test2ToolStripMenuItem.Text = Resources.Resources_TestDataForm_TestDataForm_Load_O;
+        toolStripMenuItem4.Text = Resources.Resources_TestDataForm_TestDataForm_Load_P;
+        SecondaryMenu1ToolStripMenuItem.Text = Resources.Resources_TestDataForm_TestDataForm_Load_M;
+        State.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_Q;
+        Title.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_R;
+        CreateDate.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_S;
+        Operate.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_T;
+        PIC.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_U;
+        Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
+        ID.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_V;
+        Load += Form1_Load;
     }
 
     private void Form1_Load(object? sender, EventArgs e)
     {
-            
+
         treeView1.Nodes.Clear();
         treeView1.CheckBoxes = true;
 
-        string jsontext = File.ReadAllText("TestData1.json");
-        using (FileStream reader = new FileStream("TestData1.json", FileMode.Open, FileAccess.Read))
-        {
-            DataContractJsonSerializer dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
-            List<TestDataMode>? json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
-            IEnumerable<TreeNode> childs = GetChild(null, json);
-            treeView1.Nodes.AddRange(childs.ToArray());
-            foreach (TreeNode child in treeView1.Nodes)
-                child.Expand();
+        string testdata1Json;
+        testdata1Json = Resources.TestDataForm_Form1_Load_TestData1_json;
 
-            treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
-            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
-        }
-        TabPage tabPage=new TabPage();
-        tabPage.Location = new System.Drawing.Point(4, 29);
+        var jsontext = File.ReadAllText(testdata1Json);
+        var json = JsonSerializer.Deserialize<List<TestDataMode>>(jsontext);
+        IEnumerable<TreeNode> childs = GetChild(null, json);
+        treeView1.Nodes.AddRange(childs.ToArray());
+        foreach (var child in treeView1.Nodes)
+            child.Expand();
+
+        treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
+        treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
+        var tabPage = new TabPage();
+        tabPage.Location = new Point(4, 29);
         tabPage.Margin = new Padding(4);
         tabPage.Name = "tabPage3";
         tabPage.Padding = new Padding(4);
-        tabPage.Size = new System.Drawing.Size(1179, 426);
+        tabPage.Size = new Size(1179, 426);
         tabPage.TabIndex = 1;
         tabPage.Text = "test";
         tabPage.UseVisualStyleBackColor = true;
 
-            tabControl1.Controls.Add(tabPage);
-        }
-        private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
-        {
-            List<TreeNode> children = new List<TreeNode>();
-            var list = data.Where(w => w.parent == treeID);
-            foreach (TestDataMode d in list)
-            {
-                var node = new TreeNode(d.name) { Name = d.treeID };
-                IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
-                if (childs.Count() > 0)
-                    node.Nodes.AddRange(childs.ToArray());
-                children.Add(node);
-            }
-            return children;
-        }
-        public class TestDataMode
-        {
-            public string? name { get; set; }
-            public string treeID { get; set; }
-            public string parent { get; set; }
-            public string treeName { get; set; }
-        }
+        tabControl1.Controls.Add(tabPage);
+    }
 
-        TestEntity b = new TestEntity();
-        private void button1_Click(object sender, EventArgs e)
+    private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
+    {
+        List<TreeNode> children = new List<TreeNode>();
+        var list = data.Where(w => w.parent == treeID);
+        foreach (TestDataMode d in list)
         {
-            Console.WriteLine(treeView1.SelectedNode?.Text);
-            // b.Title = "test2";
-            DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
-            if (result == DialogResult.No)
-            {
-                return;
-            }
-            //1、数据集列表数据源
-            List<TestEntity>? data = new List<TestEntity>();
-            var createdate = DateTime.Now;
-            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = new Bitmap(10,10) });
-            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources/img11.jpg") });
-            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "Resources/BindingNavigator.Delete.ico", PIC = Image.FromFile("Resources/timg2.jpg") });
-            data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources/timg2.jpg") });
+            var node = new TreeNode(d.name) { Name = d.treeID };
+            IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
+            if (childs.Count() > 0)
+                node.Nodes.AddRange(childs.ToArray());
+            children.Add(node);
+        }
+        return children;
+    }
+    public class TestDataMode
+    {
+        public string? name { get; set; }
+        public string treeID { get; set; }
+        public string parent { get; set; }
+        public string treeName { get; set; }
+    }
 
-        data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile("Resources/timg2.jpg") });
-        data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources/timg2.jpg") });
+    TestEntity b = new TestEntity();
+    private void button1_Click(object sender, EventArgs e)
+    {
+        Console.WriteLine(treeView1.SelectedNode?.Text);
+        // b.Title = "test2";
+        DialogResult result = MessageBox.Show(Resources.TestDataForm_button1_1, Resources.TestDataForm_button1_2, MessageBoxButtons.YesNo);
+        if (result == DialogResult.No)
+        {
+            return;
+        }
+        //1、Dataset list data source
+        List<TestEntity>? data = new List<TestEntity>();
+        var createdate = DateTime.Now;
+        data.Add(new TestEntity()
+        {
+            ID = 0,
+            Title = Resources.TestDataForm_button1_3,
+            Info = "sdfdf",
+            State = true,
+            CreateDate = createdate,
+            Operate = Resources.TestDataForm_button1_4,
+            PIC1 = "face-smile-big",
+            PIC = new Bitmap(10, 10)
+        });
+        data.Add(new TestEntity()
+        {
+            ID = 1,
+            Title = "test2",
+            Info = "yyyy2",
+            State = true,
+            CreateDate = createdate,
+            Operate = Resources.TestDataForm_button1_4,
+            PIC1 = "",
+            PIC = Image.FromFile("Resources/img11.jpg")
+        });
+        data.Add(new TestEntity()
+        {
+            ID = 3,
+            Title = "test3",
+            Info = "ddds",
+            State = false,
+            CreateDate = createdate,
+            Operate = Resources.TestDataForm_button1_4,
+            PIC1 = "Resources/BindingNavigator.Delete.ico",
+            PIC = Image.FromFile("Resources/timg2.jpg")
+        });
+        data.Add(new TestEntity()
+        {
+            ID = 4,
+            Title = "test4",
+            Info = "yyyy",
+            State = true,
+            CreateDate = createdate,
+            Operate = Resources.TestDataForm_button1_4,
+            PIC1 = "",
+            PIC = Image.FromFile("Resources/timg2.jpg")
+        });
+
+        data.Add(new TestEntity()
+        {
+            ID = 5,
+            Title = Resources.TestDataForm_button1_5,
+            Info = "ddds",
+            State = false,
+            CreateDate = createdate,
+            Operate = Resources.TestDataForm_button1_4,
+            PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48",
+            PIC = Image.FromFile("Resources/timg2.jpg")
+        });
+        data.Add(new TestEntity()
+        {
+            ID = 6,
+            Title = "test4",
+            Info = "yyyy",
+            State = true,
+            CreateDate = createdate,
+            Operate = Resources.TestDataForm_button1_4,
+            PIC1 = "",
+            PIC = Image.FromFile("Resources/timg2.jpg")
+        });
         for (int i = 0; i < 10; i++)
-            data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("Resources/timg2.jpg") });
+            data.Add(new TestEntity()
+            {
+                ID = i + 7,
+                Title = Resources.TestDataForm_button1_5 + i.ToString(),
+                Info = "ddds",
+                State = false,
+                CreateDate = createdate,
+                Operate = Resources.TestDataForm_button1_4,
+                PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(),
+                PIC = Image.FromFile("Resources/timg2.jpg")
+            });
 
 
         this.dataGridView1.DataSource = data;
@@ -107,33 +207,33 @@ public partial class Form1 : Form
 
         //var s=this.dataGridView1.Rows[0].Cells[0];
 
-            //2、datatable数据源
-            //  DataTable dt = new DataTable();
-            //  dt.Columns.Add("ID", typeof(string));
-            //  dt.Columns.Add("CreateDate", typeof(DateTime));
-            //  dt.Columns.Add("State", typeof(bool));
-            //  dt.Rows.Add("test1dddd", DateTime.Now, true);
-            //  dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
-            ////  this.dataGridView1.Columns.Clear();
-            //  this.dataGridView1.DataSource = dt;
-        }
-        public class TestEntity : INotifyPropertyChanged
+        //2、datatable data source
+        //  DataTable dt = new DataTable();
+        //  dt.Columns.Add("ID", typeof(string));
+        //  dt.Columns.Add("CreateDate", typeof(DateTime));
+        //  dt.Columns.Add("State", typeof(bool));
+        //  dt.Rows.Add("test1dddd", DateTime.Now, true);
+        //  dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
+        ////  this.dataGridView1.Columns.Clear();
+        //  this.dataGridView1.DataSource = dt;
+    }
+    public class TestEntity : INotifyPropertyChanged
+    {
+        public int ID { get; set; }
+        public string title;
+        public string Title { get { return title; } set { title = value; OnPropertyChangedEventHandler(); } }
+        public string Info { get; set; }
+        public bool State { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string Operate { get; set; }
+        public string PIC1 { get; set; }
+        public Image? PIC { get; set; }
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
         {
-            public int ID { get; set; }
-            public string title;
-            public string Title { get { return title; } set { title = value; OnPropertyChangedEventHandler(); } }
-            public string Info { get; set; }
-            public bool State { get; set; }
-            public DateTime CreateDate { get; set; }
-            public string Operate { get; set; }
-            public string PIC1 { get; set; }
-            public Image? PIC { get; set; }
-            public event PropertyChangedEventHandler? PropertyChanged;
-            protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
 
 
     private void button2_Click(object sender, EventArgs e)
@@ -155,17 +255,17 @@ public partial class Form1 : Form
             textBox1.BackColor = ColorTranslator.FromHtml(textBox1.Text);
         }
 
-        //DialogResult result = MessageBox.Show(this, " 弹窗测试 ", "信息提示", MessageBoxButtons.OKCancel);
+        //DialogResult result = MessageBox.Show(this, "Pop-up window test", "Information prompt", MessageBoxButtons.OKCancel);
         //Console.WriteLine(result.ToString());
         //if (result == DialogResult.OK)
         //{
         //    Console.WriteLine("DialogResult.OK");
-        //    label2.Text = "你选择了 确定";
+        //    label2.Text = "You selected OK";
         //}
         //if (result == DialogResult.Cancel)
         //{
         //    Console.WriteLine("DialogResult.Cancel");
-        //    label2.Text = "你选择了 取消";
+        //    label2.Text = "You chose Cancel";
         //}
     }
 
@@ -257,7 +357,7 @@ public partial class Form1 : Form
     {
         Console.WriteLine("dataGridView1_CellValueChanged");
         if (e.RowIndex > -1)
-            //    if (dataGridView1.Rows.Count > 0 && dataGridView1.Rows[e.RowIndex].Cells.Count>0)
+        //    if (dataGridView1.Rows.Count > 0 && dataGridView1.Rows[e.RowIndex].Cells.Count>0)
         {
             DataGridViewCell cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
             Console.WriteLine($"{cell.Value},{cell.Selected}");
@@ -376,7 +476,7 @@ public partial class Form1 : Form
         Console.WriteLine("checkedListBox1_ItemCheck，" + e.NewValue + e.CurrentValue);
         if (e.Index == 2)
         {
-            foreach(var o in checkedListBox1.CheckedItems)
+            foreach (var o in checkedListBox1.CheckedItems)
             {
                 Console.WriteLine("ItemCheck，" + o.ToString());
             }
@@ -388,13 +488,13 @@ public partial class Form1 : Form
         var g = e.Graphics;
         g.Clear(Color.White);
 
-            if (GTKWinFormsApp.Properties.Resources.timg6 != null)
-            {
-                MemoryStream? mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
-                
+        if (GTKWinFormsApp.Properties.Resources.timg6 != null)
+        {
+            MemoryStream? mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
+
             //g.DrawImage(new Bitmap(mem), new Point(0, 0));
             g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
-                
+
         }
 
         g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
@@ -420,7 +520,8 @@ public partial class Form1 : Form
             g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new PointF(x, y), Rps[i] });
         }
 
-        g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
+        g.DrawString(Resources.TestDataForm_pictureBox2_Paint_This_is_the_Paint_Graphics_sample_effect, new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
+
         g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width / 2, pictureBox2.Height / 2, pictureBox2.Width, pictureBox2.Height), 0, 270);
 
         g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
@@ -435,11 +536,11 @@ public partial class Form1 : Form
 
     private void button7_Click(object sender, EventArgs e)
     {
-        Form2 form = new Form2();
+        ListViewForm form = new ListViewForm();
         DialogResult result = form.ShowDialog(this);
         if (result == DialogResult.None || result == DialogResult.Cancel)
         {
-            // MessageBox.Show("关闭窗口返回");
+            // MessageBox.Show("Close window return");
         }
         //form.Show();
     }
@@ -461,7 +562,7 @@ public partial class Form1 : Form
 
     private void textBox1_KeyDown(object sender, KeyEventArgs e)
     {
-            
+
         Console.WriteLine("textBox1_KeyDown");
     }
 

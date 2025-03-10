@@ -22,7 +22,7 @@ namespace GTKSystemWinFormsApp11.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace GTKSystemWinFormsApp11.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GTKSystemWinFormsApp11.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace GTKSystemWinFormsApp11.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,16 +63,16 @@ namespace GTKSystemWinFormsApp11.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DropdownList 1.
         /// </summary>
-        internal static string GtkForm_GtkForm_dropdown_list_1 {
+        public static string GtkForm_GtkForm_dropdown_list_1 {
             get {
                 return ResourceManager.GetString("GtkForm_GtkForm_dropdown list 1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropSownMenu.
+        ///   Looks up a localized string similar to DropDownMenu.
         /// </summary>
-        internal static string GtkForm_InitializeComponent_DropSownMenu {
+        public static string GtkForm_InitializeComponent_DropSownMenu {
             get {
                 return ResourceManager.GetString("GtkForm_InitializeComponent_DropSownMenu", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace GTKSystemWinFormsApp11.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Item.
         /// </summary>
-        internal static string GtkForm_InitializeComponent_Item {
+        public static string GtkForm_InitializeComponent_Item {
             get {
                 return ResourceManager.GetString("GtkForm_InitializeComponent_Item", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace GTKSystemWinFormsApp11.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Menu.
         /// </summary>
-        internal static string GtkForm_InitializeComponent_Menu {
+        public static string GtkForm_InitializeComponent_Menu {
             get {
                 return ResourceManager.GetString("GtkForm_InitializeComponent_Menu", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace GTKSystemWinFormsApp11.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Open main window.
         /// </summary>
-        internal static string GtkForm_InitializeComponent_Open_main_window {
+        public static string GtkForm_InitializeComponent_Open_main_window {
             get {
                 return ResourceManager.GetString("GtkForm_InitializeComponent_Open_main_window", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace GTKSystemWinFormsApp11.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Status Text.
         /// </summary>
-        internal static string GtkForm_InitializeComponent_Open_Status_Text {
+        public static string GtkForm_InitializeComponent_Open_Status_Text {
             get {
                 return ResourceManager.GetString("GtkForm_InitializeComponent_Open_Status_Text", resourceCulture);
             }

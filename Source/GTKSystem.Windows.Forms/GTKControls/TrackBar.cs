@@ -40,6 +40,11 @@ public class TrackBar : Control
     private void Control_ValueChanged(object? sender, EventArgs e)
     {
         Value = (int)adjustment.Value;
+        OnScroll(e);
+    }
+
+    protected virtual void OnScroll(EventArgs e)
+    {
         Scroll?.Invoke(this, e);
     }
 

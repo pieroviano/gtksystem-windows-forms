@@ -118,10 +118,19 @@ public class WidgetToolStrip<T> : ToolStripItem
 
     private void MenuItem_ButtonReleaseEvent(object? o, ButtonReleaseEventArgs args)
     {
-        DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(this));
+        OnDropDownItemClicked(new ToolStripItemClickedEventArgs(this));
 
+        OnClick(args);
+    }
+
+    protected virtual void OnClick(ButtonReleaseEventArgs args)
+    {
         Click?.Invoke(this, args);
+    }
 
+    protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs eventArgs)
+    {
+        DropDownItemClicked?.Invoke(this, eventArgs);
     }
 
     private void MenuItem_Activated(object? sender, EventArgs e)
@@ -238,6 +247,11 @@ public class WidgetToolStrip<T> : ToolStripItem
     }
 
     private void Checkbutton_Toggled(object? sender, EventArgs e)
+    {
+        OnCheckedChanged(e);
+    }
+
+    protected virtual void OnCheckedChanged(EventArgs e)
     {
         CheckedChanged?.Invoke(this, e);
     }

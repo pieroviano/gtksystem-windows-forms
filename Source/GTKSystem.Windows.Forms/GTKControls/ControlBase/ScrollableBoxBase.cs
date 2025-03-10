@@ -1,4 +1,5 @@
 ﻿using Cairo;
+using Gtk;
 
 namespace System.Windows.Forms;
 
@@ -28,8 +29,13 @@ public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScro
         if (Scroll != null)
         {
             var adj = (Gtk.Adjustment?)sender;
-            Scroll?.Invoke(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.VerticalScroll));
+            OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.VerticalScroll));
         }
+    }
+
+    protected virtual void OnScroll(ScrollEventArgs eventArgs)
+    {
+        Scroll?.Invoke(this, eventArgs);
     }
 
     private void Hadjustment_ValueChanged(object? sender, EventArgs e)
@@ -37,7 +43,7 @@ public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScro
         if (Scroll != null)
         {
             var adj = (Gtk.Adjustment?)sender;
-            Scroll?.Invoke(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.HorizontalScroll));
+            OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.HorizontalScroll));
         }
     }
 

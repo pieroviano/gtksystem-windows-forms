@@ -27,15 +27,20 @@ public class Form : ContainerControl, IWin32Window
     private readonly Overlay contanter = new();
     private ObjectCollection? objectCollection;
     public override event EventHandler? SizeChanged;
+    private FormWindowState _WindowState;
+
+    public event EventHandler<WindowStateArgs>? WindowStateChanging;
 
     public Form()
     {
         Init();
     }
+
     public Form(string title) : this()
     {
         self.Title = title;
     }
+    
     internal void Init()
     {
         SetScrolledWindow(self);
@@ -54,22 +59,78 @@ public class Form : ContainerControl, IWin32Window
         self.CloseWindowEvent += Self_CloseWindowEvent;
     }
 
+    public FormWindowState WindowState
+    {
+        get
+        {
+            return this._WindowState;
+        }
+        set
+        {
+            if (this._WindowState != value)
+            {
+                WindowStateArgs windowStateArg = new WindowStateArgs(value);
+                EventHandler<WindowStateArgs>? eventHandler = WindowStateChanging;
+                if (eventHandler != null)
+                {
+                    eventHandler(this, windowStateArg);
+                }
+                else
+                {
+                }
+                if (windowStateArg.Cancel)
+                {
+                    return;
+                }
+            }
+            this._WindowState = value;
+            if (this.self.IsMapped)
+            {
+                if (value == FormWindowState.Maximized)
+                {
+                    this.self.Maximize();
+                    return;
+                }
+                if (value == FormWindowState.Minimized)
+                {
+                    this.self.Iconify();
+                }
+            }
+        }
+    }
+
     private void Self_ResizeChecked(object? sender, EventArgs e)
     {
-        SizeChanged?.Invoke(this, EventArgs.Empty);
+        OnSizeChanged(e);
+    }
+
+    protected override void OnSizeChanged(EventArgs eventArgs)
+    {
+        SizeChanged?.Invoke(this, eventArgs);
     }
 
     private bool Self_CloseWindowEvent(object? sender, EventArgs e)
     {
         var closing = new FormClosingEventArgs(CloseReason.UserClosing, false);
-        FormClosing?.Invoke(this, closing);
+        OnFormClosing(closing);
 
         if (closing.Cancel == false)
         {
-            FormClosed?.Invoke(this, new FormClosedEventArgs(CloseReason.UserClosing));
+            OnFormClosed(new FormClosedEventArgs(CloseReason.UserClosing));
         }
         return closing.Cancel == false;
     }
+
+    protected void OnFormClosed(FormClosedEventArgs eventArgs)
+    {
+        FormClosed?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnFormClosing(FormClosingEventArgs eventArgs)
+    {
+        FormClosing?.Invoke(this, eventArgs);
+    }
+
     private bool isControlShown;
     private void Control_Shown(object? sender, EventArgs e)
     {
@@ -262,6 +323,7 @@ public class Form : ContainerControl, IWin32Window
                 }
             }
         }
+        OnLoad(EventArgs.Empty);
         self.ShowAll();
     }
 
@@ -294,7 +356,6 @@ public class Form : ContainerControl, IWin32Window
     public event EventHandler? Shown;
     public event FormClosingEventHandler? FormClosing;
     public event FormClosedEventHandler? FormClosed;
-    public override event EventHandler? Load;
     public override string Text
     {
         get => self.Title;
@@ -343,29 +404,13 @@ public class Form : ContainerControl, IWin32Window
     }
     public FormStartPosition StartPosition { get; set; }
     private FormWindowState windowState = FormWindowState.Normal;
-    public FormWindowState WindowState
-    {
-        get => windowState;
-        set
-        {
-            windowState = value;
-            if (self.IsMapped)
-            {
-                if (value == FormWindowState.Maximized)
-                {
-                    self.Maximize();
-                }
-                else if (value == FormWindowState.Minimized)
-                {
-                    self.Iconify();
-                }
-            }
-        }
-    }
+
     public DialogResult DialogResult { get; set; }
     public void Close()
     {
         self?.CloseWindow();
+        OnFormClosed(new FormClosedEventArgs(CloseReason.None));
+        OnDisposed(new FormClosedEventArgs(CloseReason.None));
     }
     public override void Hide()
     {

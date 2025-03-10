@@ -56,7 +56,12 @@ public class DateTimePicker : MaskedTextBox
     private void Self_Changed(object? sender, EventArgs e)
     {
         if (ValueChanged != null && self.IsMapped)
-            ValueChanged?.Invoke(this, e);
+            OnValueChanged(e);
+    }
+
+    protected virtual void OnValueChanged(EventArgs e)
+    {
+        ValueChanged?.Invoke(this, e);
     }
 
     private void Calendar_NextMonth(object? sender, EventArgs e)

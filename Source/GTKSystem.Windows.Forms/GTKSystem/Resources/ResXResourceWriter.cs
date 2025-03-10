@@ -41,7 +41,7 @@ public class ResXResourceWriter : IResourceWriter
     public static readonly string soapSerializedObjectMimeType = "application/x-microsoft.net.object.soap.base64";
     public static readonly string defaultSerializedObjectMimeType = binSerializedObjectMimeType;
     public static readonly string byteArraySerializedObjectMimeType = "application/x-microsoft.net.object.bytearray.base64";
-    public static readonly string resMimeType = "text/microsoft-resx";
+    public static readonly string ResMimeType = "text/microsoft-resx";
     public static readonly string version = "2.0";
 
     public static readonly string resourceSchema = @"
@@ -231,7 +231,7 @@ public class ResXResourceWriter : IResourceWriter
                 _xmlTextWriter.WriteAttributeString(nameStr, resMimeTypeStr);
                 _xmlTextWriter.WriteStartElement(valueStr);
                 {
-                    _xmlTextWriter.WriteString(resMimeType);
+                    _xmlTextWriter.WriteString(ResMimeType);
                 }
 
                 _xmlTextWriter.WriteEndElement();

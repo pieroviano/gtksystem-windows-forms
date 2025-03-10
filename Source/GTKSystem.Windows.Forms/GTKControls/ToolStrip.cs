@@ -33,11 +33,32 @@ public class ToolStrip : Control
     }
     private void ToolStripItem_Activated(object? sender, ActivateCurrentArgs e)
     {
-        DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
-        Click?.Invoke(sender, e);
-        CheckedChanged?.Invoke(this, e);
+        OnDropDownItemClicked(new ToolStripItemClickedEventArgs(new ToolStripItem()));
+        OnClick(sender, e);
+        OnCheckedChanged(e);
+        OnCheckStateChanged(e);
+    }
+
+    protected virtual void OnCheckStateChanged(EventArgs e)
+    {
         CheckStateChanged?.Invoke(this, e);
     }
+
+    protected virtual void OnCheckedChanged(EventArgs e)
+    {
+        CheckedChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnClick(object? sender, EventArgs e)
+    {
+        Click?.Invoke(sender, e);
+    }
+
+    protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs toolStripItemClickedEventArgs)
+    {
+        DropDownItemClicked?.Invoke(this, toolStripItemClickedEventArgs);
+    }
+
     public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, 30); }
     public ToolStripItemCollection Items => toolStripItemCollection;
 

@@ -64,9 +64,13 @@ public class DataGridView : ScrollableControl
             _selectedBandIndexes.Add(idx);
         }
         if (SelectionChanged != null && Created)
-            SelectionChanged?.Invoke(this, e);
+            OnSelectionChanged(e);
     }
 
+    protected virtual void OnSelectionChanged(EventArgs e)
+    {
+        SelectionChanged?.Invoke(this, e);
+    }
 
     private void GridView_RowActivated(object o, RowActivatedArgs args)
     {
@@ -711,4 +715,6 @@ public class DataGridView : ScrollableControl
 
     [Obsolete("This event is not implemented and is developed by ourselves.")]
     public event DataGridViewRowEventHandler? UserAddedRow;
+
+    public event EventHandler<DataGridViewColumnEventArgs>? ColumnNameChanged;
 }

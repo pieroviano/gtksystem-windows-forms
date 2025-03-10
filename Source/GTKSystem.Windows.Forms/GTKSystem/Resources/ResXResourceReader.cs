@@ -422,7 +422,7 @@ public partial class ResXResourceReader : IResourceReader
 
         var validFile = false;
 
-        if (_resHeaderMimeType == ResXResourceWriter.resMimeType)
+        if (_resHeaderMimeType == ResXResourceWriter.ResMimeType)
         {
             var readerType = typeof(ResXResourceReader);
             var writerType = typeof(ResXResourceWriter);

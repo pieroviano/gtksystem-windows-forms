@@ -22,7 +22,12 @@ public class RadioButton : Control
     private void Self_Toggled(object? sender, EventArgs e)
     {
         if (CheckedChanged != null && self.IsVisible)
-            CheckedChanged?.Invoke(this, e);
+            OnCheckedChanged(e);
+    }
+
+    protected virtual void OnCheckedChanged(EventArgs e)
+    {
+        CheckedChanged?.Invoke(this, e);
     }
 
     private void Control_Realized(object? sender, EventArgs e)

@@ -15,11 +15,22 @@ public abstract class ScrollBar : Control
     private void Control_ValueChanged(object? sender, EventArgs e)
     {
         var newValue = Adjustment.Value;
-        ValueChanged?.Invoke(this, e);
+        OnValueChanged(e);
         var args = new ScrollEventArgs(newValue >= _oldValue ? ScrollEventType.SmallIncrement : ScrollEventType.SmallDecrement, (int)_oldValue, (int)newValue);
-        Scroll?.Invoke(this, args);
+        OnScroll(args);
         _oldValue = newValue;
     }
+
+    protected virtual void OnScroll(ScrollEventArgs args)
+    {
+        Scroll?.Invoke(this, args);
+    }
+
+    protected virtual void OnValueChanged(EventArgs e)
+    {
+        ValueChanged?.Invoke(this, e);
+    }
+
     public int SmallChange { get => (int)Adjustment.StepIncrement; set => Adjustment.StepIncrement = value; }
     public int LargeChange { get => (int)Adjustment.PageIncrement; set => Adjustment.PageIncrement = value; }
     public int Maximum { get => (int)Adjustment.Upper; set => Adjustment.Upper = value; }

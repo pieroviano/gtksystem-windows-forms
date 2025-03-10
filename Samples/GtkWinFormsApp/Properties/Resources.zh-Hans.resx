@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="timg6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\timg6.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="timg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\timg.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Menu_1" xml:space="preserve">
+    <value>菜单1</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_a_Menu" xml:space="preserve">
+    <value>a菜单</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_b_Menu" xml:space="preserve">
+    <value>b菜单</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_bb_Menu" xml:space="preserve">
+    <value>bb菜单</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_bb_Menu_2" xml:space="preserve">
+    <value>bb菜单2</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_c_Menu" xml:space="preserve">
+    <value>c菜单</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Menu_2" xml:space="preserve">
+    <value>菜单2</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Dropdown_List_1" xml:space="preserve">
+    <value>下拉列表1</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Item_1" xml:space="preserve">
+    <value>项1</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Item_2" xml:space="preserve">
+    <value>项2</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Open_Main_Window" xml:space="preserve">
+    <value>打开主窗口</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Status_Text" xml:space="preserve">
+    <value>状态文本</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Dropdown_Menu" xml:space="preserve">
+    <value>下拉菜单</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Slider_Value" xml:space="preserve">
+    <value>滑块数值</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_List_View" xml:space="preserve">
+    <value>列表视图</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Split_Container_Layout" xml:space="preserve">
+    <value>分割容器布局</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Print" xml:space="preserve">
+    <value>打印</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_This_is_a_UserControl_placeholder" xml:space="preserve">
+    <value>这是usercontrol占位框</value>
+  </data>
+  <data name="GtkMainForm_GtkMainForm_Default_Style_Interface" xml:space="preserve">
+    <value>默认风格界面</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_Group_Header_Title" xml:space="preserve">
+    <value>组头标题</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_ListViewGroup2" xml:space="preserve">
+    <value>ListViewGroup2</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_ListViewItem_is_a_ContentControl_and_can_only_contain_a_single_child_element__However__this_child_element_can_be_any_visual_element_" xml:space="preserve">
+    <value>ListViewItem 是一个 ContentControl 且只能包含单个子元素。 但是，该子元素可以是任何视觉元素。</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_ListView_is_derived_from_ListBox__Typically__the_items_of_this_control_are_members_of_a_data_collection_and_are_represented_as_ListViewItem_objects_" xml:space="preserve">
+    <value>ListView 派生自 ListBox。 通常，该控件的项为数据集合的成员，并且表示为 ListViewItem 对象</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_A" xml:space="preserve">
+    <value>ListView 控件提供了使用不同布局或视图中显示一组数据项的基础结构。 例如，用户可能需要在表格中显示数据项，并同时对表格的列进行排序。</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_ListView_Grouping" xml:space="preserve">
+    <value>ListView 分组</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_listView1_Groups_Add__" xml:space="preserve">
+    <value>listView1.Groups.Add()</value>
+  </data>
+  <data name="ListViewForm_ListViewForm__432321" xml:space="preserve">
+    <value>432321</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_ListView_Defines_View_Modes" xml:space="preserve">
+    <value>ListView 定义视图模式</value>
+  </data>
+  <data name="ViewSmallIcon" xml:space="preserve">
+    <value>View.SmallIcon</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_View_LargeIcon" xml:space="preserve">
+    <value>View.LargeIcon</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_View_Details" xml:space="preserve">
+    <value>View.Details</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_View_List" xml:space="preserve">
+    <value>View.List</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_What_is_ListView_" xml:space="preserve">
+    <value>什么是 ListView？</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_Bind_Data_to_ListView" xml:space="preserve">
+    <value>将数据绑定到 ListView</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_listView1_Items_Add___" xml:space="preserve">
+    <value>listView1.Items.Add();</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_Group_Footer_Title" xml:space="preserve">
+    <value>组脚标题</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_listViewGroup1" xml:space="preserve">
+    <value>listViewGroup1</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_group2" xml:space="preserve">
+    <value>group2</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_Group_Header_Subtitle" xml:space="preserve">
+    <value>组头副标题</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_Group_1" xml:space="preserve">
+    <value>组1</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_Group_2fffffffffffffffffffffffffffffff" xml:space="preserve">
+    <value>组2fffffffffffffffffffffffffffffff</value>
+  </data>
+  <data name="ListViewForm_ListViewForm_Group_3" xml:space="preserve">
+    <value>组3</value>
+  </data>
+  <data name="ListViewForm_ListViewForm__0_Exception_Warning_0_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419125153303________2024_5_30_4_58_32" xml:space="preserve">
+    <value>0-Exception警告0 --- 机房空调运行监控事件 --- 638526419125153303 ------ 2024/5/30 4:58:32</value>
+  </data>
+  <data name="ListViewForm_ListViewForm__1_Exception_Warning_1_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419135198480________2024_5_30_4_58_33" xml:space="preserve">
+    <value>1-Exception警告1 --- 机房空调运行监控事件 --- 638526419135198480 ------ 2024/5/30 4:58:33</value>
+  </data>
+  <data name="ListViewForm_ListViewForm__2_Exception_Warning_2_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419155233741________2024_5_30_4_58_35" xml:space="preserve">
+    <value>2-Exception警告2 --- 机房空调运行监控事件 --- 638526419155233741 ------ 2024/5/30 4:58:35</value>
+  </data>
+  <data name="ListViewForm_ListViewForm__3_Exception_Warning_3_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419495254800________2024_5_30_4_59_09" xml:space="preserve">
+    <value>3-Exception警告3 --- 机房空调运行监控事件 --- 638526419495254800 ------ 2024/5/30 4:59:09</value>
+  </data>
+  <data name="ListViewForm_ListViewForm__4_Exception_Warning_4_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419505198651________2024_5_30_4_59_10" xml:space="preserve">
+    <value>4-Exception警告4 --- 机房空调运行监控事件 --- 638526419505198651 ------ 2024/5/30 4:59:10</value>
+  </data>
+  <data name="ListViewForm_ListViewForm__5_Exception_Warning_5_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419565218661________2024_5_30_4_59_16" xml:space="preserve">
+    <value>5-Exception警告5 --- 机房空调运行监控事件 --- 638526419565218661 ------ 2024/5/30 4:59:16</value>
+  </data>
+  <data name="ListViewForm_Timer1_Tick_Exception_Warning__0______Server_Room_Air_Conditioning_Operation_Monitoring_Event______1__________2_" xml:space="preserve">
+    <value>Exception警告{0} --- 机房空调运行监控事件 --- {1} ------ {2}</value>
+  </data>
+  <data name="ListViewForm_ListViewForm___Monitoring_Scroll_Event_Log" xml:space="preserve">
+    <value>&gt;监控滚动事件日志</value>
+  </data>
+  <data name="ListViewForm_button1_Click_1_Add_group_and_data_simultaneously" xml:space="preserve">
+    <value>同时添加分组和数据</value>
+  </data>
+  <data name="ListViewForm_button1_Click_2_Add_data_to_a_specified_group" xml:space="preserve">
+    <value>向指定分组添加数据</value>
+  </data>
+  <data name="ListViewForm_button1_Click_3_This_is_a_method_to_add_multi_column_data" xml:space="preserve">
+    <value>这是一种添加多栏数据的方法</value>
+  </data>
+  <data name="ListViewForm_button1_Click_4_Sub_column_data_1" xml:space="preserve">
+    <value>子列数据1</value>
+  </data>
+  <data name="ListViewForm_button1_Click_5_Sub_column_data_2" xml:space="preserve">
+    <value>子列数据2</value>
+  </data>
+  <data name="ListViewForm_button1_Click_6_Sub_column_data_3_Sub_column_data_3_Sub_column_data_3" xml:space="preserve">
+    <value>子列数据3子列数据3子列数据3</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_Node_1" xml:space="preserve">
+    <value>节点3</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_Node_2" xml:space="preserve">
+    <value>节点2</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_Node_3" xml:space="preserve">
+    <value>节点4</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_Node_4" xml:space="preserve">
+    <value>节点0</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_Node_5" xml:space="preserve">
+    <value>节点1</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_0" xml:space="preserve">
+    <value>测试按钮1</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_1" xml:space="preserve">
+    <value>警告消息</value>
+  </data>
+  <data name="TestDataForm_TestDataForm_Load_2B" xml:space="preserve">
+    <value>选择颜色</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_3" xml:space="preserve">
+    <value>浏览文件夹</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_4" xml:space="preserve">
+    <value>保存文件</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_5" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="CommonDialogsForm_CommonDialogsForm_6" xml:space="preserve">
+    <value>横幅栏</value>
+  </data>
+  <data name="CommonDialogsForm_button3_Click_Test_Open_File" xml:space="preserve">
+    <value>测试打开文件</value>
+  </data>
+  <data name="CommonDialogsForm_button6_Click_Test_Save_File" xml:space="preserve">
+    <value>测试保存文件</value>
+  </data>
+  <data name="CommonDialogsForm_button7_Click_Browse_Folder_Description" xml:space="preserve">
+    <value>浏览文件夹 decription</value>
+  </data>
+  <data name="CommonDialogsForm_button9_Click_Warn" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="CommonDialogsForm_button9_Click_Doubt" xml:space="preserve">
+    <value>疑问</value>
+  </data>
+  <data name="TestDataForm_TestDataForm_Load_1" xml:space="preserve">
+    <value>加载数据表数据</value>
+  </data>
+  <data name="TestDataForm_TestDataForm_Load_2" xml:space="preserve">
+    <value>这是下拉列表控件数据测试</value>
+  </data>
+  <data name="TestDataForm_TestDataForm_Load_3" xml:space="preserve">
+    <value>分组框标题</value>
+  </data>
+  <data name="TestDataForm_TestDataForm_Load_4" xml:space="preserve">
+    <value>全部勾选</value>
+  </data>
+  <data name="TestDataForm_TestDataForm_Load_5" xml:space="preserve">
+    <value>选择颜色按钮</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_6" xml:space="preserve">
+    <value>北京市|天津市|河南省|山西省|内蒙古自治区|辽宁省|吉林省|黑龙江省|上海市|江苏省|浙江省|安徽省|福建省</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_7" xml:space="preserve">
+    <value>经济特区</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_8" xml:space="preserve">
+    <value>yyyy-MM-dd HH:mm:ss</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_9" xml:space="preserve">
+    <value>直辖市</value>
+  </data>
+  <data name="TestDataForm_TestDataForm_Open_Website_A" xml:space="preserve">
+    <value>打开网站：</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_B" xml:space="preserve">
+    <value>全国</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_C" xml:space="preserve">
+    <value>0000-MM-dd HH:mm</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_D" xml:space="preserve">
+    <value>ListView 演示</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_E" xml:space="preserve">
+    <value>数据表格示例</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_F" xml:space="preserve">
+    <value>容器表格示例</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_G" xml:space="preserve">
+    <value>这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox，这是 RichTextBox</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_H" xml:space="preserve">
+    <value>绘图和图片示例</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_I" xml:space="preserve">
+    <value>菜单一</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_J" xml:space="preserve">
+    <value>菜单二</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_K" xml:space="preserve">
+    <value>菜单三</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_L" xml:space="preserve">
+    <value>一级菜单 1</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_M" xml:space="preserve">
+    <value>二级菜单 1</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_N" xml:space="preserve">
+    <value>三级菜单 1</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_O" xml:space="preserve">
+    <value>二级菜单 2</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_P" xml:space="preserve">
+    <value>一级菜单 2</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_Q" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_R" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_S" xml:space="preserve">
+    <value>日期时间</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_T" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_U" xml:space="preserve">
+    <value>图片</value>
+  </data>
+  <data name="Resources.TestDataForm_TestDataForm_Load_V" xml:space="preserve">
+    <value>序号</value>
+  </data>
+  <data name="TestDataForm_Form1_Load_TestData1_json" xml:space="preserve">
+    <value>TestData1.json</value>
+  </data>
+  <data name="TestDataForm_pictureBox2_Paint_This_is_the_Paint_Graphics_sample_effect" xml:space="preserve">
+    <value>这是Paint Graphics示例效果</value>
+  </data>
+  <data name="TestDataForm_button1_1" xml:space="preserve">
+	  <value>1、加载数据点yes 
+2、不加载数据点no</value>
+  </data>
+  <data name="TestDataForm_button1_2" xml:space="preserve">
+	  <value>加载数据提示</value>
+  </data>
+  <data name="TestDataForm_button1_3" xml:space="preserve">
+	  <value>加载数据点yes加载数据
+点yes加载数据点yes加载数据点yes</value>
+  </data>
+  <data name="TestDataForm_button1_4" xml:space="preserve">
+	  <value>编辑</value>
+  </data>
+  <data name="TestDataForm_button1_5" xml:space="preserve">
+	  <value>网络图片异步加载</value>
+  </data>
+</root>

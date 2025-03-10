@@ -29,8 +29,13 @@ public class RichTextBox : ScrollableControl
     {
         if (TextChanged != null && self.IsVisible)
         {
-            TextChanged?.Invoke(this, e);
+            OnTextChanged(e);
         }
+    }
+
+    protected virtual void OnTextChanged(EventArgs e)
+    {
+        TextChanged?.Invoke(this, e);
     }
 
     public int SelectionStart

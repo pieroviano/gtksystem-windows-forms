@@ -1,5 +1,3 @@
-using System.Windows.Forms;
-
 namespace GTKSystemWinFormsApp11;
 
 internal static class Program

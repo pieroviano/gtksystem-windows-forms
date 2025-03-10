@@ -22,7 +22,12 @@ public class NumericUpDown : Control
     private void Self_ValueChanged(object? sender, EventArgs e)
     {
         if (ValueChanged != null && self.IsVisible)
-            ValueChanged?.Invoke(this, e);
+            OnValueChanged(e);
+    }
+
+    protected virtual void OnValueChanged(EventArgs e)
+    {
+        ValueChanged?.Invoke(this, e);
     }
 
     public event EventHandler? ValueChanged;

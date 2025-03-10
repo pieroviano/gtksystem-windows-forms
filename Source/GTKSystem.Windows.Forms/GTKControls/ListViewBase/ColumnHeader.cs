@@ -57,9 +57,14 @@ public class ColumnHeader : Component, ICloneable
             displayIndex = value;
             if (index != value)
             {
-                DisplayIndexChanged?.Invoke(this, EventArgs.Empty);
+                OnDisplayIndexChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnDisplayIndexChanged(EventArgs eventArgs)
+    {
+        DisplayIndexChanged?.Invoke(this, eventArgs);
     }
 
     [Browsable(false)]

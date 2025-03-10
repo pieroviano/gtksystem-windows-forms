@@ -11,11 +11,72 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="TestData1.json" />
+	  <None Remove="工程说明.txt" />
+	  <None Include="工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="TestData1.json">
+		<Compile Remove="Form1.cs" />
+		<Compile Remove="Form1.Designer.cs" />
+		<Compile Include="Form1.cs" Link="TestDataForm.cs" SubType="Form" />
+		<Compile Include="Form1.Designer.cs" Link="TestDataForm.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="Form1.resx" />
+		<EmbeddedResource Remove="Form2.zh-HANS.resx" />
+		<EmbeddedResource Include="Form1.resx" Link="TestDataForm.resx" />
+		<EmbeddedResource Update="Properties\Resources.zh-HANS.resx">
+			<DependentUpon>Resources.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Form2.cs" />
+		<Compile Remove="Form2.Designer.cs" />
+		<Compile Include="Form2.cs" Link="ListViewForm.cs" SubType="Form" />
+		<Compile Include="Form2.Designer.cs" Link="ListViewForm.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="Form2.resx" />
+		<EmbeddedResource Include="Form2.resx" Link="ListViewForm.resx" />
+		<EmbeddedResource Include="Form2.zh-HANS.resx" Link="ListViewForm.zh-HANS.resx">
+			<DependentUpon>ListViewForm.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Form3.cs" />
+		<Compile Remove="Form3.Designer.cs" />
+		<Compile Include="Form3.cs" Link="GtkMainForm.cs" SubType="Form" />
+		<Compile Include="Form3.Designer.cs" Link="GtkMainForm.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="Form3.resx" />
+		<EmbeddedResource Include="Form3.resx" Link="GtkMainForm.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Form4.cs" />
+		<Compile Remove="Form4.Designer.cs" />
+		<Compile Include="Form4.cs" Link="CommonDialogsForm.cs" SubType="Form" />
+		<Compile Include="Form4.Designer.cs" Link="CommonDialogsForm.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="Form4.resx" />
+		<EmbeddedResource Include="Form4.resx" Link="CommonDialogsForm.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
+	  <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="TestData1.en.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
@@ -35,7 +96,7 @@
 
 	<ItemGroup>
 		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
+			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>

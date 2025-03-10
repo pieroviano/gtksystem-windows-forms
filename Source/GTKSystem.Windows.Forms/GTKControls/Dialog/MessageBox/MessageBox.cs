@@ -9,12 +9,14 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
-public class MessageBox
+internal class NonStaticMessageBox : IMessageBox
 {
+    public event EventHandler<DialogEventArgs>? DialogAvailable;
+
     /// <summary>
     ///  Displays a message box with specified text, caption, and style with Help Button.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, bool displayHelpButton)
     {
         return ShowCore(null, text, caption, buttons, icon);
@@ -23,7 +25,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style and Help file Path .
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath)
     {
         return ShowCore(null, text, caption, buttons, icon);
@@ -32,7 +34,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style and Help file Path for a IWin32Window.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath)
     {
         return ShowCore(owner, text, caption, buttons, icon);
@@ -41,7 +43,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style, Help file Path and keyword.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, string keyword)
     {
         return ShowCore(null, text, caption, buttons, icon);
@@ -50,7 +52,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style, Help file Path and keyword for a IWin32Window.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, string keyword)
     {
         return ShowCore(owner, text, caption, buttons, icon);
@@ -59,7 +61,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style, Help file Path and HelpNavigator.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator)
     {
         return ShowCore(null, text, caption, buttons, icon);
@@ -68,7 +70,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style, Help file Path and HelpNavigator for IWin32Window.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator)
     {
         return ShowCore(owner, text, caption, buttons, icon);
@@ -77,7 +79,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style, Help file Path ,HelpNavigator and object.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator, object param)
     {
         return ShowCore(null, text, caption, buttons, icon);
@@ -86,7 +88,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, style, Help file Path ,HelpNavigator and object for a IWin32Window.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator, object param)
     {
         return ShowCore(owner, text, caption, buttons, icon);
@@ -98,7 +100,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
     {
         return ShowCore(null, text, caption, buttons, icon);
@@ -107,7 +109,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton)
     {
         return ShowCore(null, text, caption, buttons, icon);
@@ -116,7 +118,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
     {
         return ShowCore(null, text, caption, buttons, icon);
     }
@@ -124,7 +126,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons)
+    public DialogResult Show(string? text, string caption, MessageBoxButtons buttons)
     {
         return ShowCore(null, text, caption, buttons, MessageBoxIcon.None);
     }
@@ -132,7 +134,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text and caption.
     /// </summary>
-    public static DialogResult Show(string? text, string caption)
+    public DialogResult Show(string? text, string caption)
     {
         return ShowCore(null, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
@@ -140,7 +142,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text.
     /// </summary>
-    public static DialogResult Show(string? text)
+    public DialogResult Show(string? text)
     {
         return ShowCore(null, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
@@ -148,7 +150,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
     {
         return ShowCore(owner, text, caption, buttons, icon);
@@ -157,7 +159,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
         MessageBoxDefaultButton defaultButton)
     {
         return ShowCore(owner, text, caption, buttons, icon);
@@ -166,7 +168,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
     {
         return ShowCore(owner, text, caption, buttons, icon);
     }
@@ -174,7 +176,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text, caption, and style.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons)
+    public DialogResult Show(IWin32Window? owner, string? text, string caption, MessageBoxButtons buttons)
     {
         return ShowCore(owner, text, caption, buttons, MessageBoxIcon.None);
     }
@@ -182,7 +184,7 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text and caption.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text, string caption)
+    public DialogResult Show(IWin32Window? owner, string? text, string caption)
     {
         return ShowCore(owner, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
@@ -190,13 +192,13 @@ public class MessageBox
     /// <summary>
     ///  Displays a message box with specified text.
     /// </summary>
-    public static DialogResult Show(IWin32Window? owner, string? text)
+    public DialogResult Show(IWin32Window? owner, string? text)
     {
         return ShowCore(owner, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
 
-    private static Window? activeWindow; // Caching significance
-    private static DialogResult ShowCore(IWin32Window? owner, string? text, string caption,
+    private Window? activeWindow; // Caching significance
+    internal DialogResult ShowCore(IWin32Window? owner, string? text, string caption,
         MessageBoxButtons buttons, MessageBoxIcon icon)
     {
         int irun;
@@ -238,7 +240,7 @@ public class MessageBox
         return DialogResult.None;
     }
 
-    private static int ShowMessageDialogCore(Window owner, WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
+    private int ShowMessageDialogCore(Window owner, WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
     {
         var buttonsType = ButtonsType.Close;
         if (buttons == MessageBoxButtons.OK)
@@ -267,9 +269,11 @@ public class MessageBox
         return dia.Run();
     }
 
-    private static int ShowCore(Window owner, WindowPosition position, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
+    private int ShowCore(Window? owner, WindowPosition position, string text, string caption,
+        MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
     {
         var dia = new Dialog(caption, owner, DialogFlags.DestroyWithParent);
+        DialogAvailable?.Invoke(this, new DialogEventArgs(dia));
         dia.KeepAbove = true;
         dia.KeepBelow = false;
         dia.TypeHint = Gdk.WindowTypeHint.Dialog;
@@ -291,13 +295,13 @@ public class MessageBox
         msgbox.Halign = Align.Fill;
 
         if (icon == MessageBoxIcon.Question)
-            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-question.png"), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("System.Windows.Forms.Resources.System.dialog-question.png"), false, false, 5);
         else if (icon == MessageBoxIcon.Warning || icon == MessageBoxIcon.Exclamation)
-            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-warning.png"), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("System.Windows.Forms.Resources.System.dialog-warning.png"), false, false, 5);
         else if (icon == MessageBoxIcon.Information || icon == MessageBoxIcon.Asterisk)
-            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-information.png"), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("System.Windows.Forms.Resources.System.dialog-information.png"), false, false, 5);
         else if (icon == MessageBoxIcon.Error || icon == MessageBoxIcon.Stop || icon == MessageBoxIcon.Hand)
-            msgbox.PackStart(Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-error.png"), false, false, 5);
+            msgbox.PackStart(Image.LoadFromResource("System.Windows.Forms.Resources.System.dialog-error.png"), false, false, 5);
         var content = new Gtk.Label(text) { MarginEnd = 30 };
         content.Halign = Align.Fill;
         content.Valign = Align.Start;
@@ -318,9 +322,9 @@ public class MessageBox
             content.LineWrapMode = Pango.WrapMode.Word;
         }
         msgbox.PackStart(content, false, true, 5);
-        dia.ContentArea.PackStart(msgbox, false, true, 0);
+        dia.ContentArea?.PackStart(msgbox, false, true, 0);
 
-        dia.Icon = new Gdk.Pixbuf(typeof(MessageBox).Assembly, "GTKSystem.Windows.Forms.Resources.System.help-faq.png");
+        dia.Icon = new Gdk.Pixbuf(typeof(MessageBox).Assembly, "System.Windows.Forms.Resources.System.help-faq.png");
         if (buttons == MessageBoxButtons.OK)
         {
             dia.AddButton(Properties.Resources.MessageBox_ShowCore_OK, ResponseType.Ok);
@@ -360,7 +364,7 @@ public class MessageBox
         return dia.Run();
     }
 
-    private static void Dia_Response(object o, ResponseArgs args)
+    private void Dia_Response(object o, ResponseArgs args)
     {
         var dia = (Dialog?)o;
         if (dia != null)

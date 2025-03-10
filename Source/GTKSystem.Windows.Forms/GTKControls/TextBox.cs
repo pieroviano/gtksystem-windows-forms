@@ -14,6 +14,7 @@ namespace System.Windows.Forms;
 public class TextBox : Control
 {
     public readonly TextBoxBase self = new TextBoxBase();
+    private bool _shortcutsEnabled;
     public override object GtkControl => self;
 
     public TextBox()
@@ -25,6 +26,51 @@ public class TextBox : Control
         self.Changed += Self_Changed;
         self.TextInserted += Self_TextInserted;
         self.KeyPressEvent += Self_KeyPressEvent;
+        self.ClipboardPasted += (o, args) =>
+        {
+            OnPaste(args);
+        };
+    }
+
+    public bool ShortcutsEnabled
+    {
+        get
+        {
+            return _shortcutsEnabled;
+        }
+        set
+        {
+            _shortcutsEnabled = value;
+            if (!_shortcutsEnabled)
+            {
+                self.KeyPressEvent += OnSelfOnKeyPressEvent;
+            }
+            else
+            {
+                self.KeyPressEvent -= OnSelfOnKeyPressEvent;
+            }
+        }
+    }
+
+    protected virtual void OnSelfOnKeyPressEvent(object s, Gtk.KeyPressEventArgs args)
+    {
+        // Detect Ctrl + C, Ctrl + V, Ctrl + X, Ctrl + Ins, Shift + Ins, Shift + Delete
+        var isCtrl = (args.Event.State & Gdk.ModifierType.ControlMask) != 0;
+        var isShift = (args.Event.State & Gdk.ModifierType.ShiftMask) != 0;
+        if ((isCtrl && (args.Event.Key == Gdk.Key.c || args.Event.Key == Gdk.Key.C /* Copy */ ||
+                        args.Event.Key == Gdk.Key.v || args.Event.Key == Gdk.Key.V /* Paste */ ||
+                        args.Event.Key == Gdk.Key.x || args.Event.Key == Gdk.Key.X /* Cut */)) ||
+            (isCtrl && args.Event.Key == Gdk.Key.Insert) || // Ctrl + Ins (Copy)
+            (isShift && args.Event.Key == Gdk.Key.Delete) || // Shift + Del (Cut)
+            (isShift && args.Event.Key == Gdk.Key.Insert)) // Shift + Ins (Paste)
+        {
+            args.RetVal = true; // Block the event
+        }
+    }
+
+    protected virtual void OnPaste(EventArgs e)
+    {
+
     }
 
     public void AppendText(string? text)
@@ -39,9 +85,14 @@ public class TextBox : Control
             if (args.Event is { } eventkey)
             {
                 var keys = (Keys)eventkey.HardwareKeycode;
-                KeyDown?.Invoke(this, new KeyEventArgs(keys));
+                OnKeyDown(new KeyEventArgs(keys));
             }
         }
+    }
+
+    protected override void OnKeyDown(KeyEventArgs keyEventArgs)
+    {
+        KeyDown?.Invoke(this, keyEventArgs);
     }
 
     public override event KeyEventHandler? KeyDown;
@@ -58,7 +109,7 @@ public class TextBox : Control
                 return Enum.GetName(typeof(Keys), k) == keytext;
             });
             foreach (var key in keyv)
-                KeyDown?.Invoke(this, new KeyEventArgs(key));
+                OnKeyDown( new KeyEventArgs(key));
         }
     }
 
@@ -66,8 +117,13 @@ public class TextBox : Control
     {
         if (TextChanged != null && self.IsVisible)
         {
-            TextChanged?.Invoke(this, EventArgs.Empty);
+            OnTextChanged(EventArgs.Empty);
         }
+    }
+
+    protected virtual void OnTextChanged(EventArgs eventArgs)
+    {
+        TextChanged?.Invoke(this, eventArgs);
     }
 
     public string[] Lines => string.IsNullOrEmpty(Text) ? [] : Text.Replace("\r\n", "\n").Split('\n');
@@ -122,6 +178,11 @@ public class TextBox : Control
             self.GetSelectionBounds(out var start, out _);
             return start;
         }
+        set
+        {
+            self.GetSelectionBounds(out var startPos, out _);
+            self.SelectRegion(startPos, startPos + value);
+        }
     }
 
     [Browsable(false)]
@@ -140,5 +201,10 @@ public class TextBox : Control
         if (text == null) return;
         var posi = self.CursorPosition;
         self.InsertText(text, ref posi);
+    }
+
+    public void Clear()
+    {
+        Text = string.Empty;
     }
 }

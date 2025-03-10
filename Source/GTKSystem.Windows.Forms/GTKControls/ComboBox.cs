@@ -32,10 +32,25 @@ public partial class ComboBox : ListControl
     {
         if (self.IsVisible)
         {
-            ((EventHandler)events["SelectedIndexChanged"])?.Invoke(this, e);
-            ((EventHandler)events["SelectedValueChanged"])?.Invoke(this, e);
-            ((EventHandler)events["SelectedItemChanged"])?.Invoke(this, e);
+            OnSelectedIndexChanged(e);
+            OnSelectedValueChanged(e);
+            OnSelectedItemChanged(e);
         }
+    }
+
+    protected virtual void OnSelectedItemChanged(EventArgs e)
+    {
+        ((EventHandler)events["SelectedItemChanged"])?.Invoke(this, e);
+    }
+
+    protected virtual void OnSelectedValueChanged(EventArgs e)
+    {
+        ((EventHandler)events["SelectedValueChanged"])?.Invoke(this, e);
+    }
+
+    protected virtual void OnSelectedIndexChanged(EventArgs e)
+    {
+        ((EventHandler)events["SelectedIndexChanged"])?.Invoke(this, e);
     }
 
     private void Self_Realized(object? sender, EventArgs e)
@@ -69,8 +84,14 @@ public partial class ComboBox : ListControl
     public event EventHandler? DropDown;
     private void Ws_Toggled(object? sender, EventArgs e)
     {
+        OnDropDown(e);
+    }
+
+    protected virtual void OnDropDown(EventArgs e)
+    {
         DropDown?.Invoke(this, e);
     }
+
     private void Ws_Drawn(object? o, DrawnArgs args)
     {
         self.Entry.Visible = false;

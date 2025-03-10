@@ -22,8 +22,18 @@ public class ToolStripComboBox : WidgetToolStrip<Gtk.MenuItem>
 
     private void ComboBox_Changed(object? sender, EventArgs e)
     {
-        SelectedIndexChanged?.Invoke(this, e);
+        OnSelectedIndexChanged(e);
+        OnSelectedValueChanged(e);
+    }
+
+    protected virtual void OnSelectedValueChanged(EventArgs e)
+    {
         SelectedValueChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnSelectedIndexChanged(EventArgs e)
+    {
+        SelectedIndexChanged?.Invoke(this, e);
     }
 
     public override Size Size { get => base.Size; set { comboBox.WidthRequest = value.Width; comboBox.HeightRequest = value.Height; base.Size = value; } }

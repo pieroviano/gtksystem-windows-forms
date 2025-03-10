@@ -921,7 +921,7 @@ public class ListView : ContainerControl
     {
         if (MultiSelect)
         {
-            ItemActivate?.Invoke(this, e);
+            OnItemActivate(e);
 
             var selecteds = new List<int>();
             foreach (var group in GetAllGroups())
@@ -937,24 +937,42 @@ public class ListView : ContainerControl
             }
             foreach (var item in Items)
             {
+                var eventArgs = new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected);
                 if (selecteds.Contains(item.Index))
                 {
                     if (item.Selected == false)
                     {
                         item.Selected = true;
-                        ItemSelectionChanged?.Invoke(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+                        OnItemSelectionChanged(eventArgs);
                     }
                 }
                 else if (item.Selected)
                 {
                     item.Selected = false;
-                    ItemSelectionChanged?.Invoke(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+                    OnItemSelectionChanged(eventArgs);
                 }
             }
         }
 
+        OnSelectedIndexChanged(e);
+    }
+
+    protected virtual void OnSelectedIndexChanged(EventArgs e)
+    {
         SelectedIndexChanged?.Invoke(this, e);
     }
+
+    protected virtual void OnItemSelectionChanged(
+        ListViewItemSelectionChangedEventArgs listViewItemSelectionChangedEventArgs)
+    {
+        ItemSelectionChanged?.Invoke(this, listViewItemSelectionChangedEventArgs);
+    }
+
+    protected virtual void OnItemActivate(EventArgs e)
+    {
+        ItemActivate?.Invoke(this, e);
+    }
+
     private void _flow_ChildActivated(object? o, ChildActivatedArgs args)
     {
         var widget = o as FlowBox;
@@ -970,8 +988,8 @@ public class ListView : ContainerControl
                 }
             }
 
-            ItemActivate?.Invoke(this, args);
-            ItemSelectionChanged?.Invoke(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+            OnItemActivate( args);
+            OnItemSelectionChanged( new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
         }
     }
     public void Sort()

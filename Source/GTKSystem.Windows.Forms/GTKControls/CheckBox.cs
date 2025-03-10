@@ -32,7 +32,12 @@ public class CheckBox : Control
         if (CheckedChanged != null && self.IsVisible)
             CheckedChanged(this, EventArgs.Empty);
         if (CheckStateChanged != null && self.IsVisible)
-            CheckStateChanged?.Invoke(this, EventArgs.Empty);
+            OnCheckStateChanged(EventArgs.Empty);
+    }
+
+    protected virtual void OnCheckStateChanged(EventArgs eventArgs)
+    {
+        CheckStateChanged?.Invoke(this, eventArgs);
     }
 
     public override string Text

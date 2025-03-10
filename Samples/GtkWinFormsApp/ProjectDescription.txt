@@ -1,0 +1,5 @@
+﻿GTKWinFormsApp.csproj is a project that references the GTKSystem framework
+
+GTKWinFormsApp_Win.csproj is a .net native project
+
+Open these two projects when possible to facilitate interface design and compare them with the development

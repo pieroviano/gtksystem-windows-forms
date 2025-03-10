@@ -94,8 +94,13 @@ public class TreeView : ScrollableControl
         {
             TreeNode? result = null;
             GetNodeChild(root, args.Path.Indices, ref result);
-            AfterExpand?.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
+            OnAfterExpand(new TreeViewEventArgs(result, TreeViewAction.Expand));
         }
+    }
+
+    protected virtual void OnAfterExpand(TreeViewEventArgs eventArgs)
+    {
+        AfterExpand?.Invoke(this, eventArgs);
     }
 
     private void TreeView_RowCollapsed(object? o, RowCollapsedArgs args)
@@ -104,8 +109,14 @@ public class TreeView : ScrollableControl
         {
             TreeNode? result = null;
             GetNodeChild(root, args.Path.Indices, ref result);
-            AfterCollapse?.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
+            var eventArgs = new TreeViewEventArgs(result, TreeViewAction.Collapse);
+            OnAfterCollapse(eventArgs);
         }
+    }
+
+    protected virtual void OnAfterCollapse(TreeViewEventArgs eventArgs)
+    {
+        AfterCollapse?.Invoke(this, eventArgs);
     }
 
     private void TreeView_RowActivated(object? o, RowActivatedArgs args)
@@ -116,10 +127,17 @@ public class TreeView : ScrollableControl
             {
                 TreeNode? result = null;
                 GetNodeChild(root, args.Path.Indices, ref result);
-                AfterSelect?.Invoke(this, new TreeViewEventArgs(result));
+                var eventArgs = new TreeViewEventArgs(result);
+                OnAfterSelect(eventArgs);
             }
         }
     }
+
+    protected virtual void OnAfterSelect(TreeViewEventArgs eventArgs)
+    {
+        AfterSelect?.Invoke(this, eventArgs);
+    }
+
     private TreeViewCancelEventArgs? cancelEventArgs;
     private void Selection_Changed(object? sender, EventArgs e)
     {
@@ -131,12 +149,17 @@ public class TreeView : ScrollableControl
                 TreeNode? result = null;
                 GetNodeChild(root, paths[0].Indices, ref result);
                 cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
-                BeforeSelect?.Invoke(this, cancelEventArgs);
+                OnBeforeSelect(cancelEventArgs);
             }
         }
     }
 
-        public void Clear()
+    protected virtual void OnBeforeSelect(TreeViewCancelEventArgs? eventArgs)
+    {
+        BeforeSelect?.Invoke(this, eventArgs);
+    }
+
+    public void Clear()
         {
             Store.Clear();
         }

@@ -45,6 +45,11 @@ public partial class ListBox : ListControl
     }
     private void ListBox_SelectedRowsChanged(object? sender, EventArgs e)
     {
+        OnSelectedRowsChanged(e);
+    }
+
+    protected virtual void OnSelectedRowsChanged(EventArgs e)
+    {
         if (self.listBox.IsVisible)
         {
             ((EventHandler)events["SelectedIndexChanged"])?.Invoke(this, e);

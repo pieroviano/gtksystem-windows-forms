@@ -10,7 +10,15 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     public byte[]? PixbufData
     {
         get { if (pixbufData == null && pixbuf != null) { pixbufData = pixbuf.SaveToBuffer("bmp"); } return pixbufData; }
-        set { pixbufData = value; pixbuf = new Pixbuf((byte[]?)value?.Clone()); }
+        set
+        {
+            pixbufData = value;
+            pixbuf?.Dispose();
+            if (value != null)
+            {
+                pixbuf = new Pixbuf((byte[]?)value.Clone());
+            }
+        }
     }
     private Pixbuf? pixbuf;
     public Pixbuf? Pixbuf

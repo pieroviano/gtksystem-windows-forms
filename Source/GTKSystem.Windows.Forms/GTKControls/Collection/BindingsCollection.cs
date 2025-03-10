@@ -59,9 +59,9 @@ public class BindingsCollection : BaseCollection
         _onCollectionChanging?.Invoke(this, e);
     }
 
-    protected virtual void OnCollectionChanged(CollectionChangeEventArgs ccevent)
+    protected virtual void OnCollectionChanged(CollectionChangeEventArgs eventArgs)
     {
-        _onCollectionChanged?.Invoke(this, ccevent);
+        _onCollectionChanged?.Invoke(this, eventArgs);
     }
 
     protected internal void Remove(Binding binding)

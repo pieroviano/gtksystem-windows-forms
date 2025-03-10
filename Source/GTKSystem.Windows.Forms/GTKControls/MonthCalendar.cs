@@ -22,13 +22,22 @@ public class MonthCalendar : Control
     private void MonthCalendar_DaySelected(object? sender, EventArgs e)
     {
         if (DateChanged != null && self.IsVisible)
-            DateChanged?.Invoke(this, new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
+            OnDateChanged(new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
 
         if (DateSelected != null && self.IsVisible)
-            DateSelected?.Invoke(this, new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
+            OnDateSelected(new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
     }
-      
-   
+
+    protected virtual void OnDateSelected(DateRangeEventArgs eventArgs)
+    {
+        DateSelected?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnDateChanged(DateRangeEventArgs eventArgs)
+    {
+        DateChanged?.Invoke(this, eventArgs);
+    }
+
     public Day FirstDayOfWeek
     {
         get;set;

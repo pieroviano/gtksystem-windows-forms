@@ -20,7 +20,12 @@ public class Button : Control
     }
     private void Self_Clicked(object? sender, EventArgs e)
     {
-        if(Click!= null && self.IsVisible) { Click?.Invoke(this, EventArgs.Empty); }
+        if(Click!= null && self.IsVisible) { OnClick(EventArgs.Empty); }
+    }
+
+    protected override void OnClick(EventArgs eventArgs)
+    {
+        Click?.Invoke(this, eventArgs);
     }
 
     public override string Text { get => ((Gtk.Label)self.Child).Text; set => ((Gtk.Label)self.Child).Text = value; }

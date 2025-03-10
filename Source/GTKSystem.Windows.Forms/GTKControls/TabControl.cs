@@ -28,11 +28,16 @@ public class TabControl : ContainerControl
     private void Self_SwitchPage(object? o, SwitchPageArgs args)
     {
         if (SelectedIndexChanged != null && self.IsMapped)
-            SelectedIndexChanged?.Invoke(this, new EventArgs());
+            OnSelectedIndexChanged(new EventArgs());
+    }
+
+    protected virtual void OnSelectedIndexChanged(EventArgs eventArgs)
+    {
+        SelectedIndexChanged?.Invoke(this, eventArgs);
     }
 
     /// <summary>
-    /// gtk特有的菜单功能，供有需要的使用
+    /// gtk Unique menu function for use when needed
     /// </summary>
     [Browsable(false)]
     public bool EnablePopup
@@ -149,7 +154,7 @@ public class TabControl : ContainerControl
                         args.Cr.ResetClip();
                         var width = allocation.Width + 24;
                         var height = allocation.Height + 2;
-                        _owner.DrawItem?.Invoke(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { DiffLeft = -12, DiffTop = -2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+                        OnDrawItem(new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { DiffLeft = -12, DiffTop = -2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
 
                     }
                 };
@@ -162,6 +167,12 @@ public class TabControl : ContainerControl
                     item.Widget.ShowAll();
             }
         }
+
+        protected virtual void OnDrawItem(DrawItemEventArgs eventArgs)
+        {
+            _owner.DrawItem?.Invoke(this, eventArgs);
+        }
+
         public new void RemoveAt(int index)
         {
             base.RemoveAt(index);

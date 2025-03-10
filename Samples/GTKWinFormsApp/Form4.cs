@@ -1,71 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using GTKWinFormsApp.Properties;
 
 namespace GTKWinFormsApp;
 
-public partial class Form4 : Form
+public partial class CommonDialogsForm : Form
 {
-    public Form4()
+    public CommonDialogsForm()
     {
+        TreeNode treeNode1;
+        TreeNode treeNode2;
+        TreeNode treeNode3;
+        TreeNode treeNode4;
+        TreeNode treeNode5;
+        treeNode1 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_1);
+        treeNode2 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_2, new TreeNode[] { treeNode1 });
+        treeNode3 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_3);
+        treeNode4 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_4, new TreeNode[] { treeNode2, treeNode3 });
+        treeNode5 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_5);
         InitializeComponent();
-        this.Shown += Form4_Shown;
+        treeNode1.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_1;
+        treeNode1.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_1;
+        treeNode2.ImageIndex = 1;
+        treeNode2.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_2;
+        treeNode2.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_2;
+        treeNode3.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_3;
+        treeNode3.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_3;
+        treeNode4.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_4;
+        treeNode4.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_4;
+        treeNode5.ImageIndex = 0;
+        treeNode5.ImageKey = "img11.jpg";
+        treeNode5.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_5;
+        treeNode5.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_5;
+        treeView1.Nodes.AddRange(new TreeNode[] { treeNode4, treeNode5 });
+        button1.Text = Resources.CommonDialogsForm_CommonDialogsForm_0;
+        button9.Text = Resources.CommonDialogsForm_CommonDialogsForm_1;
+        button8.Text = Resources.TestDataForm_TestDataForm_Load_2B;
+        button7.Text = Resources.CommonDialogsForm_CommonDialogsForm_3;
+        button6.Text = Resources.CommonDialogsForm_CommonDialogsForm_4;
+        button3.Text = Resources.CommonDialogsForm_CommonDialogsForm_5;
+        label1.Text = Resources.CommonDialogsForm_CommonDialogsForm_6;
+
+        Shown += Form4_Shown;
 
         button4.Click += Button4_Click;
     }
 
-        private void Button4_Click(object? sender, EventArgs e)
-        {
-            //propertyGrid1.SelectedObject = sender;
-            splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
-        }
+    private void Button4_Click(object? sender, EventArgs e)
+    {
+        splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock = DockStyle.Fill });
+    }
 
-        Point panel1Location = new Point();
-        private void Form4_Shown(object? sender, EventArgs e)
-        {
-           
-        }
+    Point panel1Location = new();
+    private void Form4_Shown(object? sender, EventArgs e)
+    {
 
-        private void button3_Click(object sender, EventArgs e)
+    }
+
+    private void button3_Click(object sender, EventArgs e)
+    {
+        var ofd = new OpenFileDialog();
+        ofd.Filter = "jpg|*.jpg;png|*.png";
+        ofd.Multiselect = true;
+        ofd.Title = Resources.CommonDialogsForm_button3_Click_Test_Open_File;
+
+        var dialogResult = ofd.ShowDialog(this);
+        Console.WriteLine("dialogResult:" + dialogResult.ToString());
+        Console.WriteLine("FileName:" + ofd.FileName);
+        foreach (var file in ofd.FileNames)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "图像文件(.jpg)|*.jpg;图像文件(.png)|*.png";
-            ofd.Multiselect = true;
-            ofd.Title = "测试打开文件";
-            ofd.DefaultExt = ".jpg";
-            DialogResult dialogResult = ofd.ShowDialog(this);
-            Console.WriteLine("dialogResult:" + dialogResult.ToString());
-            Console.WriteLine("FileName:" + ofd.FileName);
-            foreach (string file in ofd.FileNames)
-            {
-                Console.WriteLine("FileNames:" + file);
-            }
-            Console.WriteLine("SafeFileName:" + ofd.SafeFileName);
-            foreach (string file in ofd.SafeFileNames)
-            {
-                Console.WriteLine("SafeFileNames:" + file);
-            }
+            Console.WriteLine("FileNames:" + file);
         }
+        Console.WriteLine("SafeFileName:" + ofd.SafeFileName);
+        foreach (var file in ofd.SafeFileNames)
+        {
+            Console.WriteLine("SafeFileNames:" + file);
+        }
+    }
 
     private void button6_Click(object sender, EventArgs e)
     {
-        SaveFileDialog ofd = new SaveFileDialog();
+        var ofd = new SaveFileDialog();
         ofd.Filter = "jpg|*.jpg;png|*.png";
-        ofd.Title = "测试保存文件";
+        ofd.Title = Resources.CommonDialogsForm_button6_Click_Test_Save_File;
 
-        DialogResult dialogResult = ofd.ShowDialog();
+        var dialogResult = ofd.ShowDialog();
         Console.WriteLine("dialogResult:" + dialogResult.ToString());
         Console.WriteLine("FileName:" + ofd.FileName);
-        foreach (string file in ofd.FileNames)
+        foreach (var file in ofd.FileNames)
         {
             Console.WriteLine("FileNames:" + file);
         }
@@ -73,31 +97,53 @@ public partial class Form4 : Form
 
     private void button7_Click(object sender, EventArgs e)
     {
-        FolderBrowserDialog ofd = new FolderBrowserDialog();
-        ofd.Description = "浏览文件夹 decription";
-        DialogResult dialogResult = ofd.ShowDialog();
+        var ofd = new FolderBrowserDialog();
+        ofd.Description = Resources.CommonDialogsForm_button7_Click_Browse_Folder_Description;
+        var dialogResult = ofd.ShowDialog();
         Console.WriteLine("dialogResult:" + dialogResult.ToString());
         Console.WriteLine("SelectedPath:" + ofd.SelectedPath);
     }
 
     private void button8_Click(object sender, EventArgs e)
     {
-        ColorDialog colorDialog = new ColorDialog();
+        var colorDialog = new ColorDialog();
         colorDialog.ShowDialog();
 
         //FontDialog fontDialog = new FontDialog();
         //fontDialog.ShowDialog();
 
         //Graphics g = CreateGraphics();
-        //// g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 0, 0);
-        //g.DrawRectangle(new Pen(new SolidBrush(Color.Red),2), new Rectangle(110, 110, 200, 200));
+        //// g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(ColorExtension.Red), 0, 0);
+        //g.DrawRectangle(new Pen(new SolidBrush(ColorExtension.Red),2), new Rectangle(110, 110, 200, 200));
 
     }
 
     private void button9_Click(object sender, EventArgs e)
     {
-        MessageBox.Show("test message test message test messagetest message test message test message test messagetest message test message test message test messagetest message test message test message test messagetest message test message test message test messagetest message", "疑问", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-        MessageBox.Show("test message test message \ntest messagetest message", "警告", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
+        if (Thread.CurrentThread.CurrentUICulture.Name.StartsWith("zh"))
+        {
+            MessageBox.Show("test message test message test messagetest message test message test message test messagetest message " +
+                            "test message test message test messagetest message test message test message test messagetest message test " +
+                            "message test message test messagetest message", Resources.CommonDialogsForm_button9_Click_Doubt, 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            MessageBox.Show("test message test message \ntest messagetest message", Resources.CommonDialogsForm_button9_Click_Warn, 
+                MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
+        }
+        else
+        {
+            // Display a question message box with Yes/No buttons
+            MessageBox.Show("test message test message test message test message test message test message test message test message " +
+                            "test message test message test message test message test message test message test message test message test message",
+                "Question",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            // Display a warning message box with Retry/Cancel buttons
+            MessageBox.Show("test message test message \ntest message test message",
+                "Warning",
+                MessageBoxButtons.RetryCancel,
+                MessageBoxIcon.Warning);
+        }
     }
 
     private void vScrollBar1_ValueChanged(object sender, EventArgs e)

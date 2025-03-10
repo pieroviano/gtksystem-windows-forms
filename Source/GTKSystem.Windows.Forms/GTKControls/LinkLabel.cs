@@ -25,15 +25,26 @@ public class LinkLabel: Control
 
     private void LinkLabel_ActivateLink(object? o, Gtk.ActivateLinkArgs args)
     {
-        LinkClicked?.Invoke(this, new LinkLabelLinkClickedEventArgs(new Link { Description = self.Label, LinkData = self.Uri }));
+        PerformClick();
+    }
+
+    public override void PerformClick()
+    {
+        var eventArgs = new LinkLabelLinkClickedEventArgs(new Link { Description = self.Label, LinkData = self.Uri });
+        OnLinkClicked(eventArgs);
+        base.PerformClick();
+    }
+
+    protected virtual void OnLinkClicked(LinkLabelLinkClickedEventArgs eventArgs)
+    {
+        LinkClicked?.Invoke(this, eventArgs);
     }
 
     private void LinkLabel_Click(object? sender, EventArgs e)
     {
         //Console.WriteLine("LinkLabel_Click");
-        Click?.Invoke(this, e);
+        OnClick(e);
     }
-    public override event EventHandler? Click;
     public override string Text { get => string.IsNullOrEmpty(self.Label)? self.Uri : self.Label;
         set { self.Label = value; self.Uri = value; } }
          

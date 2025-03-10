@@ -1,28 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using GTKWinFormsApp.Properties;
 
 namespace GTKWinFormsApp;
 
-public partial class Form3 : Form
+public partial class GtkMainForm : Form
 {
-    public Form3()
+    public GtkMainForm()
     {
         InitializeComponent();
-        //目前自定义控件无法在窗体设计器中可视化，建议使用程序添加，如下示例：
-        UserControl11 userControl11 = new UserControl11();
-        panel5.Controls.Add(userControl11);
-        this.SizeChanged += Form3_SizeChanged;
+        // Currently, custom controls cannot be visualized in the form designer.
+        // It is recommended to add them programmatically, as shown in the following example:
 
-        this.Shown += Form3_Shown;
+        toolStripMenuItem1.Text = Resources.GtkMainForm_GtkMainForm_Menu_1;
+        ddddToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_a_Menu;
+        ssssToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_b_Menu;
+        bbMenuToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_bb_Menu;
+        bbMenu2ToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_bb_Menu_2;
+        cMenuToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_c_Menu;
+        ssssToolStripMenuItem1.Text = Resources.GtkMainForm_GtkMainForm_Menu_2;
+        toolStripDropDownButton1.Text = Resources.GtkMainForm_GtkMainForm_Dropdown_List_1;
+        memnuToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_Item_1;
+        fffffffToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_Item_2;
+        button1.Text = Resources.GtkMainForm_GtkMainForm_Open_Main_Window;
+        toolStripStatusLabel1.Text = Resources.GtkMainForm_GtkMainForm_Status_Text;
+        toolStripSplitButton2.Text = Resources.GtkMainForm_GtkMainForm_Dropdown_Menu;
+        label1.Text = Resources.GtkMainForm_GtkMainForm_Slider_Value;
+        button4.Text = Resources.GtkMainForm_GtkMainForm_List_View;
+        button2.Text = Resources.GtkMainForm_GtkMainForm_Split_Container_Layout;
+        button3.Text = Resources.GtkMainForm_GtkMainForm_Print;
+        label2.Text = Resources.GtkMainForm_GtkMainForm_This_is_a_UserControl_placeholder;
+        Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
+
+        var userControl11 = new UserControl11();
+        panel5.Controls!.Add(userControl11);
+        SizeChanged += Form3_SizeChanged;
+
+        Shown += Form3_Shown;
     }
 
     private void Form3_Shown(object? sender, EventArgs e)
@@ -61,7 +78,7 @@ public partial class Form3 : Form
     {
         //button1.ForeColor=Color.Red;
         //button1.BackColor=Color.Green;
-        Form1 f = new Form1();
+        TestDataForm f = new TestDataForm();
         f.Show();
     }
 
@@ -110,14 +127,17 @@ public partial class Form3 : Form
         //path.CloseFigure();
 
 
-        path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
+        if (Thread.CurrentThread.CurrentUICulture.Name.StartsWith("zh"))
+            path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
+        else
+            path.AddString("testText", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
 
         //path.CloseAllFigures();
 
-            LinearGradientBrush? brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
-            //g.TranslateTransform(30, 0);
-            //g.RotateTransform(20);
-            g.DrawPath(new Pen(brush, 2), path);
+        LinearGradientBrush? brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
+        //g.TranslateTransform(30, 0);
+        //g.RotateTransform(20);
+        g.DrawPath(new Pen(brush, 2), path);
 
         //PathGradientBrush gradientBrush = new PathGradientBrush(path);
         //gradientBrush.CenterColor = Color.Red;
@@ -129,13 +149,13 @@ public partial class Form3 : Form
 
     private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)
     {
-        Form2 f1 = new Form2();
+        ListViewForm f1 = new ListViewForm();
         f1.Show(this);
     }
 
     private void button2_Click(object sender, EventArgs e)
     {
-        Form4 f = new Form4();
+        CommonDialogsForm f = new CommonDialogsForm();
         DialogResult res = f.ShowDialog();
         Console.WriteLine(res);
     }
@@ -152,7 +172,7 @@ public partial class Form3 : Form
 
     private void button4_Click(object sender, EventArgs e)
     {
-        Form2 f1 = new Form2();
+        ListViewForm f1 = new ListViewForm();
         f1.Show(this);
     }
 }

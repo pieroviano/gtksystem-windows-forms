@@ -88,58 +88,58 @@ namespace System.Windows.Forms
 @define-color separator_color1 #C6C5C4;
 @define-color separator_color2 #D6D7D8;
 
-.DefaultThemeStyle{{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}}
-.DefaultThemeStyle entry{{
+.DefaultThemeStyle{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}
+.DefaultThemeStyle entry{
    padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
-}}
-.DefaultThemeStyle entry.flat{{
+}
+.DefaultThemeStyle entry.flat{
    padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
-}}
-.DefaultThemeStyle button{{padding:4px 3px;}}
-.BorderNone{{border-style:none;box-shadow:none;}}
+}
+.DefaultThemeStyle button{padding:4px 3px;}
+.BorderNone{border-style:none;box-shadow:none;}
 
-.BorderFixedSingle{{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}}
-.BorderFixed3D{{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}}
+.BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
+.BorderFixed3D{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
 
-.DataGridView {{border-width:1px;margin:-3px;}}
-.GridViewCell-Button{{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}}
-.GridViewCell-Button:hover{{background-color: shade(@theme_bg_color, 0.8);}}
-.GridViewCell-Button:selected{{ color:blue}}
+.DataGridView {border-width:1px;margin:-3px;}
+.GridViewCell-Button{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}
+.GridViewCell-Button:hover{background-color: shade(@theme_bg_color, 0.8);}
+.GridViewCell-Button:selected{ color:blue}
 
-.LinkLabel{{border-style:none;}}
-.TextBox{{}}
-.ComboBox{{padding:0px;}}
-.ComboBox entry{{border-right-width:0px;  }}
-.ComboBox entry.flat{{border-right-width:0px;  }}
-.ComboBox entry:focus{{border-right-width:0px; box-shadow: inset 0px 0px 0px 1px #62a0ea;}}
-.ComboBox button{{padding-top:0px;padding-bottom:0px;border-width: 1px 1px 1px 1px; border-style: solid; border-color:@frame_color;}}
+.LinkLabel{border-style:none;}
+.TextBox{}
+.ComboBox{padding:0px;}
+.ComboBox entry{border-right-width:0px;  }
+.ComboBox entry.flat{border-right-width:0px;  }
+.ComboBox entry:focus{border-right-width:0px; box-shadow: inset 0px 0px 0px 1px #62a0ea;}
+.ComboBox button{padding-top:0px;padding-bottom:0px;border-width: 1px 1px 1px 1px; border-style: solid; border-color:@frame_color;}
 
-.DropDownList button{{padding:0px;}}
-.SplitContainer{{padding:0px;border:0px;box-shadow:none;}}
-/* When there is a scroll bar, an Exception message will be output if the width and height are less than 60px. */
-.SplitterPanel{{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}}
-.SplitterPanel .frame{{padding:0px;margin:0px;border:0px;box-shadow:none;}}
-.SplitterPanel .flat{{padding:0px;margin:0px;border:0px;box-shadow:none;}}
+.DropDownList button{padding:0px;}
+.SplitContainer{padding:0px;border:0px;box-shadow:none;}
+/* 当有滚动条时，宽高小于60px有异常信息输出 */
+.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}
+.SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
+.SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
 
-.TableLayoutPanel {{box-shadow: 1px 1px 1px 0px @frame_color;}}
-.TableLayoutPanel viewport.frame {{box-shadow: inset 1px 1px 1px 0 @frame_color;}}
-.ListView{{border:inset 1px @frame_color;}}
-.ListView .Label{{background-color:transparent;}} 
-.ListView checkbutton {{padding:0px;}}
-.ListView .Label{{background-color:transparent;}} 
-.ListView flowboxchild {{padding:0px;}}
-.ListView flowboxchild viewport{{padding:2px 0px;}}
-.ListView .GridBorder viewport{{box-shadow: inset -1px -1px #eeeeee;}}
-.ListViewHeader {{background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }}
-.ListViewHeader button{{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }}
-.ListViewHeader button.frame{{border-width:0px;padding:0px 0px 0px 0px;margin:0px; }}
-.ListView .GroupLine{{border-top:inset 1px #6677bb;}}
-.ListView .GroupTitle{{padding-left:5px;padding-right:5px; color:#6677bb; }}
-.ListView .GroupSubTitle{{padding-left:5px;padding-right:5px; }}
-.StatusStrip{{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}}
-.ToolStrip button{{padding:0px;}}
+.TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
+.TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
+.ListView{border:inset 1px @frame_color;}
+.ListView .Label{background-color:transparent;} 
+.ListView checkbutton {padding:0px;}
+.ListView .Label{background-color:transparent;} 
+.ListView flowboxchild {padding:0px;}
+.ListView flowboxchild viewport{padding:2px 0px;}
+.ListView .GridBorder viewport{box-shadow: inset -1px -1px #eeeeee;}
+.ListViewHeader {background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }
+.ListViewHeader button{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }
+.ListViewHeader button.frame{border-width:0px;padding:0px 0px 0px 0px;margin:0px; }
+.ListView .GroupLine{border-top:inset 1px #6677bb;}
+.ListView .GroupTitle{padding-left:5px;padding-right:5px; color:#6677bb; }
+.ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
+.StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
+.ToolStrip button{padding:0px;}
 
 .NumericUpDown{border-width:1px;padding:2px; }
 .NumericUpDown button.up{border-width:0px;padding:0px;}
@@ -152,6 +152,7 @@ namespace System.Windows.Forms
 .PropertyGrid {box-shadow:0px 0px 0px 1px @frame_color; background:#eeeeee;}
 .PropertyGrid button{background:#eeeeee;}
 ";
+
 
                 var appdirectory = "./";// StartupPath; //由于linux系统常用到环境变量路径，会导至Directory/Environment获取到的当前目录不正确
                 if (!File.Exists($"{appdirectory}/GTKSystem.Windows.Forms.dll"))
@@ -296,7 +297,8 @@ namespace System.Windows.Forms
                     File.WriteAllText(themesetuppath, setupthemecontent.ToString(), Encoding.UTF8);
                 }
 
-                css.LoadFromData(cssBuilder.ToString());
+                var data = cssBuilder.ToString();
+                css.LoadFromData(data);
                 StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, StyleProviderPriority.Application);
             }
 

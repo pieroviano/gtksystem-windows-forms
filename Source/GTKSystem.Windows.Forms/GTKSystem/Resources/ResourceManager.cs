@@ -12,21 +12,63 @@ public class ResourceManager : System.Resources.ResourceManager
 {
     internal const string resFileExtension = ".resources";
     private Type? _resourceSource;
-    private readonly Assembly? _assembly;
+
+    private readonly Dictionary<string, (string Culture, Assembly Assembly)[]> _assemblies = new ();
+
+    public (string Culture, Assembly Assembly)[] GetAssemblies(string? cultureName)
+    {
+        if (cultureName != null && _assemblies.ContainsKey(cultureName))
+        {
+            return _assemblies[cultureName];
+        }
+
+        if (cultureName == null)
+        {
+            return [(string.Empty, _assembly)];
+        }
+        var assemblies = new List<(string Culture, Assembly Assembly)> { (string.Empty, _assembly) };
+
+        var location = Path.GetFullPath(_assembly.Location);
+        var name = cultureName;
+        var combine = Path.Combine(Path.GetDirectoryName(location)!, name, $"{Path.GetFileNameWithoutExtension(location)}{resFileExtension}{Path.GetExtension(location)}");
+        int insertPoint = 0;
+        if (File.Exists(combine))
+        {
+            assemblies.Insert(insertPoint, (name, Assembly.LoadFile(combine)));
+            insertPoint++;
+        }
+
+        name = name.Split('-').FirstOrDefault();
+        if (!string.IsNullOrEmpty(name))
+        {
+            combine = Path.Combine(Path.GetDirectoryName(location)!, name, $"{Path.GetFileNameWithoutExtension(location)}{resFileExtension}{Path.GetExtension(location)}");
+            if (File.Exists(combine))
+            {
+                assemblies.Insert(insertPoint, (name, Assembly.LoadFile(combine)));
+            }
+        }
+        _assemblies[cultureName] = assemblies.ToArray();
+        return _assemblies[cultureName];
+    }
+
     private readonly string? _baseName;
     public ResourceInfo? getResourceInfo = new();
+    private readonly Assembly? _assembly = null!;
+
     public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : this(null, null, usingResourceSet)
     {
 
     }
+    
     public ResourceManager(string? baseName, Assembly? assembly) : this(baseName, assembly, null)
     {
 
     }
+    
     public ResourceManager(string? baseName, Assembly? assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName ?? string.Empty, assembly ?? Assembly.GetExecutingAssembly(), usingResourceSet)
     {
         _baseName = baseName;
-        _assembly = assembly;
+        _assembly = assembly!;
         _resourceSource = usingResourceSet;
         if (getResourceInfo != null)
         {
@@ -35,6 +77,7 @@ public class ResourceManager : System.Resources.ResourceManager
             getResourceInfo.SourceType = usingResourceSet;
         }
     }
+    
     protected ResourceManager()
     {
 
@@ -89,36 +132,41 @@ public class ResourceManager : System.Resources.ResourceManager
         }
         return result;
     }
-    private object? ReadResourceData(string name)
+    private object? ReadResourceData(string name, CultureInfo culture)
     {
-        if (_assembly == null)
+        var assemblies = GetAssemblies(culture.Name);
+        if (assemblies == null)
             throw new FileNotFoundException();
         try
         {
-            var stream = _assembly.GetManifestResourceStream(_baseName + resFileExtension);
-            if (stream != null)
+            foreach (var tuple in assemblies)
             {
-                var reader = new DeserializingResourceReader(stream);
-                var dict = reader.GetEnumerator();
-                using var disposable = dict as IDisposable;
-                while (dict.MoveNext())
+                var culturePart = string.IsNullOrEmpty(tuple.Culture)?string.Empty:$".{tuple.Culture}";
+                var stream = tuple.Assembly.GetManifestResourceStream($"{_baseName}{culturePart}{resFileExtension}");
+                if (stream != null)
                 {
-                    if (dict.Key?.ToString() == name)
+                    var reader = new DeserializingResourceReader(stream);
+                    var dict = reader.GetEnumerator();
+                    using var disposable = dict as IDisposable;
+                    while (dict.MoveNext())
                     {
-                        try
+                        if (dict.Key?.ToString() == name)
                         {
-                            if (dict.Value is ImageListStreamer streamer)
+                            try
                             {
-                                streamer.ResourceInfo = getResourceInfo;
-                                return streamer;
-                            }
+                                if (dict.Value is ImageListStreamer streamer)
+                                {
+                                    streamer.ResourceInfo = getResourceInfo;
+                                    return streamer;
+                                }
 
-                            return dict.Value;
-                        }
-                        catch
-                        {
-                            // Image format content cannot be extracted
-                            return null;
+                                return dict.Value;
+                            }
+                            catch
+                            {
+                                // Image format content cannot be extracted
+                                return null;
+                            }
                         }
                     }
                 }
@@ -130,34 +178,42 @@ public class ResourceManager : System.Resources.ResourceManager
         }
         return null;
     }
-    private string? ReadResourceText(string name)
+
+    private string? ReadResourceText(string name, CultureInfo? culture)
     {
-        if (_assembly == null)
+        var assemblies = GetAssemblies(culture?.Name);
+        if (assemblies == null || assemblies.All(a=>a.Assembly==null))
             throw new FileNotFoundException();
-        var stream = _assembly.GetManifestResourceStream(_baseName + ".resources");
-        if (stream != null)
+        foreach (var tuple in assemblies)
         {
-            var reader = new DeserializingResourceReader(stream);
-            var dict = reader.GetEnumerator();
-            using var disposable = dict as IDisposable;
-            while (dict.MoveNext())
+            var culturePart = string.IsNullOrEmpty(tuple.Culture) ? string.Empty : $".{tuple.Culture}";
+            var stream = tuple.Assembly.GetManifestResourceStream($"{_baseName}{culturePart}.resources");
+            if (stream != null)
             {
-                if (dict.Key?.ToString() == name)
+                var reader = new DeserializingResourceReader(stream);
+                var dict = reader.GetEnumerator();
+                using var disposable = dict as IDisposable;
+                while (dict.MoveNext())
                 {
-                    try
+                    if (dict.Key?.ToString() == name)
                     {
-                        return dict.Value.ToString();
-                    }
-                    catch
-                    {
-                        return null;
+                        try
+                        {
+                            return dict.Value.ToString();
+                        }
+                        catch
+                        {
+                            return null;
+                        }
                     }
                 }
+
+                break;
             }
         }
-
         return null;
     }
+
     public override object? GetObject(string name, CultureInfo culture)
     {
         var result = GetObject(name);
@@ -171,12 +227,13 @@ public class ResourceManager : System.Resources.ResourceManager
         return null;
 
     }
+
     public override object? GetObject(string name)
     {
         if (getResourceInfo != null)
         {
             getResourceInfo.ResourceName = name;
-            var obj = ReadResourceData(name);
+            var obj = ReadResourceData(name, Thread.CurrentThread.CurrentUICulture);
             if (obj == null)
             {
                 if (name.EndsWith(".ImageStream"))
@@ -250,7 +307,7 @@ public class ResourceManager : System.Resources.ResourceManager
     }
     public override string? GetString(string name, CultureInfo? culture)
     {
-        return ReadResourceText(name);
+        return ReadResourceText(name, culture);
     }
     public class ResourceInfo
     {

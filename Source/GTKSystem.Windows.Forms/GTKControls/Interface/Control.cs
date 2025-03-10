@@ -50,8 +50,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public Control()
     {
-        BeforeInit?.Invoke(this, EventArgs.Empty);
         Init();
+    }
+
+    protected virtual void OnBeforeInit(EventArgs eventArgs)
+    {
+        BeforeInit?.Invoke(this, eventArgs);
     }
 
     private ControlStyles controlStyle;
@@ -63,6 +67,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     private void Init()
     {
+        OnBeforeInit(EventArgs.Empty);
         Disposed += Control_Disposed;
         Controls = new ControlCollection(this);
         DataBindings = new ControlBindingsCollection(this);
@@ -122,7 +127,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         if (!IsDisposed)
         {
-            Disposed?.Invoke(this, e);
+            OnDisposed(e);
         }
     }
 
@@ -136,19 +141,31 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             sizeWidth = args.Allocation.Width;
             sizeHeight = args.Allocation.Height;
-            SizeChanged?.Invoke(this, EventArgs.Empty);
+            OnSizeChanged(EventArgs.Empty);
         }
         if (args.Allocation.X != locationX || args.Allocation.Y != locationY)
         {
             locationX = args.Allocation.X;
             locationY = args.Allocation.Y;
-            LocationChanged?.Invoke(this, EventArgs.Empty);
+            OnLocationChanged(EventArgs.Empty);
         }
     }
+
+    protected virtual void OnLocationChanged(EventArgs eventArgs)
+    {
+        LocationChanged?.Invoke(this, eventArgs);
+    }
+
     private void Widget_ConfigureEvent(object? o, ConfigureEventArgs args)
+    {
+        OnMove(args);
+    }
+
+    protected virtual void OnMove(ConfigureEventArgs args)
     {
         Move?.Invoke(this, args);
     }
+
     #region events
     private bool widgetRealized;
     private void Widget_Realized(object? sender, EventArgs e)
@@ -206,21 +223,52 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         var owidget = o as Widget;
         if (owidget != null)
         {
-            owidget.Window.GetOrigin(out var x, out var y); //避免事件穿透错误
-            MouseDown?.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            owidget.Window.GetOrigin(out var x, out var y); // Avoiding event penetration errors
+            OnMouseDown(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
             {
-                MouseDoubleClick?.Invoke(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                DoubleClick?.Invoke(this, EventArgs.Empty);
+                OnMouseDoubleClick(new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                OnDoubleClick(EventArgs.Empty);
             }
             else
             {
-                Click?.Invoke(this, EventArgs.Empty);
-                MouseClick?.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                OnClick(EventArgs.Empty);
+                OnMouseClick(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
         }
 
     }
+
+    protected virtual void OnMouseClick(MouseEventArgs mouseEventArgs)
+    {
+        MouseClick?.Invoke(this, mouseEventArgs);
+    }
+
+    protected virtual void OnDoubleClick(EventArgs eventArgs)
+    {
+        DoubleClick?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnMouseDoubleClick(MouseEventArgs mouseEventArgs)
+    {
+        MouseDoubleClick?.Invoke(this, mouseEventArgs);
+    }
+
+    protected virtual void OnMouseDown(MouseEventArgs eventArgs)
+    {
+        MouseDown?.Invoke(this, eventArgs);
+    }
+
+    public virtual void  PerformClick()
+    {
+        OnClick(EventArgs.Empty);
+    }
+
+    protected virtual void OnClick(EventArgs eventArgs)
+    {
+        Click?.Invoke(this, eventArgs);
+    }
+
     private void Widget_ButtonReleaseEvent(object? o, ButtonReleaseEventArgs args)
     {
         if (MouseUp != null)
@@ -234,7 +282,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 result = MouseButtons.Right;
             var owidget = (Widget)o!;
             owidget.Window.GetOrigin(out var x, out var y);
-            MouseUp?.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            OnMouseUp(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
         }
 
         if (ContextMenuStrip != null)
@@ -245,6 +293,11 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 ((Menu?)ContextMenuStrip.Widget)?.PopupAtPointer(args.Event);
             }
         }
+    }
+
+    protected virtual void OnMouseUp(MouseEventArgs mouseEventArgs)
+    {
+        MouseUp?.Invoke(this, mouseEventArgs);
     }
 
     private void Widget_EnterNotifyEvent(object? o, EnterNotifyEventArgs args)
@@ -268,15 +321,38 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             }
         }
 
-        Enter?.Invoke(this, args);
-        MouseEnter?.Invoke(this, args);
+        OnEnter(args);
+        OnMouseEnter(args);
 
+        OnMouseHover(args);
+    }
+
+    protected virtual void OnMouseHover(EnterNotifyEventArgs args)
+    {
         MouseHover?.Invoke(this, args);
     }
+
+    protected virtual void OnMouseEnter(EnterNotifyEventArgs args)
+    {
+        MouseEnter?.Invoke(this, args);
+    }
+
+    protected virtual void OnEnter(EnterNotifyEventArgs args)
+    {
+        Enter?.Invoke(this, args);
+    }
+
     private void Widget_MotionNotifyEvent(object? o, MotionNotifyEventArgs args)
     {
-        MouseMove?.Invoke(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+        var eventArgs = new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0);
+        OnMouseMove(eventArgs);
     }
+
+    protected virtual void OnMouseMove(MouseEventArgs eventArgs)
+    {
+        MouseMove?.Invoke(this, eventArgs);
+    }
+
     private void Widget_LeaveNotifyEvent(object? o, LeaveNotifyEventArgs args)
     {
         if (Cursor != null)
@@ -284,27 +360,65 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             Widget.Window.Cursor = null;
         }
 
-        Leave?.Invoke(this, args);
-        MouseLeave?.Invoke(this, args);
-
-
+        OnLeave(args);
+        OnMouseLeave(args);
     }
+
+    protected virtual void OnMouseLeave(LeaveNotifyEventArgs args)
+    {
+        MouseLeave?.Invoke(this, args);
+    }
+
+    protected virtual void OnLeave(LeaveNotifyEventArgs args)
+    {
+        Leave?.Invoke(this, args);
+    }
+
     private void Widget_ScrollEvent(object? o, Gtk.ScrollEventArgs args)
     {
-        MouseWheel?.Invoke(this, new MouseEventArgs(MouseButtons.None, 0, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY));
+        var eventArgs = new MouseEventArgs(MouseButtons.None, 0, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY);
+        OnMouseWheel(eventArgs);
     }
+
+    protected virtual void OnMouseWheel(MouseEventArgs eventArgs)
+    {
+        MouseWheel?.Invoke(this, eventArgs);
+    }
+
     private void Widget_FocusInEvent(object? o, FocusInEventArgs args)
+    {
+        OnGotFocus(args);
+    }
+
+    protected virtual void OnGotFocus(FocusInEventArgs args)
     {
         GotFocus?.Invoke(this, args);
     }
+
     private void Widget_FocusOutEvent(object? o, FocusOutEventArgs args)
     {
-        LostFocus?.Invoke(this, args);
+        OnLostFocus(args);
 
-        Validating?.Invoke(this, cancelEventArgs);
+        OnValidating(cancelEventArgs);
         if (Validated != null && cancelEventArgs.Cancel == false)
-            Validated?.Invoke(this, cancelEventArgs);
+            OnValidated();
     }
+
+    protected virtual void OnValidated()
+    {
+        Validated?.Invoke(this, cancelEventArgs);
+    }
+
+    protected virtual void OnValidating(CancelEventArgs eventArgs)
+    {
+        Validating?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnLostFocus(FocusOutEventArgs args)
+    {
+        LostFocus?.Invoke(this, args);
+    }
+
     private void Widget_KeyPressEvent(object? o, Gtk.KeyPressEventArgs args)
     {
         if (KeyDown != null)
@@ -321,22 +435,34 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
                     keys |= Keys.CapsLock;
 
-                KeyDown?.Invoke(this, new KeyEventArgs(keys));
+                OnKeyDown(keys);
             }
         }
     }
+
+    protected virtual void OnKeyDown(Keys keys)
+    {
+        KeyDown?.Invoke(this, new KeyEventArgs(keys));
+    }
+
     private void Widget_KeyReleaseEvent(object? o, KeyReleaseEventArgs args)
     {
         if (KeyUp != null)
         {
             var keys = (Keys)args.Event.HardwareKeycode;
-            KeyUp?.Invoke(this, new KeyEventArgs(keys));
+            OnKeyUp(new KeyEventArgs(keys));
         }
         if (KeyPress != null)
         {
             var keys = (Keys)args.Event.HardwareKeycode;
-            KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keys)));
+            var eventArgs = new KeyPressEventArgs(Convert.ToChar(keys));
+            OnKeyPress(eventArgs);
         }
+    }
+
+    protected virtual void OnKeyPress(KeyPressEventArgs eventArgs)
+    {
+        KeyPress?.Invoke(this, eventArgs);
     }
 
     #endregion
@@ -574,10 +700,15 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 Self.Override.BackgroundImageLayout = value;
                 if (layout != value)
                 {
-                    BackgroundImageLayoutChanged?.Invoke(this, EventArgs.Empty);
+                    OnBackgroundImageLayoutChanged();
                 }
             }
         }
+    }
+
+    protected virtual void OnBackgroundImageLayoutChanged()
+    {
+        BackgroundImageLayoutChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public virtual Image? BackgroundImage
@@ -592,11 +723,17 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 Refresh();
                 if (overrideBackgroundImage != value)
                 {
-                    BackgroundImageChanged?.Invoke(this, EventArgs.Empty);
+                    OnBackgroundImageChanged(EventArgs.Empty);
                 }
             }
         }
     }
+
+    protected virtual void OnBackgroundImageChanged(EventArgs eventArgs)
+    {
+        BackgroundImageChanged?.Invoke(this, eventArgs);
+    }
+
     public virtual Color BackColor
     {
         get
@@ -615,13 +752,19 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             Self.Override.BackColor = value;
             if (overrideBackColor != value)
             {
-                BackColorChanged?.Invoke(this, EventArgs.Empty);
+                OnBackColorChanged(EventArgs.Empty);
             }
             Self.Override.OnAddClass();
             UpdateStyle();
             Refresh();
         }
     }
+
+    private void OnBackColorChanged(EventArgs eventArgs)
+    {
+        BackColorChanged?.Invoke(this, eventArgs);
+    }
+
     public virtual event PaintEventHandler? Paint
     {
         add => Self.Override.Paint += value;
@@ -653,9 +796,15 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             _anchor = value;
             if (Widget is Widget widget) SetAnchorStyles(widget, _anchor);
 
-            AnchorChanged?.Invoke(this, EventArgs.Empty);
+            OnAnchorChanged(EventArgs.Empty);
         }
     }
+
+    protected virtual void OnAnchorChanged(EventArgs eventArgs)
+    {
+        AnchorChanged?.Invoke(this, eventArgs);
+    }
+
     private void SetAnchorStyles(Widget widget, AnchorStyles anchorStyles)
     {
         if (anchorStyles.HasFlag(AnchorStyles.Left) && anchorStyles.HasFlag(AnchorStyles.Right))
@@ -703,9 +852,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             _autoSize = value;
             if (autoSize != value)
             {
-                AutoSizeChanged?.Invoke(this, EventArgs.Empty);
+                OnAutoSizeChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnAutoSizeChanged(EventArgs eventArgs)
+    {
+        AutoSizeChanged?.Invoke(this, eventArgs);
     }
 
     internal bool bindingContextSet;
@@ -735,12 +889,27 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             SetBounds(value.X, value.Y, value.Width, value.Height);
             if (r != value)
             {
-                Layout?.Invoke(this, new LayoutEventArgs(this, nameof(Bounds)));
-                Resize?.Invoke(this, EventArgs.Empty);
-                SizeChanged?.Invoke(this, EventArgs.Empty);
-                ClientSizeChanged?.Invoke(this, EventArgs.Empty);
+                OnLayout(new LayoutEventArgs(this, nameof(Bounds)));
+                OnResize(EventArgs.Empty);
+                OnSizeChanged(EventArgs.Empty);
+                OnClientSizeChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnClientSizeChanged(EventArgs eventArgs)
+    {
+        ClientSizeChanged?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnResize(EventArgs eventArgs)
+    {
+        Resize?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnLayout(LayoutEventArgs layoutEventArgs)
+    {
+        Layout?.Invoke(this, layoutEventArgs);
     }
 
     public virtual bool CanFocus => Widget.CanFocus;
@@ -767,9 +936,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             causesValidation = value;
             if (validation != value)
             {
-                CausesValidationChanged?.Invoke(this, EventArgs.Empty);
+                OnCausesValidationChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnCausesValidationChanged(EventArgs eventArgs)
+    {
+        CausesValidationChanged?.Invoke(this, eventArgs);
     }
 
     public virtual string? CompanyName { get; set; }
@@ -785,9 +959,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             _contextMenuStrip = value;
             if (menuStrip != value)
             {
-                ContextMenuStripChanged?.Invoke(this, EventArgs.Empty);
+                OnContextMenuStripChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnContextMenuStripChanged(EventArgs eventArgs)
+    {
+        ContextMenuStripChanged?.Invoke(this, eventArgs);
     }
 
     public virtual ControlCollection? Controls { get; set; }
@@ -804,9 +983,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             cursor = value;
             if (c != value)
             {
-                CursorChanged?.Invoke(this, EventArgs.Empty);
+                OnCursorChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnCursorChanged(EventArgs eventArgs)
+    {
+        CursorChanged?.Invoke(this, eventArgs);
     }
 
     public virtual ControlBindingsCollection? DataBindings { get; set; }
@@ -815,7 +999,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual Rectangle DisplayRectangle { get; set; }
 
-    public virtual bool Disposing { get; set; }
+    public virtual bool IsDisposing { get; set; }
     private DockStyle _dock;
     public virtual DockStyle Dock
     {
@@ -856,8 +1040,13 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 widget.Valign = Align.Start;
             }
             if (dockStyle != value)
-                DockChanged?.Invoke(this, EventArgs.Empty);
+                OnDockChanged(EventArgs.Empty);
         }
+    }
+
+    protected virtual void OnDockChanged(EventArgs eventArgs)
+    {
+        DockChanged?.Invoke(this, eventArgs);
     }
 
     public virtual bool Enabled
@@ -874,9 +1063,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
             if (sensitive != value)
             {
-                EnabledChanged?.Invoke(this, EventArgs.Empty);
+                OnEnabledChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnEnabledChanged(EventArgs eventArgs)
+    {
+        EnabledChanged?.Invoke(this, eventArgs);
     }
 
     public virtual bool Focused => Widget.IsFocus;
@@ -900,11 +1094,18 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             font = value; UpdateStyle();
             if (!Equals(fontValue, value))
             {
-                FontChanged?.Invoke(this, EventArgs.Empty);
-                Layout?.Invoke(this, new LayoutEventArgs(this, nameof(Font)));
+                OnFontChanged(EventArgs.Empty);
+                var layoutEventArgs = new LayoutEventArgs(this, nameof(Font));
+                OnLayout(layoutEventArgs);
             }
         }
     }
+
+    protected virtual void OnFontChanged(EventArgs eventArgs)
+    {
+        FontChanged?.Invoke(this, eventArgs);
+    }
+
     private Color foreColor;
     public virtual Color ForeColor
     {
@@ -915,9 +1116,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             foreColor = value; UpdateStyle();
             if (foreColorValue != value)
             {
-                ForeColorChanged?.Invoke(this, EventArgs.Empty);
+                OnForeColorChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnForeColorChanged(EventArgs eventArgs)
+    {
+        ForeColorChanged?.Invoke(this, eventArgs);
     }
 
     public virtual bool HasChildren { get; set; }
@@ -931,9 +1137,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             imeMode = value;
             if (mode != value)
             {
-                ImeModeChanged?.Invoke(this, EventArgs.Empty);
+                OnImeModeChanged(EventArgs.Empty);
             }
         }
+    }
+
+    private void OnImeModeChanged(EventArgs eventArgs)
+    {
+        ImeModeChanged?.Invoke(this, eventArgs);
     }
 
     public virtual bool InvokeRequired { get; set; }
@@ -966,13 +1177,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             }
             if (marginTop != value)
             {
-                LocationChanged?.Invoke(this, EventArgs.Empty);
+                OnLocationChanged(EventArgs.Empty);
             }
 
-            DockChanged?.Invoke(this, EventArgs.Empty);
-            AnchorChanged?.Invoke(this, EventArgs.Empty);
+            OnDockChanged(EventArgs.Empty);
+            OnAnchorChanged(EventArgs.Empty);
         }
     }
+
     public virtual int Left
     {
         get => Widget.MarginStart;
@@ -987,14 +1199,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
             if (marginStart != value)
             {
-                Move?.Invoke(this, EventArgs.Empty);
-                LocationChanged?.Invoke(this, EventArgs.Empty);
+                OnMove(EventArgs.Empty);
+                OnLocationChanged(EventArgs.Empty);
             }
 
-            DockChanged?.Invoke(this, EventArgs.Empty);
-            AnchorChanged?.Invoke(this, EventArgs.Empty);
+            OnDockChanged(EventArgs.Empty);
+            OnAnchorChanged(EventArgs.Empty);
         }
     }
+
+    protected virtual void OnMove(EventArgs eventArgs)
+    {
+        Move?.Invoke(this, eventArgs);
+    }
+
     public virtual int Right => Widget.MarginEnd;
 
     public virtual int Bottom => Widget.MarginBottom;
@@ -1073,9 +1291,9 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             Widget.HeightRequest = Math.Max(-1, value);
             if (DockChanged != null)
-                DockChanged?.Invoke(this, EventArgs.Empty);
+                OnDockChanged( EventArgs.Empty);
             if (AnchorChanged != null)
-                AnchorChanged?.Invoke(this, EventArgs.Empty);
+                OnAnchorChanged(EventArgs.Empty);
         }
     }
     public virtual int Width
@@ -1109,7 +1327,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
             if (visible != value)
             {
-                VisibleChanged?.Invoke(this, EventArgs.Empty);
+                OnVisibleChanged(EventArgs.Empty);
             }
         }
     }
@@ -1699,11 +1917,11 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             Widget.SetSizeRequest(value.Width, value.Height);
             if (size != value)
             {
-                Layout?.Invoke(this, new LayoutEventArgs(this, nameof(ClientSize)));
-                Resize?.Invoke(this, EventArgs.Empty);
-                SizeChanged?.Invoke(this, EventArgs.Empty);
+                OnLayout(new LayoutEventArgs(this, nameof(ClientSize)));
+                OnResize(EventArgs.Empty);
+                OnSizeChanged(EventArgs.Empty);
             }
-            ClientSizeChanged?.Invoke(this, EventArgs.Empty);
+            OnClientSizeChanged(EventArgs.Empty);
         }
     }
 
@@ -1736,9 +1954,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             margin = value;
             if (padding != value)
             {
-                MarginChanged?.Invoke(this, EventArgs.Empty);
+                OnMarginChanged(EventArgs.Empty);
             }
         }
+    }
+
+    protected virtual void OnMarginChanged(EventArgs eventArgs)
+    {
+        MarginChanged?.Invoke(this, eventArgs);
     }
 
     public virtual Size MaximumSize { get; set; }
@@ -1826,13 +2049,30 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
 
     public new virtual event EventHandler? Disposed;
+    public virtual event CancelEventHandler? Disposing;
 
     public new virtual void Dispose()
     {
+        var eventArgs = new CancelEventArgs();
+        OnDisposing(eventArgs);
+        if (eventArgs.Cancel)
+        {
+            return;
+        }
         Dispose(true);
         base.Dispose();
         _handleCreated = false;
-        Disposed?.Invoke(this, EventArgs.Empty);
+        OnDisposed(EventArgs.Empty);
+    }
+
+    protected virtual void OnDisposing(CancelEventArgs eventArgs)
+    {
+        Disposing?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnDisposed(EventArgs eventArgs)
+    {
+        Disposed?.Invoke(this, eventArgs);
     }
 
     protected override void Dispose(bool disposing)
@@ -1856,7 +2096,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
         catch (Exception ex) { Trace.WriteLine(ex); }
         base.Dispose(disposing);
-        HandleDestroyed?.Invoke(this, EventArgs.Empty);
+        OnHandleDestroyed(EventArgs.Empty);
+    }
+
+    protected virtual void OnHandleDestroyed(EventArgs eventArgs)
+    {
+        HandleDestroyed?.Invoke(this, eventArgs);
     }
 
     protected virtual CreateParams CreateParams

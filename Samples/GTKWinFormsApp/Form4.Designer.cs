@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace GTKWinFormsApp
 {
-    partial class Form4
+    partial class CommonDialogsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -37,7 +37,7 @@ namespace GTKWinFormsApp
             TreeNode treeNode3 = new TreeNode("节点4");
             TreeNode treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
             TreeNode treeNode5 = new TreeNode("节点1");
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommonDialogsForm));
             splitContainer1 = new SplitContainer();
             button2 = new Button();
             button1 = new Button();
@@ -303,7 +303,7 @@ namespace GTKWinFormsApp
             ClientSize = new System.Drawing.Size(992, 492);
             Controls.Add(splitContainer1);
             Controls.Add(label1);
-            Name = "Form4";
+            Name = "CommonDialogsForm";
             Text = "Form4";
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);

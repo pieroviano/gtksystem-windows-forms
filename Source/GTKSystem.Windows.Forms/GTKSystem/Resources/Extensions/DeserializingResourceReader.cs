@@ -1014,6 +1014,10 @@ public sealed class DeserializingResourceReader : System.Resources.IResourceRead
                     {
                         obj = new Bitmap(value);
                     }
+                    else if (type == typeof(Icon))
+                    {
+                        obj = new Icon(value);
+                    }
                     else
                     {
                         obj = converter2.ConvertFrom(value);

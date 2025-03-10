@@ -86,7 +86,7 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
     {
         if (args.ResponseId == ResponseType.DeleteEvent)
         {
-            if (CloseWindowEvent?.Invoke(this, EventArgs.Empty)??false)
+            if (OnCloseWindowEvent(EventArgs.Empty)??false)
             {
                 OnClose();
                 Group.CurrentGrab?.Destroy();
@@ -96,13 +96,24 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
                 Run();
         }
     }
+
+    private bool? OnCloseWindowEvent(EventArgs eventArgs)
+    {
+        return CloseWindowEvent?.Invoke(this, eventArgs);
+    }
+
     private void Vadjustment_ValueChanged(object? sender, EventArgs e)
     {
         if (Scroll != null)
         {
             var adj = (Adjustment?)sender;
-            Scroll?.Invoke(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value ?? 0), (int)(adj?.Value ?? 0), ScrollOrientation.VerticalScroll));
+            OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value ?? 0), (int)(adj?.Value ?? 0), ScrollOrientation.VerticalScroll));
         }
+    }
+
+    public void OnScroll(ScrollEventArgs eventArgs)
+    {
+        Scroll?.Invoke(this, eventArgs);
     }
 
     private void Hadjustment_ValueChanged(object? sender, EventArgs e)
@@ -110,7 +121,7 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
         if (Scroll != null)
         {
             var adj = (Adjustment?)sender;
-            Scroll?.Invoke(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.HorizontalScroll));
+            OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.HorizontalScroll));
         }
     }
     public void CloseWindow()

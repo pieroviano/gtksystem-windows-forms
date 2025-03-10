@@ -71,9 +71,9 @@
     <FormLoggingVersion>1.4.0</FormLoggingVersion>
     <FreeImageDotnetCoreVersion>4.5.0</FreeImageDotnetCoreVersion>
     <GtkSharpVersion>3.24.24</GtkSharpVersion>
-    <GtkWindowsFormsExtensionVersion>1.4.0</GtkWindowsFormsExtensionVersion>
-    <GtkWindowsFormsVersion>1.4.0</GtkWindowsFormsVersion>
-    <GTKWinFormsAppVersion>1.4.0</GTKWinFormsAppVersion>
+    <GtkWindowsFormsExtensionVersion>1.4.2463</GtkWindowsFormsExtensionVersion>
+    <GtkWindowsFormsVersion>1.4.2463</GtkWindowsFormsVersion>
+    <GTKWinFormsAppVersion>1.4.2463</GTKWinFormsAppVersion>
     <HardcodetNotifyIconWpfVersion>1.1.0</HardcodetNotifyIconWpfVersion>
     <HostAppInPanelVersion>1.2.0</HostAppInPanelVersion>
     <HostProcessLibrary>1.0.0</HostProcessLibrary>
