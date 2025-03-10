@@ -459,5 +459,7 @@ Point yes, load data point yes, load data point yes</value>
   <data name="TestDataForm_button1_5" xml:space="preserve">
   <value>Asynchronous Network Image Loading</value>
 </data>
-
+  <data name="GtkMainForm_panel3_Paint_testText" xml:space="preserve">
+	  <value>testText</value>
+  </data>
 </root>

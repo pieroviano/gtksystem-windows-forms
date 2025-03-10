@@ -149,7 +149,6 @@ namespace GTKWinFormsApp
             ssssToolStripMenuItem1.Name = "ssssToolStripMenuItem1";
             ssssToolStripMenuItem1.Size = new System.Drawing.Size(62, 24);
             ssssToolStripMenuItem1.Text = "Menu2";
-            ssssToolStripMenuItem1.Click += ssssToolStripMenuItem1_Click;
             // 
             // toolStrip2
             // 
@@ -251,7 +250,6 @@ namespace GTKWinFormsApp
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // contextMenuStrip1
             // 
@@ -372,7 +370,6 @@ namespace GTKWinFormsApp
             trackBar1.TickFrequency = 2;
             trackBar1.TickStyle = TickStyle.Both;
             trackBar1.Value = 10;
-            trackBar1.Scroll += trackBar1_Scroll;
             // 
             // panel1
             // 
@@ -396,7 +393,6 @@ namespace GTKWinFormsApp
             button4.TabIndex = 2;
             button4.Text = "列表视图";
             button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
             // 
             // button2
             // 
@@ -406,7 +402,6 @@ namespace GTKWinFormsApp
             button2.TabIndex = 0;
             button2.Text = "分割容器布局";
             button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -416,7 +411,6 @@ namespace GTKWinFormsApp
             button3.TabIndex = 1;
             button3.Text = "打印";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // panel3
             // 
@@ -425,7 +419,6 @@ namespace GTKWinFormsApp
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(250, 135);
             panel3.TabIndex = 9;
-            panel3.Paint += panel3_Paint;
             // 
             // panel5
             // 
@@ -435,7 +428,6 @@ namespace GTKWinFormsApp
             panel5.Name = "panel5";
             panel5.Size = new System.Drawing.Size(250, 95);
             panel5.TabIndex = 10;
-            panel5.Scroll += panel5_Scroll;
             // 
             // label2
             // 
@@ -479,7 +471,6 @@ namespace GTKWinFormsApp
             Name = "GtkMainForm";
             ShowInTaskbar = false;
             Text = "默认风格界面";
-            Load += Form3_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             toolStrip2.ResumeLayout(false);

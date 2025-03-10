@@ -376,6 +376,15 @@ namespace GTKWinFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to testText.
+        /// </summary>
+        public static string GtkMainForm_panel3_Paint_testText {
+            get {
+                return ResourceManager.GetString("GtkMainForm_panel3_Paint_testText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add group and data simultaneously.
         /// </summary>
         public static string ListViewForm_button1_Click_1_Add_group_and_data_simultaneously {

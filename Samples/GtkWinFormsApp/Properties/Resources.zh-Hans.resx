@@ -443,20 +443,23 @@
     <value>这是Paint Graphics示例效果</value>
   </data>
   <data name="TestDataForm_button1_1" xml:space="preserve">
-	  <value>1、加载数据点yes 
+    <value>1、加载数据点yes 
 2、不加载数据点no</value>
   </data>
   <data name="TestDataForm_button1_2" xml:space="preserve">
-	  <value>加载数据提示</value>
+    <value>加载数据提示</value>
   </data>
   <data name="TestDataForm_button1_3" xml:space="preserve">
-	  <value>加载数据点yes加载数据
+    <value>加载数据点yes加载数据
 点yes加载数据点yes加载数据点yes</value>
   </data>
   <data name="TestDataForm_button1_4" xml:space="preserve">
-	  <value>编辑</value>
+    <value>编辑</value>
   </data>
   <data name="TestDataForm_button1_5" xml:space="preserve">
-	  <value>网络图片异步加载</value>
+    <value>网络图片异步加载</value>
+  </data>
+  <data name="GtkMainForm_panel3_Paint_testText" xml:space="preserve">
+    <value>test文本</value>
   </data>
 </root>

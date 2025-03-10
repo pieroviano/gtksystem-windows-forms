@@ -12,8 +12,6 @@ public partial class GtkMainForm : Form
     public GtkMainForm()
     {
         InitializeComponent();
-        // Currently, custom controls cannot be visualized in the form designer.
-        // It is recommended to add them programmatically, as shown in the following example:
 
         toolStripMenuItem1.Text = Resources.GtkMainForm_GtkMainForm_Menu_1;
         ddddToolStripMenuItem.Text = Resources.GtkMainForm_GtkMainForm_a_Menu;
@@ -35,10 +33,26 @@ public partial class GtkMainForm : Form
         label2.Text = Resources.GtkMainForm_GtkMainForm_This_is_a_UserControl_placeholder;
         Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
 
+        // Currently, custom controls cannot be visualized in the form designer.
+        // It is recommended to add them programmatically, as shown in the following example:
         var userControl11 = new UserControl11();
         panel5.Controls!.Add(userControl11);
-        SizeChanged += Form3_SizeChanged;
 
+        AddHandlers();
+    }
+
+    private void AddHandlers()
+    {
+        ssssToolStripMenuItem1.Click += ssssToolStripMenuItem1_Click;
+        button1.Click += button1_Click;
+        trackBar1.Scroll += trackBar1_Scroll;
+        button4.Click += button4_Click;
+        button2.Click += button2_Click;
+        button3.Click += button3_Click;
+        panel3.Paint += panel3_Paint;
+        panel5.Scroll += panel5_Scroll;
+        Load += Form3_Load;
+        SizeChanged += Form3_SizeChanged;
         Shown += Form3_Shown;
     }
 
@@ -74,7 +88,7 @@ public partial class GtkMainForm : Form
         this.Refresh();
     }
 
-    private void button1_Click(object sender, EventArgs e)
+    private void button1_Click(object? sender, EventArgs e)
     {
         //button1.ForeColor=Color.Red;
         //button1.BackColor=Color.Green;
@@ -82,12 +96,12 @@ public partial class GtkMainForm : Form
         f.Show();
     }
 
-    private void trackBar1_Scroll(object sender, EventArgs e)
+    private void trackBar1_Scroll(object? sender, EventArgs e)
     {
         label1.Text = trackBar1.Value.ToString();
     }
 
-    private void Form3_Load(object sender, EventArgs e)
+    private void Form3_Load(object? sender, EventArgs e)
     {
         var result = this.BeginInvoke(new MethodInvoker(() =>
         {
@@ -103,7 +117,7 @@ public partial class GtkMainForm : Form
         }));
     }
 
-    private void panel3_Paint(object sender, PaintEventArgs e)
+    private void panel3_Paint(object? sender, PaintEventArgs e)
     {
         var g = e.Graphics;
 
@@ -130,7 +144,7 @@ public partial class GtkMainForm : Form
         if (Thread.CurrentThread.CurrentUICulture.Name.StartsWith("zh"))
             path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
         else
-            path.AddString("testText", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
+            path.AddString(Resources.GtkMainForm_panel3_Paint_testText, new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
 
         //path.CloseAllFigures();
 
@@ -147,30 +161,30 @@ public partial class GtkMainForm : Form
         //g.FillPath(brush, path);
     }
 
-    private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)
+    private void ssssToolStripMenuItem1_Click(object? sender, EventArgs e)
     {
         ListViewForm f1 = new ListViewForm();
         f1.Show(this);
     }
 
-    private void button2_Click(object sender, EventArgs e)
+    private void button2_Click(object? sender, EventArgs e)
     {
         CommonDialogsForm f = new CommonDialogsForm();
         DialogResult res = f.ShowDialog();
         Console.WriteLine(res);
     }
 
-    private void panel5_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
+    private void panel5_Scroll(object? sender, System.Windows.Forms.ScrollEventArgs e)
     {
         Console.WriteLine($"panel5_Scroll:{e.OldValue},{e.NewValue};{e.ScrollOrientation}");
     }
 
-    private void button3_Click(object sender, EventArgs e)
+    private void button3_Click(object? sender, EventArgs e)
     {
         //打印
     }
 
-    private void button4_Click(object sender, EventArgs e)
+    private void button4_Click(object? sender, EventArgs e)
     {
         ListViewForm f1 = new ListViewForm();
         f1.Show(this);
