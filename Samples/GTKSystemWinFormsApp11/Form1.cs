@@ -58,13 +58,7 @@ public partial class GtkForm : Form
 
     private async void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-        await LinkLabel1OnLinkClickedAsunc();
-    }
-
-    private async Task LinkLabel1OnLinkClickedAsunc()
-    {
         AutoClosingMessageBox.Instance.MessageBoxTimeout = 1000;
-        await Task.Delay(TimeSpan.FromSeconds(1));
-        _ = Task.Run(()=>AutoClosingMessageBox.Instance.Show(linkLabel1.Text));
+        AutoClosingMessageBox.Instance.Show(linkLabel1.Text);
     }
 }
