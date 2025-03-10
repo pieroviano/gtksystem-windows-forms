@@ -43,17 +43,24 @@ namespace GTKWinFormsApp
 
             this.FormClosing += Form2_FormClosing;
             this.FormClosed += Form2_FormClosed;
+            listView1.MouseDown += ListView1_MouseDown;
         }
-        int i = 4;
-        private void Timer1_Tick(object? sender, System.EventArgs e)
+
+        private void ListView1_MouseDown(object sender, MouseEventArgs e)
         {
-            // listBox1.Items.Clear();
-            //for (int i = 0; i < 10; i++)
-            //{
+            ListViewItem item = listView1.GetItemAt(e.X, e.Y);
+            if (item != null)
+            {
+                Console.WriteLine(item.Text);
+            }
+        }
+
+        int i = 4;
+        private void Timer1_Tick(object sender, System.EventArgs e)
+        {
             i++;
-                listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-                listBox1.TopIndex = i;
-           // }
+            listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
+            listBox1.TopIndex = i;
         }
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -101,7 +108,7 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-           // listView1.Clear();
+            //listView1.Clear();
             listView1.Groups.Add("listViewGroup11", "listViewGroup11");
             listView1.Groups.Add("listViewGroup21", "listViewGroup21");
             listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });

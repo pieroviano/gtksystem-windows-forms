@@ -8,6 +8,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
@@ -22,7 +23,6 @@ namespace System.Windows.Forms
         private Gtk.Overlay contanter = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
-
         public Form() : base()
         {
             Init();
@@ -171,30 +171,16 @@ namespace System.Windows.Forms
             {
                 this.Parent = parent;
                 self.SetPosition(WindowPosition.CenterOnParent);
+                self.DestroyWithParent = true;
                 self.Activate();
             }
 
             if (self.IsVisible == false)
             {
-                if (AutoScroll == true)
-                {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.Automatic;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.Automatic;
-                }
-                else
-                {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.Never;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.Never;
-                }
-
                 this.FormBorderStyle = this.FormBorderStyle;
                 if (this.MaximizeBox == false && this.MinimizeBox == false)
                 {
                     self.TypeHint = Gdk.WindowTypeHint.Dialog;
-                }
-                else if (this.MaximizeBox == false && this.MinimizeBox == true)
-                {
-                    self.Resizable = false;
                 }
                 self.Resize(self.DefaultWidth, self.DefaultHeight);
 

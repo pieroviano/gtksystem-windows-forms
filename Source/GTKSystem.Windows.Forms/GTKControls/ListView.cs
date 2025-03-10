@@ -70,7 +70,6 @@ namespace System.Windows.Forms
             self.box.PackStart(scrolledWindow, true, true, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
-
         private void Hadjustment_ValueChanged(object sender, EventArgs e)
         {
             headerView.Hadjustment.Value = scrolledWindow.Hadjustment.Value;
@@ -79,32 +78,28 @@ namespace System.Windows.Forms
         private bool ControlRealized = false;
         private void Control_Realized(object sender, EventArgs e)
         {
-            if (ControlRealized == false)
+            if (this.View == View.Details)
             {
-                ControlRealized = true;
-                if (this.View == View.Details)
-                {
-                    header.NoShowAll = false;
-                    header.Visible = true;
-                    header.ShowAll();
-                    headerView.HeightRequest=__headerheight;
-                }
-                foreach (ColumnHeader header in this.Columns)
-                {
-                    NativeHeaderAdd(header);
-                }
-                foreach (ListViewGroup g in Groups)
-                {
-                    NativeGroupAdd(g, -1);
-                }
-                foreach (ListViewItem item in Items)
-                {
-                    NativeAdd(item, -1);
-                }
-
-                MultiSelect = MultiSelect == true;
-                self.ShowAll();
+                header.NoShowAll = false;
+                header.Visible = true;
+                header.ShowAll();
+                headerView.HeightRequest = __headerheight;
             }
+            foreach (ColumnHeader header in this.Columns)
+            {
+                NativeHeaderAdd(header);
+            }
+            foreach (ListViewGroup g in Groups)
+            {
+                NativeGroupAdd(g, -1);
+            }
+            foreach (ListViewItem item in Items)
+            {
+                NativeAdd(item, -1);
+            }
+
+            MultiSelect = MultiSelect == true;
+            self.ShowAll();
         }
         public bool Sorted { get; set; }
         public System.Windows.Forms.SortOrder Sorting { get; set; }
@@ -155,7 +150,7 @@ namespace System.Windows.Forms
         public bool UseCompatibleStateImageBehavior { get; set; }
         public System.Windows.Forms.View View { get; set; }
         private int _fontSize;
-        protected int FontSize
+        internal int FontSize
         {
             get
             {
@@ -379,7 +374,7 @@ namespace System.Windows.Forms
         }
         internal void NativeCheckItem(ListViewItem item, bool ischecked)
         {
-            if (item._flowBoxChild != null && item._flowBoxChild.Parent is Gtk.FlowBox flowBox)
+            if (item._flowBoxChild != null && item._flowBoxChild.IsRealized && item._flowBoxChild.Parent is Gtk.FlowBox flowBox)
             {
                 Gtk.Box box = item._flowBoxChild.Child as Gtk.Box;
                 if (this.View == View.Details)
@@ -571,11 +566,6 @@ namespace System.Windows.Forms
                                     subattributes.Insert(fg);
                                     sublabel.Attributes = subattributes;
                                 }
-                                //if (subitem.BackColor.HasValue)
-                                //{
-                                //    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(subitem.BackColor.Value.R * 257), Convert.ToUInt16(subitem.BackColor.Value.G * 257), Convert.ToUInt16(subitem.BackColor.Value.B * 257));
-                                //    subattributes.Insert(fg);
-                                //}
                                 sublabel.Attributes = subattributes;
                                 sublabel.WidthRequest = col.Width + 2;
                                 sublabel.MaxWidthChars = 0;
@@ -653,10 +643,9 @@ namespace System.Windows.Forms
                         {
                             Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
                             attributes.Insert(fg);
-
                         }
-                        lab.Xpad = 5;
                         lab.Attributes = attributes;
+                        lab.Xpad = 5;
                         lab.MaxWidthChars = 100;
                         lab.Halign = Gtk.Align.Start;
                         lab.Valign = Gtk.Align.Center;
@@ -701,6 +690,7 @@ namespace System.Windows.Forms
                             attributes.Insert(fg);
 
                         }
+                        lab.Attributes = attributes;
                         lab.Xpad = 5;
                         lab.MaxWidthChars = 16;
                         lab.Halign = Gtk.Align.Center;
@@ -723,6 +713,7 @@ namespace System.Windows.Forms
                             attributes.Insert(fg);
 
                         }
+                        lab.Attributes = attributes;
                         lab.Halign = Gtk.Align.Start;
                         lab.Valign = Gtk.Align.Fill;
                         lab.Text = item.Text;
@@ -1446,23 +1437,19 @@ namespace System.Windows.Forms
             int idx = Items.FindIndex(startIndex, w => w.Text == text);
             return idx == -1 ? null : Items[idx];
         }
-        // public override event MouseEventHandler MouseDown;
         public ListViewItem GetItemAt(int x, int y)
         {
             foreach (Gtk.Box vbox in flowBoxContainer.Children)
             {
-                if (vbox.Allocation.Top < y && vbox.Allocation.Top + vbox.AllocatedHeight > y)
+                foreach (var flow in vbox.Children)
                 {
-                    foreach (var flow in vbox.Children)
+                    if (flow is Gtk.FlowBox _flow)
                     {
-                        if (flow is Gtk.FlowBox _flow)
+                        int top = _flow.Allocation.Top + __headerheight - (int)scrolledWindow.Vadjustment.Value;
+                        FlowBoxChild child = _flow.GetChildAtPos(x + (int)scrolledWindow.Hadjustment.Value, y - top);
+                        if (child != null)
                         {
-                            int top2 = _flow.Allocation.Top - __headerheight;
-                            FlowBoxChild child = _flow.GetChildAtPos(x, y - top2);
-                            if (child != null)
-                            {
-                                return this.Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
-                            }
+                            return this.Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
                         }
                     }
                 }
