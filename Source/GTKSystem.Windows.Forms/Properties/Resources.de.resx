@@ -184,9 +184,6 @@
   <data name="ColorDialog_RunDialog_Choose color" xml:space="preserve">
     <value>Farbe auswählen</value>
   </data>
-  <data name="FileDialog_RunDialog_Select file" xml:space="preserve">
-    <value>Datei auswählen</value>
-  </data>
   <data name="FontDialog_RunDialog_Select font" xml:space="preserve">
     <value>Schriftart auswählen</value>
   </data>
@@ -207,5 +204,14 @@
   </data>
   <data name="DateTimePicker_Value_yyyy年MM月dd日" xml:space="preserve">
     <value>MM Monat dd Tag yyyy Jahr</value>
+  </data>
+  <data name="FileDialog_RunDialog_Select_File" xml:space="preserve">
+    <value>Datei auswählen</value>
+  </data>
+  <data name="FileDialog_RunDialog_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="FileDialog_RunDialog_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
   </data>
 </root>

@@ -233,11 +233,29 @@ namespace System.Windows.Forms.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select file.
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        internal static string FileDialog_RunDialog_Select_file {
+        internal static string FileDialog_RunDialog_Cancel {
             get {
-                return ResourceManager.GetString("FileDialog_RunDialog_Select file", resourceCulture);
+                return ResourceManager.GetString("FileDialog_RunDialog_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string FileDialog_RunDialog_OK {
+            get {
+                return ResourceManager.GetString("FileDialog_RunDialog_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select File.
+        /// </summary>
+        internal static string FileDialog_RunDialog_Select_File {
+            get {
+                return ResourceManager.GetString("FileDialog_RunDialog_Select_File", resourceCulture);
             }
         }
         

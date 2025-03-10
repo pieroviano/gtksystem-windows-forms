@@ -108,17 +108,17 @@ public abstract class FileDialog : CommonDialog
         Gtk.FileChooserDialog? fileDialog = null;
         if (owner is Form ownerform)
         {
-            fileDialog = new Gtk.FileChooserDialog("选择文件", ownerform.self, ActionType);
+            fileDialog = new Gtk.FileChooserDialog(System.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
             fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
         }
         else
         {
-            fileDialog = new Gtk.FileChooserDialog("选择文件", null, ActionType);
+            fileDialog = new Gtk.FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_File, null, ActionType);
             fileDialog.WindowPosition = Gtk.WindowPosition.Center;
         }
         fileDialog.IconName = "document-open";
-        fileDialog.AddButton("确定", Gtk.ResponseType.Ok);
-        fileDialog.AddButton("取消", Gtk.ResponseType.Cancel);
+        fileDialog.AddButton(Properties.Resources.FileDialog_RunDialog_OK, Gtk.ResponseType.Ok);
+        fileDialog.AddButton(Properties.Resources.FileDialog_RunDialog_Cancel, Gtk.ResponseType.Cancel);
         fileDialog.SelectMultiple = Multiselect;
         fileDialog.Title = Title ?? string.Empty;
         fileDialog.TooltipText = Description ?? string.Empty;
