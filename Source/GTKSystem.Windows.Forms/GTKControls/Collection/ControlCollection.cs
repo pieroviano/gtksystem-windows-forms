@@ -151,7 +151,7 @@ public partial class Control
             }
             finally
             {
-                if (_ownerControl?.IsRealized??false)
+                if (_ownerControl?.IsRealized ?? false)
                 {
                     if (item is Control con)
                         con.Widget.ShowAll();
@@ -161,7 +161,7 @@ public partial class Control
             }
         }
 
-        private void Control_AnchorChanged(object? sender, EventArgs e)
+        private void Control_AnchorChanged(object sender, EventArgs e)
         {
             var control = sender as Control;
             if (control?.Widget.Parent is Overlay lay)
@@ -169,7 +169,7 @@ public partial class Control
                 SetMarginEnd(lay, control);
             }
         }
-        private void Control_DockChanged(object? sender, EventArgs e)
+        private void Control_DockChanged(object sender, EventArgs e)
         {
             var control = sender as Control;
             if (control?.Widget.Parent is Overlay lay)
@@ -179,17 +179,27 @@ public partial class Control
         }
         private void SetMarginEnd(Overlay lay, Control control)
         {
+            if (_owner is Form)
+            {
+                lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
+                lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
+            }
+            else
+            {
+                lay.WidthRequest = Math.Max(-1, Math.Max((_owner?.Width ?? 0) - 4, control.Location.X + control.Width));
+                lay.HeightRequest = Math.Max(-1, Math.Max((_owner?.Height ?? 0) - 4, control.Location.Y + control.Height));
+            }
             if (lay.IsMapped)
             {
-                var widget = control.Widget as Widget;
-                if (widget is { Halign: Align.End })
+                var widget = control.Widget;
+                if (widget.Halign == Align.End)
                 {
                     if (widget.WidthRequest > 0)
                         widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
                     else
                         widget.MarginEnd = 0;
                 }
-                else if (widget is { Halign: Align.Fill })
+                else if (widget.Halign == Align.Fill)
                 {
                     if (control.Dock == DockStyle.Fill)
                         widget.MarginEnd = 0;
@@ -198,14 +208,14 @@ public partial class Control
                     else
                         widget.MarginEnd = 0;
                 }
-                if (widget is { Valign: Align.End })
+                if (widget.Valign == Align.End)
                 {
                     if (widget.HeightRequest > 0)
                         widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
                     else
                         widget.MarginBottom = 0;
                 }
-                else if (widget is { Valign: Align.Fill })
+                else if (widget.Valign == Align.Fill)
                 {
                     if (control.Dock == DockStyle.Fill)
                         widget.MarginBottom = 0;
@@ -216,12 +226,25 @@ public partial class Control
                 }
             }
         }
-
+        private Widget GetFrame(Widget widget)
+        {
+            Widget parent = widget.Parent;
+            while (parent != null)
+            {
+                if (parent is IControlGtk)
+                {
+                    return parent;
+                }
+                else
+                    parent = parent.Parent;
+            }
+            return null;
+        }
         public virtual void Add(Widget value)
         {
             NativeAdd(value);
         }
-        public void AddWidget(Widget? item, Control control)
+        public void AddWidget(Widget item, Control control)
         {
             control.Parent = _owner;
             InnerList.Add(new ArrangedElementWidget(item));
@@ -295,7 +318,7 @@ public partial class Control
 
         public Control?[] Find(string key, bool searchAllChildren)
         {
-            if(string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
@@ -312,7 +335,7 @@ public partial class Control
                 }
                 return false;
             });
-            List<Control?> controls= [];
+            List<Control?> controls = [];
             if (!foundControls.Any())
             {
                 controls = foundControls.ConvertAll(o => o as Control).ToList();

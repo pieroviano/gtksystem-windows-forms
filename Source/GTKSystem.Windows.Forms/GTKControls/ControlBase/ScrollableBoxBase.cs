@@ -3,22 +3,22 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
-public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScrollableBoxBase
+public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollableBoxBase
 {
     public event ScrollEventHandler? Scroll;
     public IGtkControlOverride Override { get; set; }
     public ScrollableBoxBase()
     {
         Override = new GtkFormsControlOverride(this);
-        ShadowType = Gtk.ShadowType.None;
+        ShadowType = ShadowType.None;
         BorderWidth = 1;
         Events = Gdk.EventMask.AllEventsMask;
-        Halign = Gtk.Align.Start;
-        Valign = Gtk.Align.Start;
+        Halign = Align.Start;
+        Valign = Align.Start;
         Hexpand = false;
         Vexpand = false;
-        VscrollbarPolicy = Gtk.PolicyType.Never;
-        HscrollbarPolicy = Gtk.PolicyType.Never;
+        VscrollbarPolicy = PolicyType.Never;
+        HscrollbarPolicy = PolicyType.Never;
         OverlayScrolling = false;
         Hadjustment.ValueChanged += Hadjustment_ValueChanged;
         Vadjustment.ValueChanged += Vadjustment_ValueChanged;
@@ -28,7 +28,7 @@ public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScro
     {
         if (Scroll != null)
         {
-            var adj = (Gtk.Adjustment?)sender;
+            var adj = (Adjustment?)sender;
             OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.VerticalScroll));
         }
     }
@@ -42,7 +42,7 @@ public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScro
     {
         if (Scroll != null)
         {
-            var adj = (Gtk.Adjustment?)sender;
+            var adj = (Adjustment?)sender;
             OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.HorizontalScroll));
         }
     }
@@ -55,20 +55,20 @@ public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScro
     public bool HScroll { get; set; } = true;
     public virtual bool AutoScroll
     {
-        get => VscrollbarPolicy == Gtk.PolicyType.Automatic;
+        get => VscrollbarPolicy == PolicyType.Automatic;
         set
         {
             if (value)
             {
                 if (VScroll)
-                    VscrollbarPolicy = Gtk.PolicyType.Automatic;
+                    VscrollbarPolicy = PolicyType.Automatic;
                 if (HScroll)
-                    HscrollbarPolicy = Gtk.PolicyType.Automatic;
+                    HscrollbarPolicy = PolicyType.Automatic;
             }
             else
             {
-                VscrollbarPolicy = Gtk.PolicyType.Never;
-                HscrollbarPolicy = Gtk.PolicyType.Never;
+                VscrollbarPolicy = PolicyType.Never;
+                HscrollbarPolicy = PolicyType.Never;
             }
         }
     }

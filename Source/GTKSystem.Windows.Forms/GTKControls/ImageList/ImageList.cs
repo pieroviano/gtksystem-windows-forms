@@ -115,34 +115,37 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
         }
     }
 
-    internal Image? GetOriginalImage(string name)
-    {
-        var direc = Directory.GetCurrentDirectory();
-        var path1 = $"{direc}/Resources";
-        var value = ImageStream;
-        if (value?.ResourceInfo != null)
+        internal Image GetOriginalImage(string name)
         {
-            // Load image data here
-            var path2 = $"{path1}/{value.ResourceInfo.ResourceName}/{name}";
-            if (File.Exists(path2))
+           // string direc = Path.GetDirectoryName(Application.ExecutablePath);
+            string path1 = $"./Resources";
+            var value = ImageStream;
+            if (value.ResourceInfo is { BaseName: not null })
             {
-                return ScaleSimpleBitmap(Image.FromFile(path2));
+                //这里加载图像数据
+                string dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
+                string path2 = $"{dir}/{name}";
+                if (File.Exists(path2))
+                {
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
+                    return ScaleSimpleBitmap(Image.FromFile(path2));
+                }
             }
+            if (File.Exists($"{path1}/{name}"))
+            {
+                return ScaleSimpleBitmap(Image.FromFile($"{path1}/{name}"));
+            }
+            return null;
         }
-        if (File.Exists($"{path1}/{name}"))
+        private Bitmap ScaleSimpleBitmap(Image bitmp)
         {
-            return ScaleSimpleBitmap(Image.FromFile($"{path1}/{name}"));
+            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+            int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
+            int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
+            Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
+            return new Bitmap(w, h) { Pixbuf = newpixbuf };
         }
-        return null;
-    }
-    private Bitmap ScaleSimpleBitmap(Image? bitmp)
-    {
-        var pixbuf = new Gdk.Pixbuf(bitmp?.PixbufData);
-        var w = Math.Max(16, Math.Min(ImageSize.Width, 200));
-        var h = Math.Max(16, Math.Min(ImageSize.Height, 200));
-        var newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
-        return new Bitmap(w, h) { Pixbuf = newpixbuf };
-    }
 #if DEBUG
 
     internal bool IsDisposed { get; private set; }

@@ -2,15 +2,16 @@
 
 public sealed class ListBoxBase : ScrollableBoxBase
 {
-    public Gtk.ListBox listBox = new();
+    public Gtk.ListBox ListBox { get; } = new();
+
     public ListBoxBase()
     {
         Override.AddClass("ListBox");
-        listBox.BorderWidth = 1;
-        listBox.Margin = 0;
-        listBox.Hexpand = true;
-        listBox.Vexpand = true;
+        ListBox.BorderWidth = 1;
+        ListBox.Margin = 0;
+        ListBox.Hexpand = true;
+        ListBox.Vexpand = true;
         AutoScroll= true;
-        Add(listBox);
+        Add(ListBox);
     }
 }

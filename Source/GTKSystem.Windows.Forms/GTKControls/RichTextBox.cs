@@ -8,81 +8,96 @@
 using Gtk;
 using System.ComponentModel;
 
-namespace System.Windows.Forms;
-
-[DesignerCategory("Component")]
-public class RichTextBox : ScrollableControl
+namespace System.Windows.Forms
 {
-    public readonly RichTextBoxBase self = new();
-    public override object GtkControl => self;
-    protected override void SetStyle(Widget widget)
+    [DesignerCategory("Component")]
+    public partial class RichTextBox : ScrollableControl
     {
-        base.SetStyle(self.TextView);
-    }
-    public RichTextBox()
-    {
-        self.TextView.Buffer.Changed += Buffer_Changed;
-        BorderStyle = BorderStyle.Fixed3D;
-    }
+        public readonly RichTextBoxBase self = new RichTextBoxBase();
+        public override object GtkControl => self;
 
-    private void Buffer_Changed(object? sender, EventArgs e)
-    {
-        if (TextChanged != null && self.IsVisible)
+        protected override void SetStyle(Widget widget)
         {
-            OnTextChanged(e);
+            self.TextView.Name = Name;
+            base.SetStyle(self.TextView);
         }
-    }
 
-    protected virtual void OnTextChanged(EventArgs e)
-    {
-        TextChanged?.Invoke(this, e);
-    }
-
-    public int SelectionStart
-    {
-        get
+        public RichTextBox() : base()
         {
-            if (self.TextView.Buffer.HasSelection)
+            self.TextView.Buffer.Changed += Buffer_Changed;
+            BorderStyle = BorderStyle.Fixed3D;
+        }
+
+        private void Buffer_Changed(object sender, EventArgs e)
+        {
+            if (TextChanged != null && self.IsVisible)
             {
-                self.TextView.Buffer.GetSelectionBounds(out var start, out _);
-                return start.Offset;
+                TextChanged(this, e);
             }
-
-            return self.TextView.Buffer.CursorPosition;
         }
-    }
 
-    [Browsable(false)]
-    public virtual int SelectionLength
-    {
-        get { self.TextView.Buffer.GetSelectionBounds(out var start, out var end); return end.Offset - start.Offset; }
-        set
+        protected virtual void OnTextChanged(EventArgs e)
         {
-
-            var start = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition);
-            var end = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition + value);
-            self.TextView.Buffer.SelectRange(start, end);
+            TextChanged?.Invoke(this, e);
         }
-    }
-    public void InsertTextAtCursor(string text)
-    {
-        if (text == null) return;
-        self.TextView.Buffer.InsertAtCursor(text);
-    }
 
-    public override string Text { get => self.TextView.Buffer.Text; set => self.TextView.Buffer.Text = value; }
-    public virtual bool ReadOnly
-    {
-        get => self.TextView.CanFocus;
-        set => self.TextView.CanFocus = value;
-    }
+        public int SelectionStart
+        {
+            get
+            {
+                if (self.TextView.Buffer.HasSelection)
+                {
+                    self.TextView.Buffer.GetSelectionBounds(out var start, out _);
+                    return start.Offset;
+                }
 
-    public override event EventHandler? TextChanged;
-    public void AppendText(string text)
-    {
-        var enditer = self.TextView.Buffer.EndIter;
-        self.TextView.Buffer.Insert(ref enditer, text);
-    }
+                return self.TextView.Buffer.CursorPosition;
+            }
+        }
 
-    public string[] Lines => self.TextView.Buffer.Text.Split(["\r\n", "\n"], StringSplitOptions.None);
+        [Browsable(false)]
+        public virtual int SelectionLength
+        {
+            get
+            {
+                self.TextView.Buffer.GetSelectionBounds(out var start, out var end);
+                return end.Offset - start.Offset;
+            }
+            set
+            {
+
+                var start = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition);
+                var end = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition + value);
+                self.TextView.Buffer.SelectRange(start, end);
+            }
+        }
+
+        public void InsertTextAtCursor(string text)
+        {
+            if (text == null) return;
+            self.TextView.Buffer.InsertAtCursor(text);
+        }
+
+        public override string Text
+        {
+            get => self.TextView.Buffer.Text;
+            set => self.TextView.Buffer.Text = value;
+        }
+
+        public virtual bool ReadOnly
+        {
+            get => self.TextView.CanFocus;
+            set => self.TextView.CanFocus = value;
+        }
+
+        public override event EventHandler? TextChanged;
+
+        public void AppendText(string text)
+        {
+            var enditer = self.TextView.Buffer.EndIter;
+            self.TextView.Buffer.Insert(ref enditer, text);
+        }
+
+        public string[] Lines => self.TextView.Buffer.Text.Split(["\r\n", "\n"], StringSplitOptions.None);
+    }
 }

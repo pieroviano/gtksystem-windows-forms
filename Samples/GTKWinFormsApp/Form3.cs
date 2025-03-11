@@ -42,6 +42,7 @@ public partial class GtkMainForm : Form
 
     private void AddHandlers()
     {
+        ssssToolStripMenuItem1.Click -= ssssToolStripMenuItem1_Click;
         ssssToolStripMenuItem1.Click += ShowListViewFormToolStripMenuItem_Click;
         button1.Click += button1_Click;
         trackBar1.Scroll += trackBar1_Scroll;
@@ -55,31 +56,19 @@ public partial class GtkMainForm : Form
         Shown += GtkMainForm_Shown;
     }
 
-    private void GtkMainForm_Shown(object? sender, EventArgs e)
+    private void ssssToolStripMenuItem1_Click(object? sender, EventArgs e)
     {
-
-        Image m = new Bitmap(500, 300);
-        // Graphics g = Graphics.FromImage(m);
-        // g.Clear(Color.Red);
-        // g.DrawRectangle(new Pen(Color.Blue), new Rectangle(60, 60, 200, 100));
-        //// g.Dispose();
-        // panel1.Controls.Add(new Gtk.Image(m.Pixbuf));
-        //using (Graphics g = Graphics.FromImage(m))
-        //{
-        //   // m.Pixbuf = new Gdk.Pixbuf(Graphics.surface, 0, 0, 500, 300);
-        //    g.Clear(Color.White);
-        //    g.DrawString(DateTime.Now.ToString(), new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 200, 200);
-        //    g.DrawRectangle(new Pen((Color)Color.Red, 5), new Rectangle(0, 0, 200, 200));
-        //    // g.Dispose();
-
-
-        //   // panel1.Controls.Add(m);
-        //   // panel1.Show();
-        //    panel1.Refresh();
-        //}
+        ShowListViewFormToolStripMenuItem_Click(sender, e);
     }
 
-    private void GtkMainForm_SizeChanged(object? sender, EventArgs e)
+    private void GtkMainForm_Shown(object sender, EventArgs e)
+    {
+        // SwitchBox switchBox = new SwitchBox();
+        //switchBox.Location = new Point(100, 100);
+        //panel1.Controls.Add(switchBox);
+    }
+
+    private void GtkMainForm_SizeChanged(object sender, EventArgs e)
     {
         panel1.Refresh();
         //Console.WriteLine(Width);
@@ -100,18 +89,17 @@ public partial class GtkMainForm : Form
         label1.Text = trackBar1.Value.ToString();
     }
 
-    private void GtkMainForm_Load(object? sender, EventArgs e)
+    private void GtkMainForm_Load(object sender, EventArgs e)
     {
-        BeginInvoke(new MethodInvoker(() =>
+        var result = this.BeginInvoke(new MethodInvoker(() =>
         {
-            System.Threading.Thread.Sleep(3000);
-            for (var i = 0; i < 100; i++)
+            System.Threading.Thread.Sleep(1000);
+            for (int i = 1; i < 101; i++)
             {
-                var index = i;
-                progressBar1.Invoke(() =>
+                progressBar1.Invoke(new MethodInvoker(() =>
                 {
-                    progressBar1.Value = index;
-                });
+                    progressBar1.Value = i;
+                }));
                 System.Threading.Thread.Sleep(20);
             }
         }));

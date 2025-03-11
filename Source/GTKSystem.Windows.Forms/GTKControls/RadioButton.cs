@@ -7,50 +7,64 @@
 
 using System.ComponentModel;
 
-namespace System.Windows.Forms;
-
-[DesignerCategory("Component")]
-public class RadioButton : Control
+namespace System.Windows.Forms
 {
-    public readonly RadioButtonBase self = new();
-    public override object GtkControl => self;
-    public RadioButton()
+    [DesignerCategory("Component")]
+    public partial class RadioButton : Control
     {
-        self.Realized += Control_Realized;
-    }
+        public readonly RadioButtonBase self = new RadioButtonBase();
+        public override object GtkControl => self;
 
-    private void Self_Toggled(object? sender, EventArgs e)
-    {
-        if (CheckedChanged != null && self.IsVisible)
-            OnCheckedChanged(e);
-    }
-
-    protected virtual void OnCheckedChanged(EventArgs e)
-    {
-        CheckedChanged?.Invoke(this, e);
-    }
-
-    private void Control_Realized(object? sender, EventArgs e)
-    {
-        var con = self.Parent as Gtk.Container;
-        foreach (var widget in con!.AllChildren)
+        public RadioButton() : base()
         {
-            if (widget is Gtk.RadioButton)
+            self.ParentSet += Self_ParentSet;
+        }
+
+        private void Self_ParentSet(object o, Gtk.ParentSetArgs args)
+        {
+            Gtk.Container? con = self.Parent as Gtk.Container;
+            if (con != null)
             {
-                // Add the first radio group in the container
-                (sender as Gtk.RadioButton)?.JoinGroup((Gtk.RadioButton)widget);
-                break;
+                foreach (var widget in con.Children)
+                {
+                    if (widget is Gtk.RadioButton group)
+                    {
+                        ((Gtk.RadioButton)o).Group = new Gtk.RadioButton[0];
+                        // Add the first radio group in the container
+                        ((Gtk.RadioButton)o).JoinGroup(group);
+                        break;
+                    }
+                }
+            }
+
+            self.Active = Checked;
+            self.Toggled += Self_Toggled;
+        }
+
+        private void Self_Toggled(object sender, EventArgs e)
+        {
+            if (CheckedChanged != null && self.IsVisible)
+                CheckedChanged(this, e);
+        }
+
+        public event EventHandler? CheckedChanged;
+
+        public override string Text
+        {
+            get => self.Label;
+            set => self.Label = value;
+        }
+
+        public bool Checked
+        {
+            get => self.Active;
+            set
+            {
+                @checked = true;
+                self.Active = true;
             }
         }
-        self.Active = @checked;
-        self.Toggled += Self_Toggled;
-    }
-    public event EventHandler? CheckedChanged;
 
-    public override string Text { get => self.Label;
-        set => self.Label = value;
+        private bool @checked;
     }
-    public bool Checked { get => self.Active;
-        set { @checked = true; self.Active = true; } }
-    private bool @checked;
 }

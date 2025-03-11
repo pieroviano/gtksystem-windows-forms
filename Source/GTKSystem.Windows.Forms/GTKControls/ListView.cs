@@ -54,59 +54,42 @@ public class ListView : ContainerControl
         headerView.Valign = Align.Start;
         headerView.Hexpand = true;
         headerView.Vexpand = false;
-        headerView.HeightRequest = 1;// __headerheight;
+        headerView.HeightRequest = 1;// headerheight;
         headerView.Width = 100000;
         headerView.Add(header);
         self.box.PackStart(headerView, false, true, 0);
         self.box.PackStart(scrolledWindow, true, true, 0);
         BorderStyle = BorderStyle.Fixed3D;
     }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-        IsDisposed = true;
-        foreach (var column in Columns)
-        {
-            column.ImageList = null;
-            column.Index = -1;
-        }
-    }
-
-    private void Hadjustment_ValueChanged(object? sender, EventArgs e)
+    private void Hadjustment_ValueChanged(object sender, EventArgs e)
     {
         headerView.Hadjustment.Value = scrolledWindow.Hadjustment.Value;
     }
 
-    private bool ControlRealized;
     private void Control_Realized(object sender, EventArgs e)
     {
-        if (ControlRealized == false)
+        if (View == View.Details)
         {
-            ControlRealized = true;
-            if (View == View.Details)
-            {
-                header.NoShowAll = false;
-                header.Visible = true;
-                header.ShowAll();
-                headerView.HeightRequest = headerheight;
-            }
-            foreach (var columnHeader in Columns)
-            {
-                NativeHeaderAdd(columnHeader);
-            }
-            foreach (var g in Groups)
-            {
-                NativeGroupAdd(g, -1);
-            }
-            foreach (var item in Items)
-            {
-                NativeAdd(item, -1);
-            }
-
-            MultiSelect = MultiSelect;
-            self.ShowAll();
+            header.NoShowAll = false;
+            header.Visible = true;
+            header.ShowAll();
+            headerView.HeightRequest = headerheight;
         }
+        foreach (ColumnHeader columnHeader in Columns)
+        {
+            NativeHeaderAdd(columnHeader);
+        }
+        foreach (ListViewGroup g in Groups)
+        {
+            NativeGroupAdd(g, -1);
+        }
+        foreach (ListViewItem item in Items)
+        {
+            NativeAdd(item, -1);
+        }
+
+        MultiSelect = MultiSelect;
+        self.ShowAll();
     }
     public bool Sorted { get; set; }
     public SortOrder Sorting { get; set; }
@@ -158,7 +141,7 @@ public class ListView : ContainerControl
     public bool UseCompatibleStateImageBehavior { get; set; }
     public View View { get; set; }
     private int _fontSize;
-    protected int FontSize
+    internal int FontSize
     {
         get
         {
@@ -385,11 +368,12 @@ public class ListView : ContainerControl
             }
         }
     }
-    internal void NativeSelectItem(ListViewItem item, bool isselected)
+
+    internal void NativeSelectItem(ListViewItem item, bool isSelected)
     {
         if (item._flowBoxChild is { Parent: FlowBox flowBox })
         {
-            if (isselected)
+            if (isSelected)
                 flowBox.SelectChild(item._flowBoxChild);
             else
                 flowBox.UnselectChild(item._flowBoxChild);
@@ -397,7 +381,7 @@ public class ListView : ContainerControl
     }
     internal void NativeCheckItem(ListViewItem item, bool ischecked)
     {
-        if (item._flowBoxChild is { Parent: FlowBox })
+        if (item._flowBoxChild is { IsRealized: true, Parent: FlowBox flowBox })
         {
             var box = item._flowBoxChild.Child as Box;
             if (View == View.Details)
@@ -457,7 +441,7 @@ public class ListView : ContainerControl
 
             foreach (var col in Columns)
             {
-                if (item.SubItems != null && item.SubItems.Count > col.Index && col.Index>=0)
+                if (item.SubItems != null && item.SubItems.Count > col.Index && col.Index >= 0)
                 {
                     boxitem.Data.Add(col.Index, item.SubItems[col.Index].Text);
                 }
@@ -520,15 +504,15 @@ public class ListView : ContainerControl
                         var thisitem = Items.Find(m => m.Index == Convert.ToInt32(checkitem?.Data["ItemId"]));
                         if (thisitem != null)
                         {
-                            thisitem.Checked = box?.self.Active??false;
+                            thisitem.Checked = box?.self.Active ?? false;
                             if (ItemCheck != null)
                             {
                                 if (checkitem != null)
                                 {
                                     ItemCheck(sender,
                                         new ItemCheckEventArgs(checkitem.Index,
-                                            box?.self.Active??false ? CheckState.Checked : CheckState.Unchecked,
-                                            box?.self.Active?? false ? CheckState.Unchecked : CheckState.Checked));
+                                            box?.self.Active ?? false ? CheckState.Checked : CheckState.Unchecked,
+                                            box?.self.Active ?? false ? CheckState.Unchecked : CheckState.Checked));
                                 }
                             }
                             if (ItemChecked != null)
@@ -584,32 +568,27 @@ public class ListView : ContainerControl
                 viewport.Add(fistcell);
                 hBox.PackStart(viewport, false, true, 0);
 
-                var index = 0;
-                foreach (var col in Columns)
+                int index = 0;
+                foreach (ColumnHeader col in Columns)
                 {
                     if (index > 0)
                     {
-                        var sublayout = new Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
+                        Layout sublayout = new Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
                         sublayout.Halign = Align.Start;
                         sublayout.Valign = Align.Fill;
                         sublayout.WidthRequest = col.Width;
                         if (item.SubItems != null && item.SubItems.Count > index)
                         {
                             var subitem = item.SubItems[index];
-                            var sublabel = new Gtk.Label();
+                            Gtk.Label sublabel = new Gtk.Label();
                             subitem._label = sublabel;
-                            var subattributes = new Pango.AttrList();
+                            Pango.AttrList subattributes = new Pango.AttrList();
                             if (subitem.ForeColor.HasValue)
                             {
-                                var fg = new Pango.AttrForeground(Convert.ToUInt16(subitem.ForeColor.Value.R * 257), Convert.ToUInt16(subitem.ForeColor.Value.G * 257), Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
+                                Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(subitem.ForeColor.Value.R * 257), Convert.ToUInt16(subitem.ForeColor.Value.G * 257), Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
                                 subattributes.Insert(fg);
                                 sublabel.Attributes = subattributes;
                             }
-                            //if (subitem.BackColor.HasValue)
-                            //{
-                            //    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(subitem.BackColor.Value.R * 257), Convert.ToUInt16(subitem.BackColor.Value.G * 257), Convert.ToUInt16(subitem.BackColor.Value.B * 257));
-                            //    subattributes.Insert(fg);
-                            //}
                             sublabel.Attributes = subattributes;
                             sublabel.WidthRequest = col.Width + 2;
                             sublabel.MaxWidthChars = 0;
@@ -646,15 +625,15 @@ public class ListView : ContainerControl
                         var thisitem = Items.Find(m => m.Index == Convert.ToInt32(checkitem?.Data["ItemId"]));
                         if (thisitem != null)
                         {
-                            thisitem.Checked = box?.self.Active??false;
+                            thisitem.Checked = box?.self.Active ?? false;
                             if (ItemCheck != null)
                             {
                                 if (checkitem != null)
                                 {
                                     ItemCheck(sender,
                                         new ItemCheckEventArgs(checkitem.Index,
-                                            box?.self.Active??false ? CheckState.Checked : CheckState.Unchecked,
-                                            box?.self.Active??false ? CheckState.Unchecked : CheckState.Checked));
+                                            box?.self.Active ?? false ? CheckState.Checked : CheckState.Unchecked,
+                                            box?.self.Active ?? false ? CheckState.Unchecked : CheckState.Checked));
                                 }
                             }
                             if (ItemChecked != null)
@@ -691,16 +670,15 @@ public class ListView : ContainerControl
                         }
 
                     }
-                    var lab = new Gtk.Label();
-                    var attributes = new Pango.AttrList();
+                    Gtk.Label lab = new Gtk.Label();
+                    Pango.AttrList attributes = new Pango.AttrList();
                     if (item.ForeColor.HasValue)
                     {
-                        var fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                        Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
                         attributes.Insert(fg);
-
                     }
-                    lab.Xpad = 5;
                     lab.Attributes = attributes;
+                    lab.Xpad = 5;
                     lab.MaxWidthChars = 100;
                     lab.Halign = Align.Start;
                     lab.Valign = Align.Center;
@@ -729,8 +707,8 @@ public class ListView : ContainerControl
                             Drawing.Image img = LargeImageList.GetBitmap(item.ImageKey);
                             if (img != null)
                             {
-                                var width = img.Pixbuf?.Width??0;
-                                var height = img.Pixbuf?.Height??0;
+                                var width = img.Pixbuf?.Width ?? 0;
+                                var height = img.Pixbuf?.Height ?? 0;
                                 vBox.Add(new Gtk.Image(new Gdk.Pixbuf(img.PixbufData)) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
                             }
                         }
@@ -739,8 +717,8 @@ public class ListView : ContainerControl
                             Drawing.Image? img = LargeImageList.GetBitmap(item.ImageIndex);
                             if (img != null)
                             {
-                                var width = img.Pixbuf?.Width??0;
-                                var height = img.Pixbuf?.Height??0;
+                                var width = img.Pixbuf?.Width ?? 0;
+                                var height = img.Pixbuf?.Height ?? 0;
                                 vBox.Add(new Gtk.Image(img.Pixbuf) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
                             }
                         }
@@ -753,6 +731,7 @@ public class ListView : ContainerControl
                         attributes.Insert(fg);
 
                     }
+                    lab.Attributes = attributes;
                     lab.Xpad = 5;
                     lab.MaxWidthChars = 16;
                     lab.Halign = Align.Center;
@@ -775,6 +754,7 @@ public class ListView : ContainerControl
                         attributes.Insert(fg);
 
                     }
+                    lab.Attributes = attributes;
                     lab.Halign = Align.Start;
                     lab.Valign = Align.Fill;
                     lab.Text = item.Text;
@@ -988,8 +968,8 @@ public class ListView : ContainerControl
                 }
             }
 
-            OnItemActivate( args);
-            OnItemSelectionChanged( new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+            OnItemActivate(args);
+            OnItemSelectionChanged(new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
         }
     }
     public void Sort()
@@ -1503,27 +1483,23 @@ public class ListView : ContainerControl
 
     public ListViewItem? FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
     {
-        var idx = Items.FindIndex(startIndex, w => w.Text == text);
+        int idx = Items.FindIndex(startIndex, w => w.Text == text);
         return idx == -1 ? null : Items[idx];
     }
-    // public override event MouseEventHandler MouseDown;
     public ListViewItem? GetItemAt(int x, int y)
     {
         foreach (var widget in flowBoxContainer.Children)
         {
             var vbox = (Box)widget;
-            if (vbox.Allocation.Top < y && vbox.Allocation.Top + vbox.AllocatedHeight > y)
+            foreach (var flow in vbox.Children)
             {
-                foreach (var flow in vbox.Children)
+                if (flow is FlowBox _flow)
                 {
-                    if (flow is FlowBox _flow)
+                    int top = _flow.Allocation.Top + headerheight - (int)scrolledWindow.Vadjustment.Value;
+                    FlowBoxChild child = _flow.GetChildAtPos(x + (int)scrolledWindow.Hadjustment.Value, y - top);
+                    if (child != null)
                     {
-                        var top2 = _flow.Allocation.Top - headerheight;
-                        var child = _flow.GetChildAtPos(x, y - top2);
-                        if (child != null)
-                        {
-                            return Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
-                        }
+                        return Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
                     }
                 }
             }

@@ -11,6 +11,6 @@ public class WindowStateArgs : CancelEventArgs
 
     public WindowStateArgs(FormWindowState state)
     {
-        this.State = state;
+        State = state;
     }
 }

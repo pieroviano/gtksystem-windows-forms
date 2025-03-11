@@ -63,7 +63,8 @@ public partial class CommonDialogsForm : Form
         splitContainer1.Panel1.Controls.Add(button);
     }
 
-    private void Form4_Shown(object? sender, EventArgs e)
+    Point panel1Location = new Point();
+    private void Form4_Shown(object sender, EventArgs e)
     {
 
     }

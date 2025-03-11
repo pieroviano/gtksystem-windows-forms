@@ -20,6 +20,7 @@ using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 using Region = System.Drawing.Region;
 using Size = System.Drawing.Size;
+using static System.Windows.Forms.LinkLabel;
 
 namespace System.Windows.Forms;
 
@@ -50,8 +51,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public Control()
     {
-        Controls = new ControlCollection(this);
         Init();
+    }
+
+    public virtual void PerformClick()
+    {
+        OnClick(EventArgs.Empty);
     }
 
     protected virtual void OnBeforeInit(EventArgs eventArgs)
@@ -68,6 +73,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     private void Init()
     {
+        Controls = new ControlCollection(this);
         OnBeforeInit(EventArgs.Empty);
         Disposed += Control_Disposed;
         Controls = new ControlCollection(this);
@@ -221,38 +227,15 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         else if (args.Event.Button == 3)
             result = MouseButtons.Right;
 
-        var owidget = o as Widget;
-        if (owidget != null)
+        Widget? owidget = (Widget?)o;
+        int x = 0;
+        int y = 0;
+        owidget?.Window.GetOrigin(out x, out y);// Avoiding event penetration errors
+        if (MouseDown != null)
         {
-            owidget.Window.GetOrigin(out var x, out var y); // Avoiding event penetration errors
-            OnMouseDown(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-            {
-                OnMouseDoubleClick(new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                OnDoubleClick(EventArgs.Empty);
-            }
-            else
-            {
-                OnClick(EventArgs.Empty);
-                OnMouseClick(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            }
+            var eventArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - ((int)x), (int)args.Event.YRoot - y, 0);
+            OnMouseDown(eventArgs);
         }
-
-    }
-
-    protected virtual void OnMouseClick(MouseEventArgs mouseEventArgs)
-    {
-        MouseClick?.Invoke(this, mouseEventArgs);
-    }
-
-    protected virtual void OnDoubleClick(EventArgs eventArgs)
-    {
-        DoubleClick?.Invoke(this, eventArgs);
-    }
-
-    protected virtual void OnMouseDoubleClick(MouseEventArgs mouseEventArgs)
-    {
-        MouseDoubleClick?.Invoke(this, mouseEventArgs);
     }
 
     protected virtual void OnMouseDown(MouseEventArgs eventArgs)
@@ -260,40 +243,59 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         MouseDown?.Invoke(this, eventArgs);
     }
 
-    public virtual void  PerformClick()
+    private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
     {
-        OnClick(EventArgs.Empty);
-    }
-
-    protected virtual void OnClick(EventArgs eventArgs)
-    {
-        Click?.Invoke(this, eventArgs);
-    }
-
-    private void Widget_ButtonReleaseEvent(object? o, ButtonReleaseEventArgs args)
-    {
+        MouseButtons result = MouseButtons.None;
+        if (args.Event.Button == 1)
+            result = MouseButtons.Left;
+        else if (args.Event.Button == 2)
+            result = MouseButtons.Middle;
+        else if (args.Event.Button == 3)
+            result = MouseButtons.Right;
+        Widget owidget = (Widget)o;
+        owidget.Window.GetOrigin(out int x, out int y);
         if (MouseUp != null)
         {
-            var result = MouseButtons.None;
-            if (args.Event.Button == 1)
-                result = MouseButtons.Left;
-            else if (args.Event.Button == 2)
-                result = MouseButtons.Middle;
-            else if (args.Event.Button == 3)
-                result = MouseButtons.Right;
-            var owidget = (Widget)o!;
-            owidget.Window.GetOrigin(out var x, out var y);
-            OnMouseUp(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
         }
-
+        if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+        {
+            OnMouseDoubleClick(new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            OnDoubleClick(EventArgs.Empty);
+        }
+        else
+        {
+            OnClick(EventArgs.Empty);
+            OnMouseClick(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+        }
         if (ContextMenuStrip != null)
         {
             if (args.Event.Button == 3)
             {
-                ContextMenuStrip.Widget?.ShowAll();
-                ((Menu?)ContextMenuStrip.Widget)?.PopupAtPointer(args.Event);
+                ContextMenuStrip.Widget.ShowAll();
+                ((Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
             }
         }
+    }
+
+    protected virtual void OnMouseDoubleClick(MouseEventArgs mouseEventArgs)
+    {
+        MouseDoubleClick?.Invoke(this, mouseEventArgs);
+    }
+
+    protected virtual void OnDoubleClick(EventArgs mouseEventArgs)
+    {
+        DoubleClick?.Invoke(this, mouseEventArgs);
+    }
+
+    protected virtual void OnMouseClick(MouseEventArgs mouseEventArgs)
+    {
+        MouseDoubleClick?.Invoke(this, mouseEventArgs);
+    }
+
+    protected virtual void OnClick(EventArgs mouseEventArgs)
+    {
+        DoubleClick?.Invoke(this, mouseEventArgs);
     }
 
     protected virtual void OnMouseUp(MouseEventArgs mouseEventArgs)
@@ -473,6 +475,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         SetStyle(widget);
     }
+
     protected virtual void UpdateStyle()
     {
         if (Widget is { IsMapped: true })
@@ -481,6 +484,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             if (widget != null) SetStyle(widget);
         }
     }
+
     protected virtual void UpdateBackgroundStyle()
     {
         if (Widget is { IsMapped: true })
@@ -488,16 +492,19 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
     protected virtual void SetStyle(Widget widget)
     {
-        var style = new StringBuilder();
+        StringBuilder style = new StringBuilder();
         if (widget is Gtk.Image) { }
         else
         {
             if (Image is { PixbufData: not null })
             {
-                var imguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_img.png";
+                string imgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                string imguri = $"{imgdir}/{widget.Name}_image.png";
                 if (!File.Exists(imguri))
                 {
-                    var imagepixbuf = new Gdk.Pixbuf(Image.PixbufData);
+                    if (!Directory.Exists(imgdir))
+                        Directory.CreateDirectory(imgdir);
+                    Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(Image.PixbufData);
                     imagepixbuf.Save(imguri, "png");
                 }
                 style.AppendFormat("background:url(\"{0}\")", imguri);
@@ -545,14 +552,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
                 if (BackgroundImage is { PixbufData: not null })
                 {
-                    var bgimguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_bg.png";
+                    string bgimguri = $"{imgdir}/{widget.Name}_bgimage.png";
                     if (!File.Exists(bgimguri))
                     {
-                        var bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
+                        Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
                         bgpixbuf.Save(bgimguri, "png");
                     }
 
-                    style.AppendFormat(",url(\"Resources/{0}_bg.png\") repeat", widget.Name);
+                    style.AppendFormat(",url(\"{0}\") repeat", bgimguri);
                 }
                 style.Append(";");
                 style.Append("background-origin: padding-box;");
@@ -560,10 +567,13 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             }
             else if (BackgroundImage is { PixbufData: not null })
             {
-                var bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
-                var bgimguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_bg.png";
+                string bgimgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
+                Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
                 if (!File.Exists(bgimguri))
                 {
+                    if (!Directory.Exists(bgimgdir))
+                        Directory.CreateDirectory(bgimgdir);
                     bgpixbuf.Save(bgimguri, "png");
                 }
                 style.AppendFormat("background-image:url(\"{0}\");", bgimguri);
@@ -970,7 +980,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         ContextMenuStripChanged?.Invoke(this, eventArgs);
     }
 
-    public virtual ControlCollection Controls { get; set; }
+    public virtual ControlCollection Controls { get; set; } = null!;
 
     public virtual bool Created => created;
     internal bool created;
@@ -1292,7 +1302,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             Widget.HeightRequest = Math.Max(-1, value);
             if (DockChanged != null)
-                OnDockChanged( EventArgs.Empty);
+                OnDockChanged(EventArgs.Empty);
             if (AnchorChanged != null)
                 OnAnchorChanged(EventArgs.Empty);
         }
@@ -1491,12 +1501,11 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             surface = image.CreateSimilar(Content.ColorAlpha, Widget.AllocatedWidth, Widget.AllocatedHeight);
             context?.Dispose();
             context = new Context(surface);
-
             return new Graphics(Widget, context, Widget.Allocation);
         }
         catch (Exception ex)
         {
-            Console.WriteLine(@"画版创建失败：" + ex.Message);
+            Console.WriteLine("画版创建失败：" + ex.Message);
             throw;
         }
     }

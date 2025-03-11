@@ -29,45 +29,42 @@ public abstract class FileDialog : CommonDialog
     public int FilterIndex { get; set; }
 
     private string? _filter;
-    private string defaultExt = string.Empty;
-    private string[] fileNames = [];
-    private string fileName = string.Empty;
-    private string description = string.Empty;
     private FileChooserDialog? _dialog;
+    private string defaultExt = string.Empty;
 
-    public string? Filter
+    public string Filter
     {
-        get => _filter ?? string.Empty;
+        get
+        {
+            return _filter ?? string.Empty;
+        }
         set
         {
             if (value == _filter)
             {
                 return;
             }
-
-            if (value == null)
+            if (!string.IsNullOrEmpty(value))
             {
-                _filter = string.Empty;
-                return;
-            }
-            var filters = value.Split(';');
-            if (filters != null)
-            {
-                foreach (var filter in filters)
+                string[] filters = value.Split('|');
+                int pipeCount = filters.Length;
+                if (pipeCount == 1 || pipeCount % 2 == 1)
                 {
-                    var pattern = filter.Split('|');
-                    if (pattern == null || pattern.Length % 2 != 0 || pattern[1].Split('.').Length == 0)
+                    throw new ArgumentException("FileDialog Invalid Filter", value);
+                }
+                for (int i = 1; i < pipeCount; i += 2)
+                {
+                    if (filters[i].Split('.').Length == 1)
                     {
-                        throw new ArgumentException("FileDialog Invalid Filter");
+                        throw new ArgumentException("FileDialog Invalid Filter", value);
                     }
                 }
             }
-
-            var array = value.Split('|');
-            if (array == null || array[1].Split('.').Length == 0)
+            else
             {
-                throw new ArgumentException("FileDialog Invalid Filter");
+                value = null!;
             }
+
             _filter = value;
         }
     }
@@ -90,7 +87,7 @@ public abstract class FileDialog : CommonDialog
     public virtual bool CheckFileExists { get; set; } = true;
 
     public event CancelEventHandler? FileOk;
-    internal Gtk.FileChooserAction ActionType { get; set; }
+    internal FileChooserAction ActionType { get; set; }
     public new virtual void Dispose()
     {
         _dialog?.Dispose();
@@ -117,17 +114,17 @@ public abstract class FileDialog : CommonDialog
         _dialog = null;
         if (owner is Form ownerform)
         {
-            _dialog = new Gtk.FileChooserDialog(System.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
-            _dialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+            _dialog = new FileChooserDialog(System.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
+            _dialog.WindowPosition = WindowPosition.CenterOnParent;
         }
         else
         {
-            _dialog = new Gtk.FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_File, null, ActionType);
-            _dialog.WindowPosition = Gtk.WindowPosition.Center;
+            _dialog = new FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_File, null, ActionType);
+            _dialog.WindowPosition = WindowPosition.Center;
         }
         _dialog.IconName = "document-open";
-        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_OK, Gtk.ResponseType.Ok);
-        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_Cancel, Gtk.ResponseType.Cancel);
+        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_OK, ResponseType.Ok);
+        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_Cancel, ResponseType.Cancel);
         _dialog.SelectMultiple = Multiselect;
         _dialog.Title = Title ?? string.Empty;
         _dialog.TooltipText = Description ?? string.Empty;
@@ -138,37 +135,32 @@ public abstract class FileDialog : CommonDialog
         else if (!string.IsNullOrWhiteSpace(InitialDirectory))
             _dialog.SetCurrentFolder(InitialDirectory);
 
-        if (!string.IsNullOrWhiteSpace(DefaultExt))
-        {
-            var pattern = DefaultExt.Split('|');
-            var filter = new Gtk.FileFilter();
-            var extand = pattern.Last().Trim(new char[] { '*', '.', ' ' });
-            if (MimeMapping.ContainsKey('.' + extand))
-            {
-                filter.AddMimeType(MimeMapping['.' + extand]);
-            }
-            filter.AddPattern($"*.{extand}");
-            filter.Name = extand;
-            _dialog.Filter = filter;
-        }
+
         if (_filter != null)
         {
-            var filters = _filter.Split(';');
-            foreach (var filter in filters)
+            string[] filters = _filter.Split('|');
+            for (int i = 1; i < filters.Length; i += 2)
             {
-                var pattern = filter.Split('|');
-                var ffilter = new Gtk.FileFilter();
-                var extand= pattern[1].Trim(new char[] { '*',' ' });
-                if (MimeMapping.ContainsKey(extand))
+                string[] patterns = filters[i].Split(';');
+                foreach (string pattern in patterns)
                 {
-                    ffilter.AddMimeType(MimeMapping[extand]);
+                    FileFilter ffilter = new FileFilter();
+                    string extand = pattern.TrimStart(new char[] { '*', ' ' });
+                    if (MimeMapping.ContainsKey(extand))
+                    {
+                        ffilter.AddMimeType(MimeMapping[extand]);
+                    }
+                    ffilter.AddPattern(pattern);
+                    ffilter.Name = $"{filters[i - 1]}（{pattern}）";
+                    _dialog.AddFilter(ffilter);
+                    if (pattern == DefaultExt)
+                    {
+                        _dialog.Filter = ffilter;
+                    }
                 }
-                ffilter.AddPattern(pattern[1]);
-                ffilter.Name = $"{pattern[0]}（{pattern[1]}）";
-                _dialog.AddFilter(ffilter);
             }
         }
-        var response = _dialog.Run();
+        int response = _dialog.Run();
         FileName = _dialog.Filename;
         FileNames = _dialog.Filenames.Clone() as string[];
         SelectedDirectory = _dialog.Filename;
@@ -523,10 +515,5 @@ public abstract class FileDialog : CommonDialog
         MimeMapping.Add(".xwd", "image/x-xwindowdump");
         MimeMapping.Add(".z", "application/x-compress");
         MimeMapping.Add(".zip", "application/x-zip-compressed");
-    }
-
-    protected virtual void OnFileOk(CancelEventArgs e)
-    {
-        FileOk?.Invoke(this, e);
     }
 }

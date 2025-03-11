@@ -11,7 +11,6 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms.ComponentModel;
 using System.Windows.Forms.Design;
-using System.Windows.Forms.Microsoft.Win32;
 using System.Windows.Forms.PropertyGridInternal;
 
 namespace System.Windows.Forms;

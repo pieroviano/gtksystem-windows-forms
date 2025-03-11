@@ -8,11 +8,18 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<IsPublishable>False</IsPublishable>
 		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="工程说明.txt" />
-	  <None Include="工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
+		<None Remove="工程说明.txt" />
+		<None Include="工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
+		<None Include="TestData1.en.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="TestData1.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -24,8 +31,10 @@
 
 	<ItemGroup>
 		<EmbeddedResource Remove="Form1.resx" />
-		<EmbeddedResource Remove="Form2.zh-HANS.resx" />
 		<EmbeddedResource Include="Form1.resx" Link="TestDataForm.resx" />
+		<EmbeddedResource Update="Properties\Resources.de.resx">
+		  <DependentUpon>Resources.resx</DependentUpon>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Properties\Resources.zh-HANS.resx">
 			<DependentUpon>Resources.resx</DependentUpon>
 		</EmbeddedResource>
@@ -41,9 +50,6 @@
 	<ItemGroup>
 		<EmbeddedResource Remove="Form2.resx" />
 		<EmbeddedResource Include="Form2.resx" Link="ListViewForm.resx" />
-		<EmbeddedResource Include="Form2.zh-HANS.resx" Link="ListViewForm.zh-HANS.resx">
-			<DependentUpon>ListViewForm.resx</DependentUpon>
-		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -71,14 +77,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
-	  <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="TestData1.en.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
+		<Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
+		<Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -103,30 +103,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Resources\010.jpg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\BindingNavigator.Delete.ico">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\img11.jpg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\img10.jpg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\timg.jpg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\timg2.jpg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\timg6.jpg">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 </Project>

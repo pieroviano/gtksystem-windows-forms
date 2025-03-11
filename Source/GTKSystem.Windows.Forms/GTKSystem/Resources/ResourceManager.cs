@@ -13,7 +13,7 @@ public class ResourceManager : System.Resources.ResourceManager
     internal const string resFileExtension = ".resources";
     private Type? _resourceSource;
 
-    private readonly Dictionary<string, (string Culture, Assembly Assembly)[]> _assemblies = new ();
+    private readonly Dictionary<string, (string Culture, Assembly Assembly)[]> _assemblies = new();
 
     public (string Culture, Assembly Assembly)[] GetAssemblies(string? cultureName)
     {
@@ -59,12 +59,12 @@ public class ResourceManager : System.Resources.ResourceManager
     {
 
     }
-    
+
     public ResourceManager(string? baseName, Assembly? assembly) : this(baseName, assembly, null)
     {
 
     }
-    
+
     public ResourceManager(string? baseName, Assembly? assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName ?? string.Empty, assembly ?? Assembly.GetExecutingAssembly(), usingResourceSet)
     {
         _baseName = baseName;
@@ -77,28 +77,29 @@ public class ResourceManager : System.Resources.ResourceManager
             getResourceInfo.SourceType = usingResourceSet;
         }
     }
-    
+
     protected ResourceManager()
     {
 
     }
 
-    private byte[]? ReadResourceFile(string name)
+    private byte[] ReadResourceFile(string name)
     {
         byte[]? result = null;
         try
         {
-            var resourceDirctory = AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
+            //string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
             //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
-            var filepath = resourceDirctory + $"/{Path.GetExtension(_baseName)?.TrimStart('.')}.resx"; //linux路径必须用/
-            if (File.Exists(filepath))
+            string filepath = $"./{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
+            if (System.IO.File.Exists(filepath))
             {
                 try
                 {
-                    var doc = new XmlDocument();
+                    XmlDocument doc = new XmlDocument();
+                    XmlReaderSettings xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
                     doc.Load(filepath);
                     var docElem = doc.DocumentElement;
-                    var nodes = docElem?.SelectNodes("data");
+                    XmlNodeList? nodes = docElem.SelectNodes("data");
                     //<data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
                     //<value> </value>
                     //</data>
@@ -141,7 +142,7 @@ public class ResourceManager : System.Resources.ResourceManager
         {
             foreach (var tuple in assemblies)
             {
-                var culturePart = string.IsNullOrEmpty(tuple.Culture)?string.Empty:$".{tuple.Culture}";
+                var culturePart = string.IsNullOrEmpty(tuple.Culture) ? string.Empty : $".{tuple.Culture}";
                 var stream = tuple.Assembly.GetManifestResourceStream($"{_baseName}{culturePart}{resFileExtension}");
                 if (stream != null)
                 {
@@ -182,7 +183,7 @@ public class ResourceManager : System.Resources.ResourceManager
     private string? ReadResourceText(string name, CultureInfo? culture)
     {
         var assemblies = GetAssemblies(culture?.Name);
-        if (assemblies == null || assemblies.All(a=>a.Assembly==null))
+        if (assemblies == null || assemblies.All(a => a.Assembly == null))
             throw new FileNotFoundException();
         foreach (var tuple in assemblies)
         {
@@ -241,43 +242,44 @@ public class ResourceManager : System.Resources.ResourceManager
                     return new ImageListStreamer(new ImageList()) { ResourceInfo = getResourceInfo };
                 }
 
-                var fileName = name;
-                var filebytes = ReadResourceFile(name);
+                string fileName = name;
+                byte[] filebytes = ReadResourceFile(name);
                 if (filebytes == null)
                 {
-                    var fName = Path.GetExtension(BaseName).TrimStart('.') + "$" + name.TrimStart('$');
-                    var files = Directory.GetFiles("Resources", $"{fName}.*", SearchOption.AllDirectories);
+                    string _formName = Path.GetExtension(this.BaseName).TrimStart('.');
+                    string[] files = Directory.GetFiles($"./Resources/{_formName}", $"{fileName}.*",
+                        SearchOption.AllDirectories);
                     if (files is { Length: > 0 })
                     {
                         fileName = files[0];
                         filebytes = File.ReadAllBytes(files[0]);
                     }
-                }
 
-                if (name.EndsWith(".BackgroundImage"))
-                {
+                    if (name.EndsWith(".BackgroundImage"))
+                    {
+                        return new Drawing.Bitmap(filebytes) { FileName = fileName };
+                    }
+
+                    if (name.EndsWith(".Image"))
+                    {
+                        return new Drawing.Bitmap(filebytes) { FileName = fileName };
+                    }
+
+                    if (name.EndsWith(".Icon"))
+                    {
+                        return new Drawing.Icon(filebytes) { FileName = fileName };
+                    }
+
+                    if (filebytes == null)
+                    {
+                        return new Drawing.Bitmap(0, 0);
+                    }
+
                     return new Drawing.Bitmap(filebytes) { FileName = fileName };
                 }
 
-                if (name.EndsWith(".Image"))
-                {
-                    return new Drawing.Bitmap(filebytes) { FileName = fileName };
-                }
-
-                if (name.EndsWith(".Icon"))
-                {
-                    return new Drawing.Icon(filebytes) { FileName = fileName };
-                }
-
-                if (filebytes == null)
-                {
-                    return new Drawing.Bitmap(0, 0);
-                }
-
-                return new Drawing.Bitmap(filebytes) { FileName = fileName };
+                return obj;
             }
-
-            return obj;
         }
 
         return null;

@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
+using System.Runtime.Serialization.Json;
 using System.Windows.Forms;
 using GTKWinFormsApp.Properties;
 
@@ -50,38 +49,39 @@ public partial class TestDataForm : Form
         PIC.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_U;
         Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
         ID.HeaderText = Resources.Resources_TestDataForm_TestDataForm_Load_V;
-        Load += Form1_Load;
+        Load += TestDataForm_Load;
     }
 
-    private void Form1_Load(object? sender, EventArgs e)
+    private void TestDataForm_Load(object sender, EventArgs e)
     {
 
         treeView1.Nodes.Clear();
         treeView1.CheckBoxes = true;
 
-        string testdata1Json;
-        testdata1Json = Resources.TestDataForm_Form1_Load_TestData1_json;
+        string jsontext = File.ReadAllText("TestData1.json");
+        using (FileStream reader = new FileStream("TestData1.json", FileMode.Open, FileAccess.Read))
+        {
+            DataContractJsonSerializer dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
+            List<TestDataMode> json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
+            IEnumerable<TreeNode> childs = GetChild(null, json);
+            treeView1.Nodes.AddRange(childs.ToArray());
+            foreach (TreeNode child in treeView1.Nodes)
+                child.Expand();
 
-        var jsontext = File.ReadAllText(testdata1Json);
-        var json = JsonSerializer.Deserialize<List<TestDataMode>>(jsontext);
-        IEnumerable<TreeNode> childs = GetChild(null, json);
-        treeView1.Nodes.AddRange(childs.ToArray());
-        foreach (var child in treeView1.Nodes)
-            child.Expand();
+            treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
+            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
+            var tabPage = new TabPage();
+            tabPage.Location = new Point(4, 29);
+            tabPage.Margin = new Padding(4);
+            tabPage.Name = "tabPage3";
+            tabPage.Padding = new Padding(4);
+            tabPage.Size = new Size(1179, 426);
+            tabPage.TabIndex = 1;
+            tabPage.Text = "test";
+            tabPage.UseVisualStyleBackColor = true;
 
-        treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
-        treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
-        var tabPage = new TabPage();
-        tabPage.Location = new Point(4, 29);
-        tabPage.Margin = new Padding(4);
-        tabPage.Name = "tabPage3";
-        tabPage.Padding = new Padding(4);
-        tabPage.Size = new Size(1179, 426);
-        tabPage.TabIndex = 1;
-        tabPage.Text = "test";
-        tabPage.UseVisualStyleBackColor = true;
-
-        tabControl1.Controls.Add(tabPage);
+            tabControl1.Controls.Add(tabPage);
+        }
     }
 
     private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
@@ -117,7 +117,7 @@ public partial class TestDataForm : Form
             return;
         }
         //1、Dataset list data source
-        List<TestEntity>? data = new List<TestEntity>();
+        List<TestEntity> data = new List<TestEntity>();
         var createdate = DateTime.Now;
         data.Add(new TestEntity()
         {
@@ -164,80 +164,54 @@ public partial class TestDataForm : Form
             PIC = Image.FromFile("Resources/timg2.jpg")
         });
 
-        data.Add(new TestEntity()
-        {
-            ID = 5,
-            Title = Resources.TestDataForm_button1_5,
-            Info = "ddds",
-            State = false,
-            CreateDate = createdate,
-            Operate = Resources.TestDataForm_button1_4,
-            PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48",
-            PIC = Image.FromFile("Resources/timg2.jpg")
-        });
-        data.Add(new TestEntity()
-        {
-            ID = 6,
-            Title = "test4",
-            Info = "yyyy",
-            State = true,
-            CreateDate = createdate,
-            Operate = Resources.TestDataForm_button1_4,
-            PIC1 = "",
-            PIC = Image.FromFile("Resources/timg2.jpg")
-        });
-        for (var i = 0; i < 10; i++)
-            data.Add(new TestEntity()
-            {
-                ID = i + 7,
-                Title = Resources.TestDataForm_button1_5 + i.ToString(),
-                Info = "ddds",
-                State = false,
-                CreateDate = createdate,
-                Operate = Resources.TestDataForm_button1_4,
-                PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(),
-                PIC = Image.FromFile("Resources/timg2.jpg")
-            });
+        data.Add(new TestEntity() { ID = 5, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images, Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile("./Resources/timg2.jpg") });
+        data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("./Resources/timg2.jpg") });
+        for (int i = 0; i < 10; i++)
+            data.Add(new TestEntity() { ID = i + 7, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("./Resources/timg2.jpg") });
 
 
         this.dataGridView1.DataSource = data;
-        //foreach (TestEntity testEntity in data)
-        //    this.dataGridView1.Rows.Add(testEntity.ID, testEntity.State, testEntity.Title,testEntity.CreateDate, testEntity.Operate, testEntity.PIC);
+        this.comboBox1.DisplayMember = "Title";
+        this.comboBox1.ValueMember = "ID";
+        this.comboBox1.DataSource = data;
+        // dataGridView1.Columns[1].Visible = false;
 
-        //var s=this.dataGridView1.Rows[0].Cells[0];
-
-        //2、datatable data source
-        //  DataTable dt = new DataTable();
-        //  dt.Columns.Add("ID", typeof(string));
-        //  dt.Columns.Add("CreateDate", typeof(DateTime));
-        //  dt.Columns.Add("State", typeof(bool));
-        //  dt.Rows.Add("test1dddd", DateTime.Now, true);
-        //  dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
+        ////2、datatable data source
+        //DataTable dt = new DataTable();
+        //dt.Columns.Add("ID", typeof(string));
+        //dt.Columns.Add("CreateDate1", typeof(DateTime));
+        //dt.Columns.Add("State", typeof(bool));
+        //dt.Rows.Add("test1dddd", DateTime.Now, true);
+        //dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
         ////  this.dataGridView1.Columns.Clear();
-        //  this.dataGridView1.DataSource = dt;
+        //this.dataGridView1.DataSource = dt;
     }
-    public class TestEntity : INotifyPropertyChanged
+    public class TestEntity
     {
         public int ID { get; set; }
         public string title;
-        public string Title { get { return title; } set { title = value; OnPropertyChangedEventHandler(); } }
+        public string Title { get { return title; } set { title = value; } }
         public string Info { get; set; }
         public bool State { get; set; }
         public DateTime CreateDate { get; set; }
         public string Operate { get; set; }
         public string PIC1 { get; set; }
-        public Image? PIC { get; set; }
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public Image PIC { get; set; }
     }
 
 
     private void button2_Click(object sender, EventArgs e)
     {
-        var cd = new ColorDialog();
+        DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
+        column.HeaderText = "test1";
+        column.MinimumWidth = 6;
+        column.Name = "test1";
+        column.Width = 225;
+        column.DataPropertyName = "test1";
+
+        dataGridView1.Columns.Add(column);
+
+        ColorDialog cd = new ColorDialog();
         if (textBox1.Text.Length >= 6)
         {
             try
@@ -246,7 +220,7 @@ public partial class TestDataForm : Form
             }
             catch { }
         }
-        var result = cd.ShowDialog(this);
+        DialogResult result = cd.ShowDialog(this);
 
         if (result == DialogResult.OK)
         {
@@ -326,7 +300,7 @@ public partial class TestDataForm : Form
 
     private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Console.WriteLine("comboBox1_SelectedIndexChanged");
+        Console.WriteLine($"comboBox1_SelectedIndexChanged {comboBox1.SelectedIndex},{comboBox1.SelectedValue},{comboBox1.Text}");
     }
 
     private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
@@ -344,6 +318,8 @@ public partial class TestDataForm : Form
     private void dataGridView1_SelectionChanged(object sender, EventArgs e)
     {
         //6
+        //if(dataGridView1.SelectedRows.Count > 0) 
+        //    dataGridView1.SelectedRows[0].Cells[3].Value = DateTime.Now;
         Console.WriteLine("dataGridView1_SelectionChanged");
     }
 
@@ -467,14 +443,17 @@ public partial class TestDataForm : Form
 
     private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
     {
-        Console.WriteLine("checkedListBox1_SelectedValueChanged");
+        Console.WriteLine($"checkedListBox1_SelectedValueChanged:{sender}");
     }
 
     private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
     {
-        Console.WriteLine("checkedListBox1_ItemCheck，" + e.NewValue + e.CurrentValue);
+        (sender as CheckBox).Text = "1234";
+        checkedListBox1.Items[0] = DateTime.Now.ToString();
+        Console.WriteLine($"checkedListBox1_ItemCheck，{sender}: newvalue:{e.NewValue}-oldvalue:{e.CurrentValue}");
         if (e.Index == 2)
         {
+            checkedListBox1.SetItemChecked(3, true);
             foreach (var o in checkedListBox1.CheckedItems)
             {
                 Console.WriteLine("ItemCheck，" + o.ToString());
@@ -489,7 +468,7 @@ public partial class TestDataForm : Form
 
         if (GTKWinFormsApp.Properties.Resources.timg6 != null)
         {
-            var mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
+            MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
 
             //g.DrawImage(new Bitmap(mem), new Point(0, 0));
             g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
@@ -530,7 +509,15 @@ public partial class TestDataForm : Form
 
     private void button6_Click(object sender, EventArgs e)
     {
-
+        // textBox1.InsertTextAtCursor("666 slip");
+        Console.WriteLine(textBox1.SelectionStart);
+        Console.WriteLine(textBox1.SelectionLength);
+        textBox1.SelectionLength = 20;
+        // richTextBox1.InsertTextAtCursor("666 slip");
+        // Console.WriteLine(richTextBox1.SelectionStart);
+        //// Console.WriteLine(richTextBox1.SelectionStart1);
+        // Console.WriteLine(richTextBox1.SelectionLength);
+        richTextBox1.SelectionLength = 50;
     }
 
     private void button7_Click(object sender, EventArgs e)
@@ -550,8 +537,8 @@ public partial class TestDataForm : Form
         //e.Graphics.FillRectangle(new SolidBrush(Color.Gray), new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
         e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
         var font = new Font(FontFamily.GenericSansSerif, 12);
-        e.Graphics.DrawString($"tab组{e.Index}", font, new SolidBrush(Color.Red), new PointF(0, 0));
-        e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"), new Point(e.Bounds.Width - 16, 0));
+        e.Graphics.DrawString($"tabGroup{e.Index}", font, new SolidBrush(Color.Red), new PointF(0, 0));
+        e.Graphics.DrawImage(Image.FromFile("./Resources/BindingNavigator.Delete.ico"), new Point(e.Bounds.Width - 16, 0));
     }
 
     private void button1_Paint(object sender, PaintEventArgs e)

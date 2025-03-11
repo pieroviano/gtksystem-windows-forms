@@ -841,7 +841,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                 }
                 else if (o is GraphicsPath.BeziersMode beziers)
                 {
-                    var data = GetBezierPoints(beziers.Points.ToList());
+                    var data = GetBezierPoints(beziers.Points?.ToList());
                     foreach (var point in data)
                     {
                         context.LineTo(point.X, point.Y);
@@ -942,23 +942,13 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                         while (text?.Length > 0 && context.TextExtents(text).Width > str.LayoutRect.Width)
                             text = text.Substring(0, text.Length - 1);
                     }
-
-                    var textSize = str.EmSize < 1 ? 14f : str.EmSize;
+                    float textSize = str.EmSize < 1 ? 14f : str.EmSize;
                     var font = str.Family;
                     var family = font?.Name;
-                    if (_widget != null)
+                    if (widget != null && family != null)
                     {
-                        var pangocontext = _widget.PangoContext;
-                        family = pangocontext.FontDescription.Family;
-                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
-                        if (pangoFamily == null)
-                            family = pangocontext.FontDescription.Family;
-                    }
-                    else if (widget != null)
-                    {
-                        var pangocontext = widget.PangoContext;
-                        family = pangocontext.FontDescription.Family;
-                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
+                        Pango.Context pangocontext = widget.PangoContext;
+                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                         if (pangoFamily == null)
                             family = pangocontext.FontDescription.Family;
                     }
@@ -1154,55 +1144,45 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         DrawString(s, font, brush, layoutRectangle, new StringFormat());
     }
 
-    public void DrawString(string text, Font font, Brush? brush, RectangleF layoutRectangle, StringFormat format)
-    {
-        if (string.IsNullOrEmpty(text) == false)
-        {
-            if (context != null)
-            {
-                context.Save();
-
-                var textSize = 14f;
-                if (font != null)
+		public void DrawString(string text, Font font, Brush? brush, RectangleF layoutRectangle, StringFormat format)
+		{
+			if (string.IsNullOrEmpty(text) == false)
+			{
+                if (context != null)
                 {
-                    textSize = font.Size;
-                    if (font.Unit == GraphicsUnit.Point)
-                        textSize = font.Size * 1 / 72 * 96;
-                    if (font.Unit == GraphicsUnit.Inch)
-                        textSize = font.Size * 96;
-                }
+                    context.Save();
+                    var family = font?.Name;
+                    float textSize = 14f;
+                    if (font != null)
+                    {
+                        textSize = font.Size;
+                        if (font.Unit == GraphicsUnit.Point)
+                            textSize = font.Size * 1 / 72 * 96;
+                        if (font.Unit == GraphicsUnit.Inch)
+                            textSize = font.Size * 96;
 
-                var family = font?.Name;
-                if (_widget != null)
-                {
-                    var pangocontext = _widget.PangoContext;
-                    family = pangocontext.FontDescription.Family;
-                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
-                    if (pangoFamily == null)
-                        family = pangocontext.FontDescription.Family;
-                }
-                else if (widget != null)
-                {
-                    var pangocontext = widget.PangoContext;
-                    family = pangocontext.FontDescription.Family;
-                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
-                    if (pangoFamily == null)
-                        family = pangocontext.FontDescription.Family;
-                }
+                        if (widget != null && family != null)
+                        {
+                            Pango.Context pangocontext = widget.PangoContext;
+                            var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                            if (pangoFamily == null)
+                                family = pangocontext.FontDescription.Family;
+                        }
+                    }
 
-                context.SetFontSize(textSize);
-                context.SelectFontFace(family,
-                    font != null && (font.Style & FontStyle.Italic) != 0 ? FontSlant.Italic : FontSlant.Normal,
-                    font != null && (font.Style & FontStyle.Bold) != 0 ? FontWeight.Bold : FontWeight.Normal);
-                var textext = context.TextExtents(text);
-                SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textext.Height);
-                SetSourceColor(new Pen(brush, 1));
-                context.ShowText(text);
-                context.Stroke();
-                context.Restore();
+                    context.SetFontSize(textSize);
+                    context.SelectFontFace(family,
+                        font.Style.HasFlag(FontStyle.Italic) ? FontSlant.Italic : FontSlant.Normal,
+                        font.Style.HasFlag(FontStyle.Bold) ? FontWeight.Bold : FontWeight.Normal);
+                    TextExtents textext = context.TextExtents(text);
+                    SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textext.Height);
+                    SetSourceColor(new Pen(brush, 1));
+                    context.ShowText(text);
+                    context.Stroke();
+                    context.Restore();
+                }
             }
-        }
-    }
+		}
 
     public void DrawString(string s, Font font, Brush? brush, float x, float y)
     {
@@ -1683,46 +1663,38 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         return MeasureString(text, font, width, StringFormat.GenericDefault);
     }
 
-    public SizeF MeasureString(string text, Font font, int width, StringFormat format)
-    {
-        var textSize = 14f;
-        if (font != null)
+		public SizeF MeasureString(string text, Font font, int width, StringFormat format)
         {
-            textSize = font.Size;
-            if (font.Unit == GraphicsUnit.Point)
-                textSize = font.Size * 1 / 72 * 96;
-            if (font.Unit == GraphicsUnit.Inch)
-                textSize = font.Size * 96;
-        }
-        var family = font?.Name;
-        if (_widget != null)
-        {
-            var pangocontext = _widget.PangoContext;
-            family = pangocontext.FontDescription.Family;
-            var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
-            if (pangoFamily == null)
-                family = pangocontext.FontDescription.Family;
-        }
-        if (widget != null)
-        {
-            var pangocontext = widget.PangoContext;
-            family = pangocontext.FontDescription.Family;
-            var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
-            if (pangoFamily == null)
-                family = pangocontext.FontDescription.Family;
-        }
+            float textSize = 14f;
+            var family = font?.Name;
+			if (font != null)
+			{
+				textSize = font.Size;
+				if (font.Unit == GraphicsUnit.Point)
+					textSize = font.Size * 1 / 72 * 96;
+				if (font.Unit == GraphicsUnit.Inch)
+					textSize = font.Size * 96;
 
-        if (context != null)
-        {
-            context.SelectFontFace(family, font?.Italic ?? false ? FontSlant.Italic : FontSlant.Normal,
-                font?.Bold ?? false ? FontWeight.Bold : FontWeight.Normal);
-            context.SetFontSize(textSize);
-            var extents = context.TextExtents(text);
-            return new SizeF((float)Math.Max(width, extents.Width), (float)extents.Height);
-        }
+				if (widget != null && family != null)
+				{
+					Pango.Context pangocontext = widget.PangoContext;
+					var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+					if (pangoFamily == null)
+						family = pangocontext.FontDescription.Family;
+				}
+			}
 
-        return default;
-    }
+            if (context != null)
+            {
+                context.SelectFontFace(family, font?.Italic ?? false ? FontSlant.Italic : FontSlant.Normal,
+                    font?.Bold ?? false ? FontWeight.Bold : FontWeight.Normal);
+                context.SetFontSize(textSize);
+                var extents = context.TextExtents(text);
+                return new SizeF((float)Math.Max(width, extents.Width), (float)extents.Height);
+            }
+
+            return default;
+        }
 
     public void MultiplyTransform(Matrix? matrix)
     {

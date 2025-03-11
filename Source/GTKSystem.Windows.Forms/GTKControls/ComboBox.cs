@@ -153,116 +153,106 @@ public partial class ComboBox : ListControl
 
     public override string Text { get => self.Entry.Text; set => self.Entry.Text = value ?? string.Empty; }
 
-    public object? SelectedItem
-    {
-        get => SelectedIndex == -1 ? null : itemsData[SelectedIndex];
-        set { var _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } }
-    }
-    internal int _selectedIndex;
-    public override int SelectedIndex
-    {
-        get => self.Active;
-        set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } }
-    }
-    public override object? SelectedValue
-    {
-        get => self.ActiveId;
-        set => self.ActiveId = value?.ToString();
-    }
-    public ObjectCollection Items => itemsData;
-
-    public override string? GetItemText(object? item)
-    {
-        if (item is ObjectCollection.Entry entry)
+        public object SelectedItem { 
+            get { return SelectedIndex == -1 ? null : itemsData[SelectedIndex]; }
+            set { int _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
+        }
+        internal int _selectedIndex;
+        public override int SelectedIndex { get { return self.Active; } set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
+        public override object SelectedValue { get { return self.ActiveId; } set => self.ActiveId = value?.ToString(); }
+        public ObjectCollection Items { get { return itemsData; } }
+        public override string GetItemText(object item)
         {
-            var type = entry.Item?.GetType();
-            if (entry.Item is DataRow dr)
-                return dr[DisplayMember]?.ToString();
-            else if (type is { IsValueType: true, IsPrimitive: true })
-                return type.GetProperty(DisplayMember)?.GetValue(entry)?.ToString();
+            if (item is ObjectCollection.Entry entry)
+            {
+                Type type = entry.Item.GetType();
+                if (entry.Item is DataRow dr)
+                    return dr[DisplayMember]?.ToString();
+                else if (type.IsValueType && type.IsPrimitive)
+                    return type.GetProperty(DisplayMember).GetValue(entry)?.ToString();
+                else
+                    return item?.ToString();
+            }
+            return item?.ToString();
+        }
+        public string NativeGetItemText(int index)
+        {
+            self.Model.GetIter(out TreeIter iter, new TreePath(new int[] { index }));
+            object val = self.Model.GetValue(iter, 1);
+            return val?.ToString();
+        }
+        public void NativeAdd(int index, string value, string text)
+        {
+            if (_sorted == false && index > -1)
+            {
+                self.Insert(index, value, text);
+            }
             else
-                return item.ToString();
-        }
-        return item?.ToString();
-    }
-    public string NativeGetItemText(int index)
-    {
-        self.Model.GetIter(out var iter, new TreePath(new int[] { index }));
-        var val = self.Model.GetValue(iter, 1);
-        return val.ToString();
-    }
-    public void NativeAdd(int index, string? value, string? text)
-    {
-        if (_sorted == false && index > -1)
-        {
-            self.Insert(index, value, text);
-        }
-        else
-        {
-            self.Append(value, text);
-        }
-    }
-    private bool _sorted;
-    public bool Sorted { get => _sorted; set => _sorted = value; }
-    public object? _DataSource;
-    public override object? DataSource
-    {
-        get => _DataSource;
-        set
-        {
-            _DataSource = value;
-            if (self.IsRealized)
             {
-                OnSetDataSource();
+                 
+                self.Append(value, text);
+            }
+        }
+        private bool _sorted;
+        public bool Sorted { get=> _sorted; set=> _sorted = value; }
+        public object _DataSource = null!;
+        public override object DataSource
+        {
+            get => _DataSource;
+            set {
+                _DataSource = value;
+                if (self.IsRealized)
+                {
+                    OnSetDataSource();
+                }
+            }
+        }
+        private void OnSetDataSource()
+        {
+            if (_DataSource != null)
+            {
+                if (_DataSource is DataTable dtable)
+                {
+                    LoadDataTableSource(dtable);
+                }
+                else if (_DataSource is DataView dview)
+                {
+                    LoadDataTableSource(dview.Table);
+                }
+                else if (_DataSource is IList list)
+                {
+                    LoadListSource(list);
+                }
+            }
+        }
+        private void LoadDataTableSource(DataTable dtable)
+        {
+            itemsData.Clear();
+            if(dtable.Columns.Contains(ValueMember)&& dtable.Columns.Contains(DisplayMember))
+            {
+                foreach (DataRow row in dtable.Rows)
+                    itemsData.Add(row[ValueMember].ToString(), row[DisplayMember].ToString(), row);
+            }
+            else if (dtable.Columns.Contains(DisplayMember))
+            {
+                foreach (DataRow row in dtable.Rows)
+                    itemsData.Add("", row[DisplayMember].ToString(), row);
+            }
+            else
+            {
+                throw new Exception("The DisplayMember property is not with assigned a value or the field name does not exist");
+            }
+        }
+        private void LoadListSource(IList list)
+        {
+            itemsData.Clear();
+            if (list.Count > 0)
+            {
+                Type type = list[0].GetType();
+                var valproperty = type.GetProperty(ValueMember);
+                var disproperty = type.GetProperty(DisplayMember);
+                foreach (var entry in list)
+                    itemsData.Add(valproperty?.GetValue(entry)?.ToString()??string.Empty, disproperty?.GetValue(entry)?.ToString() ?? string.Empty, entry);
             }
         }
     }
-    private void OnSetDataSource()
-    {
-        if (_DataSource != null)
-        {
-            if (_DataSource is DataTable dtable)
-            {
-                LoadDataTableSource(dtable);
-            }
-            else if (_DataSource is DataView dview)
-            {
-                LoadDataTableSource(dview.Table);
-            }
-            else if (_DataSource is IList list)
-            {
-                LoadListSource(list);
-            }
-        }
-    }
-    private void LoadDataTableSource(DataTable dtable)
-    {
-        itemsData.Clear();
-        if (dtable.Columns.Contains(ValueMember) && dtable.Columns.Contains(DisplayMember))
-        {
-            foreach (DataRow row in dtable.Rows)
-                itemsData.Add(row[ValueMember].ToString(), row[DisplayMember].ToString(), row);
-        }
-        else if (dtable.Columns.Contains(DisplayMember))
-        {
-            foreach (DataRow row in dtable.Rows)
-                itemsData.Add("", row[DisplayMember].ToString(), row);
-        }
-        else
-        {
-            throw new Exception("DisplayMember属性未赋值或字段名不存在");
-        }
-    }
-    private void LoadListSource(IList list)
-    {
-        itemsData.Clear();
-        if (list.Count > 0)
-        {
-            var type = list[0].GetType();
-            var valproperty = type.GetProperty(ValueMember);
-            var disproperty = type.GetProperty(DisplayMember);
-            foreach (var entry in list)
-                itemsData.Add(valproperty?.GetValue(entry)?.ToString(), disproperty?.GetValue(entry)?.ToString(), entry);
-        }
-    }
-}

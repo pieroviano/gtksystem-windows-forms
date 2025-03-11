@@ -462,4 +462,7 @@
   <data name="GtkMainForm_panel3_Paint_testText" xml:space="preserve">
     <value>test文本</value>
   </data>
+  <data name="TestDataForm_button1_Click_Asynchronous_loading_of_network_images" xml:space="preserve">
+	  <value>网络图片异步加载</value>
+  </data>
 </root>

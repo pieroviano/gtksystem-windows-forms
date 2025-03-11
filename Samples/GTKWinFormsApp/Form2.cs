@@ -84,26 +84,33 @@ public partial class ListViewForm : Form
         listBox1.DisplayMember = "CreateDate";
         listBox1.DataSource = dt;
 
-        FormClosing += Form2_FormClosing;
-        FormClosed += Form2_FormClosed;
-    }
-    int i = 4;
-    private void Timer1_Tick(object? sender, System.EventArgs e)
-    {
-        // listBox1.Items.Clear();
-        //for (int i = 0; i < 10; i++)
-        //{
-        i++;
-        listBox1.Items.Add(string.Format(
-            Resources.ListViewForm_Timer1_Tick_Exception_Warning__0______Server_Room_Air_Conditioning_Operation_Monitoring_Event______1__________2_,
-            i, DateTime.Now.Ticks, DateTime.Now.ToString(CultureInfo.InvariantCulture)));
-        listBox1.TopIndex = i;
-        // }
-    }
-    private void Form2_FormClosed(object? sender, FormClosedEventArgs e)
-    {
-        MessageBox.Show("Form2_FormClosed");
-    }
+            this.FormClosing += Form2_FormClosing;
+            this.FormClosed += Form2_FormClosed;
+            listView1.MouseDown += ListView1_MouseDown;
+        }
+
+        private void ListView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            ListViewItem? item = listView1.GetItemAt(e.X, e.Y);
+            if (item != null)
+            {
+                Console.WriteLine(item.Text);
+            }
+        }
+
+        int i = 4;
+        private void Timer1_Tick(object sender, System.EventArgs e)
+        {
+            i++;
+            listBox1.Items.Add(string.Format(
+                Resources.ListViewForm_Timer1_Tick_Exception_Warning__0______Server_Room_Air_Conditioning_Operation_Monitoring_Event______1__________2_,
+                i, DateTime.Now.Ticks, DateTime.Now.ToString(CultureInfo.InvariantCulture)));
+            listBox1.TopIndex = i;
+        }
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            MessageBox.Show("Form2_FormClosed");
+        }
 
     private void Form2_FormClosing(object? sender, FormClosingEventArgs e)
     {
@@ -144,15 +151,15 @@ public partial class ListViewForm : Form
 
     }
 
-    private void button1_Click(object sender, EventArgs e)
-    {
-        // listView1.Clear();
-        listView1.Groups.Add("listViewGroup11", "listViewGroup11");
-        listView1.Groups.Add("listViewGroup21", "listViewGroup21");
-        listView1.Items.Add(new ListViewItem(Resources.ListViewForm_button1_Click_1_Add_group_and_data_simultaneously)
-        { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });
-        listView1.Items.Add(new ListViewItem(Resources.ListViewForm_button1_Click_2_Add_data_to_a_specified_group)
-        { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //listView1.Clear();
+            listView1.Groups.Add("listViewGroup11", "listViewGroup11");
+            listView1.Groups.Add("listViewGroup21", "listViewGroup21");
+            listView1.Items.Add(new ListViewItem(Resources.ListViewForm_button1_Click_1_Add_group_and_data_simultaneously)
+                { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });
+            listView1.Items.Add(new ListViewItem(Resources.ListViewForm_button1_Click_2_Add_data_to_a_specified_group)
+                { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
         var m = new ListViewItem(Resources.ListViewForm_button1_Click_3_This_is_a_method_to_add_multi_column_data, 0);
         m.Checked = true;

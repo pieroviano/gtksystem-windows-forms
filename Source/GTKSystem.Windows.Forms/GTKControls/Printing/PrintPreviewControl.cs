@@ -13,59 +13,64 @@ public class PrintPreviewControl : Control
 {
     public readonly ViewportBase self = new();
     public override object GtkControl => self;
-    private const double defaultZoom = .3;
+    private const double DefaultZoom = .3;
 
-    // Spacing per page, in mm
-    private const int border = 10;
-    private static readonly object startPageChangedEvent = new();
-    private PrintDocument? _document;
-    private int _startPage;  // 0-based
-    private int _rows = 1;
-    private int _columns = 1;
-    private bool _autoZoom = true;
-    private double _zoom = defaultZoom;
-    private readonly ViewportBase paper;
-    private const double pxscale = 0.75;
-    public PrintPreviewControl()
-    {
-        Size = new Size(600, 500);
-        self.StyleContext.AddClass("PrintPreviewBack");
-
-        paper = new ViewportBase();
-        paper.Valign = Align.Center;
-        paper.Halign = Align.Center;
-        paper.StyleContext.AddClass("Paper");
-        paper.Drawn += paper_Drawn;
-        var scroll = new ScrolledWindow();
-        scroll.Child = paper;
-        self.Add(scroll);
-        self.Realized += Self_Shown;
-
-        ResetBackColor();
-        ResetForeColor();
-    }
-
-    private void Self_Shown(object? sender, EventArgs e)
-    {
-        if (AutoZoom == false)
+        // Spacing per page, in mm
+        private const int Border = 10;
+        private static readonly object s_startPageChangedEvent = new();
+        private PrintDocument? _document;
+        private int _startPage;  // 0-based
+        private int _rows = 1;
+        private int _columns = 1;
+        private bool _autoZoom = true;
+        private double _zoom = DefaultZoom;
+        private ScrolledWindow? scroll;
+        private ViewportBase? paper;
+        private const double pxscale = 0.75;
+        public PrintPreviewControl()
         {
-            paper.WidthRequest = (int)Math.Round(_document!.PageSetup.GetPaperWidth(Unit.Points) * _zoom / 0.75, 0);
-            paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) * _zoom / 0.75, 0);
+            Init();
         }
-    }
-    private void paper_Drawn(object? o, DrawnArgs args)
-    {
-        if (_document != null)
+
+        private void Init()
         {
-            var setup = _document.PageSetup;
-            _document.OnBeginPrint(new PrintEventArgs());
-            var cr = args.Cr;
-            var top = (int)Math.Round(setup.GetTopMargin(Unit.Points) / pxscale, 0);
-            var left = (int)Math.Round(setup.GetLeftMargin(Unit.Points) / pxscale, 0);
-            var right = (int)Math.Round(setup.GetRightMargin(Unit.Points) / pxscale, 0);
-            var bottom = (int)Math.Round(setup.GetBottomMargin(Unit.Points) / pxscale, 0);
-            var width = (int)Math.Round(setup.GetPaperWidth(Unit.Points) / pxscale, 0); //page<paper
-            var height = (int)Math.Round(setup.GetPaperHeight(Unit.Points) / pxscale, 0);
+            Size = new Size(600, 500);
+            self.StyleContext.AddClass("PrintPreviewBack");
+            
+            paper = new ViewportBase();
+            paper.Valign = Align.Center;
+            paper.Halign = Align.Center;
+            paper.StyleContext.AddClass("Paper");
+            paper.Drawn += paper_Drawn;
+            scroll = new ScrolledWindow();
+            scroll.Child = paper;
+            self.Add(scroll);
+            self.Realized += Self_Realized;
+            ResetBackColor();
+            ResetForeColor();
+        }
+
+        private void Self_Realized(object? sender, EventArgs e)
+        {
+            if (AutoZoom == false)
+            {
+                paper.WidthRequest = (int)Math.Round(_document.PageSetup.GetPaperWidth(Unit.Points) * _zoom / 0.75, 0);
+                paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) * _zoom / 0.75, 0);
+            }
+        }
+        private void paper_Drawn(object o, DrawnArgs args)
+        {
+            if (_document != null)
+            {
+                PageSetup setup = _document.PageSetup;
+                _document.OnBeginPrint(new PrintEventArgs());
+                var cr = args.Cr;
+                int top = (int)Math.Round(setup.GetTopMargin(Unit.Points) / pxscale, 0);
+                int left = (int)Math.Round(setup.GetLeftMargin(Unit.Points) / pxscale, 0);
+                int right = (int)Math.Round(setup.GetRightMargin(Unit.Points) / pxscale, 0);
+                int bottom = (int)Math.Round(setup.GetBottomMargin(Unit.Points) / pxscale, 0);
+                int width = (int)Math.Round(setup.GetPaperWidth(Unit.Points) / pxscale, 0); //page<paper
+                int height = (int)Math.Round(setup.GetPaperHeight(Unit.Points) / pxscale, 0);
 
             if (AutoZoom == false)
             {
@@ -102,7 +107,7 @@ public class PrintPreviewControl : Control
         set => _autoZoom = value;
     }
 
-    [DefaultValue(defaultZoom)]
+    [DefaultValue(DefaultZoom)]
     public double Zoom
     {
         get => _zoom;
@@ -168,13 +173,13 @@ public class PrintPreviewControl : Control
 
     public event EventHandler? StartPageChanged
     {
-        add => Events.AddHandler(startPageChangedEvent, value);
-        remove => Events.RemoveHandler(startPageChangedEvent, value);
+        add => Events.AddHandler(s_startPageChangedEvent, value);
+        remove => Events.RemoveHandler(s_startPageChangedEvent, value);
     }
 
     protected virtual void OnStartPageChanged(EventArgs e)
     {
-        ((EventHandler)Events[startPageChangedEvent])?.Invoke(this, e);
+        ((EventHandler)Events[s_startPageChangedEvent])?.Invoke(this, e);
     }
 
     [Localizable(true)]

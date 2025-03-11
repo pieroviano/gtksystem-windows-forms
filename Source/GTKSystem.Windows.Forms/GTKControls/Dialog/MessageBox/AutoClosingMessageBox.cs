@@ -1,5 +1,4 @@
-﻿#if NETSTANDARD
-using Gtk;
+﻿using Gtk;
 using System.Security.Cryptography;
 
 namespace System.Windows.Forms;
@@ -92,4 +91,3 @@ public class AutoClosingMessageBox
         return (DialogResult)(int)MessageBox!.Show(text, caption, (FormsMessageBoxButtons)(int)buttons);
     }
 }
-#endif

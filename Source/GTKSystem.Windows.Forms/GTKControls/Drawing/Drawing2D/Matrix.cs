@@ -158,7 +158,7 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     /// <returns>This method returns <see langword="true" /> if <paramref name="obj" /> is the specified <see cref="T:System.Drawing.Drawing2D.Matrix" /> identical to this <see cref="T:System.Drawing.Drawing2D.Matrix" />; otherwise, <see langword="false" />.</returns>
     public override bool Equals(object? obj)
     {
-        return this.GetHashCode() == obj?.GetHashCode();
+        return GetHashCode() == obj?.GetHashCode();
     }
 
     public override int GetHashCode()
@@ -169,7 +169,7 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     /// <summary>Inverts this <see cref="T:System.Drawing.Drawing2D.Matrix" />, if it is invertible.</summary>
     public void Invert()
     {
-        this.InvertValue = true;
+        InvertValue = true;
     }
 
     /// <summary>Multiplies this <see cref="T:System.Drawing.Drawing2D.Matrix" /> by the matrix specified in the <paramref name="matrix" /> parameter, by prepending the specified <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>

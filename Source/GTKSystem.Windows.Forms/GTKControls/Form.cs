@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
-using Container = Gtk.Container;
 using Icon = System.Drawing.Icon;
 
 namespace System.Windows.Forms;
@@ -19,20 +18,24 @@ namespace System.Windows.Forms;
 [DesignerCategory("Form")]
 [DefaultEvent(nameof(Load)),
  InitializationEvent(nameof(Load))]
-public class Form : ContainerControl, IWin32Window
+public partial class Form : ContainerControl, IWin32Window
 {
-    public new Gtk.Application Application { get; } = Forms.Application.Init();
-    public FormBase self = new();
-    public override object GtkControl => self;
-    private readonly Overlay contanter = new();
-    private ObjectCollection? objectCollection;
-    public override event EventHandler? SizeChanged;
-    private FormWindowState _WindowState;
+    private Gtk.Application app = System.Windows.Forms.Application.Init();
+    public FormBase self = new FormBase();
 
+    public override object GtkControl
+    {
+        get => self;
+    }
+
+    private readonly Overlay contanter = new Overlay();
+    private ObjectCollection? _ObjectCollection;
+    public override event EventHandler? SizeChanged;
     public event EventHandler<WindowStateArgs>? WindowStateChanging;
 
-    public Form()
+    public Form() : base()
     {
+        objectCollection = new ObjectCollection(this, null);
         Init();
     }
 
@@ -40,8 +43,8 @@ public class Form : ContainerControl, IWin32Window
     {
         self.Title = title;
     }
-    
-    internal void Init()
+
+    private void Init()
     {
         SetScrolledWindow(self);
         contanter.Valign = Align.Fill;
@@ -50,10 +53,9 @@ public class Form : ContainerControl, IWin32Window
         contanter.Vexpand = true;
         contanter.MarginBottom = 0;
         contanter.MarginEnd = 0;
-        contanter.Add(new Fixed { Halign = Align.Fill, Valign = Align.Fill });
-        self.scrollView.Child = contanter;
-        objectCollection = new ObjectCollection(this, contanter);
-
+        contanter.Add(new Fixed() { Halign = Align.Fill, Valign = Align.Fill });
+        self.ScrollView.Child = contanter;
+        _ObjectCollection = new ObjectCollection(this, contanter);
         self.ResizeChecked += Self_ResizeChecked;
         self.Shown += Control_Shown;
         self.CloseWindowEvent += Self_CloseWindowEvent;
@@ -61,13 +63,10 @@ public class Form : ContainerControl, IWin32Window
 
     public FormWindowState WindowState
     {
-        get
-        {
-            return this._WindowState;
-        }
+        get { return this.windowState; }
         set
         {
-            if (this._WindowState != value)
+            if (this.windowState != value)
             {
                 WindowStateArgs windowStateArg = new WindowStateArgs(value);
                 EventHandler<WindowStateArgs>? eventHandler = WindowStateChanging;
@@ -78,22 +77,25 @@ public class Form : ContainerControl, IWin32Window
                 else
                 {
                 }
+
                 if (windowStateArg.Cancel)
                 {
                     return;
                 }
             }
-            this._WindowState = value;
-            if (this.self.IsMapped)
+
+            this.windowState = value;
+            if (self.IsMapped)
             {
                 if (value == FormWindowState.Maximized)
                 {
-                    this.self.Maximize();
+                    self.Maximize();
                     return;
                 }
+
                 if (value == FormWindowState.Minimized)
                 {
-                    this.self.Iconify();
+                    self.Iconify();
                 }
             }
         }
@@ -118,6 +120,7 @@ public class Form : ContainerControl, IWin32Window
         {
             OnFormClosed(new FormClosedEventArgs(CloseReason.UserClosing));
         }
+
         return closing.Cancel == false;
     }
 
@@ -132,6 +135,7 @@ public class Form : ContainerControl, IWin32Window
     }
 
     private bool isControlShown;
+
     private void Control_Shown(object? sender, EventArgs e)
     {
         if (isControlShown == false)
@@ -140,22 +144,32 @@ public class Form : ContainerControl, IWin32Window
             if (self.Titlebar is HeaderBar titlebar)
             {
                 titlebar.DecorationLayout = "menu:close";
-                if (formBorderStyle == FormBorderStyle.FixedToolWindow || formBorderStyle == FormBorderStyle.SizableToolWindow)
+                if (formBorderStyle == FormBorderStyle.FixedToolWindow ||
+                    formBorderStyle == FormBorderStyle.SizableToolWindow)
                 {
                 }
                 else
                 {
                     if (MaximizeBox)
                     {
-                        var maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar) { Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
+                        var maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar)
+                        {
+                            Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center,
+                            Halign = Align.Center
+                        };
                         maximize.StyleContext.AddClass("maximize");
                         maximize.StyleContext.AddClass("titlebutton");
                         maximize.Clicked += Maximize_Clicked;
                         titlebar.PackEnd(maximize);
                     }
+
                     if (MinimizeBox)
                     {
-                        var minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar) { Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
+                        var minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar)
+                        {
+                            Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center,
+                            Halign = Align.Center
+                        };
                         minimize.StyleContext.AddClass("minimize");
                         minimize.StyleContext.AddClass("titlebutton");
                         minimize.Clicked += Minimize_Clicked;
@@ -163,8 +177,10 @@ public class Form : ContainerControl, IWin32Window
                     }
                 }
             }
+
             OnLoadHandler();
         }
+
         OnShownHandler();
     }
 
@@ -200,8 +216,20 @@ public class Form : ContainerControl, IWin32Window
 
     public override event ScrollEventHandler? Scroll
     {
-        add => self.Scroll += value;
-        remove => self.Scroll += value;
+        add
+        {
+            if (value != null)
+            {
+                self.Scroll += value;
+            }
+        }
+        remove
+        {
+            if (value != null)
+            {
+                self.Scroll += value;
+            }
+        }
     }
 
     private void OnLoadHandler()
@@ -223,6 +251,7 @@ public class Form : ContainerControl, IWin32Window
         {
             OnBindingContextChanged(e);
         }
+
         foreach (Control control in Controls)
         {
             control.OnLoad(e);
@@ -233,6 +262,7 @@ public class Form : ContainerControl, IWin32Window
     {
         Show(null);
     }
+
     public void Show(IWin32Window? owner)
     {
         if (owner == this)
@@ -254,31 +284,18 @@ public class Form : ContainerControl, IWin32Window
         {
             Parent = parent;
             self.SetPosition(WindowPosition.CenterOnParent);
+            self.DestroyWithParent = true;
             self.Activate();
         }
 
         if (self.IsVisible == false)
         {
-            if (AutoScroll)
-            {
-                self.scrollView.HscrollbarPolicy = PolicyType.Automatic;
-                self.scrollView.VscrollbarPolicy = PolicyType.Automatic;
-            }
-            else
-            {
-                self.scrollView.HscrollbarPolicy = PolicyType.Never;
-                self.scrollView.VscrollbarPolicy = PolicyType.Never;
-            }
-
             FormBorderStyle = FormBorderStyle;
             if (MaximizeBox == false && MinimizeBox == false)
             {
                 self.TypeHint = Gdk.WindowTypeHint.Dialog;
             }
-            else if (MaximizeBox == false && MinimizeBox)
-            {
-                self.Resizable = false;
-            }
+
             self.Resize(self.DefaultWidth, self.DefaultHeight);
 
             if (WindowState == FormWindowState.Maximized)
@@ -289,6 +306,7 @@ public class Form : ContainerControl, IWin32Window
             {
                 self.Iconify();
             }
+
             if (self.IsMapped == false)
             {
                 try
@@ -306,6 +324,7 @@ public class Form : ContainerControl, IWin32Window
                             else if (Icon.FileName != null && File.Exists("Resources\\" + Icon.FileName))
                                 self.SetIconFromFile("Resources\\" + Icon.FileName);
                         }
+
                         var titlebar = (HeaderBar)self.Titlebar;
                         var flag = new Gtk.Image(self.Icon);
                         flag.Visible = true;
@@ -313,16 +332,18 @@ public class Form : ContainerControl, IWin32Window
                     }
                     else
                     {
-                        self.Icon = new Gdk.Pixbuf(GetType().Assembly, "System.Windows.Forms.Resources.System.view-more.png");
+                        self.Icon = new Gdk.Pixbuf(GetType().Assembly,
+                            "System.Windows.Forms.Resources.System.view-more.png");
                     }
 
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Trace.Write(ex);
                 }
             }
         }
+
         OnLoad(EventArgs.Empty);
         self.ShowAll();
     }
@@ -331,6 +352,7 @@ public class Form : ContainerControl, IWin32Window
     {
         return ShowDialog(null);
     }
+
     public DialogResult ShowDialog(IWin32Window? owner)
     {
         if (owner == this)
@@ -347,6 +369,7 @@ public class Form : ContainerControl, IWin32Window
         {
             throw new InvalidOperationException("ShowDialogOnDisabled");
         }
+
         Show(owner);
         self.Run();
 
@@ -356,11 +379,13 @@ public class Form : ContainerControl, IWin32Window
     public event EventHandler? Shown;
     public event FormClosingEventHandler? FormClosing;
     public event FormClosedEventHandler? FormClosed;
+
     public override string Text
     {
         get => self.Title;
         set => self.Title = value;
     }
+
     public override Size ClientSize
     {
         get => new(self.AllocatedWidth, self.AllocatedHeight);
@@ -371,9 +396,11 @@ public class Form : ContainerControl, IWin32Window
             self.SetDefaultSize(value.Width, value.Height);
         }
     }
+
     public SizeF AutoScaleDimensions { get; set; }
     public AutoScaleMode AutoScaleMode { get; set; }
     public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
+
     public FormBorderStyle FormBorderStyle
     {
         get => formBorderStyle;
@@ -402,16 +429,20 @@ public class Form : ContainerControl, IWin32Window
             }
         }
     }
+
     public FormStartPosition StartPosition { get; set; }
     private FormWindowState windowState = FormWindowState.Normal;
+    private readonly ObjectCollection objectCollection;
 
     public DialogResult DialogResult { get; set; }
+
     public void Close()
     {
         self?.CloseWindow();
         OnFormClosed(new FormClosedEventArgs(CloseReason.None));
         OnDisposed(new FormClosedEventArgs(CloseReason.None));
     }
+
     public override void Hide()
     {
         self?.Hide();
@@ -431,24 +462,31 @@ public class Form : ContainerControl, IWin32Window
             contanter.MarginBottom = value.Bottom;
         }
     }
+
     public bool MaximizeBox { get; set; } = true;
     public bool MinimizeBox { get; set; } = true;
+
     public double Opacity
     {
         get => self.Opacity;
         set => self.Opacity = value;
     }
+
     public bool ShowIcon { get; set; } = true;
+
     public bool ShowInTaskbar
     {
         get => self.SkipTaskbarHint == false;
         set => self.SkipTaskbarHint = value == false;
     }
+
     public Icon? Icon { get; set; }
+
     public override void SuspendLayout()
     {
         created = false;
     }
+
     public override void ResumeLayout(bool resume)
     {
         created = resume == false;
@@ -458,18 +496,21 @@ public class Form : ContainerControl, IWin32Window
     {
         created = true;
     }
+
     public bool Activate()
     {
         return self.Activate();
     }
+
     public MenuStrip? MainMenuStrip { get; set; }
 
     public override IntPtr Handle => self.Handle;
 
     public class ObjectCollection : ControlCollection
     {
-        Container? owner;
-        public ObjectCollection(Control? control, Container? owner) : base(control, owner)
+        Gtk.Container? owner;
+
+        public ObjectCollection(Control? control, Gtk.Container? owner) : base(control, owner)
         {
             this.owner = owner;
         }
@@ -495,10 +536,12 @@ public class BindingContext : ContextBoundObject
             {
                 throw new ArgumentNullException("dataSource");
             }
+
             if (dataMember == null)
             {
                 dataMember = "";
             }
+
             wRef = new WeakReference(dataSource, false);
             dataSourceHashCode = dataSource.GetHashCode();
             this.dataMember = dataMember.ToLower(CultureInfo.InvariantCulture);
@@ -510,11 +553,13 @@ public class BindingContext : ContextBoundObject
             {
                 return false;
             }
+
             var hashKey = (HashKey)target;
             if (wRef.Target != hashKey.wRef.Target)
             {
                 return false;
             }
+
             return dataMember == hashKey.dataMember;
         }
 
@@ -535,10 +580,12 @@ public class BindingContext : ContextBoundObject
             {
                 CheckPropertyBindingCycles(newBindingContext, binding);
             }
+
             var bindToObject = binding.BindToObject;
             if (bindToObject != null)
             {
-                var bindingManagerBase1 = newBindingContext.EnsureListManager(bindToObject.DataSource, bindToObject.BindingMemberInfo.BindingPath);
+                var bindingManagerBase1 = newBindingContext.EnsureListManager(bindToObject.DataSource,
+                    bindToObject.BindingMemberInfo.BindingPath);
                 if (bindingManagerBase1 != null)
                 {
                     bindingManagerBase1.Bindings.Add(binding);
@@ -554,24 +601,29 @@ public class BindingContext : ContextBoundObject
         {
             dataMember = "";
         }
+
         if (dataSource is ICurrencyManagerProvider)
         {
-            relatedCurrencyManager = (dataSource as ICurrencyManagerProvider)?.GetRelatedCurrencyManager(dataMember);
+            relatedCurrencyManager =
+                (dataSource as ICurrencyManagerProvider)?.GetRelatedCurrencyManager(dataMember);
             if (relatedCurrencyManager != null)
             {
                 return relatedCurrencyManager;
             }
         }
+
         var key = GetKey(dataSource, dataMember);
         var item = listManagers[key] as WeakReference;
         if (item != null)
         {
             relatedCurrencyManager = (BindingManagerBase)item.Target;
         }
+
         if (relatedCurrencyManager != null)
         {
             return relatedCurrencyManager;
         }
+
         if (dataMember.Length != 0)
         {
             var num = dataMember.LastIndexOf(".", StringComparison.Ordinal);
@@ -583,6 +635,7 @@ public class BindingContext : ContextBoundObject
             {
                 throw new ArgumentException("RelatedListManagerChild");
             }
+
             if (!typeof(IList).IsAssignableFrom(propertyDescriptor.PropertyType))
             {
                 relatedCurrencyManager = new RelatedPropertyManager(bindingManagerBase, str1);
@@ -600,6 +653,7 @@ public class BindingContext : ContextBoundObject
         {
             relatedCurrencyManager = new PropertyManager(dataSource);
         }
+
         if (item != null)
         {
             item.Target = relatedCurrencyManager;
@@ -608,6 +662,7 @@ public class BindingContext : ContextBoundObject
         {
             listManagers.Add(key, new WeakReference(relatedCurrencyManager, false));
         }
+
         ScrubWeakRefs();
         return relatedCurrencyManager;
     }
@@ -621,12 +676,15 @@ public class BindingContext : ContextBoundObject
             {
                 continue;
             }
+
             if (arrayLists == null)
             {
                 arrayLists = new ArrayList();
             }
+
             arrayLists.Add(listManager.Key);
         }
+
         if (arrayLists != null)
         {
             foreach (var arrayList in arrayLists)
@@ -655,6 +713,7 @@ public class BindingContext : ContextBoundObject
         {
             return;
         }
+
         if (newBindingContext.Contains(propBinding.BindableComponent, ""))
         {
             var bindingManagerBase = newBindingContext.EnsureListManager(propBinding.BindableComponent, "");
@@ -663,7 +722,8 @@ public class BindingContext : ContextBoundObject
                 var item = bindingManagerBase.Bindings[i];
                 if (item.DataSource == propBinding.BindableComponent)
                 {
-                    if (propBinding.BindToObject?.BindingMemberInfo.BindingMember.Equals(item.PropertyName)??false)
+                    if (propBinding.BindToObject?.BindingMemberInfo.BindingMember.Equals(item.PropertyName) ??
+                        false)
                     {
                         throw new ArgumentException(@"DataBindingCycle", "propBinding");
                     }
@@ -675,5 +735,4 @@ public class BindingContext : ContextBoundObject
             }
         }
     }
-
 }

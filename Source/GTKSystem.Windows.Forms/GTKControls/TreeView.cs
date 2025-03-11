@@ -10,41 +10,39 @@ using Gtk;
 using System.ComponentModel;
 using Image = System.Drawing.Image;
 
-namespace System.Windows.Forms;
-
-[DesignerCategory("Component")]
-public class TreeView : ScrollableControl
+namespace System.Windows.Forms
 {
-    public readonly TreeViewBase self = new();
-    public override object GtkControl => self;
-    private readonly TreeStore _store;
-    internal TreeNode root;
-    internal TreeStore Store => _store;
-
-    protected override void SetStyle(Widget widget)
+    [DesignerCategory("Component")]
+    public partial class TreeView : ScrollableControl
     {
-        base.SetStyle(self.TreeView);
-    }
-    private readonly CellRendererToggle renderercheckbox;
-    private readonly CellRendererIcon rendererPixbuf;
-    public TreeView()
-    {
-        root = new TreeNode(this)
+        public readonly TreeViewBase self = new TreeViewBase();
+        public override object GtkControl => self;
+        private readonly TreeStore _store;
+        internal TreeNode? root;
+        internal TreeStore Store { get { return _store; } }
+        protected override void SetStyle(Widget widget)
         {
-            Index = "-1",
-            Name = "__root"
-        };
-        _store = new TreeStore(typeof(string), typeof(bool), typeof(int), typeof(string));
-        self.TreeView.Model = _store;
-        self.TreeView.Realized += TreeView_Realized;
-        self.TreeView.Selection.Changed += Selection_Changed;
-        self.TreeView.RowActivated += TreeView_RowActivated;
-        self.TreeView.RowCollapsed += TreeView_RowCollapsed;
-        self.TreeView.RowExpanded += TreeView_RowExpanded;
-        BorderStyle = BorderStyle.Fixed3D;
+            self.TreeView.Name = Name;
+            base.SetStyle(self.TreeView);
+        }
+        private readonly CellRendererToggle renderercheckbox;
+        private readonly CellRendererIcon rendererPixbuf;
+        public TreeView() : base()
+        {
+            root = new TreeNode(this);
+            root.Index = "-1";
+            root.Name = "__root";
+            _store = new TreeStore(typeof(string), typeof(bool), typeof(int), typeof(string));
+            self.TreeView.Model = _store;
+            self.TreeView.Realized += TreeView_Realized;
+            self.TreeView.Selection.Changed += Selection_Changed;
+            self.TreeView.RowActivated += TreeView_RowActivated;
+            self.TreeView.RowCollapsed += TreeView_RowCollapsed;
+            self.TreeView.RowExpanded += TreeView_RowExpanded;
+            BorderStyle = BorderStyle.Fixed3D;
 
         var column = new TreeViewColumn();
-        column.Title = "树目录";
+        column.Title = "Tree Directory";
 
         renderercheckbox = new CellRendererToggle();
         renderercheckbox.Activatable = true;
@@ -55,38 +53,37 @@ public class TreeView : ScrollableControl
         column.PackStart(renderercheckbox, false);
         column.AddAttribute(renderercheckbox, "active", 1);
 
-        rendererPixbuf = new CellRendererIcon(this);
-        rendererPixbuf.IsExpanded = true;
-        rendererPixbuf.Visible = false;
-        column.PackStart(rendererPixbuf, false);
-        var renderertext = new CellRendererText();
-        renderertext.IsExpanded = true;
-        renderertext.PlaceholderText = "---";
-        column.PackStart(renderertext, true);
-        column.AddAttribute(renderertext, "text", 0);
-        self.TreeView.AppendColumn(column);
-    }
-    private bool isTreeViewRealized;
-    private void TreeView_Realized(object? sender, EventArgs e)
-    {
-        if (isTreeViewRealized == false)
+            rendererPixbuf = new CellRendererIcon(this);
+            rendererPixbuf.IsExpanded = true;
+            rendererPixbuf.Visible = false;
+            column.PackStart(rendererPixbuf, false);
+            CellRendererText renderertext = new CellRendererText();
+            renderertext.IsExpanded = true;
+            renderertext.PlaceholderText = "---";
+            column.PackStart(renderertext, true);
+            column.AddAttribute(renderertext, "text", 0);
+            self.TreeView.AppendColumn(column);
+        }
+        private void TreeView_Realized(object sender, EventArgs e)
         {
-            isTreeViewRealized = true;
             if (ImageList != null)
             {
+                TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
                 if (string.IsNullOrWhiteSpace(ImageKey))
                 {
                     Image? image = ImageList.GetBitmap(ImageIndex);
-                    rendererPixbuf.Pixbuf = image?.Pixbuf;
+                    if (image != null)
+                    {
+                        rendererPixbuf.Pixbuf = image.Pixbuf;
+                    }
                 }
                 else
                 {
-                    Image image = ImageList.GetBitmap(ImageKey);
+                    System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
                     rendererPixbuf.Pixbuf = image.Pixbuf;
                 }
             }
         }
-    }
 
     private void TreeView_RowExpanded(object? o, RowExpandedArgs args)
     {
@@ -282,89 +279,91 @@ public class TreeView : ScrollableControl
         public object? SelectedValue => SelectedNode?.Text;
 
         [DefaultValue("\\")]
-    public string PathSeparator
-    {
-        get;
-        set;
-    } = "\\";
-    public TreeNode? SelectedNode
-    {
-        get
+        public string PathSeparator
         {
-            if (self.TreeView.Selection.GetSelected(out _))
+            get;
+            set;
+        } = "\\";
+        public TreeNode? SelectedNode
+        {
+            get
             {
-                var paths = self.TreeView.Selection.GetSelectedRows();
-                TreeNode? result = null;
-                GetNodeChild(root, paths[0].Indices, ref result);
-                return result;
+                if (self.TreeView.Selection.GetSelected(out _)) {
+                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
+                    TreeNode? result = null;
+                    GetNodeChild(root, paths[0].Indices, ref result);
+                    return result;
+                }
+                else { return null; }
             }
-
-            return null;
-        }
-        set
-        {
-            if (value == null)
-                self.TreeView.Selection.UnselectAll();
-            else
-            {
-                self.TreeView.ExpandToPath(_store.GetPath(value.TreeIter));
-                self.TreeView.Selection.SelectIter(value.TreeIter);
-            }
-        }
-    }
-    public TreeNode TopNode
-    {
-        get => root;
-        set
-        {
-
-        }
-    }
-
-    public event TreeViewCancelEventHandler? BeforeSelect;
-    public event TreeViewEventHandler? AfterSelect;
-    public event TreeViewEventHandler? AfterCollapse;
-    public event TreeViewEventHandler? AfterExpand;
-    private void GetNodeChild(TreeNode node, int[] indices, ref TreeNode? result)
-    {
-        var nodeIndex = string.Join(",", indices);
-        foreach (var child in node.Nodes)
-        {
-            if (child.Index == nodeIndex)
-            {
-                result = child;
-                return;
-            }
-
-            if (nodeIndex.Length >= child.Index.Length)
-            {
-                GetNodeChild(child, indices, ref result);
-            }
-        }
-    }
-    private class CellRendererIcon : CellRendererPixbuf
-    {
-        public readonly TreeView _treeView;
-        public CellRendererIcon(TreeView treeView)
-        {
-            _treeView = treeView;
-        }
-        [Property("pixbufindex")]
-        public int PixbufIndex
-        {
             set
             {
-                if (value < (_treeView.ImageList?.Images.Count ?? 0))
-                    Pixbuf = _treeView.ImageList?.Images[value]?.Pixbuf;
+                if (value == null)
+                    self.TreeView.Selection.UnselectAll();
+                else
+                {
+                    self.TreeView.ExpandToPath(_store.GetPath(value.TreeIter));
+                    self.TreeView.Selection.SelectIter(value.TreeIter);
+                }
             }
         }
-        [Property("pixbufkey")]
-        public string? PixbufKey
+        public TreeNode? TopNode
         {
+            get
+            {
+                return root;
+            }
             set
             {
-                if (string.IsNullOrWhiteSpace(value) == false)
-                    Pixbuf = _treeView.ImageList?.Images[value]?.Pixbuf;
+               
+            }
+        }
+        
+        public event TreeViewCancelEventHandler? BeforeSelect;
+        public event TreeViewEventHandler? AfterSelect;
+        public event TreeViewEventHandler? AfterCollapse;
+        public event TreeViewEventHandler? AfterExpand;
+        private void GetNodeChild(TreeNode? node, int[] indices, ref TreeNode? result)
+        {
+            string nodeIndex= string.Join(",", indices);
+            foreach (TreeNode? child in node.Nodes)
+            {
+                if (child.Index == nodeIndex)
+                {
+                    result = child;
+                    return;
+                }
+                else if (nodeIndex.Length >= child.Index.Length)
+                {
+                    GetNodeChild(child, indices, ref result);
+                }
+            }
+        }
+        private class CellRendererIcon : CellRendererPixbuf
+        {
+            public readonly TreeView _treeView;
+            public CellRendererIcon(TreeView treeView)
+            {
+                _treeView = treeView;
+            }
+            [Property("pixbufindex")]
+            public int PixbufIndex
+            {
+                set
+                {
+                    if (value < _treeView.ImageList.Images.Count)
+                        Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
+                }
+            }
+            [Property("pixbufkey")]
+            public string PixbufKey
+            {
+                set
+                {
+
+                    if (string.IsNullOrWhiteSpace(value) == false && _treeView.ImageList.Images.ContainsKey(value))
+                        Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
+                }
             }
         }
     }

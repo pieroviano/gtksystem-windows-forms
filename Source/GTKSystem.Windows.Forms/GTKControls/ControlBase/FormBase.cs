@@ -5,25 +5,25 @@ namespace System.Windows.Forms;
 
 public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
 {
-    public new Window? Parent { get; }
-    public readonly ScrolledWindow scrollView = new();
+    public new Window? Parent { get; set; }
+    public readonly ScrolledWindow ScrollView = new();
     public IGtkControlOverride Override { get; set; }
     public bool AutoScroll
     {
-        get => scrollView.VscrollbarPolicy == PolicyType.Automatic;
+        get => ScrollView.VscrollbarPolicy == PolicyType.Automatic;
         set
         {
             if (value)
             {
                 if (VScroll)
-                    scrollView.VscrollbarPolicy = PolicyType.Automatic;
+                    ScrollView.VscrollbarPolicy = PolicyType.Automatic;
                 if (HScroll)
-                    scrollView.HscrollbarPolicy = PolicyType.Automatic;
+                    ScrollView.HscrollbarPolicy = PolicyType.Automatic;
             }
             else
             {
-                scrollView.VscrollbarPolicy = PolicyType.Never;
-                scrollView.HscrollbarPolicy = PolicyType.Never;
+                ScrollView.VscrollbarPolicy = PolicyType.Never;
+                ScrollView.HscrollbarPolicy = PolicyType.Never;
             }
         }
     }
@@ -31,38 +31,36 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
     public bool VScroll { get; set; } = true;
     public bool HScroll { get; set; } = true;
 
-    public delegate bool CloseWindowHandler(object? sender, EventArgs e);
-    public event CloseWindowHandler? CloseWindowEvent;
-    public event ScrollEventHandler? Scroll;
-    public FormBase(Window? parent = null) : base("title", ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
-    {
-        Parent = parent;
-        DestroyWithParent = true;
-        Override = new GtkFormsControlOverride(this);
-        Override.AddClass("Form");
-        WindowPosition = WindowPosition.Center;
-        BorderWidth = 0;
-        ContentArea.BorderWidth = 0;
-        ContentArea.Spacing = 0;
-        ContentArea.Homogeneous = false;
+        public delegate bool CloseWindowHandler(object? sender, EventArgs e);
+        public event CloseWindowHandler? CloseWindowEvent;
+        public event ScrollEventHandler? Scroll;
+        public FormBase(Window? parent = null) : base("title", ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
+        {
+            Override = new GtkControlOverride(this);
+            Override.AddClass("Form");
+            WindowPosition = WindowPosition.Center;
+            BorderWidth = 0;
+            ContentArea.BorderWidth = 0;
+            ContentArea.Spacing = 0;
+            ContentArea.Homogeneous = false;
 
         SetDefaultSize(100, 100);
         TypeHint = Gdk.WindowTypeHint.Normal;
         AppPaintable = false;
         Deletable = true;
         Response += FormBase_Response;
-        scrollView.BorderWidth = 0;
-        scrollView.Valign = Align.Fill;
-        scrollView.Halign = Align.Fill;
-        scrollView.Hexpand = true;
-        scrollView.Vexpand = true;
-        scrollView.OverlayScrolling = true;
-        scrollView.KineticScrolling = true;
-        scrollView.HscrollbarPolicy = PolicyType.Automatic;
-        scrollView.VscrollbarPolicy = PolicyType.Automatic;
-        scrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
-        scrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
-        ContentArea.PackStart(scrollView, true, true, 0);
+        ScrollView.BorderWidth = 0;
+        ScrollView.Valign = Align.Fill;
+        ScrollView.Halign = Align.Fill;
+        ScrollView.Hexpand = true;
+        ScrollView.Vexpand = true;
+        ScrollView.OverlayScrolling = true;
+        ScrollView.KineticScrolling = true;
+        ScrollView.HscrollbarPolicy = PolicyType.Automatic;
+        ScrollView.VscrollbarPolicy = PolicyType.Automatic;
+        ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
+        ScrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
+        ContentArea.PackStart(ScrollView, true, true, 0);
         //this.Decorated = false; // Delete toolbar
         Drawn += FormBase_Drawn;
         Close += FormBase_Close;
@@ -83,39 +81,28 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
         Override.OnPaint(args.Cr, rec);
     }
 
-    private void FormBase_Response(object? o, ResponseArgs args)
-    {
-        if (args.ResponseId == ResponseType.DeleteEvent)
+        private void FormBase_Response(object o, ResponseArgs args)
         {
-            if (OnCloseWindowEvent(EventArgs.Empty)??false)
+            if (args.ResponseId == ResponseType.DeleteEvent)
             {
-                OnClose();
-                Group.CurrentGrab?.Destroy();
-                Destroy();
+                if (CloseWindowEvent(this, EventArgs.Empty))
+                {
+                    OnClose();
+                    Group.CurrentGrab?.Destroy();
+                    Destroy();
+                }
+                else
+                    Run();
             }
-            else
-                Run();
         }
-    }
-
-    private bool? OnCloseWindowEvent(EventArgs eventArgs)
-    {
-        return CloseWindowEvent?.Invoke(this, eventArgs);
-    }
-
-    private void Vadjustment_ValueChanged(object? sender, EventArgs e)
-    {
-        if (Scroll != null)
+        private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {
-            var adj = (Adjustment?)sender;
-            OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value ?? 0), (int)(adj?.Value ?? 0), ScrollOrientation.VerticalScroll));
+            if (Scroll != null)
+            {
+                Adjustment adj = (Adjustment)sender;
+                Scroll(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
+            }
         }
-    }
-
-    public void OnScroll(ScrollEventArgs eventArgs)
-    {
-        Scroll?.Invoke(this, eventArgs);
-    }
 
     private void Hadjustment_ValueChanged(object? sender, EventArgs e)
     {
@@ -125,6 +112,12 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
             OnScroll(new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.HorizontalScroll));
         }
     }
+
+    private void OnScroll(ScrollEventArgs scrollEventArgs)
+    {
+        Scroll?.Invoke(this, scrollEventArgs);
+    }
+
     public void CloseWindow()
     {
         Respond(ResponseType.DeleteEvent);
@@ -136,6 +129,6 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
     }
     public new void Add(Widget child)
     {
-        scrollView.Child = child;
+        ScrollView.Child = child;
     }
 }

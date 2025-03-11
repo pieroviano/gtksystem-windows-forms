@@ -3,7 +3,8 @@
     <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
     <PropertyGroup>
         <PackageOutputPath>$(SolutionDir)Packages/</PackageOutputPath>
-        <TargetFrameworks>netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+        <DisableImplicitFrameworkReferences Condition="'$(TargetFramework)'=='net462'">true</DisableImplicitFrameworkReferences>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
         <Authors>chenhongjin</Authors>
         <Company>chenhongjin</Company>
@@ -165,31 +166,6 @@
         <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Update="GTKControls\Button.cs" />
-        <Compile Update="GTKControls\CheckBox.cs" />
-        <Compile Update="GTKControls\CheckedListBox.cs" />
-        <Compile Update="GTKControls\ComboBox.cs" />
-        <Compile Update="GTKControls\DataGridView.cs" />
-        <Compile Update="GTKControls\DateTimePicker.cs" />
-        <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs" />
-        <Compile Update="GTKControls\Form.cs" />
-        <Compile Update="GTKControls\GroupBox.cs" />
-        <Compile Update="GTKControls\Label.cs" />
-        <Compile Update="GTKControls\LinkLabel.cs" />
-        <Compile Update="GTKControls\MaskedTextBox.cs" />
-        <Compile Update="GTKControls\MenuStrip.cs" />
-        <Compile Update="GTKControls\MonthCalendar.cs" />
-        <Compile Update="GTKControls\NumericUpDown.cs" />
-        <Compile Update="GTKControls\Panel.cs" />
-        <Compile Update="GTKControls\PictureBox.cs" />
-        <Compile Update="GTKControls\RadioButton.cs" />
-        <Compile Update="GTKControls\RichTextBox.cs" />
-        <Compile Update="GTKControls\SplitContainer.cs" />
-        <Compile Update="GTKControls\SplitterPanel.cs" />
-        <Compile Update="GTKControls\TabControl.cs" />
-        <Compile Update="GTKControls\TextBox.cs" />
-        <Compile Update="GTKControls\Timer.cs" />
-        <Compile Update="GTKControls\TreeView.cs" />
         <Compile Update="GTKSystem\Resources\Extensions\SystemResources.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
@@ -203,6 +179,14 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\licenses\LICENSE.txt" Pack="True" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Core" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Data" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Linq" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Runtime.Serialization" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Xml" Condition="'$(TargetFramework)'=='net462'" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\GTKSystem.Drawing\GTKSystem.Drawing.csproj" />

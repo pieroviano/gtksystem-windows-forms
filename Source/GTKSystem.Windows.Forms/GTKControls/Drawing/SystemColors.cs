@@ -3,7 +3,12 @@
 
 namespace System.Drawing;
 
-internal static class SystemColors
+#if NET462_OR_GREATER
+public
+#else
+internal
+#endif
+static class SystemColors
 {
     public static Color ActiveBorder => ColorExtension.FromKnownColor(KnownColor.ActiveBorder);
     public static Color ActiveCaption => ColorExtension.FromKnownColor(KnownColor.ActiveCaption);
