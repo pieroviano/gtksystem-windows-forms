@@ -26,19 +26,19 @@ public class ApplicationContextTest : TestHelper
         ctx?.Dispose();
     }
 
-    void thread_exit (object sender, EventArgs e)
+    void thread_exit (object? sender, EventArgs e)
     {
         thread_exit_count++;
     }
 
-    void form_handle_destroyed (object sender, EventArgs e)
+    void form_handle_destroyed (object? sender, EventArgs e)
     {
         Assert.AreEqual (0, thread_exit_count, "1");
         Assert.AreEqual (sender, ctx.MainForm, "2");
         reached_form_handle_destroyed = true;
     }
 
-    void form_handle_destroyed2 (object sender, EventArgs e)
+    void form_handle_destroyed2 (object? sender, EventArgs e)
     {
         Assert.AreEqual (1, thread_exit_count, "1");
         Assert.AreEqual (sender, ctx.MainForm, "2");

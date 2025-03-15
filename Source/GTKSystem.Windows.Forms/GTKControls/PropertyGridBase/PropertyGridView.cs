@@ -108,7 +108,7 @@ internal sealed class PropertyGridView
         tree.Model = store;
     }
     private GridEntry? oldSelectedPropertyItem;
-    private void Selection_Changed(object sender, EventArgs e)
+    private void Selection_Changed(object? sender, EventArgs e)
     {
         if (tree.Selection.GetSelected(out _, out var oiter))
         {

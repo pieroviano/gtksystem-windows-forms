@@ -85,7 +85,7 @@ public class FocusTest  : TestHelper {
         flat_controls = null;
 
         flat_controls = new ControlPoker [] {
-            new ControlPoker (), new ControlPoker (), new ControlPoker ()
+            new(), new(), new()
         };
 
         for (var i = 0; i < flat_controls.Length; i++)
@@ -283,13 +283,13 @@ public class FocusTest  : TestHelper {
         var con_b = new ContainerPoker ("container-b");
         var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
-            new ControlPoker (), new ControlPoker (), new ControlPoker ()
+            new(), new(), new()
         };
         ControlPoker [] ctrls_b = new ControlPoker [] {
-            new ControlPoker (), new ControlPoker (), new ControlPoker ()
+            new(), new(), new()
         };
         ControlPoker [] ctrls_c = new ControlPoker [] {
-            new ControlPoker (), new ControlPoker (), new ControlPoker ()
+            new(), new(), new()
         };
 
         con_a.Controls.AddRange (ctrls_a);
@@ -348,13 +348,13 @@ public class FocusTest  : TestHelper {
         var con_b = new ContainerPoker ("container-b");
         var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
-            new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
+            new("ctrls-a-0"), new("ctrls-a-1"), new("ctrls-a-2")
         };
         ControlPoker [] ctrls_b = new ControlPoker [] {
-            new ControlPoker ("ctrls-b-0"), new ControlPoker ("ctrls-b-1"), new ControlPoker ("ctrls-b-2")
+            new("ctrls-b-0"), new("ctrls-b-1"), new("ctrls-b-2")
         };
         ControlPoker [] ctrls_c = new ControlPoker [] {
-            new ControlPoker ("ctrls-c-0"), new ControlPoker ("ctrls-c-1"), new ControlPoker ("ctrls-c-2")
+            new("ctrls-c-0"), new("ctrls-c-1"), new("ctrls-c-2")
         };
 
         con_a.Controls.AddRange (ctrls_a);
@@ -413,13 +413,13 @@ public class FocusTest  : TestHelper {
         var con_b = new ContainerPoker ("container-b");
         var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
-            new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
+            new("ctrls-a-0"), new("ctrls-a-1"), new("ctrls-a-2")
         };
         ControlPoker [] ctrls_b = new ControlPoker [] {
-            new ControlPoker ("ctrls-b-0"), new ControlPoker ("ctrls-b-1"), new ControlPoker ("ctrls-b-2")
+            new("ctrls-b-0"), new("ctrls-b-1"), new("ctrls-b-2")
         };
         ControlPoker [] ctrls_c = new ControlPoker [] {
-            new ControlPoker ("ctrls-c-0"), new ControlPoker ("ctrls-c-1"), new ControlPoker ("ctrls-c-2")
+            new("ctrls-c-0"), new("ctrls-c-1"), new("ctrls-c-2")
         };
 
         con_a.Controls.AddRange (ctrls_a);
@@ -478,13 +478,13 @@ public class FocusTest  : TestHelper {
         var con_b = new ContainerPoker ("container-b");
         var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
-            new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
+            new("ctrls-a-0"), new("ctrls-a-1"), new("ctrls-a-2")
         };
         ControlPoker [] ctrls_b = new ControlPoker [] {
-            new ControlPoker ("ctrls-b-0"), new ControlPoker ("ctrls-b-1"), new ControlPoker ("ctrls-b-2")
+            new("ctrls-b-0"), new("ctrls-b-1"), new("ctrls-b-2")
         };
         ControlPoker [] ctrls_c = new ControlPoker [] {
-            new ControlPoker ("ctrls-c-0"), new ControlPoker ("ctrls-c-1"), new ControlPoker ("ctrls-c-2")
+            new("ctrls-c-0"), new("ctrls-c-1"), new("ctrls-c-2")
         };
 
         con_a.Controls.AddRange (ctrls_a);
@@ -546,7 +546,7 @@ public class FocusTest  : TestHelper {
         RemoveWarning (con_b, con_c);
 			
         ControlPoker [] ctrls_a = new ControlPoker [] {
-            new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
+            new("ctrls-a-0"), new("ctrls-a-1"), new("ctrls-a-2")
         };
         var ctrl_b = new ControlPoker ("ctrl-b");
 			
@@ -935,32 +935,32 @@ public class FocusTest  : TestHelper {
 
 
     StringBuilder sb;
-    void enter(object sender, EventArgs e) {
+    void enter(object? sender, EventArgs e) {
         sb.Append(String.Format("OnEnter: {0} {1}", ((Control)sender).Name, sender));
         sb.Append("\n");
     }
 
-    void leave(object sender, EventArgs e) {
+    void leave(object? sender, EventArgs e) {
         sb.Append(String.Format("OnLeave: {0} {1}", ((Control)sender).Name, sender));
         sb.Append("\n");
     }
 
-    void gotfocus(object sender, EventArgs e) {
+    void gotfocus(object? sender, EventArgs e) {
         sb.Append(String.Format("OnGotFocus: {0} {1}", ((Control)sender).Name, sender));
         sb.Append("\n");
     }
 
-    void lostfocus(object sender, EventArgs e) {
+    void lostfocus(object? sender, EventArgs e) {
         sb.Append(String.Format("OnLostFocus: {0} {1}", ((Control)sender).Name, sender));
         sb.Append("\n");
     }
 
-    void validating(object sender, CancelEventArgs e) {
+    void validating(object? sender, CancelEventArgs e) {
         sb.Append(String.Format("OnValidating: {0} {1}", ((Control)sender).Name, sender));
         sb.Append("\n");
     }
 
-    void validated(object sender, EventArgs e) {
+    void validated(object? sender, EventArgs e) {
         sb.Append(String.Format("OnValidated: {0} {1}", ((Control)sender).Name, sender));
         sb.Append("\n");
     }

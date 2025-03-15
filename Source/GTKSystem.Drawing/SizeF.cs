@@ -56,7 +56,7 @@ namespace System.Drawing
         /// <summary>
         /// Creates a new <see cref="System.Numerics.Vector2"/> from this <see cref="System.Drawing.SizeF"/>.
         /// </summary>
-        public Vector2 ToVector2() => new Vector2(width, height);
+        public Vector2 ToVector2() => new(width, height);
 
         /// <summary>
         /// Initializes a new instance of the <see cref='System.Drawing.SizeF'/> class from the specified dimensions.
@@ -75,7 +75,7 @@ namespace System.Drawing
         /// <summary>
         /// Converts the specified <see cref="System.Numerics.Vector2"/> to a <see cref="System.Drawing.SizeF"/>.
         /// </summary>
-        public static explicit operator SizeF(Vector2 vector) => new SizeF(vector);
+        public static explicit operator SizeF(Vector2 vector) => new(vector);
 
         /// <summary>
         /// Performs vector addition of two <see cref='System.Drawing.SizeF'/> objects.
@@ -110,7 +110,7 @@ namespace System.Drawing
         /// <param name="right">Divisor of type <see cref="int"/>.</param>
         /// <returns>Result of type <see cref="SizeF"/>.</returns>
         public static SizeF operator /(SizeF left, float right)
-            => new SizeF(left.width / right, left.height / right);
+            => new(left.width / right, left.height / right);
 
         /// <summary>
         /// Tests whether two <see cref='System.Drawing.SizeF'/> objects are identical.
@@ -125,7 +125,7 @@ namespace System.Drawing
         /// <summary>
         /// Converts the specified <see cref='System.Drawing.SizeF'/> to a <see cref='System.Drawing.PointF'/>.
         /// </summary>
-        public static explicit operator PointF(SizeF size) => new PointF(size.Width, size.Height);
+        public static explicit operator PointF(SizeF size) => new(size.Width, size.Height);
 
         /// <summary>
         /// Tests whether this <see cref='System.Drawing.SizeF'/> has zero width and height.
@@ -154,12 +154,12 @@ namespace System.Drawing
         /// <summary>
         /// Performs vector addition of two <see cref='System.Drawing.SizeF'/> objects.
         /// </summary>
-        public static SizeF Add(SizeF sz1, SizeF sz2) => new SizeF(sz1.Width + sz2.Width, sz1.Height + sz2.Height);
+        public static SizeF Add(SizeF sz1, SizeF sz2) => new(sz1.Width + sz2.Width, sz1.Height + sz2.Height);
 
         /// <summary>
         /// Contracts a <see cref='System.Drawing.SizeF'/> by another <see cref='System.Drawing.SizeF'/>.
         /// </summary>
-        public static SizeF Subtract(SizeF sz1, SizeF sz2) => new SizeF(sz1.Width - sz2.Width, sz1.Height - sz2.Height);
+        public static SizeF Subtract(SizeF sz1, SizeF sz2) => new(sz1.Width - sz2.Width, sz1.Height - sz2.Height);
 
         /// <summary>
         /// Tests to see whether the specified object is a <see cref='System.Drawing.SizeF'/>  with the same dimensions
@@ -187,7 +187,7 @@ namespace System.Drawing
         /// <param name="multiplier">Multiplier of type <see cref="float"/>.</param>
         /// <returns>Product of type SizeF.</returns>
         private static SizeF Multiply(SizeF size, float multiplier) =>
-            new SizeF(size.width * multiplier, size.height * multiplier);
+            new(size.width * multiplier, size.height * multiplier);
     }
 }
 #endif

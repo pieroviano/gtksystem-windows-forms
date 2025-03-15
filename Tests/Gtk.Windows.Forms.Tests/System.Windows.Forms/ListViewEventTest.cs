@@ -16,7 +16,7 @@ namespace GtkTests.System.Windows.Forms;
 public class ColumnClickEvent : TestHelper
 {
     static bool eventhandled = false;
-    public void ColumnClickEventHandler (object sender, ColumnClickEventArgs e)
+    public void ColumnClickEventHandler (object? sender, ColumnClickEventArgs e)
     {
         eventhandled = true;
     }
@@ -49,7 +49,7 @@ public class ColumnClickEvent : TestHelper
 public class  MyEvent : TestHelper
 {
     static bool eventhandled = false;
-    public void New_EventHandler (object sender, EventArgs e)
+    public void New_EventHandler (object? sender, EventArgs e)
     {
         eventhandled = true;
     }
@@ -102,7 +102,7 @@ public class  MyEvent : TestHelper
 public class ItemCheckEvent : TestHelper
 {
     static bool eventhandled = false;
-    public void ItemCheckEventHandler (object sender, ItemCheckEventArgs e)
+    public void ItemCheckEventHandler (object? sender, ItemCheckEventArgs e)
 
     {
         eventhandled = true;
@@ -136,7 +136,7 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
 {
     int selectedIndexChanged;
 
-    public void ListView_SelectedIndexChanged (object sender, EventArgs e)
+    public void ListView_SelectedIndexChanged (object? sender, EventArgs e)
     {
         selectedIndexChanged++;
     }
@@ -268,9 +268,9 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
         form.Show ();
 
         ListViewItem [] items = new ListViewItem [] {
-            new ListViewItem ("A"),
-            new ListViewItem ("B"),
-            new ListViewItem ("C")
+            new("A"),
+            new("B"),
+            new("C")
         };
         foreach (var item in items)
             item.Selected = true;

@@ -7,11 +7,11 @@ namespace System.Windows.Forms.ComponentModel;
 /// This is the image retrieval implementation of System.ComponentModel.ComponentResourceManager
 /// How to use: Create a new System.ComponentModel.ComponentResourceManager under the form project and inherit GTKSystem.ComponentModel.ComponentResourceManager.
 /// </summary>
-public class ComponentResourceManager : System.ComponentModel.ComponentResourceManager
+public class GtkComponentResourceManager : System.ComponentModel.ComponentResourceManager
 {
     private readonly Type formtype;
     private string formName;
-    public ComponentResourceManager(Type form) : base(form)
+    public GtkComponentResourceManager(Type form) : base(form)
     {
         formtype = form;
         formName = form.Name;
@@ -19,7 +19,8 @@ public class ComponentResourceManager : System.ComponentModel.ComponentResourceM
 
     public override object? GetObject(string name, CultureInfo culture)
     {
-        return GetObject(name);
+        var temp = new ResourceManager(formtype.FullName, formtype.Assembly);
+        return temp.GetObject(name, culture);
     }
     public override object? GetObject(string name)
     {

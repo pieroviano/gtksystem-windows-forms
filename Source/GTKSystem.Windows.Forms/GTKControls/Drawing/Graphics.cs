@@ -245,17 +245,21 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     }
     private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
     {
-        context.Save();
-        SetTranslateWithDifference(0, 0);
-        SetSourceColor(pen);
-        context.LineWidth = pen.Width;
-        context.LineJoin = Cairo.LineJoin.Round;
-        context.NewPath();
-        double radius = Math.Min(width / 2, height / 2);
-        context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
-        //this.context.ArcNegative(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * sweepAngle / 180); //相反位置
-        context.Stroke();
-        context.Restore();
+        if (context != null)
+        {
+            context.Save();
+            SetTranslateWithDifference(0, 0);
+            SetSourceColor(pen);
+            context.LineWidth = pen.Width;
+            context.LineJoin = Cairo.LineJoin.Round;
+            context.NewPath();
+            double radius = Math.Min(width / 2, height / 2);
+            context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180,
+                Math.PI * (startAngle + sweepAngle) / 180);
+            //this.context.ArcNegative(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * sweepAngle / 180); //相反位置
+            context.Stroke();
+            context.Restore();
+        }
     }
 
     public void DrawArc(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
@@ -551,7 +555,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     }
     private void DrawImageScaledCore(Image? image, Rectangle destRect, float srcX, float srcY, float srcWidth, float srcHeight, GraphicsUnit srcUnit, ImageAttributes? imageAttrs, DrawImageAbort? callback, IntPtr callbackData)
     {
-        if (image != null)
+        if (image is { PixbufData: not null })
         {
             var img = new Pixbuf(image.PixbufData);
             if (srcWidth == 0)
@@ -841,7 +845,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                 }
                 else if (o is GraphicsPath.BeziersMode beziers)
                 {
-                    var data = GetBezierPoints(beziers.Points?.ToList());
+                    var data = GetBezierPoints((beziers.Points ??[]).ToList());
                     foreach (var point in data)
                     {
                         context.LineTo(point.X, point.Y);
@@ -936,7 +940,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                 }
                 else if (o is GraphicsPath.StringMode str)
                 {
-                    var text = str.Text;
+                    var text = str.Text??string.Empty;
                     if (str.LayoutRect.Width > 0)
                     {
                         while (text?.Length > 0 && context.TextExtents(text).Width > str.LayoutRect.Width)
@@ -948,7 +952,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                     if (widget != null && family != null)
                     {
                         Pango.Context pangocontext = widget.PangoContext;
-                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
                         if (pangoFamily == null)
                             family = pangocontext.FontDescription.Family;
                     }
@@ -1006,21 +1010,25 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     }
     private void DrawPieCore(bool isFill, Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
     {
-        context.Save();
-        SetTranslateWithDifference(0, 0);
-        SetSourceColor(pen);
-        context.LineWidth = pen.Width;
-        context.NewPath();
-        double radius = Math.Min(width / 2, height / 2);
-        context.MoveTo(x + radius, y + radius);
-        context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
-        context.LineTo(x + radius, y + radius);
-        context.ClosePath();
-        if (isFill)
-            context.Fill();
-        else
-            context.Stroke();
-        context.Restore();
+        if (context != null)
+        {
+            context.Save();
+            SetTranslateWithDifference(0, 0);
+            SetSourceColor(pen);
+            context.LineWidth = pen.Width;
+            context.NewPath();
+            double radius = Math.Min(width / 2, height / 2);
+            context.MoveTo(x + radius, y + radius);
+            context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180,
+                Math.PI * (startAngle + sweepAngle) / 180);
+            context.LineTo(x + radius, y + radius);
+            context.ClosePath();
+            if (isFill)
+                context.Fill();
+            else
+                context.Stroke();
+            context.Restore();
+        }
     }
     public void DrawPie(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
     {
@@ -1172,8 +1180,8 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
                     context.SetFontSize(textSize);
                     context.SelectFontFace(family,
-                        font.Style.HasFlag(FontStyle.Italic) ? FontSlant.Italic : FontSlant.Normal,
-                        font.Style.HasFlag(FontStyle.Bold) ? FontWeight.Bold : FontWeight.Normal);
+                        font != null && font.Style.HasFlag(FontStyle.Italic) ? FontSlant.Italic : FontSlant.Normal,
+                        font != null && font.Style.HasFlag(FontStyle.Bold) ? FontWeight.Bold : FontWeight.Normal);
                     TextExtents textext = context.TextExtents(text);
                     SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textext.Height);
                     SetSourceColor(new Pen(brush, 1));
@@ -1406,7 +1414,10 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
     public void FillPie(Brush? brush, Rectangle rect, float startAngle, float sweepAngle)
     {
-        FillPie(brush, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
+        if (brush != null)
+        {
+            FillPie(brush, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
+        }
     }
 
     public void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle)
@@ -1514,7 +1525,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     /// <param name="image"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static Graphics? FromImage(Image image)
+    public static Graphics? FromImage(Image? image)
     {
         var _width = image.Width;
         var _height = image.Height;

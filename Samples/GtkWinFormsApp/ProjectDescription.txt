@@ -1,5 +1,29 @@
-﻿GTKWinFormsApp.csproj is a project that references the GTKSystem framework
+﻿Form Design Management Methods (Using the GTKWinFormsApp Project as an Example)
 
-GTKWinFormsApp_Win.csproj is a .net native project
+1. GTKWinFormsApp.csproj (Project Using GTKSystem Framework)
+	This project references the GTKSystem framework.
+	Install GTKSystem.Windows.FormsDesigner from NuGet.
+	Compile the project, and it will be ready to use.
+2. GTKWinFormsApp_Win2.csproj (.NET 8 Native Project)
+	This is a native .NET 8 project.
+	When switching frameworks, errors related to the obj folder may occur.
+	To fix this, delete the obj folder and allow Visual Studio to regenerate it automatically.
+3. GTKWinFormsApp_Win.csproj (.NET Framework v4.8 Native Project)
+	This is a .NET Framework v4.8 project, and it does not conflict with the GTKSystem framework.
+	Important: Do not compile this project. If an unresolvable exception occurs after compilation, simply restart the project.
+	App.config is the configuration file for the .NET Framework v4.8 project.
+	How to Create a .NET Framework 4.8 Project
+	Create a new WinForms (Framework) project (e.g., GTKWinFormsApp_Win).
+	Select .NET Framework v4.8 (4.7 also works, but higher versions improve language compatibility).
+	After creating the project:
+	Navigate to the project directory.
+	Copy the GTKWinFormsApp_Win.csproj and App.config files into the GTKSystem framework project folder.
+	Open the project using GTKWinFormsApp_Win.csproj.
+	Show hidden files and add all form (.form) and user control (.usercontrol) files to the project.
+	If there are issues, manually fix them.
+	Open the project properties and change the default namespace to "GTKWinFormsApp".
 
-Open these two projects when possible to facilitate interface design and compare them with the development
+	Important Notes:
+	Do not compile GTKWinFormsApp_Win.csproj.
+	If you compile it, an exception may occur, affecting the form designer.
+	Solution: Simply restart the project to resolve the issue.

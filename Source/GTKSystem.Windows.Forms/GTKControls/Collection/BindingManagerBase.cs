@@ -19,13 +19,13 @@ public abstract class BindingManagerBase
     protected EventHandler? OnPositionChangedHandler; // Don't rename (breaking change)
 
     // Hook BindingComplete events on all owned Binding objects, and propagate those events through our own BindingComplete event
-    private BindingCompleteEventHandler? _onBindingCompleteHandler;
+    private BindingCompleteEventHandler? _bindingCompleteEventHandler;
 
     // same deal about the new currentItemChanged event
     private protected EventHandler? OnCurrentItemChangedValueHandler;
 
     // Event handler for the DataError event
-    private BindingManagerDataErrorEventHandler? _onDataErrorHandler;
+    private BindingManagerDataErrorEventHandler? _dataError;
 
     public BindingsCollection Bindings
     {
@@ -44,9 +44,9 @@ public abstract class BindingManagerBase
         }
     }
 
-    protected internal void OnBindingComplete(BindingCompleteEventArgs args)
+    protected internal void OnBindingComplete(BindingCompleteEventArgs e)
     {
-        _onBindingCompleteHandler?.Invoke(this, args);
+        _bindingCompleteEventHandler?.Invoke(this, e);
     }
 
     protected internal abstract void OnCurrentChanged(EventArgs e);
@@ -55,7 +55,7 @@ public abstract class BindingManagerBase
 
     protected internal void OnDataError(Exception e)
     {
-        _onDataErrorHandler?.Invoke(this, new BindingManagerDataErrorEventArgs(e));
+        _dataError?.Invoke(this, new BindingManagerDataErrorEventArgs(e));
     }
 
     public abstract object? Current { get; }
@@ -200,8 +200,8 @@ public abstract class BindingManagerBase
 
     public event BindingCompleteEventHandler? BindingComplete
     {
-        add => _onBindingCompleteHandler += value;
-        remove => _onBindingCompleteHandler -= value;
+        add => _bindingCompleteEventHandler += value;
+        remove => _bindingCompleteEventHandler -= value;
     }
 
     public event EventHandler? CurrentChanged
@@ -218,8 +218,8 @@ public abstract class BindingManagerBase
 
     public event BindingManagerDataErrorEventHandler? DataError
     {
-        add => _onDataErrorHandler += value;
-        remove => _onDataErrorHandler -= value;
+        add => _dataError += value;
+        remove => _dataError -= value;
     }
 
     internal abstract string? GetListName();

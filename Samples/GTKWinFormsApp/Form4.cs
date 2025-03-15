@@ -9,11 +9,6 @@ public partial class CommonDialogsForm : Form
 {
     public CommonDialogsForm()
     {
-        var treeNode1 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_1);
-        var treeNode2 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_2, new TreeNode[] { treeNode1 });
-        var treeNode3 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_3);
-        var treeNode4 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_4, new TreeNode[] { treeNode2, treeNode3 });
-        var treeNode5 = new TreeNode(Resources.CommonDialogsForm_CommonDialogsForm_Node_5);
         InitializeComponent();
         treeNode1.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_1;
         treeNode1.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_1;
@@ -63,8 +58,8 @@ public partial class CommonDialogsForm : Form
         splitContainer1.Panel1.Controls.Add(button);
     }
 
-    Point panel1Location = new Point();
-    private void Form4_Shown(object sender, EventArgs e)
+    Point panel1Location = new();
+    private void Form4_Shown(object? sender, EventArgs e)
     {
 
     }
@@ -72,7 +67,7 @@ public partial class CommonDialogsForm : Form
     private void ButtonOpenFile_Click(object? sender, EventArgs e)
     {
         var ofd = new OpenFileDialog();
-        ofd.Filter = "jpg|*.jpg;png|*.png";
+        ofd.Filter = "jpg|*.jpg|png|*.png";
         ofd.Multiselect = true;
         ofd.Title = Resources.CommonDialogsForm_button3_Click_Test_Open_File;
 
@@ -97,11 +92,11 @@ public partial class CommonDialogsForm : Form
     private void ButtonSaveFile_Click(object? sender, EventArgs e)
     {
         var ofd = new SaveFileDialog();
-        ofd.Filter = "jpg|*.jpg;png|*.png";
+        ofd.Filter = "jpg|*.jpg|png|*.png";
         ofd.Title = Resources.CommonDialogsForm_button6_Click_Test_Save_File;
 
         var dialogResult = ofd.ShowDialog();
-        Console.WriteLine(@"dialogResult:" + dialogResult.ToString());
+        Console.WriteLine(@"dialogResult:" + dialogResult);
         Console.WriteLine(@"FileName:" + ofd.FileName);
         if (ofd.FileNames != null)
         {

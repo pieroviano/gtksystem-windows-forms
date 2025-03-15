@@ -126,7 +126,7 @@ public class LabelTest : TestHelper
         Assert.IsTrue(l.Enabled, "#29");
 
         Assert.IsFalse(l.Focused, "#31");
-        Assert.AreEqual(GtkSystemColors.ControlText, l.ForeColor, "#33");
+        Assert.AreEqual(SystemColors.ControlText, l.ForeColor, "#33");
 
         Assert.IsFalse(l.HasChildren, "#35");
 
@@ -255,12 +255,12 @@ public class LabelTest : TestHelper
 public class LabelEventTest : TestHelper
 {
     static bool eventhandled = false;
-    public void Label_EventHandler(object sender, EventArgs e)
+    public void Label_EventHandler(object? sender, EventArgs e)
     {
         eventhandled = true;
     }
 
-    public void Label_KeyDownEventHandler(object sender, KeyEventArgs e)
+    public void Label_KeyDownEventHandler(object? sender, KeyEventArgs e)
     {
         eventhandled = true;
     }
@@ -357,7 +357,7 @@ public class MyLabelInvalidate : MyLabel
         Invalidated += OnInvalidated;
     }
 
-    protected void OnInvalidated(object sender, InvalidateEventArgs e)
+    protected void OnInvalidated(object? sender, InvalidateEventArgs e)
     {
         var res = (string)results[results.Count - 1];
         results[results.Count - 1] = string.Concat(res, "," + e.InvalidRect.ToString());
@@ -372,7 +372,7 @@ public class MyLabelInvalidate : MyLabel
 
 public class MyLabel : Label
 {
-    protected ArrayList results = new ArrayList();
+    protected ArrayList results = new();
 
     public MyLabel() : base()
     {
@@ -392,72 +392,72 @@ public class MyLabel : Label
         Paint += OnPaint;
     }
 
-    protected void OnAutoSizeChanged(object sender, EventArgs e)
+    protected void OnAutoSizeChanged(object? sender, EventArgs e)
     {
         results.Add("OnAutoSizeChanged");
     }
 
-    protected void OnBackgroundImageChanged(object sender, EventArgs e)
+    protected void OnBackgroundImageChanged(object? sender, EventArgs e)
     {
         results.Add("OnBackgroundImageChanged");
     }
 
-    protected void OnImeModeChanged(object sender, EventArgs e)
+    protected void OnImeModeChanged(object? sender, EventArgs e)
     {
         results.Add("OnImeModeChanged");
     }
 
-    protected void OnKeyDown(object sender, KeyEventArgs e)
+    protected void OnKeyDown(object? sender, KeyEventArgs e)
     {
         results.Add("OnKeyDown," + (char)e.KeyValue);
     }
 
-    protected void OnKeyPress(object sender, KeyPressEventArgs e)
+    protected void OnKeyPress(object? sender, KeyPressEventArgs e)
     {
         results.Add("OnKeyPress," + e.KeyChar.ToString());
     }
 
-    protected void OnKeyUp(object sender, KeyEventArgs e)
+    protected void OnKeyUp(object? sender, KeyEventArgs e)
     {
         results.Add("OnKeyUp," + (char)e.KeyValue);
     }
 
-    protected void OnHandleCreated(object sender, EventArgs e)
+    protected void OnHandleCreated(object? sender, EventArgs e)
     {
         results.Add("OnHandleCreated");
     }
 
-    protected void OnBindingContextChanged(object sender, EventArgs e)
+    protected void OnBindingContextChanged(object? sender, EventArgs e)
     {
         results.Add("OnBindingContextChanged");
     }
 
-    protected void OnInvalidated(object sender, InvalidateEventArgs e)
+    protected void OnInvalidated(object? sender, InvalidateEventArgs e)
     {
         results.Add("OnInvalidated");
     }
 
-    protected void OnResize(object sender, EventArgs e)
+    protected void OnResize(object? sender, EventArgs e)
     {
         results.Add("OnResize");
     }
 
-    protected void OnSizeChanged(object sender, EventArgs e)
+    protected void OnSizeChanged(object? sender, EventArgs e)
     {
         results.Add("OnSizeChanged");
     }
 
-    protected void OnLayout(object sender, LayoutEventArgs e)
+    protected void OnLayout(object? sender, LayoutEventArgs e)
     {
         results.Add("OnLayout");
     }
 
-    protected void OnVisibleChanged(object sender, EventArgs e)
+    protected void OnVisibleChanged(object? sender, EventArgs e)
     {
         results.Add("OnVisibleChanged");
     }
 
-    protected void OnPaint(object sender, PaintEventArgs e)
+    protected void OnPaint(object? sender, PaintEventArgs e)
     {
         results.Add("OnPaint");
     }
@@ -789,7 +789,7 @@ public class LabelTestEventsOrder : TestHelper
 
 public class MyLabel2 : Label
 {
-    protected ArrayList results = new ArrayList();
+    protected ArrayList results = new();
     public MyLabel2() : base()
     {
         AutoSizeChanged += AutoSizeChanged_Handler;
@@ -808,72 +808,72 @@ public class MyLabel2 : Label
         Paint += Paint_Handler;
     }
 
-    protected void AutoSizeChanged_Handler(object sender, EventArgs e)
+    protected void AutoSizeChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("AutoSizeChanged");
     }
 
-    protected void BackgroundImageChanged_Handler(object sender, EventArgs e)
+    protected void BackgroundImageChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("BackgroundImageChanged");
     }
 
-    protected void ImeModeChanged_Handler(object sender, EventArgs e)
+    protected void ImeModeChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("ImeModeChanged");
     }
 
-    protected void KeyDown_Handler(object sender, KeyEventArgs e)
+    protected void KeyDown_Handler(object? sender, KeyEventArgs e)
     {
         results.Add("KeyDown," + (char)e.KeyValue);
     }
 
-    protected void KeyPress_Handler(object sender, KeyPressEventArgs e)
+    protected void KeyPress_Handler(object? sender, KeyPressEventArgs e)
     {
         results.Add("KeyPress," + e.KeyChar.ToString());
     }
 
-    protected void KeyUp_Handler(object sender, KeyEventArgs e)
+    protected void KeyUp_Handler(object? sender, KeyEventArgs e)
     {
         results.Add("KeyUp," + (char)e.KeyValue);
     }
 
-    protected void HandleCreated_Handler(object sender, EventArgs e)
+    protected void HandleCreated_Handler(object? sender, EventArgs e)
     {
         results.Add("HandleCreated");
     }
 
-    protected void BindingContextChanged_Handler(object sender, EventArgs e)
+    protected void BindingContextChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("BindingContextChanged");
     }
 
-    protected void Invalidated_Handler(object sender, InvalidateEventArgs e)
+    protected void Invalidated_Handler(object? sender, InvalidateEventArgs e)
     {
         results.Add("Invalidated");
     }
 
-    protected void Resize_Handler(object sender, EventArgs e)
+    protected void Resize_Handler(object? sender, EventArgs e)
     {
         results.Add("Resize");
     }
 
-    protected void SizeChanged_Handler(object sender, EventArgs e)
+    protected void SizeChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("SizeChanged");
     }
 
-    protected void Layout_Handler(object sender, LayoutEventArgs e)
+    protected void Layout_Handler(object? sender, LayoutEventArgs e)
     {
         results.Add("Layout");
     }
 
-    protected void VisibleChanged_Handler(object sender, EventArgs e)
+    protected void VisibleChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("VisibleChanged");
     }
 
-    protected void Paint_Handler(object sender, PaintEventArgs e)
+    protected void Paint_Handler(object? sender, PaintEventArgs e)
     {
         results.Add("Paint");
     }

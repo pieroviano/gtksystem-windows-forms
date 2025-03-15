@@ -1,21 +1,43 @@
-﻿using System.ComponentModel;
+﻿#if NETSTANDARD
+extern alias sdc;
+#else
+extern alias sd;
+#endif
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
+using System.Resources.Extensions;
+using System.Security.AccessControl;
 using System.Xml;
 
 namespace System.Windows.Forms.Resources;
+
+#if NETSTANDARD
+using SdcBitmap = sdc::System.Drawing.Image;
+using SdcIcon = sdc::System.Drawing.Icon;
+using SdcImageFormat = sdc::System.Drawing.Imaging.ImageFormat;
+#else
+using SdcBitmap = sd::System.Drawing.Image;
+using SdcIcon = sd::System.Drawing.Icon;
+using SdcImageFormat = sd::System.Drawing.Imaging.ImageFormat;
+#endif
 
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class ResourceManager : System.Resources.ResourceManager
 {
     internal const string resFileExtension = ".resources";
+    private readonly string? _baseName;
+    public ResourceInfo? getResourceInfo = new();
+    private readonly Assembly? _assemblyWithResources = null!;
+
     private Type? _resourceSource;
 
     private readonly Dictionary<string, (string Culture, Assembly Assembly)[]> _assemblies = new();
 
-    public (string Culture, Assembly Assembly)[] GetAssemblies(string? cultureName)
+    public (string Culture, Assembly Assembly)[] GetAssembliesWithResources(string? cultureName)
     {
         if (cultureName != null && _assemblies.ContainsKey(cultureName))
         {
@@ -24,55 +46,36 @@ public class ResourceManager : System.Resources.ResourceManager
 
         if (cultureName == null)
         {
-            return [(string.Empty, _assembly)];
-        }
-        var assemblies = new List<(string Culture, Assembly Assembly)> { (string.Empty, _assembly) };
-
-        var location = Path.GetFullPath(_assembly.Location);
-        var name = cultureName;
-        var combine = Path.Combine(Path.GetDirectoryName(location)!, name, $"{Path.GetFileNameWithoutExtension(location)}{resFileExtension}{Path.GetExtension(location)}");
-        int insertPoint = 0;
-        if (File.Exists(combine))
-        {
-            assemblies.Insert(insertPoint, (name, Assembly.LoadFile(combine)));
-            insertPoint++;
+            return [(string.Empty, _assemblyWithResources!)];
         }
 
-        name = name.Split('-').FirstOrDefault();
-        if (!string.IsNullOrEmpty(name))
-        {
-            combine = Path.Combine(Path.GetDirectoryName(location)!, name, $"{Path.GetFileNameWithoutExtension(location)}{resFileExtension}{Path.GetExtension(location)}");
-            if (File.Exists(combine))
-            {
-                assemblies.Insert(insertPoint, (name, Assembly.LoadFile(combine)));
-            }
-        }
-        _assemblies[cultureName] = assemblies.ToArray();
+        _assemblies[cultureName] = _assemblyWithResources!.GetAssembliesWithResources(cultureName);
         return _assemblies[cultureName];
     }
 
-    private readonly string? _baseName;
-    public ResourceInfo? getResourceInfo = new();
-    private readonly Assembly? _assembly = null!;
-
-    public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : this(null, null, usingResourceSet)
+    public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+                                                       DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) :
+        this(null, null, usingResourceSet)
     {
 
     }
 
-    public ResourceManager(string? baseName, Assembly? assembly) : this(baseName, assembly, null)
+    public ResourceManager(string? baseName, Assembly? assemblyWithResources) : this(baseName, assemblyWithResources, null)
     {
 
     }
 
-    public ResourceManager(string? baseName, Assembly? assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName ?? string.Empty, assembly ?? Assembly.GetExecutingAssembly(), usingResourceSet)
+    public ResourceManager(string? baseName, Assembly? assemblyWithResources,
+                           [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+                                                       DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) :
+        base(baseName ?? string.Empty, assemblyWithResources ?? Assembly.GetExecutingAssembly(), usingResourceSet)
     {
         _baseName = baseName;
-        _assembly = assembly!;
+        _assemblyWithResources = assemblyWithResources!;
         _resourceSource = usingResourceSet;
         if (getResourceInfo != null)
         {
-            getResourceInfo.Assembly = assembly;
+            getResourceInfo.Assembly = assemblyWithResources;
             getResourceInfo.BaseName = baseName;
             getResourceInfo.SourceType = usingResourceSet;
         }
@@ -133,35 +136,36 @@ public class ResourceManager : System.Resources.ResourceManager
         }
         return result;
     }
-    private object? ReadResourceData(string name, CultureInfo culture)
+
+    private object? ReadResourceData(string name, CultureInfo? culture)
     {
-        var assemblies = GetAssemblies(culture.Name);
-        if (assemblies == null)
+        var assembliesWithResources = GetAssembliesWithResources(culture?.Name);
+        if (assembliesWithResources == null)
             throw new FileNotFoundException();
         try
         {
-            foreach (var tuple in assemblies)
+            foreach (var assemblyWithResources in assembliesWithResources)
             {
-                var culturePart = string.IsNullOrEmpty(tuple.Culture) ? string.Empty : $".{tuple.Culture}";
-                var stream = tuple.Assembly.GetManifestResourceStream($"{_baseName}{culturePart}{resFileExtension}");
+                var culturePart = string.IsNullOrEmpty(assemblyWithResources.Culture) ? string.Empty : $".{assemblyWithResources.Culture}";
+                var stream = assemblyWithResources.Assembly.GetManifestResourceStream($"{_baseName}{culturePart}{resFileExtension}");
                 if (stream != null)
                 {
-                    var reader = new DeserializingResourceReader(stream);
-                    var dict = reader.GetEnumerator();
-                    using var disposable = dict as IDisposable;
-                    while (dict.MoveNext())
+                    var reader = new GtkDeserializingResourceReader(stream);
+                    var enumerator = reader.GetEnumerator();
+                    using var disposable = enumerator as IDisposable;
+                    while (enumerator.MoveNext())
                     {
-                        if (dict.Key?.ToString() == name)
+                        if (enumerator.Key?.ToString() == name)
                         {
                             try
                             {
-                                if (dict.Value is ImageListStreamer streamer)
+                                if (enumerator.Value is ImageListStreamer streamer)
                                 {
                                     streamer.ResourceInfo = getResourceInfo;
                                     return streamer;
                                 }
 
-                                return dict.Value;
+                                return enumerator.Value;
                             }
                             catch
                             {
@@ -182,7 +186,7 @@ public class ResourceManager : System.Resources.ResourceManager
 
     private string? ReadResourceText(string name, CultureInfo? culture)
     {
-        var assemblies = GetAssemblies(culture?.Name);
+        var assemblies = GetAssembliesWithResources(culture?.Name);
         if (assemblies == null || assemblies.All(a => a.Assembly == null))
             throw new FileNotFoundException();
         foreach (var tuple in assemblies)
@@ -191,7 +195,7 @@ public class ResourceManager : System.Resources.ResourceManager
             var stream = tuple.Assembly.GetManifestResourceStream($"{_baseName}{culturePart}.resources");
             if (stream != null)
             {
-                var reader = new DeserializingResourceReader(stream);
+                var reader = new GtkDeserializingResourceReader(stream);
                 var dict = reader.GetEnumerator();
                 using var disposable = dict as IDisposable;
                 while (dict.MoveNext())
@@ -215,71 +219,86 @@ public class ResourceManager : System.Resources.ResourceManager
         return null;
     }
 
-    public override object? GetObject(string name, CultureInfo culture)
+    public override object? GetObject(string name)
     {
-        var result = GetObject(name);
-        var stack = new StackTrace(true);
-        var method = (MethodInfo)stack.GetFrame(1).GetMethod();
-        if (method.ReturnType.Name == "Object" || method.ReturnType.Name.Equals(result?.GetType().Name))
-        {
-            return result;
-        }
-
-        return null;
-
+        return GetObject(name, Thread.CurrentThread.CurrentUICulture);
     }
 
-    public override object? GetObject(string name)
+    public override object? GetObject(string name, CultureInfo culture)
     {
         if (getResourceInfo != null)
         {
             getResourceInfo.ResourceName = name;
-            var obj = ReadResourceData(name, Thread.CurrentThread.CurrentUICulture);
-            if (obj == null)
+            var obj = ReadResourceData(name, culture);
+            if (obj is ImageListStreamer)
             {
-                if (name.EndsWith(".ImageStream"))
-                {
-                    return new ImageListStreamer(new ImageList()) { ResourceInfo = getResourceInfo };
-                }
-
-                string fileName = name;
-                byte[] filebytes = ReadResourceFile(name);
-                if (filebytes == null)
-                {
-                    string _formName = Path.GetExtension(this.BaseName).TrimStart('.');
-                    string[] files = Directory.GetFiles($"./Resources/{_formName}", $"{fileName}.*",
-                        SearchOption.AllDirectories);
-                    if (files is { Length: > 0 })
-                    {
-                        fileName = files[0];
-                        filebytes = File.ReadAllBytes(files[0]);
-                    }
-
-                    if (name.EndsWith(".BackgroundImage"))
-                    {
-                        return new Drawing.Bitmap(filebytes) { FileName = fileName };
-                    }
-
-                    if (name.EndsWith(".Image"))
-                    {
-                        return new Drawing.Bitmap(filebytes) { FileName = fileName };
-                    }
-
-                    if (name.EndsWith(".Icon"))
-                    {
-                        return new Drawing.Icon(filebytes) { FileName = fileName };
-                    }
-
-                    if (filebytes == null)
-                    {
-                        return new Drawing.Bitmap(0, 0);
-                    }
-
-                    return new Drawing.Bitmap(filebytes) { FileName = fileName };
-                }
-
                 return obj;
             }
+
+            string fileName = name;
+            byte[] filebytes = ReadResourceFile(name);
+            string _formName = Path.GetExtension(this.BaseName).TrimStart('.');
+            var path = $"./Resources/{_formName}";
+            var searchPattern = $"{fileName}.*";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            if (filebytes == null)
+            {
+                if (obj is SdcBitmap b)
+                {
+                    var filename = Path.Combine(path, Path.ChangeExtension(searchPattern, ".png"));
+                    if (!File.Exists(filename))
+                    {
+                        b.Save(filename, SdcImageFormat.Png);
+                    }
+                }
+                if (obj is SdcIcon i)
+                {
+                    var combine = Path.Combine(path, Path.ChangeExtension(searchPattern, ".ico"));
+                    if (!File.Exists(combine))
+                    {
+                        using var outputStream = File.OpenWrite(combine);
+                        i.Save(outputStream);
+                    }
+                }
+            }
+
+            if (filebytes == null)
+            {
+                string[] files = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
+                if (files is { Length: > 0 })
+                {
+                    fileName = files[0];
+                    filebytes = File.ReadAllBytes(files[0]);
+                }
+
+                if (name.EndsWith(".BackgroundImage"))
+                {
+                    return new Drawing.Bitmap(filebytes ?? []) { FileName = fileName };
+                }
+
+                if (name.EndsWith(".Image"))
+                {
+                    return new Drawing.Bitmap(filebytes ?? []) { FileName = fileName };
+                }
+
+                if (name.EndsWith(".Icon"))
+                {
+                    return new Drawing.Icon(filebytes ?? []) { FileName = fileName };
+                }
+
+                if (filebytes == null)
+                {
+                    return new Drawing.Bitmap(0, 0);
+                }
+
+                return new Drawing.Bitmap(filebytes ?? []) { FileName = fileName };
+            }
+
+            return obj;
+            return obj;
         }
 
         return null;

@@ -13,6 +13,7 @@ public delegate void PaintGraphicsEventHandler(Context? cr, Rectangle rec);
 public class GtkControlOverride: IControlOverride, IGtkControlOverride
 {
     private readonly Widget? container;
+    private Pixbuf? imagePixbuf;
     public GtkControlOverride(Widget? container)
     {
         this.container = container;
@@ -32,6 +33,17 @@ public class GtkControlOverride: IControlOverride, IGtkControlOverride
     {
         cssList.Add(cssClass);
     }
+
+    protected virtual void OnDrawnBackground(DrawnArgs e)
+    {
+        DrawnBackground?.Invoke(this, e);
+    }
+
+    void IGtkControlOverride.OnPaint(PaintEventArgs e)
+    {
+        Paint?.Invoke(this, e);
+    }
+
     public void RemoveClass(string cssClass)
     {
         cssList.Remove(cssClass);
@@ -85,7 +97,7 @@ public class GtkControlOverride: IControlOverride, IGtkControlOverride
             DrawnBackground(container, args);
         }
     }
-    private Pixbuf? imagePixbuf;
+    
     public void OnDrawnImage(Context? cr, Gdk.Rectangle area)
     {
         if (Image is { PixbufData: not null })
@@ -100,6 +112,7 @@ public class GtkControlOverride: IControlOverride, IGtkControlOverride
     }
         
     public event PaintGraphicsEventHandler? PaintGraphics;
+
     public void OnPaint(Context? cr, Gdk.Rectangle area)
     {
         PaintGraphics?.Invoke(cr, new Rectangle(area.X, area.Y, area.Width, area.Height));

@@ -27,7 +27,7 @@ public class CheckBox : Control
             self.Inconsistent = false;
     }
 
-    private void Self_Toggled(object sender, EventArgs e)
+    private void Self_Toggled(object? sender, EventArgs e)
     {
         if (CheckedChanged != null && self.IsVisible)
             CheckedChanged(this, EventArgs.Empty);
@@ -35,9 +35,9 @@ public class CheckBox : Control
             OnCheckStateChanged(EventArgs.Empty);
     }
 
-    protected virtual void OnCheckStateChanged(EventArgs eventArgs)
+    protected virtual void OnCheckStateChanged(EventArgs e)
     {
-        CheckStateChanged?.Invoke(this, eventArgs);
+        CheckStateChanged?.Invoke(this, e);
     }
 
     public override string Text

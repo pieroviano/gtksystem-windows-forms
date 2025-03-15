@@ -20,7 +20,7 @@ namespace System.Windows.Forms;
 [DefaultBindingProperty("SelectedValue")]
 public partial class ListBox : ListControl
 {
-    public readonly ListBoxBase self = new ListBoxBase();
+    public readonly ListBoxBase self = new();
     public override object GtkControl => self;
 
     public override IControlGtk Self

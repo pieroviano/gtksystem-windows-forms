@@ -1,13 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#if NET462_OR_GREATER
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
+#if NET462_OR_GREATER
 namespace System.Drawing
+#else
+namespace System.Drawing.Gtk
+#endif
 {
     [DebuggerDisplay("{NameAndARGBValue}")]
     [Editor("System.Drawing.Design.ColorEditor, System.Drawing.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
@@ -22,293 +25,293 @@ namespace System.Drawing
         // -------------------------------------------------------------------
         //  static list of "web" colors...
         //
-        public static Color Transparent => new Color(KnownColor.Transparent);
+        public static Color Transparent => new(KnownColor.Transparent);
 
-        public static Color AliceBlue => new Color(KnownColor.AliceBlue);
+        public static Color AliceBlue => new(KnownColor.AliceBlue);
 
-        public static Color AntiqueWhite => new Color(KnownColor.AntiqueWhite);
+        public static Color AntiqueWhite => new(KnownColor.AntiqueWhite);
 
-        public static Color Aqua => new Color(KnownColor.Aqua);
+        public static Color Aqua => new(KnownColor.Aqua);
 
-        public static Color Aquamarine => new Color(KnownColor.Aquamarine);
+        public static Color Aquamarine => new(KnownColor.Aquamarine);
 
-        public static Color Azure => new Color(KnownColor.Azure);
+        public static Color Azure => new(KnownColor.Azure);
 
-        public static Color Beige => new Color(KnownColor.Beige);
+        public static Color Beige => new(KnownColor.Beige);
 
-        public static Color Bisque => new Color(KnownColor.Bisque);
+        public static Color Bisque => new(KnownColor.Bisque);
 
-        public static Color Black => new Color(KnownColor.Black);
+        public static Color Black => new(KnownColor.Black);
 
-        public static Color BlanchedAlmond => new Color(KnownColor.BlanchedAlmond);
+        public static Color BlanchedAlmond => new(KnownColor.BlanchedAlmond);
 
-        public static Color Blue => new Color(KnownColor.Blue);
+        public static Color Blue => new(KnownColor.Blue);
 
-        public static Color BlueViolet => new Color(KnownColor.BlueViolet);
+        public static Color BlueViolet => new(KnownColor.BlueViolet);
 
-        public static Color Brown => new Color(KnownColor.Brown);
+        public static Color Brown => new(KnownColor.Brown);
 
-        public static Color BurlyWood => new Color(KnownColor.BurlyWood);
+        public static Color BurlyWood => new(KnownColor.BurlyWood);
 
-        public static Color CadetBlue => new Color(KnownColor.CadetBlue);
+        public static Color CadetBlue => new(KnownColor.CadetBlue);
 
-        public static Color Chartreuse => new Color(KnownColor.Chartreuse);
+        public static Color Chartreuse => new(KnownColor.Chartreuse);
 
-        public static Color Chocolate => new Color(KnownColor.Chocolate);
+        public static Color Chocolate => new(KnownColor.Chocolate);
 
-        public static Color Coral => new Color(KnownColor.Coral);
+        public static Color Coral => new(KnownColor.Coral);
 
-        public static Color CornflowerBlue => new Color(KnownColor.CornflowerBlue);
+        public static Color CornflowerBlue => new(KnownColor.CornflowerBlue);
 
-        public static Color Cornsilk => new Color(KnownColor.Cornsilk);
+        public static Color Cornsilk => new(KnownColor.Cornsilk);
 
-        public static Color Crimson => new Color(KnownColor.Crimson);
+        public static Color Crimson => new(KnownColor.Crimson);
 
-        public static Color Cyan => new Color(KnownColor.Cyan);
+        public static Color Cyan => new(KnownColor.Cyan);
 
-        public static Color DarkBlue => new Color(KnownColor.DarkBlue);
+        public static Color DarkBlue => new(KnownColor.DarkBlue);
 
-        public static Color DarkCyan => new Color(KnownColor.DarkCyan);
+        public static Color DarkCyan => new(KnownColor.DarkCyan);
 
-        public static Color DarkGoldenrod => new Color(KnownColor.DarkGoldenrod);
+        public static Color DarkGoldenrod => new(KnownColor.DarkGoldenrod);
 
-        public static Color DarkGray => new Color(KnownColor.DarkGray);
+        public static Color DarkGray => new(KnownColor.DarkGray);
 
-        public static Color DarkGreen => new Color(KnownColor.DarkGreen);
+        public static Color DarkGreen => new(KnownColor.DarkGreen);
 
-        public static Color DarkKhaki => new Color(KnownColor.DarkKhaki);
+        public static Color DarkKhaki => new(KnownColor.DarkKhaki);
 
-        public static Color DarkMagenta => new Color(KnownColor.DarkMagenta);
+        public static Color DarkMagenta => new(KnownColor.DarkMagenta);
 
-        public static Color DarkOliveGreen => new Color(KnownColor.DarkOliveGreen);
+        public static Color DarkOliveGreen => new(KnownColor.DarkOliveGreen);
 
-        public static Color DarkOrange => new Color(KnownColor.DarkOrange);
+        public static Color DarkOrange => new(KnownColor.DarkOrange);
 
-        public static Color DarkOrchid => new Color(KnownColor.DarkOrchid);
+        public static Color DarkOrchid => new(KnownColor.DarkOrchid);
 
-        public static Color DarkRed => new Color(KnownColor.DarkRed);
+        public static Color DarkRed => new(KnownColor.DarkRed);
 
-        public static Color DarkSalmon => new Color(KnownColor.DarkSalmon);
+        public static Color DarkSalmon => new(KnownColor.DarkSalmon);
 
-        public static Color DarkSeaGreen => new Color(KnownColor.DarkSeaGreen);
+        public static Color DarkSeaGreen => new(KnownColor.DarkSeaGreen);
 
-        public static Color DarkSlateBlue => new Color(KnownColor.DarkSlateBlue);
+        public static Color DarkSlateBlue => new(KnownColor.DarkSlateBlue);
 
-        public static Color DarkSlateGray => new Color(KnownColor.DarkSlateGray);
+        public static Color DarkSlateGray => new(KnownColor.DarkSlateGray);
 
-        public static Color DarkTurquoise => new Color(KnownColor.DarkTurquoise);
+        public static Color DarkTurquoise => new(KnownColor.DarkTurquoise);
 
-        public static Color DarkViolet => new Color(KnownColor.DarkViolet);
+        public static Color DarkViolet => new(KnownColor.DarkViolet);
 
-        public static Color DeepPink => new Color(KnownColor.DeepPink);
+        public static Color DeepPink => new(KnownColor.DeepPink);
 
-        public static Color DeepSkyBlue => new Color(KnownColor.DeepSkyBlue);
+        public static Color DeepSkyBlue => new(KnownColor.DeepSkyBlue);
 
-        public static Color DimGray => new Color(KnownColor.DimGray);
+        public static Color DimGray => new(KnownColor.DimGray);
 
-        public static Color DodgerBlue => new Color(KnownColor.DodgerBlue);
+        public static Color DodgerBlue => new(KnownColor.DodgerBlue);
 
-        public static Color Firebrick => new Color(KnownColor.Firebrick);
+        public static Color Firebrick => new(KnownColor.Firebrick);
 
-        public static Color FloralWhite => new Color(KnownColor.FloralWhite);
+        public static Color FloralWhite => new(KnownColor.FloralWhite);
 
-        public static Color ForestGreen => new Color(KnownColor.ForestGreen);
+        public static Color ForestGreen => new(KnownColor.ForestGreen);
 
-        public static Color Fuchsia => new Color(KnownColor.Fuchsia);
+        public static Color Fuchsia => new(KnownColor.Fuchsia);
 
-        public static Color Gainsboro => new Color(KnownColor.Gainsboro);
+        public static Color Gainsboro => new(KnownColor.Gainsboro);
 
-        public static Color GhostWhite => new Color(KnownColor.GhostWhite);
+        public static Color GhostWhite => new(KnownColor.GhostWhite);
 
-        public static Color Gold => new Color(KnownColor.Gold);
+        public static Color Gold => new(KnownColor.Gold);
 
-        public static Color Goldenrod => new Color(KnownColor.Goldenrod);
+        public static Color Goldenrod => new(KnownColor.Goldenrod);
 
-        public static Color Gray => new Color(KnownColor.Gray);
+        public static Color Gray => new(KnownColor.Gray);
 
-        public static Color Green => new Color(KnownColor.Green);
+        public static Color Green => new(KnownColor.Green);
 
-        public static Color GreenYellow => new Color(KnownColor.GreenYellow);
+        public static Color GreenYellow => new(KnownColor.GreenYellow);
 
-        public static Color Honeydew => new Color(KnownColor.Honeydew);
+        public static Color Honeydew => new(KnownColor.Honeydew);
 
-        public static Color HotPink => new Color(KnownColor.HotPink);
+        public static Color HotPink => new(KnownColor.HotPink);
 
-        public static Color IndianRed => new Color(KnownColor.IndianRed);
+        public static Color IndianRed => new(KnownColor.IndianRed);
 
-        public static Color Indigo => new Color(KnownColor.Indigo);
+        public static Color Indigo => new(KnownColor.Indigo);
 
-        public static Color Ivory => new Color(KnownColor.Ivory);
+        public static Color Ivory => new(KnownColor.Ivory);
 
-        public static Color Khaki => new Color(KnownColor.Khaki);
+        public static Color Khaki => new(KnownColor.Khaki);
 
-        public static Color Lavender => new Color(KnownColor.Lavender);
+        public static Color Lavender => new(KnownColor.Lavender);
 
-        public static Color LavenderBlush => new Color(KnownColor.LavenderBlush);
+        public static Color LavenderBlush => new(KnownColor.LavenderBlush);
 
-        public static Color LawnGreen => new Color(KnownColor.LawnGreen);
+        public static Color LawnGreen => new(KnownColor.LawnGreen);
 
-        public static Color LemonChiffon => new Color(KnownColor.LemonChiffon);
+        public static Color LemonChiffon => new(KnownColor.LemonChiffon);
 
-        public static Color LightBlue => new Color(KnownColor.LightBlue);
+        public static Color LightBlue => new(KnownColor.LightBlue);
 
-        public static Color LightCoral => new Color(KnownColor.LightCoral);
+        public static Color LightCoral => new(KnownColor.LightCoral);
 
-        public static Color LightCyan => new Color(KnownColor.LightCyan);
+        public static Color LightCyan => new(KnownColor.LightCyan);
 
-        public static Color LightGoldenrodYellow => new Color(KnownColor.LightGoldenrodYellow);
+        public static Color LightGoldenrodYellow => new(KnownColor.LightGoldenrodYellow);
 
-        public static Color LightGreen => new Color(KnownColor.LightGreen);
+        public static Color LightGreen => new(KnownColor.LightGreen);
 
-        public static Color LightGray => new Color(KnownColor.LightGray);
+        public static Color LightGray => new(KnownColor.LightGray);
 
-        public static Color LightPink => new Color(KnownColor.LightPink);
+        public static Color LightPink => new(KnownColor.LightPink);
 
-        public static Color LightSalmon => new Color(KnownColor.LightSalmon);
+        public static Color LightSalmon => new(KnownColor.LightSalmon);
 
-        public static Color LightSeaGreen => new Color(KnownColor.LightSeaGreen);
+        public static Color LightSeaGreen => new(KnownColor.LightSeaGreen);
 
-        public static Color LightSkyBlue => new Color(KnownColor.LightSkyBlue);
+        public static Color LightSkyBlue => new(KnownColor.LightSkyBlue);
 
-        public static Color LightSlateGray => new Color(KnownColor.LightSlateGray);
+        public static Color LightSlateGray => new(KnownColor.LightSlateGray);
 
-        public static Color LightSteelBlue => new Color(KnownColor.LightSteelBlue);
+        public static Color LightSteelBlue => new(KnownColor.LightSteelBlue);
 
-        public static Color LightYellow => new Color(KnownColor.LightYellow);
+        public static Color LightYellow => new(KnownColor.LightYellow);
 
-        public static Color Lime => new Color(KnownColor.Lime);
+        public static Color Lime => new(KnownColor.Lime);
 
-        public static Color LimeGreen => new Color(KnownColor.LimeGreen);
+        public static Color LimeGreen => new(KnownColor.LimeGreen);
 
-        public static Color Linen => new Color(KnownColor.Linen);
+        public static Color Linen => new(KnownColor.Linen);
 
-        public static Color Magenta => new Color(KnownColor.Magenta);
+        public static Color Magenta => new(KnownColor.Magenta);
 
-        public static Color Maroon => new Color(KnownColor.Maroon);
+        public static Color Maroon => new(KnownColor.Maroon);
 
-        public static Color MediumAquamarine => new Color(KnownColor.MediumAquamarine);
+        public static Color MediumAquamarine => new(KnownColor.MediumAquamarine);
 
-        public static Color MediumBlue => new Color(KnownColor.MediumBlue);
+        public static Color MediumBlue => new(KnownColor.MediumBlue);
 
-        public static Color MediumOrchid => new Color(KnownColor.MediumOrchid);
+        public static Color MediumOrchid => new(KnownColor.MediumOrchid);
 
-        public static Color MediumPurple => new Color(KnownColor.MediumPurple);
+        public static Color MediumPurple => new(KnownColor.MediumPurple);
 
-        public static Color MediumSeaGreen => new Color(KnownColor.MediumSeaGreen);
+        public static Color MediumSeaGreen => new(KnownColor.MediumSeaGreen);
 
-        public static Color MediumSlateBlue => new Color(KnownColor.MediumSlateBlue);
+        public static Color MediumSlateBlue => new(KnownColor.MediumSlateBlue);
 
-        public static Color MediumSpringGreen => new Color(KnownColor.MediumSpringGreen);
+        public static Color MediumSpringGreen => new(KnownColor.MediumSpringGreen);
 
-        public static Color MediumTurquoise => new Color(KnownColor.MediumTurquoise);
+        public static Color MediumTurquoise => new(KnownColor.MediumTurquoise);
 
-        public static Color MediumVioletRed => new Color(KnownColor.MediumVioletRed);
+        public static Color MediumVioletRed => new(KnownColor.MediumVioletRed);
 
-        public static Color MidnightBlue => new Color(KnownColor.MidnightBlue);
+        public static Color MidnightBlue => new(KnownColor.MidnightBlue);
 
-        public static Color MintCream => new Color(KnownColor.MintCream);
+        public static Color MintCream => new(KnownColor.MintCream);
 
-        public static Color MistyRose => new Color(KnownColor.MistyRose);
+        public static Color MistyRose => new(KnownColor.MistyRose);
 
-        public static Color Moccasin => new Color(KnownColor.Moccasin);
+        public static Color Moccasin => new(KnownColor.Moccasin);
 
-        public static Color NavajoWhite => new Color(KnownColor.NavajoWhite);
+        public static Color NavajoWhite => new(KnownColor.NavajoWhite);
 
-        public static Color Navy => new Color(KnownColor.Navy);
+        public static Color Navy => new(KnownColor.Navy);
 
-        public static Color OldLace => new Color(KnownColor.OldLace);
+        public static Color OldLace => new(KnownColor.OldLace);
 
-        public static Color Olive => new Color(KnownColor.Olive);
+        public static Color Olive => new(KnownColor.Olive);
 
-        public static Color OliveDrab => new Color(KnownColor.OliveDrab);
+        public static Color OliveDrab => new(KnownColor.OliveDrab);
 
-        public static Color Orange => new Color(KnownColor.Orange);
+        public static Color Orange => new(KnownColor.Orange);
 
-        public static Color OrangeRed => new Color(KnownColor.OrangeRed);
+        public static Color OrangeRed => new(KnownColor.OrangeRed);
 
-        public static Color Orchid => new Color(KnownColor.Orchid);
+        public static Color Orchid => new(KnownColor.Orchid);
 
-        public static Color PaleGoldenrod => new Color(KnownColor.PaleGoldenrod);
+        public static Color PaleGoldenrod => new(KnownColor.PaleGoldenrod);
 
-        public static Color PaleGreen => new Color(KnownColor.PaleGreen);
+        public static Color PaleGreen => new(KnownColor.PaleGreen);
 
-        public static Color PaleTurquoise => new Color(KnownColor.PaleTurquoise);
+        public static Color PaleTurquoise => new(KnownColor.PaleTurquoise);
 
-        public static Color PaleVioletRed => new Color(KnownColor.PaleVioletRed);
+        public static Color PaleVioletRed => new(KnownColor.PaleVioletRed);
 
-        public static Color PapayaWhip => new Color(KnownColor.PapayaWhip);
+        public static Color PapayaWhip => new(KnownColor.PapayaWhip);
 
-        public static Color PeachPuff => new Color(KnownColor.PeachPuff);
+        public static Color PeachPuff => new(KnownColor.PeachPuff);
 
-        public static Color Peru => new Color(KnownColor.Peru);
+        public static Color Peru => new(KnownColor.Peru);
 
-        public static Color Pink => new Color(KnownColor.Pink);
+        public static Color Pink => new(KnownColor.Pink);
 
-        public static Color Plum => new Color(KnownColor.Plum);
+        public static Color Plum => new(KnownColor.Plum);
 
-        public static Color PowderBlue => new Color(KnownColor.PowderBlue);
+        public static Color PowderBlue => new(KnownColor.PowderBlue);
 
-        public static Color Purple => new Color(KnownColor.Purple);
+        public static Color Purple => new(KnownColor.Purple);
 
         /// <summary>
         /// Gets a system-defined color that has an ARGB value of <c>#663399</c>.
         /// </summary>
         /// <value>A system-defined color.</value>
-        public static Color RebeccaPurple => new Color(KnownColor.RebeccaPurple);
+        public static Color RebeccaPurple => new(KnownColor.RebeccaPurple);
 
-        public static Color Red => new Color(KnownColor.Red);
+        public static Color Red => new(KnownColor.Red);
 
-        public static Color RosyBrown => new Color(KnownColor.RosyBrown);
+        public static Color RosyBrown => new(KnownColor.RosyBrown);
 
-        public static Color RoyalBlue => new Color(KnownColor.RoyalBlue);
+        public static Color RoyalBlue => new(KnownColor.RoyalBlue);
 
-        public static Color SaddleBrown => new Color(KnownColor.SaddleBrown);
+        public static Color SaddleBrown => new(KnownColor.SaddleBrown);
 
-        public static Color Salmon => new Color(KnownColor.Salmon);
+        public static Color Salmon => new(KnownColor.Salmon);
 
-        public static Color SandyBrown => new Color(KnownColor.SandyBrown);
+        public static Color SandyBrown => new(KnownColor.SandyBrown);
 
-        public static Color SeaGreen => new Color(KnownColor.SeaGreen);
+        public static Color SeaGreen => new(KnownColor.SeaGreen);
 
-        public static Color SeaShell => new Color(KnownColor.SeaShell);
+        public static Color SeaShell => new(KnownColor.SeaShell);
 
-        public static Color Sienna => new Color(KnownColor.Sienna);
+        public static Color Sienna => new(KnownColor.Sienna);
 
-        public static Color Silver => new Color(KnownColor.Silver);
+        public static Color Silver => new(KnownColor.Silver);
 
-        public static Color SkyBlue => new Color(KnownColor.SkyBlue);
+        public static Color SkyBlue => new(KnownColor.SkyBlue);
 
-        public static Color SlateBlue => new Color(KnownColor.SlateBlue);
+        public static Color SlateBlue => new(KnownColor.SlateBlue);
 
-        public static Color SlateGray => new Color(KnownColor.SlateGray);
+        public static Color SlateGray => new(KnownColor.SlateGray);
 
-        public static Color Snow => new Color(KnownColor.Snow);
+        public static Color Snow => new(KnownColor.Snow);
 
-        public static Color SpringGreen => new Color(KnownColor.SpringGreen);
+        public static Color SpringGreen => new(KnownColor.SpringGreen);
 
-        public static Color SteelBlue => new Color(KnownColor.SteelBlue);
+        public static Color SteelBlue => new(KnownColor.SteelBlue);
 
-        public static Color Tan => new Color(KnownColor.Tan);
+        public static Color Tan => new(KnownColor.Tan);
 
-        public static Color Teal => new Color(KnownColor.Teal);
+        public static Color Teal => new(KnownColor.Teal);
 
-        public static Color Thistle => new Color(KnownColor.Thistle);
+        public static Color Thistle => new(KnownColor.Thistle);
 
-        public static Color Tomato => new Color(KnownColor.Tomato);
+        public static Color Tomato => new(KnownColor.Tomato);
 
-        public static Color Turquoise => new Color(KnownColor.Turquoise);
+        public static Color Turquoise => new(KnownColor.Turquoise);
 
-        public static Color Violet => new Color(KnownColor.Violet);
+        public static Color Violet => new(KnownColor.Violet);
 
-        public static Color Wheat => new Color(KnownColor.Wheat);
+        public static Color Wheat => new(KnownColor.Wheat);
 
-        public static Color White => new Color(KnownColor.White);
+        public static Color White => new(KnownColor.White);
 
-        public static Color WhiteSmoke => new Color(KnownColor.WhiteSmoke);
+        public static Color WhiteSmoke => new(KnownColor.WhiteSmoke);
 
-        public static Color Yellow => new Color(KnownColor.Yellow);
+        public static Color Yellow => new(KnownColor.Yellow);
 
-        public static Color YellowGreen => new Color(KnownColor.YellowGreen);
+        public static Color YellowGreen => new(KnownColor.YellowGreen);
         //
         //  end "web" colors
         // -------------------------------------------------------------------
@@ -439,7 +442,7 @@ namespace System.Drawing
                 ThrowOutOfByteRange(value, name);
         }
 
-        private static Color FromArgb(uint argb) => new Color(argb, StateARGBValueValid, null, (KnownColor)0);
+        private static Color FromArgb(uint argb) => new(argb, StateARGBValueValid, null, (KnownColor)0);
 
         public static Color FromArgb(int argb) => FromArgb(unchecked((uint)argb));
 
@@ -473,11 +476,19 @@ namespace System.Drawing
         public static Color FromKnownColor(KnownColor color) =>
             color <= 0 || color > KnownColor.RebeccaPurple ? FromName(color.ToString()) : new Color(color);
 
+#if NET462_OR_GREATER
         public static Color FromName(string name)
+#else
+        public static Color FromName(string name)
+#endif
         {
             // try to get a known color first
-            if (ColorTable.TryGetNamedColor(name, out Color color))
+            if (ColorTable.TryGetNamedColor(name, out var color))
+#if NET462_OR_GREATER
                 return color;
+#else
+                return FromArgb(color.ToArgb());
+#endif
 
             // otherwise treat it as a named color
             return new Color(NotDefinedValue, StateNameValid, name, (KnownColor)0);
@@ -603,4 +614,3 @@ namespace System.Drawing
         }
     }
 }
-#endif

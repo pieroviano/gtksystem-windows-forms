@@ -104,19 +104,19 @@ public class ApplicationContext : IDisposable
     /// <summary>
     ///  Causes the thread's message loop to be terminated. This will call ExitThreadCore.
     /// </summary>
-    public void ExitThread() => ExitThreadCore(EventArgs.Empty);
+    public void ExitThread() => OnThreadExit(EventArgs.Empty);
 
     /// <summary>
     ///  Causes the thread's message loop to be terminated.
     /// </summary>
-    /// <param name="eventArgs"></param>
-    protected virtual void ExitThreadCore(EventArgs eventArgs) => ThreadExit?.Invoke(this, eventArgs);
+    /// <param name="e"></param>
+    protected virtual void OnThreadExit(EventArgs e) => ThreadExit?.Invoke(this, e);
 
     /// <summary>
     ///  Called when the mainForm is closed. The default implementation
     ///  of this will call ExitThreadCore.
     /// </summary>
-    protected virtual void OnMainFormClosed(object? sender, EventArgs e) => ExitThreadCore(EventArgs.Empty);
+    protected virtual void OnMainFormClosed(object? sender, EventArgs e) => OnThreadExit(e);
 
     /// <summary>
     ///  Called when the mainForm is closed. The default implementation

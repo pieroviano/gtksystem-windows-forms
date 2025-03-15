@@ -134,7 +134,7 @@ internal class ResXSerializationBinder : SerializationBinder
         }else
             // if (_typeNameConverter != null)
         {
-            var assemblyQualifiedTypeName = MultitargetUtil.GetAssemblyQualifiedName(serializedType, _typeNameConverter);
+            var assemblyQualifiedTypeName = MultiTargetUtil.GetAssemblyQualifiedName(serializedType, _typeNameConverter);
             if (!string.IsNullOrEmpty(assemblyQualifiedTypeName))
             {
                 var pos = assemblyQualifiedTypeName?.IndexOf(',')??-1;

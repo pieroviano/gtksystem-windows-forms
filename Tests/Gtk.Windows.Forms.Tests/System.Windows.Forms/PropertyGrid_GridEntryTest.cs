@@ -132,7 +132,7 @@ class NestedObj3 : INestedObj
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class ConverterTestRootObject
 {
-    public ConverterTestPropertiesHolder propertiesHolder = new ConverterTestPropertiesHolder();
+    public ConverterTestPropertiesHolder propertiesHolder = new();
 
     [TypeConverter (typeof (CustomExpandableConverter))]
     public string CustomExpandableProperty { get; set; }

@@ -206,7 +206,7 @@ public class DataGridViewColumnTest : TestHelper
         Assert.AreEqual ("E", dvc.Name, "#H3");
     }
 
-    void DataGridView_ColumnNameChanged (object sender, DataGridViewColumnEventArgs e)
+    void DataGridView_ColumnNameChanged (object? sender, DataGridViewColumnEventArgs e)
     {
         columnChanged++;
     }

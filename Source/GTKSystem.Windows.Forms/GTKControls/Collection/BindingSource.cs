@@ -834,32 +834,32 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         return obj;
     }
 
-    private void CurrencyManager_BindingComplete(object sender, BindingCompleteEventArgs e)
+    private void CurrencyManager_BindingComplete(object? sender, BindingCompleteEventArgs e)
     {
         OnBindingComplete(e);
     }
 
-    private void CurrencyManager_CurrentChanged(object sender, EventArgs e)
+    private void CurrencyManager_CurrentChanged(object? sender, EventArgs e)
     {
         OnCurrentChanged(EventArgs.Empty);
     }
 
-    private void CurrencyManager_CurrentItemChanged(object sender, EventArgs e)
+    private void CurrencyManager_CurrentItemChanged(object? sender, EventArgs e)
     {
         OnCurrentItemChanged(EventArgs.Empty);
     }
 
-    private void CurrencyManager_DataError(object sender, BindingManagerDataErrorEventArgs e)
+    private void CurrencyManager_DataError(object? sender, BindingManagerDataErrorEventArgs e)
     {
         OnDataError(e);
     }
 
-    private void CurrencyManager_PositionChanged(object sender, EventArgs e)
+    private void CurrencyManager_PositionChanged(object? sender, EventArgs e)
     {
         OnPositionChanged(e);
     }
 
-    private void DataSource_Initialized(object sender, EventArgs e)
+    private void DataSource_Initialized(object? sender, EventArgs e)
     {
         if (DataSource is ISupportInitializeNotification source)
         {
@@ -1093,7 +1093,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         return List.IndexOf(value);
     }
 
-    private void InnerList_ListChanged(object sender, ListChangedEventArgs e)
+    private void InnerList_ListChanged(object? sender, ListChangedEventArgs e)
     {
         if (!_innerListChanging)
         {
@@ -1151,7 +1151,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         return _itemConstructor != null;
     }
 
-    private void ListItem_PropertyChanged(object sender, EventArgs e)
+    private void ListItem_PropertyChanged(object? sender, EventArgs e)
     {
         int num;
         num = sender != _currentItemHookedForItemChange ? ((IList)this).IndexOf(sender) : Position;
@@ -1304,7 +1304,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         }
     }
 
-    private void ParentCurrencyManager_CurrentItemChanged(object sender, EventArgs e)
+    private void ParentCurrencyManager_CurrentItemChanged(object? sender, EventArgs e)
     {
         if (_initializing)
         {
@@ -1323,7 +1323,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         {
             _parentsCurrentItemChanging = false;
         }
-        var manager = (CurrencyManager)sender;
+        var manager = (CurrencyManager?)sender;
         if (!string.IsNullOrEmpty(_dataMember))
         {
             object? list = null;
@@ -1367,7 +1367,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         OnCurrentItemChanged(EventArgs.Empty);
     }
 
-    private void ParentCurrencyManager_MetaDataChanged(object sender, EventArgs e)
+    private void ParentCurrencyManager_MetaDataChanged(object? sender, EventArgs e)
     {
         ClearInvalidDataMember();
         ResetList();

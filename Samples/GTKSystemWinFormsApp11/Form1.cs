@@ -13,15 +13,15 @@ public partial class GtkForm : Form
     public GtkForm()
     {
         InitializeComponent();
-        toolStripMenuItem1.Text = string.Format("{0} 1", Resources.GtkForm_InitializeComponent_Menu);
-        ddddToolStripMenuItem.Text = string.Format("a {0}", Resources.GtkForm_InitializeComponent_Menu);
-        ssssToolStripMenuItem.Text = string.Format("b {0}", Resources.GtkForm_InitializeComponent_Menu);
-        bbMenuToolStripMenuItem.Text = string.Format("bb {0}", Resources.GtkForm_InitializeComponent_Menu);
-        bbMenu2ToolStripMenuItem.Text = string.Format("bb {0} 2", Resources.GtkForm_InitializeComponent_Menu);
-        ssssToolStripMenuItem1.Text = string.Format("{0} 2", Resources.GtkForm_InitializeComponent_Menu);
+        toolStripMenuItem1.Text = $"{Resources.GtkForm_InitializeComponent_Menu} 1";
+        ddddToolStripMenuItem.Text = $"a {Resources.GtkForm_InitializeComponent_Menu}";
+        ssssToolStripMenuItem.Text = $"b {Resources.GtkForm_InitializeComponent_Menu}";
+        bbMenuToolStripMenuItem.Text = $"bb {Resources.GtkForm_InitializeComponent_Menu}";
+        bbMenu2ToolStripMenuItem.Text = $"bb {Resources.GtkForm_InitializeComponent_Menu} 2";
+        ssssToolStripMenuItem1.Text = $"{Resources.GtkForm_InitializeComponent_Menu} 2";
         toolStripDropDownButton1.Text = Resources.GtkForm_GtkForm_dropdown_list_1;
-        memnuToolStripMenuItem.Text = string.Format("{0} 1", Resources.GtkForm_InitializeComponent_Item);
-        fffffffToolStripMenuItem.Text = string.Format("{0} 2", Resources.GtkForm_InitializeComponent_Item);
+        memnuToolStripMenuItem.Text = $"{Resources.GtkForm_InitializeComponent_Item} 1";
+        fffffffToolStripMenuItem.Text = $"{Resources.GtkForm_InitializeComponent_Item} 2";
         button1.Text = Resources.GtkForm_InitializeComponent_Open_main_window;
         toolStripStatusLabel1.Text = Resources.GtkForm_InitializeComponent_Open_Status_Text;
         toolStripSplitButton2.Text = Resources.GtkForm_InitializeComponent_DropSownMenu;
@@ -36,17 +36,17 @@ public partial class GtkForm : Form
         Console.WriteLine($"{Width},{Height}");
     }
 
-    private void button1_Click(object sender, EventArgs e)
+    private void button1_Click(object? sender, EventArgs e)
     {
 
     }
 
-    private void trackBar1_Scroll(object sender, EventArgs e)
+    private void trackBar1_Scroll(object? sender, EventArgs e)
     {
         label1.Text = trackBar1.Value.ToString();
     }
 
-    private void button1_Paint(object sender, PaintEventArgs e)
+    private void button1_Paint(object? sender, PaintEventArgs e)
     {
         var g = e.Graphics;
         g.DrawEllipse(new Pen(new SolidBrush(System.Drawing.Color.Red), 2), 80, 25, 30, 20);
@@ -56,7 +56,7 @@ public partial class GtkForm : Form
     }
 
 
-    private async void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private async void LinkLabel1_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e)
     {
         AutoClosingMessageBox.Instance.MessageBoxTimeout = 1000;
         AutoClosingMessageBox.Instance.Show(linkLabel1.Text);

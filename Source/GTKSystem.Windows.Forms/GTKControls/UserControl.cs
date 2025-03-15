@@ -32,7 +32,7 @@ public class UserControl : ContainerControl
         contaner.Add(new Fixed { Halign = Align.Fill, Valign = Align.Fill });
         _controls = new ControlCollection(this, contaner);
         self.Add(contaner);
-        self.Override.Paint += Override_Paint;
+        //self.Override.Paint += Override_Paint;
         self.ParentSet += Self_ParentSet;
     }
     public override Padding Padding
@@ -60,17 +60,10 @@ public class UserControl : ContainerControl
         OnPaint(e);
     }
 
-    public override event EventHandler? Load;
     public Drawing.SizeF AutoScaleDimensions { get; set; }
     public AutoScaleMode AutoScaleMode { get; set; }
-    public override ControlCollection Controls => _controls!;
+    public override ControlCollection Controls => _controls;
 
-    protected override void OnPaint(PaintEventArgs e)
-    {
-    }
-    protected override void OnParentChanged(EventArgs e)
-    {
-    }
     public override void SuspendLayout()
     {
 

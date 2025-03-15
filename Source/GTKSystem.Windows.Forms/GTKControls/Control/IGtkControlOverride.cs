@@ -19,6 +19,7 @@ public interface IGtkControlOverride
     void OnAddClass();
     void OnDrawnBackground(Context? cr, Gdk.Rectangle area);
     void OnPaint(Context? cr, Gdk.Rectangle area);
+    void OnPaint(PaintEventArgs e);
     void RemoveClass(string cssClass);
     void ClearNativeBackground();
     void DrawnBackColor(Context cr, Gdk.Rectangle area);

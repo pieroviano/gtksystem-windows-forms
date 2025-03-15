@@ -108,20 +108,20 @@ public class PropertyManager : BindingManagerBase
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.CurrentChanged" /> event.</summary>
-    /// <param name="ea">The <see cref="T:System.EventArgs" /> that contains the event data. </param>
-    protected internal override void OnCurrentChanged(EventArgs ea)
+    /// <param name="e">The <see cref="T:System.EventArgs" /> that contains the event data. </param>
+    protected internal override void OnCurrentChanged(EventArgs e)
     {
         PushData();
-        OnCurrentChangedHandler?.Invoke(this, ea);
-        OnCurrentItemChangedHandler?.Invoke(this, ea);
+        OnCurrentChangedHandler?.Invoke(this, e);
+        OnCurrentItemChangedHandler?.Invoke(this, e);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.CurrentItemChanged" /> event.</summary>
-    /// <param name="ea">An <see cref="T:System.EventArgs" /> containing the event data.</param>
-    protected internal override void OnCurrentItemChanged(EventArgs ea)
+    /// <param name="e">An <see cref="T:System.EventArgs" /> containing the event data.</param>
+    protected internal override void OnCurrentItemChanged(EventArgs e)
     {
         PushData();
-        OnCurrentItemChangedHandler?.Invoke(this, ea);
+        OnCurrentItemChangedHandler?.Invoke(this, e);
     }
 
     private void PropertyChanged(object? sender, EventArgs ea)

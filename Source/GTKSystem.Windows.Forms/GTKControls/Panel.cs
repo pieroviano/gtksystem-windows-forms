@@ -29,7 +29,7 @@ public class Panel : ScrollableControl
         contaner.Add(new Fixed { Halign = Align.Fill, Valign = Align.Fill });
         self.Add(contaner);
     }
-    public override ControlCollection Controls => _controls!;
+    public override ControlCollection Controls => _controls;
     public override Padding Padding
     {
         get => base.Padding;

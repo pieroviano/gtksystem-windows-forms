@@ -28,12 +28,12 @@ public class TabControl : ContainerControl
     private void Self_SwitchPage(object? o, SwitchPageArgs args)
     {
         if (SelectedIndexChanged != null && self.IsMapped)
-            OnSelectedIndexChanged(new EventArgs());
+            OnSelectedIndexChanged(EventArgs.Empty);
     }
 
-    protected virtual void OnSelectedIndexChanged(EventArgs eventArgs)
+    protected virtual void OnSelectedIndexChanged(EventArgs e)
     {
-        SelectedIndexChanged?.Invoke(this, eventArgs);
+        SelectedIndexChanged?.Invoke(this, e);
     }
 
     /// <summary>
@@ -168,9 +168,9 @@ public class TabControl : ContainerControl
             }
         }
 
-        protected virtual void OnDrawItem(DrawItemEventArgs eventArgs)
+        protected virtual void OnDrawItem(DrawItemEventArgs e)
         {
-            _owner.DrawItem?.Invoke(this, eventArgs);
+            _owner.DrawItem?.Invoke(this, e);
         }
 
         public new void RemoveAt(int index)

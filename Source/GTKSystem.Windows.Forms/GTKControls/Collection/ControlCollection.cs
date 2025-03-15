@@ -25,8 +25,8 @@ public partial class Control
             _owner = owner;
             if (_ownerControl != null)
             {
-                _ownerControl.Mapped += __ownerControl_Mapped;
-                _ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                _ownerControl.Mapped += OwnerControl_Mapped;
+                _ownerControl.ResizeChecked += OwnerControl_ResizeChecked;
             }
         }
 
@@ -36,12 +36,12 @@ public partial class Control
             _owner = owner;
             if (_ownerControl != null)
             {
-                _ownerControl.Mapped += __ownerControl_Mapped;
-                _ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                _ownerControl.Mapped += OwnerControl_Mapped;
+                _ownerControl.ResizeChecked += OwnerControl_ResizeChecked;
             }
         }
-        //ResizeChecked可重置布局
-        private void __ownerControl_ResizeChecked(object? sender, EventArgs e)
+        //ResizeChecked resettable layout
+        private void OwnerControl_ResizeChecked(object? sender, EventArgs e)
         {
             if (sender is Overlay lay)
             {
@@ -50,7 +50,7 @@ public partial class Control
         }
 
         private bool _isOwnerControlMapped;
-        private void __ownerControl_Mapped(object? sender, EventArgs e)
+        private void OwnerControl_Mapped(object? sender, EventArgs e)
         {
             if (_isOwnerControlMapped == false)
             {
@@ -161,7 +161,7 @@ public partial class Control
             }
         }
 
-        private void Control_AnchorChanged(object sender, EventArgs e)
+        private void Control_AnchorChanged(object? sender, EventArgs e)
         {
             var control = sender as Control;
             if (control?.Widget.Parent is Overlay lay)
@@ -169,7 +169,7 @@ public partial class Control
                 SetMarginEnd(lay, control);
             }
         }
-        private void Control_DockChanged(object sender, EventArgs e)
+        private void Control_DockChanged(object? sender, EventArgs e)
         {
             var control = sender as Control;
             if (control?.Widget.Parent is Overlay lay)

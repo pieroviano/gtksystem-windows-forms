@@ -54,7 +54,7 @@ public class DataGridView : ScrollableControl
     }
 
     private readonly List<int> _selectedBandIndexes = new();
-    private void Selection_Changed(object sender, EventArgs e)
+    private void Selection_Changed(object? sender, EventArgs e)
     {
         _selectedBandIndexes.Clear();
         var treePaths = GridView.Selection.GetSelectedRows();
@@ -458,7 +458,7 @@ public class DataGridView : ScrollableControl
     {
         GridView.Selection.UnselectAll();
     }
-    public void OnCellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+    public void OnCellPainting(object? sender, DataGridViewCellPaintingEventArgs e)
     {
         if (CellPainting != null)
             CellPainting(sender, e);

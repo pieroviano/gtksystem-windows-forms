@@ -103,6 +103,11 @@ public sealed partial class ImageList
             }
         }
 
+        public Image[] ToArray()
+        {
+            return _owner?._originals?.Where(i => i._image is Image).Select(i => (i._image as Image)!).ToArray()??[];
+        }
+
         object? IList.this[int index]
         {
             get => this[index];

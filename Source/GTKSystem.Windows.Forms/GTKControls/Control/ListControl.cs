@@ -101,9 +101,9 @@ public abstract class ListControl : ScrollableControl
         return item?.ToString();
     }
 
-    protected virtual void OnDisplayMemberChanged(EventArgs eventArgs)
+    protected virtual void OnDisplayMemberChanged(EventArgs e)
     {
-        DisplayMemberChanged?.Invoke(this, eventArgs);
+        DisplayMemberChanged?.Invoke(this, e);
     }
 
     protected virtual void OnFormat(ListControlConvertEventArgs e)
@@ -111,9 +111,9 @@ public abstract class ListControl : ScrollableControl
         Format?.Invoke(this, e);
     }
 
-    protected virtual void OnFormatInfoChanged(EventArgs eventArgs)
+    protected virtual void OnFormatInfoChanged(EventArgs e)
     {
-        FormatInfoChanged?.Invoke(this, eventArgs);
+        FormatInfoChanged?.Invoke(this, e);
     }
 
     protected virtual void OnFormatStringChanged(EventArgs e)
@@ -121,9 +121,9 @@ public abstract class ListControl : ScrollableControl
         FormatStringChanged?.Invoke(this, e);
     }
 
-    protected virtual void OnFormattingEnabledChanged(EventArgs eventArgs)
+    protected virtual void OnFormattingEnabledChanged(EventArgs e)
     {
-        FormattingEnabledChanged?.Invoke(this, eventArgs);
+        FormattingEnabledChanged?.Invoke(this, e);
     }
 
     protected virtual void OnValueMemberChanged(EventArgs e)

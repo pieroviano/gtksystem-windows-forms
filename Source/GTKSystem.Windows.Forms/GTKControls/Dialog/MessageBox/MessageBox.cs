@@ -273,7 +273,7 @@ internal class NonStaticMessageBox : IMessageBox
         MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
     {
         var dia = new Dialog(caption, owner, DialogFlags.DestroyWithParent);
-        DialogAvailable?.Invoke(this, new DialogEventArgs(dia));
+        OnDialogAvailable(new DialogEventArgs(dia));
         dia.KeepAbove = true;
         dia.KeepBelow = false;
         dia.TypeHint = Gdk.WindowTypeHint.Dialog;
@@ -362,6 +362,11 @@ internal class NonStaticMessageBox : IMessageBox
         }
         dia.ShowAll();
         return dia.Run();
+    }
+
+    protected virtual void OnDialogAvailable(DialogEventArgs e)
+    {
+        DialogAvailable?.Invoke(this, e);
     }
 
     private void Dia_Response(object o, ResponseArgs args)

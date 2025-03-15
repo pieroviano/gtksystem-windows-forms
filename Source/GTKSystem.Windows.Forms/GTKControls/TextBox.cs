@@ -13,7 +13,7 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class TextBox : Control
 {
-    public readonly TextBoxBase self = new TextBoxBase();
+    public readonly TextBoxBase self = new();
     private bool _shortcutsEnabled;
     public override object GtkControl => self;
 
@@ -80,26 +80,16 @@ public class TextBox : Control
 
     private void Self_KeyPressEvent(object? o, Gtk.KeyPressEventArgs args)
     {
-        if (KeyDown != null)
+        if (args.Event is { } eventkey)
         {
-            if (args.Event is { } eventkey)
-            {
-                var keys = (Keys)eventkey.HardwareKeycode;
-                OnKeyDown(new KeyEventArgs(keys));
-            }
+            var keys = (Keys)eventkey.HardwareKeycode;
+            OnKeyDown(new KeyEventArgs(keys));
         }
     }
 
-    protected override void OnKeyDown(KeyEventArgs keyEventArgs)
-    {
-        KeyDown?.Invoke(this, keyEventArgs);
-    }
-
-    public override event KeyEventHandler? KeyDown;
-
     private void Self_TextInserted(object? o, TextInsertedArgs args)
     {
-        if (KeyDown != null && GetType().Name == "TextBox")
+        if (GetType().Name == "TextBox")
         {
             var keytext = args.NewText.ToUpper();
             if (char.IsNumber(args.NewText[0]))
@@ -109,21 +99,16 @@ public class TextBox : Control
                 return Enum.GetName(typeof(Keys), k) == keytext;
             });
             foreach (var key in keyv)
-                OnKeyDown( new KeyEventArgs(key));
+                OnKeyDown(new KeyEventArgs(key));
         }
     }
 
-    private void Self_Changed(object sender, EventArgs e)
+    private void Self_Changed(object? sender, EventArgs e)
     {
-        if (TextChanged != null && self.IsVisible)
+        if (self.IsVisible)
         {
             OnTextChanged(EventArgs.Empty);
         }
-    }
-
-    protected virtual void OnTextChanged(EventArgs eventArgs)
-    {
-        TextChanged?.Invoke(this, eventArgs);
     }
 
     public string[] Lines => string.IsNullOrEmpty(Text) ? [] : Text.Replace("\r\n", "\n").Split('\n');
@@ -162,7 +147,6 @@ public class TextBox : Control
         set => self.IsEditable = value == false;
     }
 
-    public override event EventHandler? TextChanged;
     public bool Multiline { get; set; }
 
     public int MaxLength

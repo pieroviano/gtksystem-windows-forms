@@ -13,12 +13,12 @@ public class PrintDocument : Component
 {
     private string _documentName = "document";
 
-    private PrintEventHandler? _beginPrintHandler;
-    private PrintEventHandler? _endPrintHandler;
-    private PrintPageEventHandler? _printPageHandler;
-    private QueryPageSettingsEventHandler? _queryHandler;
+    private PrintEventHandler? _beginPrint;
+    private PrintEventHandler? _endPrint;
+    private PrintPageEventHandler? _printPage;
+    private QueryPageSettingsEventHandler? _queryPageSettings;
 
-    private PrinterSettings _printerSettings = new PrinterSettings();
+    private PrinterSettings _printerSettings = new();
     private PageSettings _defaultPageSettings;
 
     //private PrintController _printController;
@@ -107,36 +107,36 @@ public class PrintDocument : Component
 
     public event PrintEventHandler? BeginPrint
     {
-        add => _beginPrintHandler += value;
-        remove => _beginPrintHandler -= value;
+        add => _beginPrint += value;
+        remove => _beginPrint -= value;
     }
 
     public event PrintEventHandler? EndPrint
     {
-        add => _endPrintHandler += value;
-        remove => _endPrintHandler -= value;
+        add => _endPrint += value;
+        remove => _endPrint -= value;
     }
 
     public event PrintPageEventHandler? PrintPage
     {
-        add => _printPageHandler += value;
-        remove => _printPageHandler -= value;
+        add => _printPage += value;
+        remove => _printPage -= value;
     }
 
     public event QueryPageSettingsEventHandler? QueryPageSettings
     {
-        add => _queryHandler += value;
-        remove => _queryHandler -= value;
+        add => _queryPageSettings += value;
+        remove => _queryPageSettings -= value;
     }
 
-    protected internal virtual void OnBeginPrint(PrintEventArgs e) => _beginPrintHandler?.Invoke(this, e);
+    protected internal virtual void OnBeginPrint(PrintEventArgs e) => _beginPrint?.Invoke(this, e);
 
-    protected internal virtual void OnEndPrint(PrintEventArgs e) => _endPrintHandler?.Invoke(this, e);
+    protected internal virtual void OnEndPrint(PrintEventArgs e) => _endPrint?.Invoke(this, e);
 
-    protected internal virtual void OnPrintPage(PrintPageEventArgs e) => _printPageHandler?.Invoke(this, e);
+    protected internal virtual void OnPrintPage(PrintPageEventArgs e) => _printPage?.Invoke(this, e);
 
     protected internal virtual void OnQueryPageSettings(QueryPageSettingsEventArgs e) =>
-        _queryHandler?.Invoke(this, e);
+        _queryPageSettings?.Invoke(this, e);
 
     public void Print()
     {

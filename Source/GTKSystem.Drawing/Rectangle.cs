@@ -49,7 +49,7 @@ namespace System.Drawing
         /// Creates a new <see cref='System.Drawing.Rectangle'/> with the specified location and size.
         /// </summary>
         public static Rectangle FromLTRB(int left, int top, int right, int bottom) =>
-            new Rectangle(left, top, unchecked(right - left), unchecked(bottom - top));
+            new(left, top, unchecked(right - left), unchecked(bottom - top));
 
         /// <summary>
         /// Gets or sets the coordinates of the upper-left corner of the rectangular region represented by this
@@ -58,7 +58,7 @@ namespace System.Drawing
         [Browsable(false)]
         public Point Location
         {
-            readonly get => new Point(X, Y);
+            readonly get => new(X, Y);
             set
             {
                 X = value.X;
@@ -72,7 +72,7 @@ namespace System.Drawing
         [Browsable(false)]
         public Size Size
         {
-            readonly get => new Size(Width, Height);
+            readonly get => new(Width, Height);
             set
             {
                 Width = value.Width;

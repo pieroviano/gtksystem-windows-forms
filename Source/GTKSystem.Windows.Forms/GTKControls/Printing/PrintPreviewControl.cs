@@ -5,6 +5,9 @@ using Gtk;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
+#if NETSTANDARD
+using System.Drawing.Gtk;
+#endif
 
 namespace System.Windows.Forms;
 
@@ -219,10 +222,10 @@ public class PrintPreviewControl : Control
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public override void ResetBackColor() => BackColor = GtkSystemColors.AppWorkspace;
+    public override void ResetBackColor() => BackColor = System.Drawing.Color.FromArgb(SystemColors.AppWorkspace.ToArgb());
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public override void ResetForeColor() => ForeColor = Color.White;
+    public override void ResetForeColor() => ForeColor = System.Drawing.Color.White;
 
     public void InvalidatePreview()
     {

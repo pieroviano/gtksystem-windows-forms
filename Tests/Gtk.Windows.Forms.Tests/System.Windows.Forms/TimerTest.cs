@@ -122,7 +122,7 @@ public class TimerTest : TestHelper
     }
     */
 
-    void TickHandler (object sender, EventArgs e)
+    void TickHandler (object? sender, EventArgs e)
     {
         Ticked = true;
     }
@@ -157,7 +157,7 @@ public class TimerTest : TestHelper
             Load += Form_Load;
         }
 
-        void Form_Load (object sender, EventArgs e)
+        void Form_Load (object? sender, EventArgs e)
         {
             var t = new Thread (Run);
             t.IsBackground = true;
@@ -187,7 +187,7 @@ public class TimerTest : TestHelper
             _timer.Start ();
         }
 
-        void Timer_Tick (object sender, EventArgs e)
+        void Timer_Tick (object? sender, EventArgs e)
         {
             _timer.Stop ();
             Close ();

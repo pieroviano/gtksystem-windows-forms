@@ -77,12 +77,12 @@ namespace System.Drawing
         /// <summary>
         /// Creates a <see cref='System.Drawing.PointF'/> with the coordinates of the specified <see cref='System.Drawing.Point'/>
         /// </summary>
-        public static implicit operator PointF(Point p) => new PointF(p.X, p.Y);
+        public static implicit operator PointF(Point p) => new(p.X, p.Y);
 
         /// <summary>
         /// Creates a <see cref='System.Drawing.Size'/> with the coordinates of the specified <see cref='System.Drawing.Point'/> .
         /// </summary>
-        public static explicit operator Size(Point p) => new Size(p.X, p.Y);
+        public static explicit operator Size(Point p) => new(p.X, p.Y);
 
         /// <summary>
         /// Translates a <see cref='System.Drawing.Point'/> by a given <see cref='System.Drawing.Size'/> .
@@ -111,27 +111,27 @@ namespace System.Drawing
         /// <summary>
         /// Translates a <see cref='System.Drawing.Point'/> by a given <see cref='System.Drawing.Size'/> .
         /// </summary>
-        public static Point Add(Point pt, Size sz) => new Point(unchecked(pt.X + sz.Width), unchecked(pt.Y + sz.Height));
+        public static Point Add(Point pt, Size sz) => new(unchecked(pt.X + sz.Width), unchecked(pt.Y + sz.Height));
 
         /// <summary>
         /// Translates a <see cref='System.Drawing.Point'/> by the negative of a given <see cref='System.Drawing.Size'/> .
         /// </summary>
-        public static Point Subtract(Point pt, Size sz) => new Point(unchecked(pt.X - sz.Width), unchecked(pt.Y - sz.Height));
+        public static Point Subtract(Point pt, Size sz) => new(unchecked(pt.X - sz.Width), unchecked(pt.Y - sz.Height));
 
         /// <summary>
         /// Converts a PointF to a Point by performing a ceiling operation on all the coordinates.
         /// </summary>
-        public static Point Ceiling(PointF value) => new Point(unchecked((int)Math.Ceiling(value.X)), unchecked((int)Math.Ceiling(value.Y)));
+        public static Point Ceiling(PointF value) => new(unchecked((int)Math.Ceiling(value.X)), unchecked((int)Math.Ceiling(value.Y)));
 
         /// <summary>
         /// Converts a PointF to a Point by performing a truncate operation on all the coordinates.
         /// </summary>
-        public static Point Truncate(PointF value) => new Point(unchecked((int)value.X), unchecked((int)value.Y));
+        public static Point Truncate(PointF value) => new(unchecked((int)value.X), unchecked((int)value.Y));
 
         /// <summary>
         /// Converts a PointF to a Point by performing a round operation on all the coordinates.
         /// </summary>
-        public static Point Round(PointF value) => new Point(unchecked((int)Math.Round(value.X)), unchecked((int)Math.Round(value.Y)));
+        public static Point Round(PointF value) => new(unchecked((int)Math.Round(value.X)), unchecked((int)Math.Round(value.Y)));
 
         /// <summary>
         /// Specifies whether this <see cref='System.Drawing.Point'/> contains the same coordinates as the specified

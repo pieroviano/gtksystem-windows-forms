@@ -24,22 +24,22 @@ public sealed class TableLayoutPanelBase : Grid, IControlGtk
         HScrollBarPolicy = PolicyType.External;
         VScrollBarPolicy = PolicyType.External;
 
-            Add(grid);
-        }
-    
+        Add(grid);
+    }
+
     public PolicyType VScrollBarPolicy { get; set; }
 
     public PolicyType HScrollBarPolicy { get; set; }
 
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
     }
+    protected override bool OnDrawn(Cairo.Context cr)
+    {
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.OnPaint(cr, rec);
+        return base.OnDrawn(cr);
+    }
+}

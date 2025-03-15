@@ -35,9 +35,9 @@ public class LinkLabel: Control
         base.PerformClick();
     }
 
-    protected virtual void OnLinkClicked(LinkLabelLinkClickedEventArgs eventArgs)
+    protected virtual void OnLinkClicked(LinkLabelLinkClickedEventArgs e)
     {
-        LinkClicked?.Invoke(this, eventArgs);
+        LinkClicked?.Invoke(this, e);
     }
 
     private void LinkLabel_Click(object? sender, EventArgs e)

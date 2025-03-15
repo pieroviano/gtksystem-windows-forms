@@ -7,8 +7,8 @@ namespace System.Windows.Forms;
 public class BindingsCollection : BaseCollection
 {
     private readonly List<Binding> _list = [];
-    private CollectionChangeEventHandler? _onCollectionChanging;
-    private CollectionChangeEventHandler? _onCollectionChanged;
+    private CollectionChangeEventHandler? _collectionChanging;
+    private CollectionChangeEventHandler? _collectionChanged;
 
     internal BindingsCollection()
     {
@@ -35,14 +35,14 @@ public class BindingsCollection : BaseCollection
     }
     public event CollectionChangeEventHandler? CollectionChanging
     {
-        add => _onCollectionChanging += value;
-        remove => _onCollectionChanging -= value;
+        add => _collectionChanging += value;
+        remove => _collectionChanging -= value;
     }
 
     public event CollectionChangeEventHandler? CollectionChanged
     {
-        add => _onCollectionChanged += value;
-        remove => _onCollectionChanged -= value;
+        add => _collectionChanged += value;
+        remove => _collectionChanged -= value;
     }
 
     protected internal void Clear()
@@ -56,12 +56,12 @@ public class BindingsCollection : BaseCollection
 
     protected virtual void OnCollectionChanging(CollectionChangeEventArgs e)
     {
-        _onCollectionChanging?.Invoke(this, e);
+        _collectionChanging?.Invoke(this, e);
     }
 
-    protected virtual void OnCollectionChanged(CollectionChangeEventArgs eventArgs)
+    protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
     {
-        _onCollectionChanged?.Invoke(this, eventArgs);
+        _collectionChanged?.Invoke(this, e);
     }
 
     protected internal void Remove(Binding binding)

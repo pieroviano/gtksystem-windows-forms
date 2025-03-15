@@ -64,12 +64,12 @@ public class RadioButtonTest : TestHelper
     }
 
     bool event_received = false;
-    void rb_tabstop_changed (object sender, EventArgs e)
+    void rb_tabstop_changed (object? sender, EventArgs e)
     {
         event_received = true;
     }
 
-    void rb_checked_changed (object sender, EventArgs e)
+    void rb_checked_changed (object? sender, EventArgs e)
     {
         event_received = true;
     }
@@ -118,7 +118,7 @@ public class RadioButtonTest : TestHelper
 public class RadioButtonEventTestClass : TestHelper
 {
     static bool eventhandled = false;
-    public static void RadioButton_EventHandler (object sender, EventArgs e)
+    public static void RadioButton_EventHandler (object? sender, EventArgs e)
     {
         eventhandled = true;
     }

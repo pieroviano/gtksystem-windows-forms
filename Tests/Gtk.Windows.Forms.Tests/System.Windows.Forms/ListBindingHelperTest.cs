@@ -84,7 +84,7 @@ public class ListBindingHelperTest : TestHelper
 
         public IList GetList ()
         {
-            return new SimpleItem [] { new SimpleItem () };
+            return new SimpleItem [] { new() };
         }
     }
 

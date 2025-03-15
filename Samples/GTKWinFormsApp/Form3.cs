@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GTKWinFormsApp.Properties;
 
@@ -30,12 +31,15 @@ public partial class GtkMainForm : Form
         button2.Text = Resources.GtkMainForm_GtkMainForm_Split_Container_Layout;
         button3.Text = Resources.GtkMainForm_GtkMainForm_Print;
         label2.Text = Resources.GtkMainForm_GtkMainForm_This_is_a_UserControl_placeholder;
-        Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
+        PreLoad += (_, _) =>
+        {
+            Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
+        };
 
         // Currently, custom controls cannot be visualized in the form designer.
         // It is recommended to add them programmatically, as shown in the following example:
         var userControl11 = new UserControl11();
-        panel5.Controls!.Add(userControl11);
+        panel5.Controls.Add(userControl11);
 
         AddHandlers();
     }
@@ -61,14 +65,14 @@ public partial class GtkMainForm : Form
         ShowListViewFormToolStripMenuItem_Click(sender, e);
     }
 
-    private void GtkMainForm_Shown(object sender, EventArgs e)
+    private void GtkMainForm_Shown(object? sender, EventArgs e)
     {
         // SwitchBox switchBox = new SwitchBox();
         //switchBox.Location = new Point(100, 100);
         //panel1.Controls.Add(switchBox);
     }
 
-    private void GtkMainForm_SizeChanged(object sender, EventArgs e)
+    private void GtkMainForm_SizeChanged(object? sender, EventArgs e)
     {
         panel1.Refresh();
         //Console.WriteLine(Width);
@@ -89,20 +93,23 @@ public partial class GtkMainForm : Form
         label1.Text = trackBar1.Value.ToString();
     }
 
-    private void GtkMainForm_Load(object sender, EventArgs e)
+    private void GtkMainForm_Load(object? sender, EventArgs e)
     {
-        var result = this.BeginInvoke(new MethodInvoker(() =>
+        void MethodInvoker()
         {
-            System.Threading.Thread.Sleep(1000);
+            while (!progressBar1.IsHandleCreated)
+            {
+                System.Threading.Thread.Sleep(100);
+            }
+
             for (int i = 1; i < 101; i++)
             {
-                progressBar1.Invoke(new MethodInvoker(() =>
-                {
-                    progressBar1.Value = i;
-                }));
+                progressBar1.Invoke(new MethodInvoker(() => { progressBar1.Value = i; }));
                 System.Threading.Thread.Sleep(20);
             }
-        }));
+        }
+
+        var result = this.BeginInvoke(MethodInvoker);
     }
 
     private void panel3_Paint(object? sender, PaintEventArgs e)

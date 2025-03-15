@@ -464,7 +464,7 @@ public class FormHandleTest : TestHelper
         RemoveWarning (o);
     }
 
-    readonly Form invokeform = new Form ();
+    readonly Form invokeform = new();
 
     [OneTimeTearDown]
     public void TearDown()
@@ -648,7 +648,7 @@ public class FormHandleTest : TestHelper
         c.Dispose ();
     }
 
-    void HandleCreated_WriteStackTrace (object sender, EventArgs e)
+    void HandleCreated_WriteStackTrace (object? sender, EventArgs e)
     {
         //Console.WriteLine (Environment.StackTrace);
     }

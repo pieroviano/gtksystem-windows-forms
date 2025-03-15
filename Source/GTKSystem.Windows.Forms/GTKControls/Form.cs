@@ -5,6 +5,12 @@
  * author:chenhongjin
  */
 
+#if NETSTANDARD
+extern alias sdc;
+#else
+extern alias sd;
+#endif
+
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
@@ -12,6 +18,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using Icon = System.Drawing.Icon;
+#if NETSTANDARD
+using SdcColor = sdc::System.Drawing.SystemColors;
+#else
+using SdcColor = sd::System.Drawing.SystemColors;
+#endif
 
 namespace System.Windows.Forms;
 
@@ -21,21 +32,19 @@ namespace System.Windows.Forms;
 public partial class Form : ContainerControl, IWin32Window
 {
     private Gtk.Application app = System.Windows.Forms.Application.Init();
-    public FormBase self = new FormBase();
+    public FormBase self = new();
 
     public override object GtkControl
     {
         get => self;
     }
 
-    private readonly Overlay contanter = new Overlay();
-    private ObjectCollection? _ObjectCollection;
-    public override event EventHandler? SizeChanged;
+    private readonly Overlay contanter = new();
     public event EventHandler<WindowStateArgs>? WindowStateChanging;
 
     public Form() : base()
     {
-        objectCollection = new ObjectCollection(this, null);
+        objectCollection = new ObjectCollection(this, contanter);
         Init();
     }
 
@@ -46,6 +55,8 @@ public partial class Form : ContainerControl, IWin32Window
 
     private void Init()
     {
+        var systemColors = SdcColor.Window;
+        BackColor = Color.FromArgb(systemColors.ToArgb());
         SetScrolledWindow(self);
         contanter.Valign = Align.Fill;
         contanter.Halign = Align.Fill;
@@ -55,7 +66,7 @@ public partial class Form : ContainerControl, IWin32Window
         contanter.MarginEnd = 0;
         contanter.Add(new Fixed() { Halign = Align.Fill, Valign = Align.Fill });
         self.ScrollView.Child = contanter;
-        _ObjectCollection = new ObjectCollection(this, contanter);
+        objectCollection = new ObjectCollection(this, contanter);
         self.ResizeChecked += Self_ResizeChecked;
         self.Shown += Control_Shown;
         self.CloseWindowEvent += Self_CloseWindowEvent;
@@ -106,11 +117,6 @@ public partial class Form : ContainerControl, IWin32Window
         OnSizeChanged(e);
     }
 
-    protected override void OnSizeChanged(EventArgs eventArgs)
-    {
-        SizeChanged?.Invoke(this, eventArgs);
-    }
-
     private bool Self_CloseWindowEvent(object? sender, EventArgs e)
     {
         var closing = new FormClosingEventArgs(CloseReason.UserClosing, false);
@@ -124,14 +130,14 @@ public partial class Form : ContainerControl, IWin32Window
         return closing.Cancel == false;
     }
 
-    protected void OnFormClosed(FormClosedEventArgs eventArgs)
+    protected void OnFormClosed(FormClosedEventArgs e)
     {
-        FormClosed?.Invoke(this, eventArgs);
+        FormClosed?.Invoke(this, e);
     }
 
-    protected virtual void OnFormClosing(FormClosingEventArgs eventArgs)
+    protected virtual void OnFormClosing(FormClosingEventArgs e)
     {
-        FormClosing?.Invoke(this, eventArgs);
+        FormClosing?.Invoke(this, e);
     }
 
     private bool isControlShown;
@@ -432,7 +438,7 @@ public partial class Form : ContainerControl, IWin32Window
 
     public FormStartPosition StartPosition { get; set; }
     private FormWindowState windowState = FormWindowState.Normal;
-    private readonly ObjectCollection objectCollection;
+    private ObjectCollection objectCollection;
 
     public DialogResult DialogResult { get; set; }
 
@@ -448,7 +454,7 @@ public partial class Form : ContainerControl, IWin32Window
         self?.Hide();
     }
 
-    public new ObjectCollection Controls => objectCollection!;
+    public new ObjectCollection Controls => objectCollection;
 
     public override Padding Padding
     {

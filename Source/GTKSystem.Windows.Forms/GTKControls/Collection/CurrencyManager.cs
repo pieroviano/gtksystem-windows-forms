@@ -26,13 +26,13 @@ public class CurrencyManager : BindingManagerBase
 
     private bool _suspendPushDataInCurrentChanged;
 
-    private ItemChangedEventHandler? _onItemChanged;
+    private ItemChangedEventHandler? _itemChanged;
 
-    private ListChangedEventHandler? _onListChanged;
+    private ListChangedEventHandler? _listChanged;
 
     private readonly ItemChangedEventArgs _resetEvent = new(-1);
 
-    private EventHandler? _onMetaDataChangedHandler;
+    private EventHandler? _metaDataChanged;
 
     /// <summary>Specifies the data type of the list.</summary>
     protected Type? FinalType;
@@ -608,8 +608,8 @@ public class CurrencyManager : BindingManagerBase
             {
                 if (!flag || flag && num != -1)
                 {
-                    OnCurrentChangedHandler?.Invoke(this, e);
-                    OnCurrentItemChangedHandler?.Invoke(this, e);
+                    OnCurrencyChanged(e);
+                    OnCurrentItemChanged(e);
                 }
             }
             catch (Exception exception)
@@ -617,6 +617,11 @@ public class CurrencyManager : BindingManagerBase
                 OnDataError(exception);
             }
         }
+    }
+
+    protected virtual void OnCurrencyChanged(EventArgs e)
+    {
+        OnCurrentChangedHandler?.Invoke(this, e);
     }
 
     /// <param name="e">The <see cref="T:System.EventArgs" /> that contains the event data.</param>
@@ -636,7 +641,7 @@ public class CurrencyManager : BindingManagerBase
         }
         try
         {
-            _onItemChanged?.Invoke(this, e);
+            _itemChanged?.Invoke(this, e);
         }
         catch (Exception exception)
         {
@@ -650,14 +655,14 @@ public class CurrencyManager : BindingManagerBase
 
     private void OnListChanged(ListChangedEventArgs e)
     {
-        _onListChanged?.Invoke(this, e);
+        _listChanged?.Invoke(this, e);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.CurrencyManager.MetaDataChanged" /> event.</summary>
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
     protected internal void OnMetaDataChanged(EventArgs e)
     {
-        _onMetaDataChangedHandler?.Invoke(this, e);
+        _metaDataChanged?.Invoke(this, e);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.PositionChanged" /> event.</summary>
@@ -891,23 +896,23 @@ public class CurrencyManager : BindingManagerBase
     /// <filterpriority>1</filterpriority>
     public event ItemChangedEventHandler? ItemChanged
     {
-        add => _onItemChanged += value;
-        remove => _onItemChanged -= value;
+        add => _itemChanged += value;
+        remove => _itemChanged -= value;
     }
 
     /// <summary>Occurs when the list changes or an item in the list changes.</summary>
     /// <filterpriority>1</filterpriority>
     public event ListChangedEventHandler? ListChanged
     {
-        add => _onListChanged += value;
-        remove => _onListChanged -= value;
+        add => _listChanged += value;
+        remove => _listChanged -= value;
     }
 
     /// <summary>Occurs when the metadata of the <see cref="P:System.Windows.Forms.CurrencyManager.List" /> has changed.</summary>
     /// <filterpriority>1</filterpriority>
     public event EventHandler? MetaDataChanged
     {
-        add => _onMetaDataChangedHandler += value;
-        remove => _onMetaDataChangedHandler -= value;
+        add => _metaDataChanged += value;
+        remove => _metaDataChanged -= value;
     }
 }

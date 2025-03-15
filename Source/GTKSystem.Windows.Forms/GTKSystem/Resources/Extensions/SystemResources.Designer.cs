@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
+namespace GtkSystem.Windows.Forms.Resources.Extensions {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SystemResources {
+    public class SystemResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Windows.Forms.GTKSystem.Resources.Extensions.SystemResources", typeof(SystemResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Windows.Forms.Extensions.SystemResources", typeof(SystemResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to The ResourceReader class does not know how to read this version of .resources files. Expected version: {0}  This file: {1}.
         /// </summary>
-        internal static string Arg_ResourceFileUnsupportedVersion {
+        public static string Arg_ResourceFileUnsupportedVersion {
             get {
                 return ResourceManager.GetString("Arg_ResourceFileUnsupportedVersion", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Stream was not readable.
         /// </summary>
-        internal static string Argument_StreamNotReadable {
+        public static string Argument_StreamNotReadable {
             get {
                 return ResourceManager.GetString("Argument_StreamNotReadable", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Stream was not writable..
         /// </summary>
-        internal static string Argument_StreamNotWritable {
+        public static string Argument_StreamNotWritable {
             get {
                 return ResourceManager.GetString("Argument_StreamNotWritable", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Stream length must be non-negative and less than 2^31 - 1 - origin..
         /// </summary>
-        internal static string ArgumentOutOfRange_StreamLength {
+        public static string ArgumentOutOfRange_StreamLength {
             get {
                 return ResourceManager.GetString("ArgumentOutOfRange_StreamLength", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file.  The specified type doesn&apos;t exist..
         /// </summary>
-        internal static string BadImageFormat_InvalidType {
+        public static string BadImageFormat_InvalidType {
             get {
                 return ResourceManager.GetString("BadImageFormat_InvalidType", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. String length must be non-negative..
         /// </summary>
-        internal static string BadImageFormat_NegativeStringLength {
+        public static string BadImageFormat_NegativeStringLength {
             get {
                 return ResourceManager.GetString("BadImageFormat_NegativeStringLength", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file.  The specified data length &apos;{0}&apos; is not a valid position in the stream..
         /// </summary>
-        internal static string BadImageFormat_ResourceDataLengthInvalid {
+        public static string BadImageFormat_ResourceDataLengthInvalid {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourceDataLengthInvalid", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. A resource name extends past the end of the stream..
         /// </summary>
-        internal static string BadImageFormat_ResourceNameCorrupted {
+        public static string BadImageFormat_ResourceNameCorrupted {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourceNameCorrupted", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. The resource name for name index {0} extends past the end of the stream..
         /// </summary>
-        internal static string BadImageFormat_ResourceNameCorrupted_NameIndex {
+        public static string BadImageFormat_ResourceNameCorrupted_NameIndex {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourceNameCorrupted_NameIndex", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. Invalid offset &apos;{0}&apos; into data section..
         /// </summary>
-        internal static string BadImageFormat_ResourcesDataInvalidOffset {
+        public static string BadImageFormat_ResourcesDataInvalidOffset {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourcesDataInvalidOffset", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. Unable to read resources from this file because of invalid header information. Try regenerating the .resources file..
         /// </summary>
-        internal static string BadImageFormat_ResourcesHeaderCorrupted {
+        public static string BadImageFormat_ResourcesHeaderCorrupted {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourcesHeaderCorrupted", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. String for name index &apos;{0}&apos; extends past the end of the file..
         /// </summary>
-        internal static string BadImageFormat_ResourcesIndexTooLong {
+        public static string BadImageFormat_ResourcesIndexTooLong {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourcesIndexTooLong", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. Invalid offset &apos;{0}&apos; into name section..
         /// </summary>
-        internal static string BadImageFormat_ResourcesNameInvalidOffset {
+        public static string BadImageFormat_ResourcesNameInvalidOffset {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourcesNameInvalidOffset", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file. Resource name extends past the end of the file..
         /// </summary>
-        internal static string BadImageFormat_ResourcesNameTooLong {
+        public static string BadImageFormat_ResourcesNameTooLong {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResourcesNameTooLong", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to The type serialized in the .resources file was not the same type that the .resources file said it contained. Expected &apos;{0}&apos; but read &apos;{1}&apos;..
         /// </summary>
-        internal static string BadImageFormat_ResType_SerBlobMismatch {
+        public static string BadImageFormat_ResType_SerBlobMismatch {
             get {
                 return ResourceManager.GetString("BadImageFormat_ResType_SerBlobMismatch", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Corrupt .resources file.  The specified type doesn&apos;t match the available data in the stream..
         /// </summary>
-        internal static string BadImageFormat_TypeMismatch {
+        public static string BadImageFormat_TypeMismatch {
             get {
                 return ResourceManager.GetString("BadImageFormat_TypeMismatch", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Too many bytes in what should have been a 7 bit encoded Int32..
         /// </summary>
-        internal static string Format_Bad7BitInt32 {
+        public static string Format_Bad7BitInt32 {
             get {
                 return ResourceManager.GetString("Format_Bad7BitInt32", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to You are closing this window. Are you sure you want to close it?.
         /// </summary>
-        internal static string FormBase_FormBase_Close_1 {
+        public static string FormBase_FormBase_Close_1 {
             get {
                 return ResourceManager.GetString("FormBase_FormBase_Close_1", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Esc Key Operation Prompt.
         /// </summary>
-        internal static string FormBase_FormBase_Close_2 {
+        public static string FormBase_FormBase_Close_2 {
             get {
                 return ResourceManager.GetString("FormBase_FormBase_Close_2", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Enumeration already finished..
         /// </summary>
-        internal static string InvalidOperation_EnumEnded {
+        public static string InvalidOperation_EnumEnded {
             get {
                 return ResourceManager.GetString("InvalidOperation_EnumEnded", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Enumeration has not started. Call MoveNext..
         /// </summary>
-        internal static string InvalidOperation_EnumNotStarted {
+        public static string InvalidOperation_EnumNotStarted {
             get {
                 return ResourceManager.GetString("InvalidOperation_EnumNotStarted", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Resource was of type &apos;{0}&apos; instead of String - call GetObject instead..
         /// </summary>
-        internal static string InvalidOperation_ResourceNotString_Type {
+        public static string InvalidOperation_ResourceNotString_Type {
             get {
                 return ResourceManager.GetString("InvalidOperation_ResourceNotString_Type", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to The resource writer has already been closed and cannot be edited..
         /// </summary>
-        internal static string InvalidOperation_ResourceWriterSaved {
+        public static string InvalidOperation_ResourceWriterSaved {
             get {
                 return ResourceManager.GetString("InvalidOperation_ResourceWriterSaved", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to This platform does not support binary serialized resources..
         /// </summary>
-        internal static string NotSupported_BinarySerializedResources {
+        public static string NotSupported_BinarySerializedResources {
             get {
                 return ResourceManager.GetString("NotSupported_BinarySerializedResources", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Cannot read resources that depend on serialization..
         /// </summary>
-        internal static string NotSupported_ResourceObjectSerialization {
+        public static string NotSupported_ResourceObjectSerialization {
             get {
                 return ResourceManager.GetString("NotSupported_ResourceObjectSerialization", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Stream does not support seeking..
         /// </summary>
-        internal static string NotSupported_UnseekableStream {
+        public static string NotSupported_UnseekableStream {
             get {
                 return ResourceManager.GetString("NotSupported_UnseekableStream", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to This .resources file should not be read with this reader. The resource reader type is &quot;{0}&quot;..
         /// </summary>
-        internal static string NotSupported_WrongResourceReader_Type {
+        public static string NotSupported_WrongResourceReader_Type {
             get {
                 return ResourceManager.GetString("NotSupported_WrongResourceReader_Type", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Cannot access a closed resource set..
         /// </summary>
-        internal static string ObjectDisposed_ResourceSet {
+        public static string ObjectDisposed_ResourceSet {
             get {
                 return ResourceManager.GetString("ObjectDisposed_ResourceSet", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to ResourceReader is closed..
         /// </summary>
-        internal static string ResourceReaderIsClosed {
+        public static string ResourceReaderIsClosed {
             get {
                 return ResourceManager.GetString("ResourceReaderIsClosed", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Stream is not a valid resource file..
         /// </summary>
-        internal static string Resources_StreamNotValid {
+        public static string Resources_StreamNotValid {
             get {
                 return ResourceManager.GetString("Resources_StreamNotValid", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace System.Windows.Forms.GTKSystem.Resources.Extensions {
         /// <summary>
         ///   Looks up a localized string similar to Could not load a converter for type {0}..
         /// </summary>
-        internal static string TypeLoadException_CannotLoadConverter {
+        public static string TypeLoadException_CannotLoadConverter {
             get {
                 return ResourceManager.GetString("TypeLoadException_CannotLoadConverter", resourceCulture);
             }

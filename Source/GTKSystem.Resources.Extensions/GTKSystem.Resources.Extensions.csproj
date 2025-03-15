@@ -37,9 +37,9 @@
         <AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
         <NoWarn>$(NoWarn);NUnit2015;NUnit2017</NoWarn>
         <Nullable>enable</Nullable>
-        <RootNamespace>System.Drawing</RootNamespace>
+        <RootNamespace>System.Windows.Forms</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
-        <PackageId>Net4x.Gtk.Drawing</PackageId>
+        <PackageId>Net4x.Gtk.Resources.Extensions</PackageId>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <Optimize>True</Optimize>
@@ -49,7 +49,13 @@
         <IsAotCompatible>True</IsAotCompatible>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\GTKSystem.Windows.Forms\GTKControls\Drawing\**\*.cs" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+        <EmbeddedResource Include="..\GTKSystem.Windows.Forms\GTKSystem\Resources\**\*.resx" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+        <Compile Include="..\GTKSystem.Windows.Forms\GTKSystem\Resources\**\*.cs" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+        <Compile Include="..\GTKSystem.Windows.Forms\GTKSystem\Numerics\**\*.cs" Link="Numerics\%(RecursiveDir)%(Filename)%(Extension)" />
+        <Compile Include="..\GTKSystem.Windows.Forms\System.Diagnostics.CodeAnalysis\**\*.cs" Link="CodeAnalysis\%(RecursiveDir)%(Filename)%(Extension)" />
+        <Compile Include="..\GTKSystem.Windows.Forms\GTKControls\ImageList\**\*.cs" Link="ImageList\%(RecursiveDir)%(Filename)%(Extension)" />
+        <Compile Include="..\GTKSystem.Windows.Forms\GTKSystem\misc\**\*.cs" Link="Misc\%(RecursiveDir)%(Filename)%(Extension)" />
+        <Compile Include="..\GTKSystem.Windows.Forms\GTKSystem\ComponentModel\**\*.cs" Link="ComponentModel\%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\README.en.md" Link="README.md" Pack="true" PackagePath="\README.md" />
@@ -61,14 +67,36 @@
     </ItemGroup>
     <ItemGroup>
         <Reference Include="System" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Drawing" Condition="'$(TargetFramework)'=='net462'" Aliases="sd" PrivateAssets="all" />
         <Reference Include="System.Core" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Data" Condition="'$(TargetFramework)'=='net462'" />
         <Reference Include="System.Linq" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Runtime.Serialization" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Xml" Condition="'$(TargetFramework)'=='net462'" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="GtkSharp" Version="$(GtkSharpVersion).$(VersionBuildSuffix)" />
+        <PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" />
         <PackageReference Include="System.Memory" Version="4.6.1" />
         <PackageReference Include="System.Numerics.Vectors" Version="4.6.0" />
         <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GTKSystem.Drawing\GTKSystem.Drawing.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="..\GTKSystem.Windows.Forms\GTKSystem\Resources\Extensions\SystemResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>SystemResources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="..\GTKSystem.Windows.Forms\GTKSystem\Resources\Extensions\SystemResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>SystemResources.Designer.cs</LastGenOutput>
+            <CustomToolNamespace>GtkSystem.Windows.Forms.Resources.Extensions</CustomToolNamespace>
+        </EmbeddedResource>
     </ItemGroup>
     <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>

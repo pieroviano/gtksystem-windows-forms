@@ -43,6 +43,6 @@ public class GTKSystemWinFormsApp11Tests
         await Task.Delay(TimeSpan.FromSeconds(5));
         var taskCompletionSource = (TaskCompletionSource<string>)form.Tag!;
         form.Dispose();
-        taskCompletionSource!.SetResult(Thread.CurrentThread.CurrentUICulture.Name);
+        taskCompletionSource.SetResult(Thread.CurrentThread.CurrentUICulture.Name);
     }
 }

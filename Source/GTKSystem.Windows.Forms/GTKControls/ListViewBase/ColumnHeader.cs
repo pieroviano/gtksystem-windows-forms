@@ -62,9 +62,9 @@ public class ColumnHeader : Component, ICloneable
         }
     }
 
-    protected virtual void OnDisplayIndexChanged(EventArgs eventArgs)
+    protected virtual void OnDisplayIndexChanged(EventArgs e)
     {
-        DisplayIndexChanged?.Invoke(this, eventArgs);
+        DisplayIndexChanged?.Invoke(this, e);
     }
 
     [Browsable(false)]

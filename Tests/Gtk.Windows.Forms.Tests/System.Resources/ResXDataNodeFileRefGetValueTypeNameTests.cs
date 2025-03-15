@@ -43,7 +43,7 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
         ResXDataNode originalNode, returnedNode;
 
         var aName = GetType ().Assembly.FullName;
-        AssemblyName [] assemblyNames = new AssemblyName [] { new AssemblyName (aName) };
+        AssemblyName [] assemblyNames = new AssemblyName [] { new(aName) };
 
         originalNode = GetNodeFileRefToSerializable ("ser.bbb", false);
         returnedNode = GetNodeFromResXReader (originalNode);

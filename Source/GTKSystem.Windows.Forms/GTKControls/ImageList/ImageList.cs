@@ -112,40 +112,51 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
             {
                 Images.Clear();
             }
+            else
+            {
+                _originals?.Clear();
+                if (imageStream is { Images: not null })
+                {
+                    foreach (var image in imageStream.Images)
+                    {
+                        _originals?.Add(new Original(image, OriginalOptions.Default));
+                    }
+                }
+            }
         }
     }
 
-        internal Image GetOriginalImage(string name)
+    internal Image? GetOriginalImage(string name)
+    {
+        // string direc = Path.GetDirectoryName(Application.ExecutablePath);
+        string path1 = $"./Resources";
+        var value = ImageStream;
+        if (value.ResourceInfo is { BaseName: not null })
         {
-           // string direc = Path.GetDirectoryName(Application.ExecutablePath);
-            string path1 = $"./Resources";
-            var value = ImageStream;
-            if (value.ResourceInfo is { BaseName: not null })
+            // Load image data here
+            string dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
+            string path2 = $"{dir}/{name}";
+            if (File.Exists(path2))
             {
-                //这里加载图像数据
-                string dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
-                string path2 = $"{dir}/{name}";
-                if (File.Exists(path2))
-                {
-                    if (!Directory.Exists(dir))
-                        Directory.CreateDirectory(dir);
-                    return ScaleSimpleBitmap(Image.FromFile(path2));
-                }
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+                return ScaleSimpleBitmap(Image.FromFile(path2));
             }
-            if (File.Exists($"{path1}/{name}"))
-            {
-                return ScaleSimpleBitmap(Image.FromFile($"{path1}/{name}"));
-            }
-            return null;
         }
-        private Bitmap ScaleSimpleBitmap(Image bitmp)
+        if (File.Exists($"{path1}/{name}"))
         {
-            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
-            int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
-            int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
-            Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
-            return new Bitmap(w, h) { Pixbuf = newpixbuf };
+            return ScaleSimpleBitmap(Image.FromFile($"{path1}/{name}"));
         }
+        return null;
+    }
+    private Bitmap ScaleSimpleBitmap(Image bitmp)
+    {
+        Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+        int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
+        int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
+        Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
+        return new Bitmap(w, h) { Pixbuf = newpixbuf };
+    }
 #if DEBUG
 
     internal bool IsDisposed { get; private set; }
@@ -183,7 +194,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     private int AddIconToHandle(Original original, Icon icon)
     {
-            return 0;
+        return 0;
     }
 
     private int AddToHandle(Bitmap bitmap)
@@ -193,7 +204,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     private void CreateHandle()
     {
- 
+
     }
 
     // Don't merge this function into Dispose() -- that base.Dispose() will damage the design time experience
@@ -348,11 +359,8 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
         {
             throw new IndexOutOfRangeException("The index is out of range. Please check whether the serial number is within the data range of ImageList and save the relevant images to the Resources directory.", ex);
         }
-        catch (Exception ex)
-        {
-            throw;
-        }
     }
+
     public Bitmap GetBitmap(string? name)
     {
         var index = _imageCollection.IndexOfKey(name);
@@ -365,9 +373,9 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     /// <summary>
     ///  Called when the Handle property changes.
     /// </summary>
-    private void OnRecreateHandle(EventArgs eventargs) => _recreateHandler?.Invoke(this, eventargs);
+    private void OnRecreateHandle(EventArgs e) => _recreateHandler?.Invoke(this, e);
 
-    private void OnChangeHandle(EventArgs eventargs) => _changeHandler?.Invoke(this, eventargs);
+    private void OnChangeHandle(EventArgs e) => _changeHandler?.Invoke(this, e);
 
     /// <summary>
     ///  Returns a string representation for this control.

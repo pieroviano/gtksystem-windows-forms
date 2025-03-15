@@ -10,7 +10,7 @@ public sealed partial class ImageList
     ///  and ImageKey. We want to toggle between using keys or indexes.
     ///  Default is to use the integer index.
     /// </summary>
-    internal class Indexer
+    public class Indexer
     {
         // Used by TreeViewImageIndexConverter to show "(none)"
         internal const int noneIndex = -2;

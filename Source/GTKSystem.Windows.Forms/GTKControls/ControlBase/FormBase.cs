@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms.GTKSystem.Resources.Extensions;
-using Gtk;
+﻿using Gtk;
+using GtkSystem.Windows.Forms.Resources.Extensions;
 
 namespace System.Windows.Forms;
 
@@ -95,11 +95,11 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
                     Run();
             }
         }
-        private void Vadjustment_ValueChanged(object sender, EventArgs e)
+        private void Vadjustment_ValueChanged(object? sender, EventArgs e)
         {
             if (Scroll != null)
             {
-                Adjustment adj = (Adjustment)sender;
+                Adjustment? adj = (Adjustment?)sender;
                 Scroll(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
             }
         }
@@ -113,9 +113,9 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
         }
     }
 
-    private void OnScroll(ScrollEventArgs scrollEventArgs)
+    private void OnScroll(ScrollEventArgs e)
     {
-        Scroll?.Invoke(this, scrollEventArgs);
+        Scroll?.Invoke(this, e);
     }
 
     public void CloseWindow()

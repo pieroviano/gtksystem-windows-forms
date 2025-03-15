@@ -405,6 +405,19 @@ namespace GTKWinFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Special note:
+        ///Images added to ImageList must be placed in the Resource directory under the program directory (specific directories (such as imageList1) can be further added under this directory)
+        ///Otherwise, the image cannot be read. The name of the image can be found in the xxx.Designer.cs file, such as:
+        ///imageList1.Images.SetKeyName(0, &quot;010.jpg&quot;);
+        ///imageList1.Images.SetKeyName(1, &quot;timg2.jpg&quot;);.
+        /// </summary>
+        public static string label1Text {
+            get {
+                return ResourceManager.GetString("label1Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add group and data simultaneously.
         /// </summary>
         public static string ListViewForm_button1_Click_1_Add_group_and_data_simultaneously {
@@ -965,6 +978,15 @@ namespace GTKWinFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TestData1.en.json.
+        /// </summary>
+        public static string testdata1Json {
+            get {
+                return ResourceManager.GetString("testdata1Json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1. Load data point yes  
         ///2. Do not load data point no.
         /// </summary>
@@ -1114,10 +1136,10 @@ namespace GTKWinFormsApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] timg6 {
+        public static System.Drawing.Bitmap timg6 {
             get {
                 object obj = ResourceManager.GetObject("timg6", resourceCulture);
-                return ((byte[])(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

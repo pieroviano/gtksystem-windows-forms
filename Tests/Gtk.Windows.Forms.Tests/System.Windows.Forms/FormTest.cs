@@ -534,19 +534,19 @@ public class FormTest : TestHelper
         }
     }
 
-    private void CenterDisposedForm_Load (object sender, EventArgs e)
+    private void CenterDisposedForm_Load (object? sender, EventArgs e)
     {
         ((Form) sender).Close ();
     }
 
-    void Form_VisibleChanged1 (object sender, EventArgs e)
+    void Form_VisibleChanged1 (object? sender, EventArgs e)
     {
         var f = (TimeBombedForm) sender;
         f.Reason = "VisibleChanged";
         f.Visible = false;
     }
 
-    void Form_VisibleChanged2 (object sender, EventArgs e)
+    void Form_VisibleChanged2 (object? sender, EventArgs e)
     {
         var f = (TimeBombedForm) sender;
         f.Reason = "VisibleChanged";
@@ -1084,14 +1084,14 @@ public class FormTest : TestHelper
         myform.Dispose ();
     }
 
-    void myform_set_dialogresult (object sender, EventArgs e)
+    void myform_set_dialogresult (object? sender, EventArgs e)
     {
         var f = (Form)sender;
 
         f.DialogResult = DialogResult.OK;
     }
 
-    void myform_close (object sender, EventArgs e)
+    void myform_close (object? sender, EventArgs e)
     {
         var f = (Form)sender;
 
@@ -1283,7 +1283,7 @@ public class FormTest : TestHelper
     }
 
     int handle_destroyed_count;
-    void handle_destroyed (object sender, EventArgs e)
+    void handle_destroyed (object? sender, EventArgs e)
     {
         handle_destroyed_count++;
     }
@@ -1481,7 +1481,7 @@ public class FormTest : TestHelper
         f.Dispose ();
     }
 		
-    void tv_GotFocus (object sender, EventArgs e)
+    void tv_GotFocus (object? sender, EventArgs e)
     {
         //Console.WriteLine (Environment.StackTrace);
     }
@@ -1498,7 +1498,7 @@ public class FormTest : TestHelper
         f.Dispose ();
     }
 
-    private void Form_LoadAndHide (object sender, EventArgs e)
+    private void Form_LoadAndHide (object? sender, EventArgs e)
     {
         ((Form)sender).Visible = false;
     }
@@ -1525,7 +1525,7 @@ public class FormTest : TestHelper
             Load += SetDialogResultOK;
         }
 
-        private void SetDialogResultOK (object sender, EventArgs e)
+        private void SetDialogResultOK (object? sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }
@@ -1623,7 +1623,7 @@ public class TimeBombedForm : Form
         timer.Start ();
     }
 
-    void timer_Tick (object sender, EventArgs e)
+    void timer_Tick (object? sender, EventArgs e)
     {
         Reason = "Bombed";
         Close ();

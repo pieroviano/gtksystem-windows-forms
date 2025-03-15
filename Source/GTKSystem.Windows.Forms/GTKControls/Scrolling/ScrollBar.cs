@@ -21,9 +21,9 @@ public abstract class ScrollBar : Control
         _oldValue = newValue;
     }
 
-    protected virtual void OnScroll(ScrollEventArgs args)
+    protected virtual void OnScroll(ScrollEventArgs e)
     {
-        Scroll?.Invoke(this, args);
+        Scroll?.Invoke(this, e);
     }
 
     protected virtual void OnValueChanged(EventArgs e)

@@ -1,10 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#if NET462_OR_GREATER
 using System.Diagnostics;
 
+#if NET462_OR_GREATER
 namespace System.Drawing
+#else
+namespace System.Drawing.Gtk
+#endif
 {
     internal static class KnownColorTable
     {
@@ -484,7 +487,7 @@ namespace System.Drawing
 
         public static uint KnownColorToArgb(KnownColor color)
         {
-            Debug.Assert(color > 0 && color <= KnownColor.RebeccaPurple);
+            Debug.Assert(color is > 0 and <= KnownColor.RebeccaPurple);
 
             return ColorKindTable[(int)color] == KnownColorKindSystem
                  ? GetSystemColorArgb(color)
@@ -508,4 +511,3 @@ namespace System.Drawing
 #endif
     }
 }
-#endif

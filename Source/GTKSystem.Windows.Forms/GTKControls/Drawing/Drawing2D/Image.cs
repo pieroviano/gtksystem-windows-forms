@@ -9,7 +9,7 @@ using Gtk;
 namespace System.Drawing;
 
 [Serializable]
-public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,MarshalByRefObject
+public abstract class Image : Widget, IWidget, ICloneable, ISerializable//,MarshalByRefObject
 {
     internal Image(byte[]? pixbuf)
     {
@@ -20,7 +20,18 @@ public abstract class Image : Widget, IDisposable, ICloneable, ISerializable//,M
     public byte[]? PixbufData
     {
         get { if (pixbufData == null && pixbuf != null) { pixbufData = pixbuf.SaveToBuffer("bmp"); } return pixbufData; }
-        set { pixbufData = value; pixbuf = new Pixbuf(value); }
+        set
+        {
+            pixbufData = value;
+            if (value != null)
+            {
+                pixbuf = new Pixbuf(value);
+            }
+            else
+            {
+                pixbuf = null;
+            }
+        }
     }
     private Pixbuf? pixbuf;
     public Pixbuf? Pixbuf

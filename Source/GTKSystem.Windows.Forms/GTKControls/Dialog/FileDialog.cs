@@ -168,7 +168,7 @@ public abstract class FileDialog : CommonDialog
         _dialog.Destroy();
         return response == -5;
     }
-    static readonly Dictionary<string, string> MimeMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    static readonly Dictionary<string, string> MimeMapping = new(StringComparer.OrdinalIgnoreCase);
     static FileDialog()
     {
         MimeMapping.Clear();

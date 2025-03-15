@@ -258,7 +258,7 @@ public class ResXResourceWriter : IResourceWriter
                 _xmlTextWriter.WriteStartElement(valueStr);
                 {
                     _xmlTextWriter.WriteString(
-                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceReader), _typeNameConverter) ??
+                        MultiTargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceReader), _typeNameConverter) ??
                         string.Empty);
                 }
 
@@ -273,7 +273,7 @@ public class ResXResourceWriter : IResourceWriter
                 _xmlTextWriter.WriteStartElement(valueStr);
                 {
                     _xmlTextWriter.WriteString(
-                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceWriter), _typeNameConverter) ??
+                        MultiTargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceWriter), _typeNameConverter) ??
                         string.Empty);
                 }
 
@@ -447,7 +447,7 @@ public class ResXResourceWriter : IResourceWriter
         // if it's a null string, set it here as a resxnullref
         var typeName =
             value is null
-                ? MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter)
+                ? MultiTargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter)
                 : null;
         AddDataRow(elementName, name, value, typeName, null, null);
     }
@@ -478,7 +478,7 @@ public class ResXResourceWriter : IResourceWriter
                     }
                     else if (typeObject != null)
                     {
-                        assemblyName = GetFullName(MultitargetUtil.GetAssemblyQualifiedName(typeObject, _typeNameConverter));
+                        assemblyName = GetFullName(MultiTargetUtil.GetAssemblyQualifiedName(typeObject, _typeNameConverter));
                         alias = GetAliasFromName(new AssemblyName(assemblyName ?? string.Empty));
                     }
                 }
@@ -680,7 +680,7 @@ public class ResXResourceWriter : IResourceWriter
 
     private string? TypeNameWithAssembly(Type type)
     {
-        var result = MultitargetUtil.GetAssemblyQualifiedName(type, _typeNameConverter);
+        var result = MultiTargetUtil.GetAssemblyQualifiedName(type, _typeNameConverter);
         return result;
     }
 

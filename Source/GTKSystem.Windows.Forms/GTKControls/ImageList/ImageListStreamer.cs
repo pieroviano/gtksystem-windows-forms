@@ -1,217 +1,377 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// Copyright (c) 2002-2006 Novell, Inc.
+//
+// Authors:
+//	Jackson Harper (jackson@ximian.com)
+//	Gonzalo Paniagua Javier (gonzalo@ximian.com)
+//
+// Based on work done by:
+//   Dennis Hayes (dennish@Raytek.com)
+//   Aleksey Ryabchuk (ryabchuk@yahoo.com)
 
+using System.IO;
+using System.Drawing;
+using System.Collections;
+using System.Drawing.Imaging;
 using System.Runtime.Serialization;
-using static System.Windows.Forms.Resources.ResourceManager;
+using System.Runtime.InteropServices;
+using System.Windows.Forms.Resources;
+using Gtk;
+using Image = System.Drawing.Image;
 
-namespace System.Windows.Forms;
-
-[Serializable] // This type is participating in resx serialization scenarios.
-public sealed class ImageListStreamer : ISerializable, IDisposable
+namespace System.Windows.Forms
 {
-    private static readonly byte[] headerMagic = [0x4D, 0x53, 0x46, 0X74];
-    public ResourceInfo? ResourceInfo { get; set; }
-    // Compressed magic header. If we see this, the image stream is compressed.
-    //private static ReadOnlySpan<byte> HeaderMagic => "MSFt"u8;
-    private static readonly object syncObject = new();
-
-    private readonly ImageList? _imageList;
-    private ImageList.NativeImageList? _nativeImageList;
-
-    internal ImageListStreamer(ImageList imageList) => _imageList = imageList;
-
-    // Used by binary serialization
-    private ImageListStreamer(SerializationInfo info, StreamingContext context)
+    [Serializable]
+    public sealed class ImageListStreamer : ISerializable
     {
-        if (info.GetValue("Data", typeof(byte[])) is byte[] data)
-        {
-            Deserialize(data);
-        }
-    }
-    internal ImageListStreamer(Stream stream)
-    {
-        if (stream is MemoryStream ms
-            && ms.TryGetBuffer(out var buffer)
-            && buffer.Offset == 0)
-        {
-            Deserialize(buffer.Array ?? []);
-        }
-        else
-        {
-            stream.Position = 0;
-            using var copyStream = new MemoryStream(checked((int)stream.Length));
-            stream.CopyTo(copyStream);
-            Deserialize(copyStream.GetBuffer());
-        }
-    }
-    internal ImageListStreamer(byte[] data) => Deserialize(data);
+        readonly ImageList.ImageCollection? imageCollection;
+        Image[]? images;
+        Size image_size;
+        Color back_color;
 
-    /// <summary>
-    ///  Compresses the given input, returning a new array that represents the compressed data.
-    /// </summary>
-    private static byte[] Compress(ReadOnlySpan<byte> input)
-    {
-        return input.ToArray();
-        //int length = RunLengthEncoder.GetEncodedLength(input) + HeaderMagic.Length;
-        //byte[] output = new byte[length];
-        //SpanWriter<byte> writer = new(output);
-        //writer.TryWrite(HeaderMagic);
-        //RunLengthEncoder.TryEncode(input, writer.Span[writer.Position..], out int written);
-        //Debug.Assert(written == length - HeaderMagic.Length, "RLE compression failure");
-        //return output;
-    }
-
-    /// <summary>
-    ///  Decompresses the given input, returning a new array that represents the uncompressed data.
-    /// </summary>
-    private static byte[] Decompress1(byte[] input)
-    {
-        return input;
-        //SpanReader<byte> reader = new(input);
-        //if (!reader.TryAdvancePast(HeaderMagic))
-        //{
-        //    // Not compressed, return the original
-        //    return input;
-        //}
-
-        //ReadOnlySpan<byte> remaining = reader.Span[reader.Position..];
-        //int length = RunLengthEncoder.GetDecodedLength(remaining);
-        //byte[] output = new byte[length];
-        //RunLengthEncoder.TryDecode(remaining, output, out int written);
-        //Debug.Assert(written == length, "RLE decompression failure");
-        //return output;
-    }
-    private static byte[] Decompress(byte[] input)
-    {
-        var finalLength = 0;
-        var idx = 0;
-        var outputIdx = 0;
-
-        // Check for our header. If we don't have one,
-        // we're not actually decompressed, so just return
-        // the original.
-        //
-        if (input.Length < headerMagic.Length)
+        internal ImageListStreamer(ImageList.ImageCollection? imageCollection)
         {
-            return input;
+            this.imageCollection = imageCollection;
         }
 
-        for (idx = 0; idx < headerMagic.Length; idx++)
+        internal ImageListStreamer(SerializationInfo info, StreamingContext context):this((byte[])info.GetValue("Data", typeof(byte[])))
         {
-            if (input[idx] != headerMagic[idx])
-            {
-                return input;
-            }
         }
 
-        // Ok, we passed the magic header test.
-
-        for (idx = headerMagic.Length; idx < input.Length; idx += 2)
+        internal ImageListStreamer(byte[] data)
         {
-            finalLength += input[idx];
-        }
-
-        var output = new byte[finalLength];
-
-        idx = headerMagic.Length;
-
-        while (idx < input.Length)
-        {
-            var runLength = input[idx++];
-            var current = input[idx++];
-
-            var startIdx = outputIdx;
-            var endIdx = outputIdx + runLength;
-
-            while (startIdx < endIdx)
-            {
-                output[startIdx++] = current;
+            if (data == null || data.Length <= 4)
+            { // 4 is the signature
+                return;
             }
 
-            outputIdx += runLength;
+            // check the signature ( 'MSFt' )
+            if (data[0] != 77 || data[1] != 83 || data[2] != 70 || data[3] != 116)
+            {
+                return;
+            }
+
+            MemoryStream decoded = GetDecodedStream(data, 4, data.Length - 4);
+            decoded.Position = 4; // jumps over 'magic' and 'version', which are 16-bits each
+
+            BinaryReader reader = new BinaryReader(decoded);
+            ushort nimages = reader.ReadUInt16();
+            reader.ReadUInt16();    // cMaxImage
+            ushort grow = reader.ReadUInt16(); // cGrow
+            ushort cx = reader.ReadUInt16();
+            ushort cy = reader.ReadUInt16();
+            uint bkcolor = reader.ReadUInt32();
+            back_color = Color.FromArgb((int)bkcolor);
+            reader.ReadUInt16();    // flags
+
+            short[] ovls = new short[4];
+            for (int i = 0; i < 4; i++)
+            {
+                ovls[i] = reader.ReadInt16();
+            }
+
+            byte[] decoded_buffer = decoded.GetBuffer();
+            int bmp_offset = 28;
+            // FileSize field from the bitmap file header
+            int filesize = decoded_buffer[bmp_offset + 2] + (decoded_buffer[bmp_offset + 3] << 8) +
+                    (decoded_buffer[bmp_offset + 4] << 16) + (decoded_buffer[bmp_offset + 5] << 24);
+            // ImageSize field from the info header (can be 0)
+            int imagesize = decoded_buffer[bmp_offset + 34] + (decoded_buffer[bmp_offset + 35] << 8) +
+                    (decoded_buffer[bmp_offset + 36] << 16) + (decoded_buffer[bmp_offset + 37] << 24);
+
+            int bmp_length = imagesize + filesize;
+            MemoryStream bmpms = new MemoryStream(decoded_buffer, bmp_offset, bmp_length);
+            Bitmap? bmp = null;
+            Bitmap? mask = null;
+            bmp = new Bitmap(bmpms);
+            MemoryStream mask_stream = new MemoryStream(decoded_buffer,
+                            bmp_offset + bmp_length,
+                            (int)(decoded.Length - bmp_offset - bmp_length));
+
+            if (mask_stream.Length > 0)
+                mask = new Bitmap(mask_stream);
+
+            if (bkcolor == 0xFFFFFFFF)
+                back_color = bmp.GetPixel(0, 0);
+
+            if (mask != null)
+            {
+                int width = bmp.Width;
+                int height = bmp.Height;
+                Bitmap? newbmp = new Bitmap(bmp);
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        Color mcolor = mask.GetPixel(x, y);
+                        if (mcolor.B != 0)
+                        {
+                            newbmp.SetPixel(x, y, Color.Transparent);
+                        }
+                    }
+                }
+                bmp.Dispose();
+                bmp = newbmp;
+                mask.Dispose();
+                mask = null;
+            }
+            images = new Image[nimages];
+            image_size = new Size(cx, cy);
+            Rectangle dest_rect = new Rectangle(0, 0, cx, cy);
+            if (grow * bmp.Width > cx) // Some images store a wrong 'grow' factor
+                grow = (ushort)(bmp.Width / cx);
+
+            for (int r = 0; r < nimages; r++)
+            {
+                int col = r % grow;
+                int row = r / grow;
+                Rectangle area = new Rectangle(col * cx, row * cy, cx, cy);
+                Bitmap? b = new Bitmap(cx, cy);
+                using (Graphics? g = Graphics.FromImage(b))
+                {
+                    g.DrawImage(bmp, dest_rect, area, GraphicsUnit.Pixel);
+                }
+
+                images[r] = b;
+            }
+            bmp.Dispose();
         }
 
-        return output;
-    }
+        /*
+		static void WriteToFile (MemoryStream st)
+		{
+			st.Position = 0;
+			FileStream fs = File.OpenWrite (Path.GetTempFileName ());
+			Console.WriteLine ("Writing to {0}", fs.Name);
+			st.WriteTo (fs);
+			fs.Close ();
+		}
+		*/
 
-    private void Deserialize(byte[] data)
-    {
-        //// We enclose this ImageList handle create in a theming scope.
-        //using ThemingScope scope = new(Application.UseVisualStyles);
-        //using MemoryStream memoryStream = new(Decompress(data));
-        //lock (s_syncObject)
-        //{
-        //    PInvoke.InitCommonControls();
-        //    _nativeImageList = new ImageList.NativeImageList(new ComManagedStream(memoryStream));
-        //}
+        static byte[] header = new byte[] { 77, 83, 70, 116, 73, 76, 1, 1 };
+        public void GetObjectData(SerializationInfo si, StreamingContext context)
+        {
+            MemoryStream stream = new MemoryStream();
+            BinaryWriter writer = new BinaryWriter(stream);
+            writer.Write(header);
 
-        //if (_nativeImageList.HIMAGELIST.IsNull)
-        //{
-        //    throw new InvalidOperationException(SR.ImageListStreamerLoadFailed);
-        //}
-    }
+            Image[]? images = (imageCollection != null) ? imageCollection.ToArray() : this.images;
+            int cols = 4;
+            int rows = images.Length / cols;
+            if (images.Length % cols > 0)
+                ++rows;
 
-    public void GetObjectData(SerializationInfo si, StreamingContext context) =>
-        si.AddValue("Data", Serialize());
+            writer.Write((ushort)images.Length);
+            writer.Write((ushort)images.Length);
+            writer.Write((ushort)0x4);
+            writer.Write((ushort)(images[0].Width));
+            writer.Write((ushort)(images[0].Height));
+            writer.Write(0xFFFFFFFF); //BackColor.ToArgb ()); //FIXME: should set the right one here.
+            writer.Write((ushort)0x21);
+            for (int i = 0; i < 4; i++)
+                writer.Write((short)-1);
 
-    internal byte[] Serialize()
-    {
-        using var stream = new MemoryStream();
-        //if (!WriteImageList(stream))
-        //{
-        //    throw new InvalidOperationException(SR.ImageListStreamerSaveFailed);
-        //}
+            Bitmap? main = new Bitmap(cols * ImageSize.Width, rows * ImageSize.Height);
+            Graphics? g = Graphics.FromImage(main);
+            if (g != null)
+            {
+                using (g)
+                {
+                    g.FillRectangle(new SolidBrush(BackColor), 0, 0,
+                        main.Width, main.Height);
+                    for (int i = 0; i < this.images.Length; i++)
+                    {
+                        g.DrawImage(this.images[i], (i % cols) * ImageSize.Width,
+                            (i / cols) * ImageSize.Height);
+                    }
+                }
+            }
 
-            ReadOnlySpan<byte> buffer = stream.GetBuffer().AsSpan(0, (int)stream.Length);
-            return Compress(buffer);
+            MemoryStream tmp = new MemoryStream();
+            main.Save(tmp, ImageFormat.Bmp);
+            tmp.WriteTo(stream);
+
+            Bitmap mask = Get1bppMask(main);
+            main.Dispose();
+            main = null;
+
+            tmp = new MemoryStream();
+            mask.Save(tmp, ImageFormat.Bmp);
+            tmp.WriteTo(stream);
+            mask.Dispose();
+
+            stream = GetRLEStream(stream, 4);
+            si.AddValue("Data", stream.ToArray(), typeof(byte[]));
         }
 
-    internal void GetObjectData(Stream stream)
-    {
-        //if (!WriteImageList(stream))
-        //{
-        //    throw new InvalidOperationException(SR.ImageListStreamerSaveFailed);
-        //}
-    }
+        unsafe Bitmap Get1bppMask(Bitmap? main)
+        {
+            Rectangle rect = new Rectangle(0, 0, main.Width, main.Height);
+            Bitmap result = new Bitmap(main.Width, main.Height, PixelFormat.Format1BppIndexed);
+            BitmapData dresult = result.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format1BppIndexed);
 
-    internal ImageList.NativeImageList? GetNativeImageList() => _nativeImageList;
+            int w = images[0].Width;
+            int h = images[0].Height;
+            byte* scan = (byte*)dresult.Scan0.ToPointer();
+            int stride = dresult.Stride;
+            Bitmap? current = null;
+            for (int idx = 0; idx < images.Length; idx++)
+            {
+                current = (Bitmap)images[idx];
+                // Hack for newly added images.
+                // Probably has to be done somewhere else.
+                Color c1 = current.GetPixel(0, 0);
+                if (c1.A != 0 && c1 == back_color)
+                    current.MakeTransparent(back_color);
+                //
+            }
 
-    private bool WriteImageList(Stream stream)
-    {
-        return true;
-        //HandleRef<HIMAGELIST> handle = default;
-        //if (_imageList != null)
-        //{
-        //    handle = new(_imageList, (HIMAGELIST)_imageList.Handle);
-        //}
-        //else if (_nativeImageList != null)
-        //{
-        //    handle = new(_nativeImageList, _nativeImageList.HIMAGELIST);
-        //}
+            int yidx = 0;
+            int imgidx = 0;
+            int localy = 0;
+            int localx = 0;
+            int factor_y = 0;
+            int factor_x = 0;
+            for (int y = 0; y < main.Height; y++)
+            {
+                if (localy == h)
+                {
+                    localy = 0;
+                    factor_y += 4;
+                }
+                factor_x = 0;
+                localx = 0;
+                for (int x = 0; x < main.Width; x++)
+                {
+                    if (localx == w)
+                    {
+                        localx = 0;
+                        factor_x++;
+                    }
+                    imgidx = factor_y + factor_x;
+                    if (imgidx >= images.Length)
+                        break;
+                    current = (Bitmap)images[imgidx];
+                    Color color = current.GetPixel(localx, localy);
+                    if (color.A == 0)
+                    {
+                        int ptridx = yidx + (x >> 3);
+                        scan[ptridx] |= (byte)(0x80 >> (x & 7));
+                    }
+                    localx++;
+                }
+                if (imgidx >= images.Length)
+                    break;
+                yidx += stride;
+                localy++;
+            }
+            result.UnlockBits(dresult);
 
-        //if (handle.IsNull)
-        //{
-        //    return false;
-        //}
+            return result;
+        }
 
-        //try
-        //{
-        //    return PInvoke.ImageList.WriteEx(
-        //        handle,
-        //        IMAGE_LIST_WRITE_STREAM_FLAGS.ILP_DOWNLEVEL,
-        //        stream).Succeeded;
-        //}
-        //catch (EntryPointNotFoundException)
-        //{
-        //    // Not running on ComCtl32 v6, fall back to the old API.
-        //}
+        static MemoryStream GetDecodedStream(byte[] bytes, int offset, int size)
+        {
+            byte[] buffer = new byte[512];
+            int position = 0;
+            int count, data;
+            MemoryStream result = new MemoryStream();
+            while (size > 0)
+            {
+                count = (int)bytes[offset++];
+                data = (int)bytes[offset++];
+                if ((512 - count) < position)
+                {
+                    result.Write(buffer, 0, position);
+                    position = 0;
+                }
 
-        //return PInvoke.ImageList.Write(handle, stream);
-    }
+                for (int i = 0; i < count; i++)
+                    buffer[position++] = (byte)data;
+                size -= 2;
+            }
 
-    public void Dispose()
-    {
-        _nativeImageList?.Dispose();
-        _nativeImageList = null;
+            if (position > 0)
+                result.Write(buffer, 0, position);
+
+            result.Position = 0;
+            return result;
+        }
+
+        //TODO: OptimizeMe
+        static MemoryStream GetRLEStream(MemoryStream input, int start)
+        {
+            MemoryStream result = new MemoryStream();
+            byte[] ibuffer = input.GetBuffer();
+            result.Write(ibuffer, 0, start);
+            input.Position = start;
+
+            int prev = -1;
+            int count = 0;
+            int current;
+            while ((current = input.ReadByte()) != -1)
+            {
+                if (prev != current || count == 255)
+                {
+                    if (prev != -1)
+                    {
+                        result.WriteByte((byte)count);
+                        result.WriteByte((byte)prev);
+                    }
+                    prev = current;
+                    count = 0;
+                }
+                count++;
+            }
+
+            if (count > 0)
+            {
+                result.WriteByte((byte)count);
+                result.WriteByte((byte)current);
+            }
+
+            return result;
+        }
+
+        internal Image[]? Images
+        {
+            get { return images; }
+        }
+
+        internal Size ImageSize
+        {
+            get { return image_size; }
+        }
+
+        internal ColorDepth ColorDepth
+        {
+            get { return ColorDepth.Depth32Bit; }
+        }
+
+        internal Color BackColor
+        {
+            get { return back_color; }
+        }
+
+        public ResourceManager.ResourceInfo? ResourceInfo { get; set; }
     }
 }
+

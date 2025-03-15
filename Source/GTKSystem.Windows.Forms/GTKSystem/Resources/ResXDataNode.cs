@@ -91,7 +91,7 @@ public sealed class ResXDataNode : ISerializable
 
         if (value != null)
         {
-            _typeName = MultitargetUtil.GetAssemblyQualifiedName(valueType, _typeNameConverter);
+            _typeName = MultiTargetUtil.GetAssemblyQualifiedName(valueType, _typeNameConverter);
         }
 
         _name = name;
@@ -266,7 +266,7 @@ public sealed class ResXDataNode : ISerializable
             if (nodeInfo != null)
             {
                 nodeInfo.valueData = ci.Name;
-                nodeInfo.typeName = MultitargetUtil.GetAssemblyQualifiedName(typeof(CultureInfo), _typeNameConverter);
+                nodeInfo.typeName = MultiTargetUtil.GetAssemblyQualifiedName(typeof(CultureInfo), _typeNameConverter);
             }
         }
         else if (value is string str)
@@ -281,7 +281,7 @@ public sealed class ResXDataNode : ISerializable
             if (nodeInfo != null)
             {
                 nodeInfo.valueData = ToBase64WrappedString(bytes);
-                nodeInfo.typeName = MultitargetUtil.GetAssemblyQualifiedName(typeof(byte[]), _typeNameConverter);
+                nodeInfo.typeName = MultiTargetUtil.GetAssemblyQualifiedName(typeof(byte[]), _typeNameConverter);
             }
         }
         else
@@ -306,7 +306,7 @@ public sealed class ResXDataNode : ISerializable
                             nodeInfo.valueData = tc.ConvertToInvariantString(value);
                         }
 
-                        nodeInfo.typeName = MultitargetUtil.GetAssemblyQualifiedName(valueType, _typeNameConverter);
+                        nodeInfo.typeName = MultiTargetUtil.GetAssemblyQualifiedName(valueType, _typeNameConverter);
                     }
 
                     return;
@@ -341,7 +341,7 @@ public sealed class ResXDataNode : ISerializable
                 if (nodeInfo != null)
                 {
                     nodeInfo.mimeType = ResXResourceWriter.byteArraySerializedObjectMimeType;
-                    nodeInfo.typeName = MultitargetUtil.GetAssemblyQualifiedName(valueType, _typeNameConverter);
+                    nodeInfo.typeName = MultiTargetUtil.GetAssemblyQualifiedName(valueType, _typeNameConverter);
                 }
 
                 return;
@@ -353,7 +353,7 @@ public sealed class ResXDataNode : ISerializable
                 {
                     nodeInfo.valueData = string.Empty;
                     nodeInfo.typeName =
-                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter);
+                        MultiTargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter);
                 }
             }
             else
@@ -394,7 +394,7 @@ public sealed class ResXDataNode : ISerializable
         // default behavior: if we don't have a type name, it's a string
         var typeName =
             string.IsNullOrEmpty(dataNodeInfo?.typeName)
-                ? MultitargetUtil.GetAssemblyQualifiedName(typeof(string), _typeNameConverter)
+                ? MultiTargetUtil.GetAssemblyQualifiedName(typeof(string), _typeNameConverter)
                 : dataNodeInfo?.typeName;
 
         if (!string.IsNullOrEmpty(mimeTypeName))
@@ -540,7 +540,7 @@ public sealed class ResXDataNode : ISerializable
             {
                 _nodeInfo.valueData = FileRef?.ToString();
                 _nodeInfo.mimeType = null;
-                _nodeInfo.typeName = MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXFileRef), _typeNameConverter);
+                _nodeInfo.typeName = MultiTargetUtil.GetAssemblyQualifiedName(typeof(ResXFileRef), _typeNameConverter);
             }
             else
             {
@@ -571,8 +571,8 @@ public sealed class ResXDataNode : ISerializable
         if (!string.IsNullOrEmpty(_typeName))
         {
             return
-                _typeName == MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter)
-                    ? MultitargetUtil.GetAssemblyQualifiedName(typeof(object), _typeNameConverter)
+                _typeName == MultiTargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter)
+                    ? MultiTargetUtil.GetAssemblyQualifiedName(typeof(object), _typeNameConverter)
                     : _typeName;
         }
 
@@ -612,18 +612,18 @@ public sealed class ResXDataNode : ISerializable
 
                         // something went wrong, type is not specified at all or stream is corrupted
                         // return system.object
-                        result = MultitargetUtil.GetAssemblyQualifiedName(typeof(object), _typeNameConverter);
+                        result = MultiTargetUtil.GetAssemblyQualifiedName(typeof(object), _typeNameConverter);
                     }
 
                     if (insideObject != null)
                     {
-                        result = MultitargetUtil.GetAssemblyQualifiedName(insideObject.GetType(), _typeNameConverter);
+                        result = MultiTargetUtil.GetAssemblyQualifiedName(insideObject.GetType(), _typeNameConverter);
                     }
                 }
                 else
                 {
                     // no typename, no mimetype, we have a string...
-                    result = MultitargetUtil.GetAssemblyQualifiedName(typeof(string), _typeNameConverter);
+                    result = MultiTargetUtil.GetAssemblyQualifiedName(typeof(string), _typeNameConverter);
                 }
             }
             else
@@ -636,11 +636,11 @@ public sealed class ResXDataNode : ISerializable
         {
             if (objectType == typeof(ResXNullRef))
             {
-                result = MultitargetUtil.GetAssemblyQualifiedName(typeof(object), _typeNameConverter);
+                result = MultiTargetUtil.GetAssemblyQualifiedName(typeof(object), _typeNameConverter);
             }
             else
             {
-                result = MultitargetUtil.GetAssemblyQualifiedName(objectType, _typeNameConverter);
+                result = MultiTargetUtil.GetAssemblyQualifiedName(objectType, _typeNameConverter);
             }
         }
 

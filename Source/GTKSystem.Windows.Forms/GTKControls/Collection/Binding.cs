@@ -46,15 +46,15 @@ public class Binding
 
     private bool _dsNullValueSet;
 
-    private ConvertEventHandler? _onParse;
+    private ConvertEventHandler? _parse;
 
-    private ConvertEventHandler? _onFormat;
+    private ConvertEventHandler? _format;
 
     private ControlUpdateMode _controlUpdateMode;
 
     private DataSourceUpdateMode _dataSourceUpdateMode;
 
-    private BindingCompleteEventHandler? _onComplete;
+    private BindingCompleteEventHandler? _bindingComplete;
 
     /// <summary>Gets the control the <see cref="T:System.Windows.Forms.Binding" /> is associated with.</summary>
     /// <returns>The <see cref="T:System.Windows.Forms.IBindableComponent" /> the <see cref="T:System.Windows.Forms.Binding" /> is associated with.</returns>
@@ -594,7 +594,7 @@ public class Binding
                 try
                 {
                     _inOnBindingComplete = true;
-                    _onComplete?.Invoke(this, e);
+                    _bindingComplete?.Invoke(this, e);
                 }
                 catch (Exception exception)
                 {
@@ -613,24 +613,24 @@ public class Binding
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.Binding.Format" /> event.</summary>
-    /// <param name="cevent">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
-    protected virtual void OnFormat(ConvertEventArgs cevent)
+    /// <param name="e">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
+    protected virtual void OnFormat(ConvertEventArgs e)
     {
-        _onFormat?.Invoke(this, cevent);
-        if (!_formattingEnabled && !(cevent.Value is DBNull) && cevent.DesiredType != null && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
+        _format?.Invoke(this, e);
+        if (!_formattingEnabled && !(e.Value is DBNull) && e.DesiredType != null && !e.DesiredType.IsInstanceOfType(e.Value) && e.Value is IConvertible)
         {
-            cevent.Value = Convert.ChangeType(cevent.Value, cevent.DesiredType, CultureInfo.CurrentCulture);
+            e.Value = Convert.ChangeType(e.Value, e.DesiredType, CultureInfo.CurrentCulture);
         }
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.Binding.Parse" /> event.</summary>
-    /// <param name="cevent">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
-    protected virtual void OnParse(ConvertEventArgs cevent)
+    /// <param name="e">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
+    protected virtual void OnParse(ConvertEventArgs e)
     {
-        _onParse?.Invoke(this, cevent);
-        if (!_formattingEnabled && !(cevent.Value is DBNull) && cevent is { Value: not null, DesiredType: not null } && !cevent.DesiredType.IsInstanceOfType(cevent.Value) && cevent.Value is IConvertible)
+        _parse?.Invoke(this, e);
+        if (!_formattingEnabled && !(e.Value is DBNull) && e is { Value: not null, DesiredType: not null } && !e.DesiredType.IsInstanceOfType(e.Value) && e.Value is IConvertible)
         {
-            cevent.Value = Convert.ChangeType(cevent.Value, cevent.DesiredType, CultureInfo.CurrentCulture);
+            e.Value = Convert.ChangeType(e.Value, e.DesiredType, CultureInfo.CurrentCulture);
         }
     }
 
@@ -1006,23 +1006,23 @@ public class Binding
     /// <summary>Occurs when the <see cref="P:System.Windows.Forms.Binding.FormattingEnabled" /> property is set to true and a binding operation is complete, such as when data is pushed from the control to the data source or vice versa</summary>
     public event BindingCompleteEventHandler? BindingComplete
     {
-        add => _onComplete += value;
-        remove => _onComplete -= value;
+        add => _bindingComplete += value;
+        remove => _bindingComplete -= value;
     }
 
     /// <summary>Occurs when the property of a control is bound to a data value.</summary>
     /// <filterpriority>1</filterpriority>
     public event ConvertEventHandler? Format
     {
-        add => _onFormat += value;
-        remove => _onFormat -= value;
+        add => _format += value;
+        remove => _format -= value;
     }
 
     /// <summary>Occurs when the value of a data-bound control changes.</summary>
     /// <filterpriority>1</filterpriority>
     public event ConvertEventHandler? Parse
     {
-        add => _onParse += value;
-        remove => _onParse -= value;
+        add => _parse += value;
+        remove => _parse -= value;
     }
 }

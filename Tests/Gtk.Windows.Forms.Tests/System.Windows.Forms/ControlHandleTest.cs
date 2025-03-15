@@ -284,7 +284,7 @@ public class ControlHandleTest : TestHelper
         RemoveWarning (o);
     }
 
-    readonly Control invokecontrol = new Control ();
+    readonly Control invokecontrol = new();
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
@@ -407,7 +407,7 @@ public class ControlHandleTest : TestHelper
         Assert.IsFalse (c.IsHandleCreated, "A2");
     }
 
-    void HandleCreated_WriteStackTrace (object sender, EventArgs e)
+    void HandleCreated_WriteStackTrace (object? sender, EventArgs e)
     {
         Console.WriteLine (Environment.StackTrace);
     }

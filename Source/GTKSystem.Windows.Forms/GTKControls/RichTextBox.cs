@@ -13,7 +13,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class RichTextBox : ScrollableControl
     {
-        public readonly RichTextBoxBase self = new RichTextBoxBase();
+        public readonly RichTextBoxBase self = new();
         public override object GtkControl => self;
 
         protected override void SetStyle(Widget widget)
@@ -28,17 +28,12 @@ namespace System.Windows.Forms
             BorderStyle = BorderStyle.Fixed3D;
         }
 
-        private void Buffer_Changed(object sender, EventArgs e)
+        private void Buffer_Changed(object? sender, EventArgs e)
         {
-            if (TextChanged != null && self.IsVisible)
+            if (self.IsVisible)
             {
-                TextChanged(this, e);
+                OnTextChanged(e);
             }
-        }
-
-        protected virtual void OnTextChanged(EventArgs e)
-        {
-            TextChanged?.Invoke(this, e);
         }
 
         public int SelectionStart
@@ -89,8 +84,6 @@ namespace System.Windows.Forms
             get => self.TextView.CanFocus;
             set => self.TextView.CanFocus = value;
         }
-
-        public override event EventHandler? TextChanged;
 
         public void AppendText(string text)
         {

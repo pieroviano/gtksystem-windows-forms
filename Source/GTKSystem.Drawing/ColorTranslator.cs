@@ -1,12 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#if NET462_OR_GREATER
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
+#if NET462_OR_GREATER
 namespace System.Drawing
+#else
+namespace System.Drawing.Gtk
+#endif
 {
     /// <summary>
     /// Translates colors to and from GDI+ <see cref='Color'/> objects.
@@ -139,65 +142,65 @@ namespace System.Drawing
                 switch (oleColor)
                 {
                     case unchecked((int)0x8000000A):
-                        return ColorExtension.FromKnownColor(KnownColor.ActiveBorder);
+                        return Color.FromKnownColor(KnownColor.ActiveBorder);
                     case unchecked((int)0x80000002):
-                        return ColorExtension.FromKnownColor(KnownColor.ActiveCaption);
+                        return Color.FromKnownColor(KnownColor.ActiveCaption);
                     case unchecked((int)0x80000009):
-                        return ColorExtension.FromKnownColor(KnownColor.ActiveCaptionText);
+                        return Color.FromKnownColor(KnownColor.ActiveCaptionText);
                     case unchecked((int)0x8000000C):
-                        return ColorExtension.FromKnownColor(KnownColor.AppWorkspace);
+                        return Color.FromKnownColor(KnownColor.AppWorkspace);
                     case unchecked((int)0x8000000F):
-                        return ColorExtension.FromKnownColor(KnownColor.Control);
+                        return Color.FromKnownColor(KnownColor.Control);
                     case unchecked((int)0x80000010):
-                        return ColorExtension.FromKnownColor(KnownColor.ControlDark);
+                        return Color.FromKnownColor(KnownColor.ControlDark);
                     case unchecked((int)0x80000015):
-                        return ColorExtension.FromKnownColor(KnownColor.ControlDarkDark);
+                        return Color.FromKnownColor(KnownColor.ControlDarkDark);
                     case unchecked((int)0x80000016):
-                        return ColorExtension.FromKnownColor(KnownColor.ControlLight);
+                        return Color.FromKnownColor(KnownColor.ControlLight);
                     case unchecked((int)0x80000014):
-                        return ColorExtension.FromKnownColor(KnownColor.ControlLightLight);
+                        return Color.FromKnownColor(KnownColor.ControlLightLight);
                     case unchecked((int)0x80000012):
-                        return ColorExtension.FromKnownColor(KnownColor.ControlText);
+                        return Color.FromKnownColor(KnownColor.ControlText);
                     case unchecked((int)0x80000001):
-                        return ColorExtension.FromKnownColor(KnownColor.Desktop);
+                        return Color.FromKnownColor(KnownColor.Desktop);
                     case unchecked((int)0x8000001B):
-                        return ColorExtension.FromKnownColor(KnownColor.GradientActiveCaption);
+                        return Color.FromKnownColor(KnownColor.GradientActiveCaption);
                     case unchecked((int)0x8000001C):
-                        return ColorExtension.FromKnownColor(KnownColor.GradientInactiveCaption);
+                        return Color.FromKnownColor(KnownColor.GradientInactiveCaption);
                     case unchecked((int)0x80000011):
-                        return ColorExtension.FromKnownColor(KnownColor.GrayText);
+                        return Color.FromKnownColor(KnownColor.GrayText);
                     case unchecked((int)0x8000000D):
-                        return ColorExtension.FromKnownColor(KnownColor.Highlight);
+                        return Color.FromKnownColor(KnownColor.Highlight);
                     case unchecked((int)0x8000000E):
-                        return ColorExtension.FromKnownColor(KnownColor.HighlightText);
+                        return Color.FromKnownColor(KnownColor.HighlightText);
                     case unchecked((int)0x8000001A):
-                        return ColorExtension.FromKnownColor(KnownColor.HotTrack);
+                        return Color.FromKnownColor(KnownColor.HotTrack);
                     case unchecked((int)0x8000000B):
-                        return ColorExtension.FromKnownColor(KnownColor.InactiveBorder);
+                        return Color.FromKnownColor(KnownColor.InactiveBorder);
                     case unchecked((int)0x80000003):
-                        return ColorExtension.FromKnownColor(KnownColor.InactiveCaption);
+                        return Color.FromKnownColor(KnownColor.InactiveCaption);
                     case unchecked((int)0x80000013):
-                        return ColorExtension.FromKnownColor(KnownColor.InactiveCaptionText);
+                        return Color.FromKnownColor(KnownColor.InactiveCaptionText);
                     case unchecked((int)0x80000018):
-                        return ColorExtension.FromKnownColor(KnownColor.Info);
+                        return Color.FromKnownColor(KnownColor.Info);
                     case unchecked((int)0x80000017):
-                        return ColorExtension.FromKnownColor(KnownColor.InfoText);
+                        return Color.FromKnownColor(KnownColor.InfoText);
                     case unchecked((int)0x80000004):
-                        return ColorExtension.FromKnownColor(KnownColor.Menu);
+                        return Color.FromKnownColor(KnownColor.Menu);
                     case unchecked((int)0x8000001E):
-                        return ColorExtension.FromKnownColor(KnownColor.MenuBar);
+                        return Color.FromKnownColor(KnownColor.MenuBar);
                     case unchecked((int)0x8000001D):
-                        return ColorExtension.FromKnownColor(KnownColor.MenuHighlight);
+                        return Color.FromKnownColor(KnownColor.MenuHighlight);
                     case unchecked((int)0x80000007):
-                        return ColorExtension.FromKnownColor(KnownColor.MenuText);
+                        return Color.FromKnownColor(KnownColor.MenuText);
                     case unchecked((int)0x80000000):
-                        return ColorExtension.FromKnownColor(KnownColor.ScrollBar);
+                        return Color.FromKnownColor(KnownColor.ScrollBar);
                     case unchecked((int)0x80000005):
-                        return ColorExtension.FromKnownColor(KnownColor.Window);
+                        return Color.FromKnownColor(KnownColor.Window);
                     case unchecked((int)0x80000006):
-                        return ColorExtension.FromKnownColor(KnownColor.WindowFrame);
+                        return Color.FromKnownColor(KnownColor.WindowFrame);
                     case unchecked((int)0x80000008):
-                        return ColorExtension.FromKnownColor(KnownColor.WindowText);
+                        return Color.FromKnownColor(KnownColor.WindowText);
                 }
             }
 
@@ -331,33 +334,33 @@ namespace System.Drawing
         {
             s_htmlSysColorTable = new Dictionary<string, Color>(27)
             {
-                ["activeborder"] = ColorExtension.FromKnownColor(KnownColor.ActiveBorder),
-                ["activecaption"] = ColorExtension.FromKnownColor(KnownColor.ActiveCaption),
-                ["appworkspace"] = ColorExtension.FromKnownColor(KnownColor.AppWorkspace),
-                ["background"] = ColorExtension.FromKnownColor(KnownColor.Desktop),
-                ["buttonface"] = ColorExtension.FromKnownColor(KnownColor.Control),
-                ["buttonhighlight"] = ColorExtension.FromKnownColor(KnownColor.ControlLightLight),
-                ["buttonshadow"] = ColorExtension.FromKnownColor(KnownColor.ControlDark),
-                ["buttontext"] = ColorExtension.FromKnownColor(KnownColor.ControlText),
-                ["captiontext"] = ColorExtension.FromKnownColor(KnownColor.ActiveCaptionText),
-                ["graytext"] = ColorExtension.FromKnownColor(KnownColor.GrayText),
-                ["highlight"] = ColorExtension.FromKnownColor(KnownColor.Highlight),
-                ["highlighttext"] = ColorExtension.FromKnownColor(KnownColor.HighlightText),
-                ["inactiveborder"] = ColorExtension.FromKnownColor(KnownColor.InactiveBorder),
-                ["inactivecaption"] = ColorExtension.FromKnownColor(KnownColor.InactiveCaption),
-                ["inactivecaptiontext"] = ColorExtension.FromKnownColor(KnownColor.InactiveCaptionText),
-                ["infobackground"] = ColorExtension.FromKnownColor(KnownColor.Info),
-                ["infotext"] = ColorExtension.FromKnownColor(KnownColor.InfoText),
-                ["menu"] = ColorExtension.FromKnownColor(KnownColor.Menu),
-                ["menutext"] = ColorExtension.FromKnownColor(KnownColor.MenuText),
-                ["scrollbar"] = ColorExtension.FromKnownColor(KnownColor.ScrollBar),
-                ["threeddarkshadow"] = ColorExtension.FromKnownColor(KnownColor.ControlDarkDark),
-                ["threedface"] = ColorExtension.FromKnownColor(KnownColor.Control),
-                ["threedhighlight"] = ColorExtension.FromKnownColor(KnownColor.ControlLight),
-                ["threedlightshadow"] = ColorExtension.FromKnownColor(KnownColor.ControlLightLight),
-                ["window"] = ColorExtension.FromKnownColor(KnownColor.Window),
-                ["windowframe"] = ColorExtension.FromKnownColor(KnownColor.WindowFrame),
-                ["windowtext"] = ColorExtension.FromKnownColor(KnownColor.WindowText)
+                ["activeborder"] = Color.FromKnownColor(KnownColor.ActiveBorder),
+                ["activecaption"] = Color.FromKnownColor(KnownColor.ActiveCaption),
+                ["appworkspace"] = Color.FromKnownColor(KnownColor.AppWorkspace),
+                ["background"] = Color.FromKnownColor(KnownColor.Desktop),
+                ["buttonface"] = Color.FromKnownColor(KnownColor.Control),
+                ["buttonhighlight"] = Color.FromKnownColor(KnownColor.ControlLightLight),
+                ["buttonshadow"] = Color.FromKnownColor(KnownColor.ControlDark),
+                ["buttontext"] = Color.FromKnownColor(KnownColor.ControlText),
+                ["captiontext"] = Color.FromKnownColor(KnownColor.ActiveCaptionText),
+                ["graytext"] = Color.FromKnownColor(KnownColor.GrayText),
+                ["highlight"] = Color.FromKnownColor(KnownColor.Highlight),
+                ["highlighttext"] = Color.FromKnownColor(KnownColor.HighlightText),
+                ["inactiveborder"] = Color.FromKnownColor(KnownColor.InactiveBorder),
+                ["inactivecaption"] = Color.FromKnownColor(KnownColor.InactiveCaption),
+                ["inactivecaptiontext"] = Color.FromKnownColor(KnownColor.InactiveCaptionText),
+                ["infobackground"] = Color.FromKnownColor(KnownColor.Info),
+                ["infotext"] = Color.FromKnownColor(KnownColor.InfoText),
+                ["menu"] = Color.FromKnownColor(KnownColor.Menu),
+                ["menutext"] = Color.FromKnownColor(KnownColor.MenuText),
+                ["scrollbar"] = Color.FromKnownColor(KnownColor.ScrollBar),
+                ["threeddarkshadow"] = Color.FromKnownColor(KnownColor.ControlDarkDark),
+                ["threedface"] = Color.FromKnownColor(KnownColor.Control),
+                ["threedhighlight"] = Color.FromKnownColor(KnownColor.ControlLight),
+                ["threedlightshadow"] = Color.FromKnownColor(KnownColor.ControlLightLight),
+                ["window"] = Color.FromKnownColor(KnownColor.Window),
+                ["windowframe"] = Color.FromKnownColor(KnownColor.WindowFrame),
+                ["windowtext"] = Color.FromKnownColor(KnownColor.WindowText)
             };
         }
 
@@ -368,4 +371,3 @@ namespace System.Drawing
         }
     }
 }
-#endif

@@ -74,6 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc"/>
+    <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -115,6 +117,7 @@
     </Compile>
     <EmbeddedResource Include="..\GtkWinFormsApp\Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="..\GtkWinFormsApp\Form3.cs">
       <SubType>Form</SubType>
@@ -124,6 +127,7 @@
     </Compile>
     <EmbeddedResource Include="..\GtkWinFormsApp\Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="..\GtkWinFormsApp\Form4.cs">
       <SubType>Form</SubType>
@@ -151,6 +155,10 @@
       <Project>{a49f46ba-ed41-45b8-aa8f-103c29ae8bd0}</Project>
       <Name>GTKSystem.Drawing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Source\GTKSystem.Resources.Extensions\GTKSystem.Resources.Extensions.csproj">
+      <Project>{b930be10-6bfb-3150-7132-7b097dacfd67}</Project>
+      <Name>GTKSystem.Resources.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj">
       <Project>{400fcde9-834c-486f-bd0b-5c5cfc788606}</Project>
       <Name>GTKSystem.Windows.Forms</Name>
@@ -159,6 +167,12 @@
   <ItemGroup>
     <Compile Include="..\GtkWinFormsApp\Program.cs" />
     <Compile Include="..\GtkWinFormsApp\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\GtkWinFormsApp\Properties\Resources.Designer.cs">
+      <Link>Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="..\GtkWinFormsApp\UserControl11.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -170,18 +184,14 @@
       <DependentUpon>UserControl11.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="..\GtkWinFormsApp\Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CustomToolNamespace>GTKWinFormsApp.Properties</CustomToolNamespace>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="..\GtkWinFormsApp\Properties\Resources.zh-HANS.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
-    <Compile Include="..\GtkWinFormsApp\Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

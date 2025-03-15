@@ -152,7 +152,7 @@ public class BindingTest : TestHelper
     }
 
     int eventcount;
-    public void Event_Handler1(object sender, EventArgs e)
+    public void Event_Handler1(object? sender, EventArgs e)
     {
         eventcount++;
     }

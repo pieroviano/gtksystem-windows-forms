@@ -61,7 +61,7 @@ public static class DataGridViewCommon
             dgv.Columns.Add (A, A);
         }
         for (var r = 0; r < 10; r++) {
-            List<object> cells = new List<object> ();
+            List<object> cells = new();
             for (var c = 0; c < 10; c++) {
                 cells.Add (string.Format ("Cell {0}{1}", dgv.Columns [c].Name, r));
             }

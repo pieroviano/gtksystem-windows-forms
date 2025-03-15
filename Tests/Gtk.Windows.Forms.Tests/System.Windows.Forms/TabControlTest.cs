@@ -463,7 +463,7 @@ public class TabControlTest : TestHelper
         form.Dispose ();
     }
 
-    private void SelectedIndexChanged (object sender, EventArgs e)
+    private void SelectedIndexChanged (object? sender, EventArgs e)
     {
         _selected_index_changed++;
     }

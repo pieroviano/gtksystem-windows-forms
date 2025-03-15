@@ -6,6 +6,10 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+#if NETSTANDARD
+using System.Drawing.Gtk;
+#endif
+
 /// <summary>
 ///  This event is fired by owner drawn <see cref="Control"/> objects, such as <see cref="ListBox"/> and
 ///  <see cref="ComboBox"/>. It contains all the information needed for the user to paint the given item,
@@ -29,7 +33,7 @@ public class DrawItemEventArgs : EventArgs, IDeviceContext
     ///  Creates a new DrawItemEventArgs with the given parameters.
     /// </summary>
     public DrawItemEventArgs(Graphics graphics, Font? font, Rectangle rect, int index, DrawItemState state)
-        : this(graphics, font, rect, index, state, GtkSystemColors.WindowText, GtkSystemColors.Window)
+        : this(graphics, font, rect, index, state, SystemColors.WindowText, SystemColors.Window)
     { }
 
     /// <summary>
@@ -87,10 +91,10 @@ public class DrawItemEventArgs : EventArgs, IDeviceContext
     ///  depending on whether this item is selected.
     /// </summary>
     public Color ForeColor
-        => (State & DrawItemState.Selected) == DrawItemState.Selected ? GtkSystemColors.HighlightText : _foreColor;
+        => (State & DrawItemState.Selected) == DrawItemState.Selected ? SystemColors.HighlightText : _foreColor;
 
     public Color BackColor
-        => (State & DrawItemState.Selected) == DrawItemState.Selected ? GtkSystemColors.Highlight : _backColor;
+        => (State & DrawItemState.Selected) == DrawItemState.Selected ? SystemColors.Highlight : _backColor;
 
     public void Dispose()
     {

@@ -30,7 +30,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/pieroviano/gtksystem-windows-forms.git</RepositoryUrl>
         <PackAsTool>False</PackAsTool>
-        <PackageLicenseExpression>LGPL-3</PackageLicenseExpression>
+        <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <LangVersion>latest</LangVersion>
         <SignAssembly>true</SignAssembly>
@@ -45,17 +45,32 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="GTKControls\Drawing\**" />
+        <Compile Remove="GTKControls\ImageList\**" />
         <Compile Remove="GTKControls\Internal\**" />
+        <Compile Remove="GTKSystem\ComponentModel\**" />
+        <Compile Remove="GTKSystem\Numerics\**" />
+        <Compile Remove="GTKSystem\Resources\**" />
         <Compile Remove="Resources\Forms_ico\**" />
         <Compile Remove="Resources\icons\**" />
+        <Compile Remove="System.Diagnostics.CodeAnalysis\**" />
         <EmbeddedResource Remove="GTKControls\Drawing\**" />
+        <EmbeddedResource Remove="GTKControls\ImageList\**" />
         <EmbeddedResource Remove="GTKControls\Internal\**" />
+        <EmbeddedResource Remove="GTKSystem\ComponentModel\**" />
+        <EmbeddedResource Remove="GTKSystem\Numerics\**" />
+        <EmbeddedResource Remove="GTKSystem\Resources\**" />
         <EmbeddedResource Remove="Resources\Forms_ico\**" />
         <EmbeddedResource Remove="Resources\icons\**" />
+        <EmbeddedResource Remove="System.Diagnostics.CodeAnalysis\**" />
         <None Remove="GTKControls\Drawing\**" />
+        <None Remove="GTKControls\ImageList\**" />
         <None Remove="GTKControls\Internal\**" />
+        <None Remove="GTKSystem\ComponentModel\**" />
+        <None Remove="GTKSystem\Numerics\**" />
+        <None Remove="GTKSystem\Resources\**" />
         <None Remove="Resources\Forms_ico\**" />
         <None Remove="Resources\icons\**" />
+        <None Remove="System.Diagnostics.CodeAnalysis\**" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="Content\System.ComponentModel.cs" />
@@ -118,6 +133,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="GTKControls\Drawing\Printing\PrintDocument.cs" />
+        <Compile Include="System.Diagnostics.CodeAnalysis\DynamicallyAccessedMembersAttribute.cs" />
+        <Compile Include="System.Diagnostics.CodeAnalysis\DynamicallyAccessedMemberTypes.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Content\System.ComponentModel.cs" Pack="true" PackagePath="\content\" />
@@ -162,19 +179,19 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="GtkSharp" Version="$(GtkSharpVersion).$(VersionBuildSuffix)" />
-        <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+        <PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" />
         <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Update="GTKSystem\Resources\Extensions\SystemResources.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>SystemResources.resx</DependentUpon>
-        </Compile>
         <Compile Update="Properties\Resources.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
         </Compile>
     </ItemGroup>
     <ItemGroup>
@@ -182,6 +199,7 @@
     </ItemGroup>
     <ItemGroup>
         <Reference Include="System" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Drawing" Condition="'$(TargetFramework)'=='net462'" Aliases="sd" PrivateAssets="all" />
         <Reference Include="System.Core" Condition="'$(TargetFramework)'=='net462'" />
         <Reference Include="System.Data" Condition="'$(TargetFramework)'=='net462'" />
         <Reference Include="System.Linq" Condition="'$(TargetFramework)'=='net462'" />
@@ -190,15 +208,16 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\GTKSystem.Drawing\GTKSystem.Drawing.csproj" />
+        <ProjectReference Include="..\GTKSystem.Resources.Extensions\GTKSystem.Resources.Extensions.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Update="GTKSystem\Resources\Extensions\SystemResources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>SystemResources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
         <EmbeddedResource Update="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
     <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />

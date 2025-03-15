@@ -34,7 +34,7 @@ public class GroupBox : ContainerControl
     public override string Text { get => self.Label;
         set => self.Label = value;
     }
-    public override ControlCollection Controls => _controls!;
+    public override ControlCollection Controls => _controls;
     public override Padding Padding
     {
         get => base.Padding;

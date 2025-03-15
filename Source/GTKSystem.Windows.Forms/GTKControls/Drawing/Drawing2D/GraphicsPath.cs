@@ -581,7 +581,7 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="format">A <see cref="T:System.Drawing.StringFormat" /> that specifies text formatting information, such as line spacing and alignment.</param>
     public void AddString(string s, FontFamily family, int style, float emSize, Point origin, StringFormat format)
     {
-        AddPathPoints(new PointF(0, 0), new PointF(emSize * s.Length, emSize));
+        AddPathPoints(new PointF(0, 0), new PointF(emSize * s?.Length??0, emSize));
         list.Add(new StringMode { Text = s, Family = family, Style = style, EmSize = emSize, LayoutRect = new RectangleF(origin.X, origin.Y, 0, 0), Format = format });
     }
 

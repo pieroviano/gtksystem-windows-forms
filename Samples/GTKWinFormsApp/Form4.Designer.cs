@@ -30,11 +30,11 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            TreeNode treeNode1 = new TreeNode("节点3");
-            TreeNode treeNode2 = new TreeNode("节点2", new TreeNode[] { treeNode1 });
-            TreeNode treeNode3 = new TreeNode("节点4");
-            TreeNode treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
-            TreeNode treeNode5 = new TreeNode("节点1");
+            treeNode1 = new TreeNode("节点3");
+            treeNode2 = new TreeNode("节点2", new TreeNode[] { treeNode1 });
+            treeNode3 = new TreeNode("节点4");
+            treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
+            treeNode5 = new TreeNode("节点1");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommonDialogsForm));
             splitContainer1 = new SplitContainer();
             button2 = new Button();
@@ -305,6 +305,11 @@ namespace GTKWinFormsApp
             ResumeLayout(false);
         }
 
+        private TreeNode treeNode1;
+        private TreeNode treeNode2;
+        private TreeNode treeNode3;
+        private TreeNode treeNode4;
+        private TreeNode treeNode5;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;

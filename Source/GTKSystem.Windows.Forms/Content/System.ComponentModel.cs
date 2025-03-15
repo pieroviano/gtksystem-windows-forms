@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace System.ComponentModel;
 
-public class ComponentResourceManager : System.Windows.Forms.ComponentModel.ComponentResourceManager
+public class ComponentResourceManager : System.Windows.Forms.ComponentModel.GtkComponentResourceManager
 {
     public ComponentResourceManager(Type form) : base(form)
     {
@@ -15,7 +15,7 @@ public class ComponentResourceManager : System.Windows.Forms.ComponentModel.Comp
     public new object? GetObject(string name, CultureInfo culture)
     {
 
-        return GetObject(name);
+        return GetObject(name, culture);
     }
 
     public new object? GetObject(string name)

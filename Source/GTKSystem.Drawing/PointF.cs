@@ -45,7 +45,7 @@ namespace System.Drawing
         /// <summary>
         /// Creates a new <see cref="System.Numerics.Vector2"/> from this <see cref="System.Drawing.PointF"/>.
         /// </summary>
-        public Vector2 ToVector2() => new Vector2(x, y);
+        public Vector2 ToVector2() => new(x, y);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref='System.Drawing.PointF'/> is empty.
@@ -79,7 +79,7 @@ namespace System.Drawing
         /// <summary>
         /// Converts the specified <see cref="System.Numerics.Vector2"/> to a <see cref="System.Drawing.PointF"/>.
         /// </summary>
-        public static explicit operator PointF(Vector2 vector) => new PointF(vector);
+        public static explicit operator PointF(Vector2 vector) => new(vector);
 
         /// <summary>
         /// Translates a <see cref='System.Drawing.PointF'/> by a given <see cref='System.Drawing.Size'/> .
@@ -118,22 +118,22 @@ namespace System.Drawing
         /// <summary>
         /// Translates a <see cref='System.Drawing.PointF'/> by a given <see cref='System.Drawing.Size'/> .
         /// </summary>
-        public static PointF Add(PointF pt, Size sz) => new PointF(pt.X + sz.Width, pt.Y + sz.Height);
+        public static PointF Add(PointF pt, Size sz) => new(pt.X + sz.Width, pt.Y + sz.Height);
 
         /// <summary>
         /// Translates a <see cref='System.Drawing.PointF'/> by the negative of a given <see cref='System.Drawing.Size'/> .
         /// </summary>
-        public static PointF Subtract(PointF pt, Size sz) => new PointF(pt.X - sz.Width, pt.Y - sz.Height);
+        public static PointF Subtract(PointF pt, Size sz) => new(pt.X - sz.Width, pt.Y - sz.Height);
 
         /// <summary>
         /// Translates a <see cref='System.Drawing.PointF'/> by a given <see cref='System.Drawing.SizeF'/> .
         /// </summary>
-        public static PointF Add(PointF pt, SizeF sz) => new PointF(pt.X + sz.Width, pt.Y + sz.Height);
+        public static PointF Add(PointF pt, SizeF sz) => new(pt.X + sz.Width, pt.Y + sz.Height);
 
         /// <summary>
         /// Translates a <see cref='System.Drawing.PointF'/> by the negative of a given <see cref='System.Drawing.SizeF'/> .
         /// </summary>
-        public static PointF Subtract(PointF pt, SizeF sz) => new PointF(pt.X - sz.Width, pt.Y - sz.Height);
+        public static PointF Subtract(PointF pt, SizeF sz) => new(pt.X - sz.Width, pt.Y - sz.Height);
 
         public override readonly bool Equals(object? obj) => obj is PointF && Equals((PointF)obj);
 

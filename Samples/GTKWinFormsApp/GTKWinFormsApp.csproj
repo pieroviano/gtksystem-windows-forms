@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
+		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>
@@ -12,8 +12,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Content Remove="工程说明.txt" />
 		<None Remove="工程说明.txt" />
-		<None Include="工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
+		<Content Include="工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
 		<None Include="TestData1.en.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -34,6 +35,11 @@
 		<EmbeddedResource Include="Form1.resx" Link="TestDataForm.resx" />
 		<EmbeddedResource Update="Properties\Resources.de.resx">
 		  <DependentUpon>Resources.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		  <CustomToolNamespace>GTKWinFormsApp.Properties</CustomToolNamespace>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Properties\Resources.zh-HANS.resx">
 			<DependentUpon>Resources.resx</DependentUpon>
@@ -83,22 +89,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
+		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" IncludeAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Update="Form2.cs" />
 		<Compile Update="Properties\Resources.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resources.resx</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

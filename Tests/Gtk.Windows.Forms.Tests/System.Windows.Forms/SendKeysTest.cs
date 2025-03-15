@@ -29,7 +29,7 @@ namespace GtkTests.System.Windows.Forms;
 [Category("Interactive")]
 public class SendKeysTest  : TestHelper {
 
-    static readonly Queue keys = new Queue();
+    static readonly Queue keys = new();
 
     internal struct Keys {
         public string key;
@@ -77,7 +77,7 @@ public class SendKeysTest  : TestHelper {
         c.Dispose();
     }
 
-    private void SendKeysTest1_tick(object sender, EventArgs e) {
+    private void SendKeysTest1_tick(object? sender, EventArgs e) {
         if (f.InvokeRequired) {
             f.Invoke (new EventHandler (SendKeysTest1_tick), new object [] { sender, e });
             return;
@@ -108,7 +108,7 @@ public class SendKeysTest  : TestHelper {
         base.SetUp ();
     }
 
-    private void SendKeysTest2_tick(object sender, EventArgs e) {
+    private void SendKeysTest2_tick(object? sender, EventArgs e) {
         t.Stop();
         if (f.InvokeRequired) {
             f.Invoke (new EventHandler (SendKeysTest2_tick), new object [] {sender, e});

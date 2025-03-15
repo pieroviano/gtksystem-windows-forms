@@ -394,7 +394,7 @@ public class ColumnHeaderTest : TestHelper
         Assert.AreEqual (true, col2.Width == lv.ClientRectangle.Width - col1.Width, "#B1");
     }
 
-    public void ColumnReordered (object sender, ColumnReorderedEventArgs  e)
+    public void ColumnReordered (object? sender, ColumnReorderedEventArgs  e)
     {
         columnReordered++;
     }

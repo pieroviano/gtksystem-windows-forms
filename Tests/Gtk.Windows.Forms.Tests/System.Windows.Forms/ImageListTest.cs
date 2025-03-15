@@ -153,7 +153,7 @@ public class ImageListTest : TestHelper
     public class ImageListRecreateHandleEventClass : TestHelper
     {
         static bool eventhandled = false;
-        public static void RecreateHandle_EventHandler (object sender, EventArgs e)
+        public static void RecreateHandle_EventHandler (object? sender, EventArgs e)
         {
             eventhandled = true;
         }

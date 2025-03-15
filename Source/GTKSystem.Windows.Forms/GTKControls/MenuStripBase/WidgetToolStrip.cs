@@ -123,14 +123,14 @@ public class WidgetToolStrip<T> : ToolStripItem
         OnClick(args);
     }
 
-    protected virtual void OnClick(ButtonReleaseEventArgs args)
+    protected virtual void OnClick(EventArgs e)
     {
-        Click?.Invoke(this, args);
+        Click?.Invoke(this, e);
     }
 
-    protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs eventArgs)
+    protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs e)
     {
-        DropDownItemClicked?.Invoke(this, eventArgs);
+        DropDownItemClicked?.Invoke(this, e);
     }
 
     private void MenuItem_Activated(object? sender, EventArgs e)

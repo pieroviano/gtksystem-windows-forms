@@ -28,14 +28,14 @@ public class MonthCalendar : Control
             OnDateSelected(new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
     }
 
-    protected virtual void OnDateSelected(DateRangeEventArgs eventArgs)
+    protected virtual void OnDateSelected(DateRangeEventArgs e)
     {
-        DateSelected?.Invoke(this, eventArgs);
+        DateSelected?.Invoke(this, e);
     }
 
-    protected virtual void OnDateChanged(DateRangeEventArgs eventArgs)
+    protected virtual void OnDateChanged(DateRangeEventArgs e)
     {
-        DateChanged?.Invoke(this, eventArgs);
+        DateChanged?.Invoke(this, e);
     }
 
     public Day FirstDayOfWeek

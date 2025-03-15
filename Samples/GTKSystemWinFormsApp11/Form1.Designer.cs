@@ -373,7 +373,7 @@ namespace GTKSystemWinFormsApp11
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            //BackColor = System.Drawing.SystemColors.ActiveCaption;
+            BackColor = System.Drawing.SystemColors.Window;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(panel1);
@@ -386,9 +386,9 @@ namespace GTKSystemWinFormsApp11
             Controls.Add(menuStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            //MaximizeBox = false;
+            MaximizeBox = false;
             Name = "Form1";
-           // ShowInTaskbar = false;
+            ShowInTaskbar = false;
             Text = "Gtk Form";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

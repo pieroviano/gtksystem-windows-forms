@@ -5,10 +5,10 @@
 namespace System.Windows.Forms;
 
 /// <summary>
-///  Helper class supporting Multitarget type assembly qualified name resolution for ResX API.
+///  Helper class supporting Multi-target type assembly qualified name resolution for ResX API.
 ///  Note: this file is compiled into different assemblies (runtime and VSIP assemblies ...)
 /// </summary>
-internal static class MultitargetUtil
+internal static class MultiTargetUtil
 {
     /// <summary>
     ///  This method gets assembly info for the corresponding type. If the delegate

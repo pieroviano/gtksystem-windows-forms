@@ -183,22 +183,22 @@ public class ScrollBarTest : TestHelper
 public class ScrollBarEventTest : TestHelper
 {
     static bool eventhandled = false;
-    public void ScrollBar_EventHandler(object sender, EventArgs e)
+    public void ScrollBar_EventHandler(object? sender, EventArgs e)
     {
         eventhandled = true;
     }
 
-    public void ScrollBarMouse_EventHandler(object sender, MouseEventArgs e)
+    public void ScrollBarMouse_EventHandler(object? sender, MouseEventArgs e)
     {
         eventhandled = true;
     }
 
-    public void ScrollBarScroll_EventHandler(object sender, ScrollEventArgs e)
+    public void ScrollBarScroll_EventHandler(object? sender, ScrollEventArgs e)
     {
         eventhandled = true;
     }
 
-    public void ScrollBarPaint_EventHandler(object sender, PaintEventArgs e)
+    public void ScrollBarPaint_EventHandler(object? sender, PaintEventArgs e)
     {
         eventhandled = true;
     }
@@ -641,7 +641,7 @@ public class HScrollBarTestEventsOrder : TestHelper
 
 public class MyScrollBar2 : HScrollBar
 {
-    protected ArrayList results = new ArrayList();
+    protected ArrayList results = new();
     public MyScrollBar2() : base()
     {
         HandleCreated += HandleCreated_Handler;
@@ -667,107 +667,107 @@ public class MyScrollBar2 : HScrollBar
         ValueChanged += ValueChanged_Handler;
     }
 
-    protected void HandleCreated_Handler(object sender, EventArgs e)
+    protected void HandleCreated_Handler(object? sender, EventArgs e)
     {
         results.Add("HandleCreated");
     }
 
-    protected void BackColorChanged_Handler(object sender, EventArgs e)
+    protected void BackColorChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("BackColorChanged");
     }
 
-    protected void BackgroundImageChanged_Handler(object sender, EventArgs e)
+    protected void BackgroundImageChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("BackgroundImageChanged");
     }
 
-    protected void Click_Handler(object sender, EventArgs e)
+    protected void Click_Handler(object? sender, EventArgs e)
     {
         results.Add("Click");
     }
 
-    protected void DoubleClick_Handler(object sender, EventArgs e)
+    protected void DoubleClick_Handler(object? sender, EventArgs e)
     {
         results.Add("DoubleClick");
     }
 
-    protected void FontChanged_Handler(object sender, EventArgs e)
+    protected void FontChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("FontChanged");
     }
 
-    protected void ForeColorChanged_Handler(object sender, EventArgs e)
+    protected void ForeColorChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("ForeColorChanged");
     }
 
-    protected void ImeModeChanged_Handler(object sender, EventArgs e)
+    protected void ImeModeChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("ImeModeChanged");
     }
 
-    protected void MouseDown_Handler(object sender, MouseEventArgs e)
+    protected void MouseDown_Handler(object? sender, MouseEventArgs e)
     {
         results.Add("MouseDown");
     }
 
-    protected void MouseMove_Handler(object sender, MouseEventArgs e)
+    protected void MouseMove_Handler(object? sender, MouseEventArgs e)
     {
         results.Add("MouseMove");
     }
 
-    protected void MouseUp_Handler(object sender, MouseEventArgs e)
+    protected void MouseUp_Handler(object? sender, MouseEventArgs e)
     {
         results.Add("MouseUp");
     }
 
-    protected void BindingContextChanged_Handler(object sender, EventArgs e)
+    protected void BindingContextChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("BindingContextChanged");
     }
 
-    protected void Invalidated_Handler(object sender, InvalidateEventArgs e)
+    protected void Invalidated_Handler(object? sender, InvalidateEventArgs e)
     {
         results.Add("Invalidated");
     }
 
-    protected void Resize_Handler(object sender, EventArgs e)
+    protected void Resize_Handler(object? sender, EventArgs e)
     {
         results.Add("Resize");
     }
 
-    protected void SizeChanged_Handler(object sender, EventArgs e)
+    protected void SizeChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("SizeChanged");
     }
 
-    protected void Layout_Handler(object sender, LayoutEventArgs e)
+    protected void Layout_Handler(object? sender, LayoutEventArgs e)
     {
         results.Add("Layout");
     }
 
-    protected void VisibleChanged_Handler(object sender, EventArgs e)
+    protected void VisibleChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("VisibleChanged");
     }
 
-    protected void Paint_Handler(object sender, PaintEventArgs e)
+    protected void Paint_Handler(object? sender, PaintEventArgs e)
     {
         results.Add("Paint");
     }
 
-    protected void Scroll_Handler(object sender, ScrollEventArgs e)
+    protected void Scroll_Handler(object? sender, ScrollEventArgs e)
     {
         results.Add("Scroll");
     }
 
-    protected void TextChanged_Handler(object sender, EventArgs e)
+    protected void TextChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("TextChanged");
     }
 
-    protected void ValueChanged_Handler(object sender, EventArgs e)
+    protected void ValueChanged_Handler(object? sender, EventArgs e)
     {
         results.Add("ValueChanged");
     }
@@ -1174,7 +1174,7 @@ public class ScrollEventArgsTest : TestHelper
 
 public class MyScrollBar : HScrollBar
 {
-    private readonly ArrayList results = new ArrayList();
+    private readonly ArrayList results = new();
 
     public MyScrollBar() : base()
     {
@@ -1207,122 +1207,122 @@ public class MyScrollBar : HScrollBar
 
     public Padding PublicDefaultMargin { get { return base.DefaultMargin; } }
 
-    protected void OnBackColorChanged(object sender, EventArgs e)
+    protected void OnBackColorChanged(object? sender, EventArgs e)
     {
         results.Add("OnBackColorChanged");
     }
 
-    protected void OnBackgroundImageChanged(object sender, EventArgs e)
+    protected void OnBackgroundImageChanged(object? sender, EventArgs e)
     {
         results.Add("OnBackgroundImageChanged");
     }
 
-    protected void OnClick(object sender, EventArgs e)
+    protected void OnClick(object? sender, EventArgs e)
     {
         results.Add("OnClick");
     }
 
-    protected void OnDoubleClick(object sender, EventArgs e)
+    protected void OnDoubleClick(object? sender, EventArgs e)
     {
         results.Add("OnDoubleClick");
     }
 
-    protected void OnFontChanged(object sender, EventArgs e)
+    protected void OnFontChanged(object? sender, EventArgs e)
     {
         results.Add("OnFontChanged");
     }
 
-    protected void OnForeColorChanged(object sender, EventArgs e)
+    protected void OnForeColorChanged(object? sender, EventArgs e)
     {
         results.Add("OnForeColorChanged");
     }
 
-    protected void OnImeModeChanged(object sender, EventArgs e)
+    protected void OnImeModeChanged(object? sender, EventArgs e)
     {
         results.Add("OnImeModeChanged");
     }
 
-    protected void OnMouseDown(object sender, MouseEventArgs e)
+    protected void OnMouseDown(object? sender, MouseEventArgs e)
     {
         results.Add("OnMouseDown");
     }
 
-    protected void OnMouseMove(object sender, MouseEventArgs e)
+    protected void OnMouseMove(object? sender, MouseEventArgs e)
     {
         results.Add("OnMouseMove");
     }
 
-    protected void OnMouseEnter(object sender, EventArgs e)
+    protected void OnMouseEnter(object? sender, EventArgs e)
     {
         results.Add("OnMouseEnter");
     }
 
-    protected void OnMouseLeave(object sender, EventArgs e)
+    protected void OnMouseLeave(object? sender, EventArgs e)
     {
         results.Add("OnMouseLeave");
     }
 
-    protected void OnMouseHover(object sender, EventArgs e)
+    protected void OnMouseHover(object? sender, EventArgs e)
     {
         results.Add("OnMouseHover");
     }
 
-    protected void OnMouseUp(object sender, MouseEventArgs e)
+    protected void OnMouseUp(object? sender, MouseEventArgs e)
     {
         results.Add("OnMouseUp");
     }
 
-    protected void OnHandleCreated(object sender, EventArgs e)
+    protected void OnHandleCreated(object? sender, EventArgs e)
     {
         results.Add("OnHandleCreated");
     }
 
-    protected void OnBindingContextChanged(object sender, EventArgs e)
+    protected void OnBindingContextChanged(object? sender, EventArgs e)
     {
         results.Add("OnBindingContextChanged");
     }
 
-    protected void OnInvalidated(object sender, InvalidateEventArgs e)
+    protected void OnInvalidated(object? sender, InvalidateEventArgs e)
     {
         results.Add("OnInvalidated");
     }
 
-    protected void OnResize(object sender, EventArgs e)
+    protected void OnResize(object? sender, EventArgs e)
     {
         results.Add("OnResize");
     }
 
-    protected void OnSizeChanged(object sender, EventArgs e)
+    protected void OnSizeChanged(object? sender, EventArgs e)
     {
         results.Add("OnSizeChanged");
     }
 
-    protected void OnLayout(object sender, LayoutEventArgs e)
+    protected void OnLayout(object? sender, LayoutEventArgs e)
     {
         results.Add("OnLayout");
     }
 
-    protected void OnVisibleChanged(object sender, EventArgs e)
+    protected void OnVisibleChanged(object? sender, EventArgs e)
     {
         results.Add("OnVisibleChanged");
     }
 
-    protected void OnScroll(object sender, ScrollEventArgs e)
+    protected void OnScroll(object? sender, ScrollEventArgs e)
     {
         results.Add("OnScroll");
     }
 
-    protected void OnTextChanged(object sender, EventArgs e)
+    protected void OnTextChanged(object? sender, EventArgs e)
     {
         results.Add("OnTextChanged");
     }
 
-    protected void OnValueChanged(object sender, EventArgs e)
+    protected void OnValueChanged(object? sender, EventArgs e)
     {
         results.Add("OnValueChanged");
     }
 
-    protected void OnPaint(object sender, PaintEventArgs e)
+    protected void OnPaint(object? sender, PaintEventArgs e)
     {
         results.Add("OnPaint");
     }

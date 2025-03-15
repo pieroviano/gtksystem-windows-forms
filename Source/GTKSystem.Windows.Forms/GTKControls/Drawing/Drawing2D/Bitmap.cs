@@ -127,7 +127,7 @@ public sealed class Bitmap : Image
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified existing image.</summary>
     /// <param name="original">The <see cref="T:System.Drawing.Image" /> from which to create the new <see cref="T:System.Drawing.Bitmap" />.</param>
-    public Bitmap(Image original)
+    public Bitmap(Image? original)
         : this(original, original.Width, original.Height)
     {
     }
@@ -136,7 +136,7 @@ public sealed class Bitmap : Image
     /// <param name="original">The <see cref="T:System.Drawing.Image" /> from which to create the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <param name="newSize">The <see cref="T:System.Drawing.Size" /> structure that represent the size of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <exception cref="T:System.Exception">The operation failed.</exception>
-    public Bitmap(Image original, Size newSize)
+    public Bitmap(Image? original, Size newSize)
         : this(original, newSize.Width, newSize.Height)
     {
     }
@@ -146,7 +146,7 @@ public sealed class Bitmap : Image
     /// <param name="width">The width, in pixels, of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <param name="height">The height, in pixels, of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <exception cref="T:System.Exception">The operation failed.</exception>
-    public Bitmap(Image original, int width, int height)
+    public Bitmap(Image? original, int width, int height)
         : this(width, height, PixelFormat.Format32BppArgb)
     {
         PixbufData = original.PixbufData;

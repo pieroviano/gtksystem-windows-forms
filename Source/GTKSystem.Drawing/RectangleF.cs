@@ -64,7 +64,7 @@ namespace System.Drawing
         /// <summary>
         /// Creates a new <see cref="System.Numerics.Vector4"/> from this <see cref="System.Drawing.RectangleF"/>.
         /// </summary>
-        public Vector4 ToVector4() => new Vector4(x, y, width, height);
+        public Vector4 ToVector4() => new(x, y, width, height);
 
         /// <summary>
         /// Converts the specified <see cref="System.Drawing.RectangleF"/> to a <see cref="System.Numerics.Vector4"/>.
@@ -74,13 +74,13 @@ namespace System.Drawing
         /// <summary>
         /// Converts the specified <see cref="System.Numerics.Vector2"/> to a <see cref="System.Drawing.RectangleF"/>.
         /// </summary>
-        public static explicit operator RectangleF(Vector4 vector) => new RectangleF(vector);
+        public static explicit operator RectangleF(Vector4 vector) => new(vector);
 
         /// <summary>
         /// Creates a new <see cref='System.Drawing.RectangleF'/> with the specified location and size.
         /// </summary>
         public static RectangleF FromLTRB(float left, float top, float right, float bottom) =>
-            new RectangleF(left, top, right - left, bottom - top);
+            new(left, top, right - left, bottom - top);
 
         /// <summary>
         /// Gets or sets the coordinates of the upper-left corner of the rectangular region represented by this
@@ -89,7 +89,7 @@ namespace System.Drawing
         [Browsable(false)]
         public PointF Location
         {
-            readonly get => new PointF(X, Y);
+            readonly get => new(X, Y);
             set
             {
                 X = value.X;
@@ -103,7 +103,7 @@ namespace System.Drawing
         [Browsable(false)]
         public SizeF Size
         {
-            readonly get => new SizeF(Width, Height);
+            readonly get => new(Width, Height);
             set
             {
                 Width = value.Width;
@@ -321,7 +321,7 @@ namespace System.Drawing
         /// Converts the specified <see cref='System.Drawing.Rectangle'/> to a
         /// <see cref='System.Drawing.RectangleF'/>.
         /// </summary>
-        public static implicit operator RectangleF(Rectangle r) => new RectangleF(r.X, r.Y, r.Width, r.Height);
+        public static implicit operator RectangleF(Rectangle r) => new(r.X, r.Y, r.Width, r.Height);
 
         /// <summary>
         /// Converts the <see cref='System.Drawing.RectangleF.Location'/> and <see cref='System.Drawing.RectangleF.Size'/>

@@ -45,7 +45,7 @@ namespace System.Drawing
         /// <summary>
         /// Converts the specified <see cref='System.Drawing.Size'/> to a <see cref='System.Drawing.SizeF'/>.
         /// </summary>
-        public static implicit operator SizeF(Size p) => new SizeF(p.Width, p.Height);
+        public static implicit operator SizeF(Size p) => new(p.Width, p.Height);
 
         /// <summary>
         /// Performs vector addition of two <see cref='System.Drawing.Size'/> objects.
@@ -79,7 +79,7 @@ namespace System.Drawing
         /// <param name="left">Dividend of type <see cref="Size"/>.</param>
         /// <param name="right">Divisor of type <see cref="int"/>.</param>
         /// <returns>Result of type <see cref="Size"/>.</returns>
-        public static Size operator /(Size left, int right) => new Size(unchecked(left.width / right), unchecked(left.height / right));
+        public static Size operator /(Size left, int right) => new(unchecked(left.width / right), unchecked(left.height / right));
 
         /// <summary>
         /// Multiplies <see cref="Size"/> by a <see cref="float"/> producing <see cref="SizeF"/>.
@@ -104,7 +104,7 @@ namespace System.Drawing
         /// <param name="right">Divisor of type <see cref="int"/>.</param>
         /// <returns>Result of type <see cref="SizeF"/>.</returns>
         public static SizeF operator /(Size left, float right)
-            => new SizeF(left.width / right, left.height / right);
+            => new(left.width / right, left.height / right);
 
         /// <summary>
         /// Tests whether two <see cref='System.Drawing.Size'/> objects are identical.
@@ -119,7 +119,7 @@ namespace System.Drawing
         /// <summary>
         /// Converts the specified <see cref='System.Drawing.Size'/> to a <see cref='System.Drawing.Point'/>.
         /// </summary>
-        public static explicit operator System.Drawing.Point(Size size) => new System.Drawing.Point(size.Width, size.Height);
+        public static explicit operator System.Drawing.Point(Size size) => new(size.Width, size.Height);
 
         /// <summary>
         /// Tests whether this <see cref='System.Drawing.Size'/> has zero width and height.
@@ -149,30 +149,30 @@ namespace System.Drawing
         /// Performs vector addition of two <see cref='System.Drawing.Size'/> objects.
         /// </summary>
         public static Size Add(Size sz1, Size sz2) =>
-            new Size(unchecked(sz1.Width + sz2.Width), unchecked(sz1.Height + sz2.Height));
+            new(unchecked(sz1.Width + sz2.Width), unchecked(sz1.Height + sz2.Height));
 
         /// <summary>
         /// Converts a SizeF to a Size by performing a ceiling operation on all the coordinates.
         /// </summary>
         public static Size Ceiling(SizeF value) =>
-            new Size(unchecked((int)Math.Ceiling(value.Width)), unchecked((int)Math.Ceiling(value.Height)));
+            new(unchecked((int)Math.Ceiling(value.Width)), unchecked((int)Math.Ceiling(value.Height)));
 
         /// <summary>
         /// Contracts a <see cref='System.Drawing.Size'/> by another <see cref='System.Drawing.Size'/> .
         /// </summary>
         public static Size Subtract(Size sz1, Size sz2) =>
-            new Size(unchecked(sz1.Width - sz2.Width), unchecked(sz1.Height - sz2.Height));
+            new(unchecked(sz1.Width - sz2.Width), unchecked(sz1.Height - sz2.Height));
 
         /// <summary>
         /// Converts a SizeF to a Size by performing a truncate operation on all the coordinates.
         /// </summary>
-        public static Size Truncate(SizeF value) => new Size(unchecked((int)value.Width), unchecked((int)value.Height));
+        public static Size Truncate(SizeF value) => new(unchecked((int)value.Width), unchecked((int)value.Height));
 
         /// <summary>
         /// Converts a SizeF to a Size by performing a round operation on all the coordinates.
         /// </summary>
         public static Size Round(SizeF value) =>
-            new Size(unchecked((int)Math.Round(value.Width)), unchecked((int)Math.Round(value.Height)));
+            new(unchecked((int)Math.Round(value.Width)), unchecked((int)Math.Round(value.Height)));
 
         /// <summary>
         /// Tests to see whether the specified object is a <see cref='System.Drawing.Size'/>  with the same dimensions
@@ -199,7 +199,7 @@ namespace System.Drawing
         /// <param name="multiplier">Multiplier of type <see cref='int'/>.</param>
         /// <returns>Product of type <see cref="Size"/>.</returns>
         private static Size Multiply(Size size, int multiplier) =>
-            new Size(unchecked(size.width * multiplier), unchecked(size.height * multiplier));
+            new(unchecked(size.width * multiplier), unchecked(size.height * multiplier));
 
         /// <summary>
         /// Multiplies <see cref="Size"/> by a <see cref="float"/> producing <see cref="SizeF"/>.
@@ -208,7 +208,7 @@ namespace System.Drawing
         /// <param name="multiplier">Multiplier of type <see cref="float"/>.</param>
         /// <returns>Product of type SizeF.</returns>
         private static SizeF Multiply(Size size, float multiplier) =>
-            new SizeF(size.width * multiplier, size.height * multiplier);
+            new(size.width * multiplier, size.height * multiplier);
     }
 }
 #endif

@@ -52,14 +52,15 @@ public partial class TestDataForm : Form
         Load += TestDataForm_Load;
     }
 
-    private void TestDataForm_Load(object sender, EventArgs e)
+    private void TestDataForm_Load(object? sender, EventArgs e)
     {
 
         treeView1.Nodes.Clear();
         treeView1.CheckBoxes = true;
 
-        string jsontext = File.ReadAllText("TestData1.json");
-        using (FileStream reader = new FileStream("TestData1.json", FileMode.Open, FileAccess.Read))
+        var testdata1Json = Resources.testdata1Json;
+        string jsontext = File.ReadAllText(testdata1Json);
+        using (FileStream reader = new FileStream(testdata1Json, FileMode.Open, FileAccess.Read))
         {
             DataContractJsonSerializer dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
             List<TestDataMode> json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
@@ -67,9 +68,12 @@ public partial class TestDataForm : Form
             treeView1.Nodes.AddRange(childs.ToArray());
             foreach (TreeNode child in treeView1.Nodes)
                 child.Expand();
-
-            treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
-            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
+            var treeView1SelectedNode = treeView1.Nodes[0].Nodes[2];
+            if (treeView1SelectedNode.Nodes.Count >= 3)
+            {
+                treeView1SelectedNode.Nodes[3].Checked = true;
+            }
+            treeView1.SelectedNode = treeView1SelectedNode;
             var tabPage = new TabPage();
             tabPage.Location = new Point(4, 29);
             tabPage.Margin = new Padding(4);
@@ -86,7 +90,7 @@ public partial class TestDataForm : Form
 
     private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
     {
-        List<TreeNode> children = new List<TreeNode>();
+        List<TreeNode> children = new();
         var list = data.Where(w => w.parent == treeID);
         foreach (var d in list)
         {
@@ -106,8 +110,8 @@ public partial class TestDataForm : Form
         public string treeName { get; set; }
     }
 
-    TestEntity b = new TestEntity();
-    private void button1_Click(object sender, EventArgs e)
+    TestEntity b = new();
+    private void button1_Click(object? sender, EventArgs e)
     {
         Console.WriteLine(treeView1.SelectedNode?.Text);
         // b.Title = "test2";
@@ -117,7 +121,7 @@ public partial class TestDataForm : Form
             return;
         }
         //1、Dataset list data source
-        List<TestEntity> data = new List<TestEntity>();
+        List<TestEntity> data = new();
         var createdate = DateTime.Now;
         data.Add(new TestEntity()
         {
@@ -200,7 +204,7 @@ public partial class TestDataForm : Form
     }
 
 
-    private void button2_Click(object sender, EventArgs e)
+    private void button2_Click(object? sender, EventArgs e)
     {
         DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
         column.HeaderText = "test1";
@@ -242,80 +246,80 @@ public partial class TestDataForm : Form
         //}
     }
 
-    private void toolStripMenuItem1_Click(object sender, EventArgs e)
+    private void toolStripMenuItem1_Click(object? sender, EventArgs e)
     {
         var menu = sender as ToolStripItem;
         Console.WriteLine(menu.Text);
     }
 
-    private void textBox1_Validating(object sender, CancelEventArgs e)
+    private void textBox1_Validating(object? sender, CancelEventArgs e)
     {
         Console.WriteLine("textBox1_Validating");
     }
 
-    private void textBox1_Enter(object sender, EventArgs e)
+    private void textBox1_Enter(object? sender, EventArgs e)
     {
         Console.WriteLine("textBox1_Enter");
     }
 
-    private void maskedTextBox2_Validated(object sender, EventArgs e)
+    private void maskedTextBox2_Validated(object? sender, EventArgs e)
     {
         Console.WriteLine("maskedTextBox2_Validated");
     }
 
-    private void checkBox2_CheckedChanged(object sender, EventArgs e)
+    private void checkBox2_CheckedChanged(object? sender, EventArgs e)
     {
 
     }
 
-    private void checkBox2_CheckStateChanged(object sender, EventArgs e)
+    private void checkBox2_CheckStateChanged(object? sender, EventArgs e)
     {
 
     }
 
-    private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+    private void numericUpDown1_ValueChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("numericUpDown1_ValueChanged");
     }
 
-    private void radioButton3_CheckedChanged(object sender, EventArgs e)
+    private void radioButton3_CheckedChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("radioButton3_CheckedChanged");
     }
 
-    private void radioButton2_CheckedChanged(object sender, EventArgs e)
+    private void radioButton2_CheckedChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("radioButton2_CheckedChanged");
     }
 
-    private void radioButton1_CheckedChanged(object sender, EventArgs e)
+    private void radioButton1_CheckedChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("radioButton1_CheckedChanged");
     }
 
-    private void textBox1_TextChanged(object sender, EventArgs e)
+    private void textBox1_TextChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("textBox1_TextChanged");
     }
 
-    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    private void comboBox1_SelectedIndexChanged(object? sender, EventArgs e)
     {
         Console.WriteLine($"comboBox1_SelectedIndexChanged {comboBox1.SelectedIndex},{comboBox1.SelectedValue},{comboBox1.Text}");
     }
 
-    private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+    private void comboBox1_SelectedValueChanged(object? sender, EventArgs e)
     {
         var i = comboBox1.SelectedIndex;
         var o = comboBox1.SelectedItem;
         Console.WriteLine("comboBox1_SelectedValueChanged");
     }
 
-    private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+    private void dateTimePicker1_ValueChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("dateTimePicker1_ValueChanged");
     }
 
-    private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+    private void dataGridView1_SelectionChanged(object? sender, EventArgs e)
     {
         //6
         //if(dataGridView1.SelectedRows.Count > 0) 
@@ -323,12 +327,12 @@ public partial class TestDataForm : Form
         Console.WriteLine("dataGridView1_SelectionChanged");
     }
 
-    private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
+    private void dataGridView1_MultiSelectChanged(object? sender, EventArgs e)
     { //1
         Console.WriteLine("dataGridView1_MultiSelectChanged");
     }
 
-    private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView1_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
     {
         Console.WriteLine("dataGridView1_CellValueChanged");
         if (e.RowIndex > -1)
@@ -343,18 +347,18 @@ public partial class TestDataForm : Form
         //}
     }
 
-    private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView1_CellEnter(object? sender, DataGridViewCellEventArgs e)
     {
         //3
         Console.WriteLine("dataGridView1_CellEnter");
     }
 
-    private void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView1_CellLeave(object? sender, DataGridViewCellEventArgs e)
     {//4
         Console.WriteLine("dataGridView1_CellLeave");
     }
 
-    private void dataGridView1_CellValidated(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView1_CellValidated(object? sender, DataGridViewCellEventArgs e)
     {
         //7
         Console.WriteLine("dataGridView1_CellValidated");
@@ -362,91 +366,91 @@ public partial class TestDataForm : Form
         Console.WriteLine(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
     }
 
-    private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+    private void dataGridView1_CellValidating(object? sender, DataGridViewCellValidatingEventArgs e)
     {
         //5
         Console.WriteLine("dataGridView1_CellValidating" + e.FormattedValue);
     }
 
-    private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView1_RowEnter(object? sender, DataGridViewCellEventArgs e)
     {
         Console.WriteLine("dataGridView1_RowEnter");
     }
 
-    private void dataGridView1_RowLeave(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView1_RowLeave(object? sender, DataGridViewCellEventArgs e)
     {
         Console.WriteLine("dataGridView1_RowLeave");
     }
 
-    private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView1_CellClick(object? sender, DataGridViewCellEventArgs e)
     {
         //2
         Console.WriteLine("dataGridView1_CellClick");
     }
 
-    private void richTextBox1_TextChanged(object sender, EventArgs e)
+    private void richTextBox1_TextChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("richTextBox1_TextChanged");
     }
 
-    private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+    private void tabControl1_SelectedIndexChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("tabControl1_SelectedIndexChanged");
     }
 
-    private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+    private void treeView1_BeforeSelect(object? sender, TreeViewCancelEventArgs e)
     {
 
         Console.WriteLine("treeView1_BeforeSelect：" + e.Node?.Text);
     }
 
-    private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+    private void treeView1_AfterSelect(object? sender, TreeViewEventArgs e)
     {
         Console.WriteLine("treeView1_AfterSelect：" + treeView1.SelectedNode.FullPath);
         Console.WriteLine("treeView1_AfterSelect：" + e.Node?.Text);
     }
 
-    private void treeView1_AfterCollapse(object sender, TreeViewEventArgs e)
+    private void treeView1_AfterCollapse(object? sender, TreeViewEventArgs e)
     {
 
     }
 
-    private void treeView1_AfterExpand(object sender, TreeViewEventArgs e)
+    private void treeView1_AfterExpand(object? sender, TreeViewEventArgs e)
     {
 
     }
 
-    private void test2ToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
-    {
-        Console.WriteLine("test2ToolStripMenuItem_CheckedChanged");
-    }
-
-    private void test2ToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+    private void test2ToolStripMenuItem_CheckedChanged(object? sender, EventArgs e)
     {
         Console.WriteLine("test2ToolStripMenuItem_CheckedChanged");
     }
 
-    private void test2ToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+    private void test2ToolStripMenuItem_CheckStateChanged(object? sender, EventArgs e)
+    {
+        Console.WriteLine("test2ToolStripMenuItem_CheckedChanged");
+    }
+
+    private void test2ToolStripMenuItem_DropDownItemClicked(object? sender, ToolStripItemClickedEventArgs e)
     {
         Console.WriteLine("test2ToolStripMenuItem_DropDownItemClicked");
     }
 
-    private void toolStripMenuItem3_Click(object sender, EventArgs e)
+    private void toolStripMenuItem3_Click(object? sender, EventArgs e)
     {
         Console.WriteLine("toolStripMenuItem3_Click");
     }
 
-    private void toolStripMenuItem3_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+    private void toolStripMenuItem3_DropDownItemClicked(object? sender, ToolStripItemClickedEventArgs e)
     {
         Console.WriteLine("toolStripMenuItem3_DropDownItemClicked");
     }
 
-    private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
+    private void checkedListBox1_SelectedValueChanged(object? sender, EventArgs e)
     {
         Console.WriteLine($"checkedListBox1_SelectedValueChanged:{sender}");
     }
 
-    private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+    private void checkedListBox1_ItemCheck(object? sender, ItemCheckEventArgs e)
     {
         (sender as CheckBox).Text = "1234";
         checkedListBox1.Items[0] = DateTime.Now.ToString();
@@ -461,17 +465,15 @@ public partial class TestDataForm : Form
         }
     }
 
-    private void pictureBox2_Paint(object sender, PaintEventArgs e)
+    private void pictureBox2_Paint(object? sender, PaintEventArgs e)
     {
         var g = e.Graphics;
         g.Clear(Color.White);
 
         if (GTKWinFormsApp.Properties.Resources.timg6 != null)
         {
-            MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
-
             //g.DrawImage(new Bitmap(mem), new Point(0, 0));
-            g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+            g.DrawImage(GTKWinFormsApp.Properties.Resources.timg6, new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
 
         }
 
@@ -495,19 +497,19 @@ public partial class TestDataForm : Form
             //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
             //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new PointF(x, y), Rps[i]);
 
-            g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new PointF(x, y), Rps[i] });
+            g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new(x, y), Rps[i] });
         }
 
         g.DrawString(Resources.TestDataForm_pictureBox2_Paint_This_is_the_Paint_Graphics_sample_effect, new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
 
         g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width / 2, pictureBox2.Height / 2, pictureBox2.Width, pictureBox2.Height), 0, 270);
 
-        g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
-        g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100) });
+        g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new(50, 60), new(100, 80), new(75, 100) });
+        g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new(75, 100), new(100, 120), new(120, 100) });
         g.DrawRectangle(new Pen((Color)Color.Red), new Rectangle(10, 10, 20, 20));
     }
 
-    private void button6_Click(object sender, EventArgs e)
+    private void button6_Click(object? sender, EventArgs e)
     {
         // textBox1.InsertTextAtCursor("666 slip");
         Console.WriteLine(textBox1.SelectionStart);
@@ -520,7 +522,7 @@ public partial class TestDataForm : Form
         richTextBox1.SelectionLength = 50;
     }
 
-    private void button7_Click(object sender, EventArgs e)
+    private void button7_Click(object? sender, EventArgs e)
     {
         var form = new ListViewForm();
         var result = form.ShowDialog(this);
@@ -531,7 +533,7 @@ public partial class TestDataForm : Form
         //form.Show();
     }
 
-    private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+    private void tabControl1_DrawItem(object? sender, DrawItemEventArgs e)
     {
         var rect = tabControl1.GetTabRect(e.Index);
         //e.Graphics.FillRectangle(new SolidBrush(Color.Gray), new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
@@ -541,33 +543,33 @@ public partial class TestDataForm : Form
         e.Graphics.DrawImage(Image.FromFile("./Resources/BindingNavigator.Delete.ico"), new Point(e.Bounds.Width - 16, 0));
     }
 
-    private void button1_Paint(object sender, PaintEventArgs e)
+    private void button1_Paint(object? sender, PaintEventArgs e)
     {
 
     }
 
-    private void textBox1_KeyDown(object sender, KeyEventArgs e)
+    private void textBox1_KeyDown(object? sender, KeyEventArgs e)
     {
 
         Console.WriteLine("textBox1_KeyDown");
     }
 
-    private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+    private void textBox1_KeyPress(object? sender, KeyPressEventArgs e)
     {
         Console.WriteLine("textBox1_KeyPress");
     }
 
-    private void textBox1_KeyUp(object sender, KeyEventArgs e)
+    private void textBox1_KeyUp(object? sender, KeyEventArgs e)
     {
         Console.WriteLine("textBox1_KeyUp");
     }
 
-    private void tabPage2_Click(object sender, EventArgs e)
+    private void tabPage2_Click(object? sender, EventArgs e)
     {
         // MessageBox.Show("ffsssssss");
     }
 
-    private void comboBox1_DropDown(object sender, EventArgs e)
+    private void comboBox1_DropDown(object? sender, EventArgs e)
     {
         Console.WriteLine("comboBox1_DropDown");
     }

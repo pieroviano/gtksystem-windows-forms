@@ -15,7 +15,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class TreeView : ScrollableControl
     {
-        public readonly TreeViewBase self = new TreeViewBase();
+        public readonly TreeViewBase self = new();
         public override object GtkControl => self;
         private readonly TreeStore _store;
         internal TreeNode? root;
@@ -64,11 +64,11 @@ namespace System.Windows.Forms
             column.AddAttribute(renderertext, "text", 0);
             self.TreeView.AppendColumn(column);
         }
-        private void TreeView_Realized(object sender, EventArgs e)
+        private void TreeView_Realized(object? sender, EventArgs e)
         {
             if (ImageList != null)
             {
-                TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
+                TreeViewColumn? column = ((Gtk.TreeView?)sender)?.Columns[0];
                 if (string.IsNullOrWhiteSpace(ImageKey))
                 {
                     Image? image = ImageList.GetBitmap(ImageIndex);
@@ -95,9 +95,9 @@ namespace System.Windows.Forms
         }
     }
 
-    protected virtual void OnAfterExpand(TreeViewEventArgs eventArgs)
+    protected virtual void OnAfterExpand(TreeViewEventArgs e)
     {
-        AfterExpand?.Invoke(this, eventArgs);
+        AfterExpand?.Invoke(this, e);
     }
 
     private void TreeView_RowCollapsed(object? o, RowCollapsedArgs args)
@@ -111,9 +111,9 @@ namespace System.Windows.Forms
         }
     }
 
-    protected virtual void OnAfterCollapse(TreeViewEventArgs eventArgs)
+    protected virtual void OnAfterCollapse(TreeViewEventArgs e)
     {
-        AfterCollapse?.Invoke(this, eventArgs);
+        AfterCollapse?.Invoke(this, e);
     }
 
     private void TreeView_RowActivated(object? o, RowActivatedArgs args)
@@ -130,9 +130,9 @@ namespace System.Windows.Forms
         }
     }
 
-    protected virtual void OnAfterSelect(TreeViewEventArgs eventArgs)
+    protected virtual void OnAfterSelect(TreeViewEventArgs e)
     {
-        AfterSelect?.Invoke(this, eventArgs);
+        AfterSelect?.Invoke(this, e);
     }
 
     private TreeViewCancelEventArgs? cancelEventArgs;
@@ -151,9 +151,9 @@ namespace System.Windows.Forms
         }
     }
 
-    protected virtual void OnBeforeSelect(TreeViewCancelEventArgs? eventArgs)
+    protected virtual void OnBeforeSelect(TreeViewCancelEventArgs? e)
     {
-        BeforeSelect?.Invoke(this, eventArgs);
+        BeforeSelect?.Invoke(this, e);
     }
 
     public void Clear()
@@ -360,7 +360,6 @@ namespace System.Windows.Forms
             {
                 set
                 {
-
                     if (string.IsNullOrWhiteSpace(value) == false && _treeView.ImageList.Images.ContainsKey(value))
                         Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
                 }

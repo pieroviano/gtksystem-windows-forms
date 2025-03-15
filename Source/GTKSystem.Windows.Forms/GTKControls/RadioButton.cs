@@ -12,7 +12,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class RadioButton : Control
     {
-        public readonly RadioButtonBase self = new RadioButtonBase();
+        public readonly RadioButtonBase self = new();
         public override object GtkControl => self;
 
         public RadioButton() : base()
@@ -41,7 +41,7 @@ namespace System.Windows.Forms
             self.Toggled += Self_Toggled;
         }
 
-        private void Self_Toggled(object sender, EventArgs e)
+        private void Self_Toggled(object? sender, EventArgs e)
         {
             if (CheckedChanged != null && self.IsVisible)
                 CheckedChanged(this, e);

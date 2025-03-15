@@ -14,8 +14,7 @@ namespace System.Windows.Forms;
 public struct Message
 {
 #if DEBUG
-    private static readonly TraceSwitch AllWinMessages =
-        new TraceSwitch("AllWinMessages", "Output every received message");
+    private static readonly TraceSwitch AllWinMessages = new("AllWinMessages", "Output every received message");
 #endif
 
     public IntPtr HWnd { get; set; }

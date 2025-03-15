@@ -272,9 +272,9 @@ public class ListControlTest : TestHelper
     [Test] // bug #81771
     public void DataSource_BindingList1 ()
     {
-        BindingList<string> list1 = new BindingList<string> ();
+        BindingList<string> list1 = new();
         list1.Add ("item 1");
-        BindingList<string> list2 = new BindingList<string> ();
+        BindingList<string> list2 = new();
 
         var lc = new ListControlChild ();
         lc.DataSourceChanged += ListControl_DataSourceChanged;
@@ -303,9 +303,9 @@ public class ListControlTest : TestHelper
     [Test] // bug #81771
     public void DataSource_BindingList2 ()
     {
-        BindingList<string> list1 = new BindingList<string> ();
+        BindingList<string> list1 = new();
         list1.Add ("item 1");
-        BindingList<string> list2 = new BindingList<string> ();
+        BindingList<string> list2 = new();
 
         var lc = new ListControlChild ();
         lc.DataSourceChanged += ListControl_DataSourceChanged;
@@ -351,7 +351,7 @@ public class ListControlTest : TestHelper
         Assert.AreEqual ("Monkey!", lc.GetItemText (dt), "A6");
     }
 
-    void lc_Format (object sender, ListControlConvertEventArgs e)
+    void lc_Format (object? sender, ListControlConvertEventArgs e)
     {
         e.Value = "Monkey!";
     }
@@ -379,7 +379,7 @@ public class ListControlTest : TestHelper
         Assert.AreEqual (true, refresh_items_called, "C1");
     }
 
-    void ListControl_DataSourceChanged (object sender, EventArgs e)
+    void ListControl_DataSourceChanged (object? sender, EventArgs e)
     {
         dataSourceChanged++;
     }

@@ -61,12 +61,12 @@ public class ListView : ContainerControl
         self.box.PackStart(scrolledWindow, true, true, 0);
         BorderStyle = BorderStyle.Fixed3D;
     }
-    private void Hadjustment_ValueChanged(object sender, EventArgs e)
+    private void Hadjustment_ValueChanged(object? sender, EventArgs e)
     {
         headerView.Hadjustment.Value = scrolledWindow.Hadjustment.Value;
     }
 
-    private void Control_Realized(object sender, EventArgs e)
+    private void Control_Realized(object? sender, EventArgs e)
     {
         if (View == View.Details)
         {
@@ -235,39 +235,47 @@ public class ListView : ContainerControl
         }
     }
     private int SortingColumnIndex = -1;
-    private void Columbt_Clicked(object sender, EventArgs e)
+    private void Columbt_Clicked(object? sender, EventArgs e)
     {
-        //Console.WriteLine(((Gtk.Widget)sender).AllocatedWidth);
-        var btn = (Gtk.Button)sender;
-
-        if (HeaderStyle == ColumnHeaderStyle.Clickable)
+        try
         {
-            var actioncolumn = (int)btn.ActionTargetValue;
-            if (Sorted)
+            //Console.WriteLine(((Gtk.Widget)sender).AllocatedWidth);
+            var btn = (Gtk.Button)sender!;
+
+            if (HeaderStyle == ColumnHeaderStyle.Clickable)
             {
-                if (SortingColumnIndex == actioncolumn)
+                var actioncolumn = Convert.ToInt32(btn.ActionTargetValue);
+                if (Sorted)
                 {
-                    if (Sorting == SortOrder.Ascending)
-                        Sorting = SortOrder.Descending;
-                    else if (Sorting == SortOrder.Descending)
-                        Sorting = SortOrder.None;
+                    if (SortingColumnIndex == actioncolumn)
+                    {
+                        if (Sorting == SortOrder.Ascending)
+                            Sorting = SortOrder.Descending;
+                        else if (Sorting == SortOrder.Descending)
+                            Sorting = SortOrder.None;
+                        else
+                            Sorting = SortOrder.Ascending;
+                    }
                     else
+                    {
                         Sorting = SortOrder.Ascending;
-                }
-                else
-                {
-                    Sorting = SortOrder.Ascending;
-                }
-                Sort();
+                    }
+                    Sort();
 
-                if (ColumnReordered != null)
-                    ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
+                    if (ColumnReordered != null)
+                        ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
 
-                SortingColumnIndex = actioncolumn;
+                    SortingColumnIndex = actioncolumn;
+                }
+                if (ColumnClick != null)
+                    ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
             }
-            if (ColumnClick != null)
-                ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
         }
+        catch (Exception exception)
+        {
+            AutoClosingMessageBox.Instance.Show(exception.ToString());
+        }
+
     }
     private void Override_DrawnBackground(object o, DrawnArgs args)
     {
@@ -438,15 +446,23 @@ public class ListView : ContainerControl
             hBox.Halign = Align.Start;
             hBox.BorderWidth = 0;
             hBox.Homogeneous = false;
-
+            int lastColIndex = -1;
             foreach (var col in Columns)
             {
+                if (col.Index < 0)
+                {
+                    col.Index=lastColIndex+1;
+                }
+
+                lastColIndex = col.Index;
                 if (item.SubItems != null && item.SubItems.Count > col.Index && col.Index >= 0)
                 {
                     boxitem.Data.Add(col.Index, item.SubItems[col.Index].Text);
                 }
                 else
+                {
                     boxitem.Data.Add(col.Index, string.Empty);
+                }
             }
 
             boxitem.Add(hBox);
@@ -869,7 +885,7 @@ public class ListView : ContainerControl
 
                 return 0;
             };
-            _flow.ChildActivated += _flow_ChildActivated;
+            _flow.ChildActivated += FlowChildOnActivated;
             _flow.SelectedChildrenChanged += _flow_SelectedChildrenChanged;
             hBox.PackStart(_flow, false, true, 0);
 
@@ -943,9 +959,9 @@ public class ListView : ContainerControl
     }
 
     protected virtual void OnItemSelectionChanged(
-        ListViewItemSelectionChangedEventArgs listViewItemSelectionChangedEventArgs)
+        ListViewItemSelectionChangedEventArgs e)
     {
-        ItemSelectionChanged?.Invoke(this, listViewItemSelectionChangedEventArgs);
+        ItemSelectionChanged?.Invoke(this, e);
     }
 
     protected virtual void OnItemActivate(EventArgs e)
@@ -953,7 +969,7 @@ public class ListView : ContainerControl
         ItemActivate?.Invoke(this, e);
     }
 
-    private void _flow_ChildActivated(object? o, ChildActivatedArgs args)
+    private void FlowChildOnActivated(object? o, ChildActivatedArgs args)
     {
         var widget = o as FlowBox;
         var item = Items.Find(m => m.Index == Convert.ToInt32(args.Child.Data["ItemId"]));

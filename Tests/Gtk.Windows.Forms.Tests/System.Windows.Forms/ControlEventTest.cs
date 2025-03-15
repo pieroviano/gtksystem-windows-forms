@@ -8,7 +8,7 @@ namespace GtkTests.System.Windows.Forms;
 public class EventClass : TestHelper
 {
     static bool eventhandled = false;
-    public static void Event_Handler1 (object sender, EventArgs e)
+    public static void Event_Handler1 (object? sender, EventArgs e)
     {
         eventhandled = true;
     }
@@ -243,7 +243,7 @@ public class EventClass : TestHelper
 public class LayoutEventClass
 {
     static bool eventhandled = false;
-    public static void LayoutEvent (object sender, LayoutEventArgs e)
+    public static void LayoutEvent (object? sender, LayoutEventArgs e)
     {
         eventhandled = true;
     }
@@ -264,17 +264,17 @@ public class LayoutEventClass
     int size_changed_event;
     int layout_event;
 
-    void resize (object sender, EventArgs e)
+    void resize (object? sender, EventArgs e)
     {
         resize_event = ++event_count;
     }
 
-    void layout (object sender, LayoutEventArgs le)
+    void layout (object? sender, LayoutEventArgs le)
     {
         layout_event = ++event_count;
     }
 
-    void size_changed (object sender, EventArgs e)
+    void size_changed (object? sender, EventArgs e)
     {
         size_changed_event = ++event_count;
     }
@@ -297,7 +297,7 @@ public class LayoutEventClass
 public class ControlAddRemoveEventClass
 {
     static bool eventhandled = false;
-    public static void ControlEvent (object sender, ControlEventArgs e)
+    public static void ControlEvent (object? sender, ControlEventArgs e)
     {
         eventhandled = true;
     }
@@ -395,7 +395,7 @@ public class ControlRefresh : TestHelper
         form.Close ();
     }
 
-    private void Control_Invalidated (object sender, InvalidateEventArgs e)
+    private void Control_Invalidated (object? sender, InvalidateEventArgs e)
     {
         invalidated++;
     }

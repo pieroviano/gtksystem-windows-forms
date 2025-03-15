@@ -10,7 +10,7 @@ public class DefaultLayoutTest : TestHelper
     int event_count;
     LayoutEventArgs most_recent_args;
 
-    void p_Layout (object sender, LayoutEventArgs e)
+    void p_Layout (object? sender, LayoutEventArgs e)
     {
         event_count ++;
         most_recent_args = e;
@@ -387,7 +387,7 @@ public class DefaultLayoutTest : TestHelper
         Assert.AreEqual (string.Empty, event_raised, "A20");
     }
 
-    public void DockChanged_Handler (object sender, EventArgs e)
+    public void DockChanged_Handler (object? sender, EventArgs e)
     {
         event_raised += "DockStyleChanged";
     }

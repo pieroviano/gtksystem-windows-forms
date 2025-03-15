@@ -44,6 +44,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk.Windows.Forms.Tests", "Tests\Gtk.Windows.Forms.Tests\Gtk.Windows.Forms.Tests.csproj", "{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKWinFormsApp_Win", "Samples\GtkWinFormsApp_Win\GTKWinFormsApp_Win.csproj", "{9A63B577-C26D-45DB-B917-E0F8FF914ADF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A963833A-1053-4321-9BCF-3FB7C58F0601} = {A963833A-1053-4321-9BCF-3FB7C58F0601}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystem.Resources.Extensions", "Source\GTKSystem.Resources.Extensions\GTKSystem.Resources.Extensions.csproj", "{B930BE10-6BFB-3150-7132-7B097DACFD67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +80,10 @@ Global
 		{9A63B577-C26D-45DB-B917-E0F8FF914ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A63B577-C26D-45DB-B917-E0F8FF914ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A63B577-C26D-45DB-B917-E0F8FF914ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +95,7 @@ Global
 		{400FCDE9-834C-486F-BD0B-5C5CFC788606} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
 		{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940} = {16C648F1-EB34-411C-9DA2-DBF34578862C}
 		{9A63B577-C26D-45DB-B917-E0F8FF914ADF} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
+		{B930BE10-6BFB-3150-7132-7B097DACFD67} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B2528BB-EDE2-4992-83A6-3C0C3FDA43DE}
