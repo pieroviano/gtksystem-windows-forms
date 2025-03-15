@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<DisableImplicitFrameworkReferences Condition="'$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net47' or '$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net472' or '$(TargetFramework)'=='net48' or '$(TargetFramework)'=='net481'">true</DisableImplicitFrameworkReferences>
+	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="$(MSBuildThisFileDirectory)../content/System.ComponentModel.cs" Link="System.ComponentModel.cs" />
 		<Compile Include="$(MSBuildThisFileDirectory)../content/System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />

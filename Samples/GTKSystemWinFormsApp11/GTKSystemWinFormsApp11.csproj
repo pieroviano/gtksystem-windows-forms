@@ -7,6 +7,8 @@
 		<UseWindowsForms>false</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<LangVersion>latest</LangVersion>
+		<DisableImplicitFrameworkReferences Condition="'$(TargetFramework)'=='net48'">true</DisableImplicitFrameworkReferences>
 	</PropertyGroup>
 
 	<ItemGroup>

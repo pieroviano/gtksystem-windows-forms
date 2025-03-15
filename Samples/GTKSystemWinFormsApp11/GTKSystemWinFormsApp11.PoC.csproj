@@ -1,39 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>false</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyName>GTKSystemWinFormsApp11</AssemblyName>
-    <RootNamespace>GTKSystemWinFormsApp11</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net48;net8.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>false</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.95" />
-    <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
-    <PackageReference Include="Net4x.Gtk.Windows.Forms" Version="1.3.24" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Form1.cs" />
+		<Compile Remove="Form1.Designer.cs" />
+		<Compile Include="Form1.cs" Link="GtkForm.cs" SubType="Form" />
+		<Compile Include="Form1.Designer.cs" Link="GtkForm.Designer.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Using Include="System.Windows.Forms" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Remove="Form1.resx" />
+		<EmbeddedResource Remove="Form1.zh-Hans.resx" />
+		<EmbeddedResource Include="Form1.resx" Link="GtkForm.resx" />
+		<EmbeddedResource Include="Form1.zh-Hans.resx" Link="GtkForm.zh-Hans.resx" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
+		<PackageReference Include="Net4x.Gtk.Windows.Forms" Version="1.4.2463" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<Using Include="System.Windows.Forms" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>
