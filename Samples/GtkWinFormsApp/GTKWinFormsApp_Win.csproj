@@ -59,6 +59,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" Aliases="sd">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -71,10 +74,14 @@
   <ItemGroup>
     <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
     <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc"/>
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -90,61 +97,71 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\GtkWinFormsApp\App.config" />
-    <None Include="..\GtkWinFormsApp\工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
-    <None Include="..\GtkWinFormsApp\TestData1.en.json">
+    <None Include="App.config" />
+    <None Include="工程说明.txt" />
+    <None Include="TestData1.en.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\GtkWinFormsApp\TestData1.json">
+    <None Include="TestData1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\GtkWinFormsApp\Form1.cs">
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\GtkWinFormsApp\Form1.Designer.cs">
+    <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="..\GtkWinFormsApp\Form1.resx">
+    <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <Compile Include="..\GtkWinFormsApp\Form2.cs">
+    <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\GtkWinFormsApp\Form2.Designer.cs">
+    <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="..\GtkWinFormsApp\Form2.resx">
+    <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="..\GtkWinFormsApp\Form3.cs">
+    <Compile Include="Form3.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\GtkWinFormsApp\Form3.Designer.cs">
+    <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="..\GtkWinFormsApp\Form3.resx">
+    <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="..\GtkWinFormsApp\Form4.cs">
+    <Compile Include="Form4.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\GtkWinFormsApp\Form4.Designer.cs">
+    <Compile Include="Form4.Designer.cs">
       <DependentUpon>Form4.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="..\GtkWinFormsApp\Form4.resx">
+    <EmbeddedResource Include="Form4.resx">
       <DependentUpon>Form4.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>GTKWinFormsApp.Properties</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.zh-Hans.resx">
+      <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="..\GtkWinFormsApp\Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Update="..\GtkWinFormsApp\Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -165,33 +182,35 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\GtkWinFormsApp\Program.cs" />
-    <Compile Include="..\GtkWinFormsApp\Properties\AssemblyInfo.cs" />
-    <Compile Include="..\GtkWinFormsApp\Properties\Resources.Designer.cs">
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
       <Link>Resources.Designer.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="..\GtkWinFormsApp\UserControl11.cs">
+    <Compile Include="UserControl11.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="..\GtkWinFormsApp\UserControl11.Designer.cs">
+    <Compile Include="UserControl11.Designer.cs">
       <DependentUpon>UserControl11.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="..\GtkWinFormsApp\Properties\Resources.zh-Hans.resx" />
-    <EmbeddedResource Include="..\GtkWinFormsApp\UserControl11.resx">
+    <EmbeddedResource Include="UserControl11.resx">
       <DependentUpon>UserControl11.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\GtkWinFormsApp\Properties\Resources.resx">
-      <SubType>Designer</SubType>
-      <CustomToolNamespace>GTKWinFormsApp.Properties</CustomToolNamespace>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="..\GtkWinFormsApp\Properties\Resources.zh-HANS.resx">
+    <EmbeddedResource Update="Properties\Resources.zh-HANS.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\010.jpg" />
+    <Content Include="Resources\BindingNavigator.Delete.ico" />
+    <Content Include="Resources\img10.jpg" />
+    <Content Include="Resources\img11.jpg" />
+    <Content Include="Resources\timg.jpg" />
+    <Content Include="Resources\timg2.jpg" />
+    <Content Include="Resources\timg6.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
