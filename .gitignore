@@ -119,3 +119,15 @@ $RECYCLE.BIN/
 /Samples/GtkWinFormsApp/GTKWinFormsApp.csproj.DotSettings.user
 /Samples/GtkWinFormsApp
 /Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj.DotSettings.user
+/Samples/GTKSystemWinFormsApp11/bin/Debug
+/Samples/GtkWinFormsApp_Net8/bin/Debug/net8.0
+/Samples/GtkWinFormsApp_Net8/obj/Debug/net48
+/Samples/GtkWinFormsApp_Net8/obj/Debug/net8.0
+/Samples/GtkWinFormsApp_Net8/obj
+/Source/GTKSystem.Drawing/bin/Debug/net462
+/Source/GTKSystem.Drawing/obj/Debug/net462
+/Source/GTKSystem.Resources.Extensions/bin/Debug
+/Source/GTKSystem.Resources.Extensions/obj
+/Source/GTKSystem.Resources.Extensions/GTKSystem.Resources.Extensions.csproj.user
+/Tests/Gtk.Windows.Forms.Tests/bin/Release/net8.0/CoverletSourceRootsMapping_Gtk.Windows.Forms.Tests
+/Samples/GtkWinFormsApp_Net8
