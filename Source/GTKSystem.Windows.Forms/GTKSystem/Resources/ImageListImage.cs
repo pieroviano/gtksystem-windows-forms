@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 public class ImageListImage
 {

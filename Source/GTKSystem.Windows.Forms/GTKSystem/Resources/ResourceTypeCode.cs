@@ -1,4 +1,4 @@
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 internal enum ResourceTypeCode
 {

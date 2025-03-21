@@ -9,7 +9,7 @@ using System.Collections;
 using System.Globalization;
 using System.Drawing;
 using System.Resources;
-using System.Windows.Forms.Resources;
+using System.Resources;
 
 namespace GtkTests.System.Resources;
 

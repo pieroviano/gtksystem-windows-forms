@@ -1,5 +1,5 @@
 ﻿using Gtk;
-using GtkSystem.Windows.Forms.Resources.Extensions;
+using GtkSystem.Resources.Extensions;
 
 namespace System.Windows.Forms;
 

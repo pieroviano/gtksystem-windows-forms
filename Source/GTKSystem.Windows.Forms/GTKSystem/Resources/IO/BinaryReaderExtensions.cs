@@ -1,4 +1,4 @@
-namespace System.Windows.Forms.Resources.IO;
+namespace System.Resources.IO;
 
 internal static class BinaryReaderExtensions
 {

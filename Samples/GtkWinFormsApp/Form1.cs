@@ -21,6 +21,7 @@ public partial class TestDataForm : Form
         groupBox1.Text = Resources.TestDataForm_TestDataForm_Load_3;
         checkBox2.Text = Resources.TestDataForm_TestDataForm_Load_4;
         button2.Text = Resources.TestDataForm_TestDataForm_Load_5;
+        checkedListBox1.Items.Clear();
         checkedListBox1.Items.AddRange(Resources.Resources_TestDataForm_TestDataForm_Load_6.Split('|'));
         radioButton3.Text = Resources.Resources_TestDataForm_TestDataForm_Load_7;
         dateTimePicker1.CustomFormat = Resources.Resources_TestDataForm_TestDataForm_Load_8;
@@ -168,10 +169,10 @@ public partial class TestDataForm : Form
             PIC = Image.FromFile("Resources/timg2.jpg")
         });
 
-        data.Add(new TestEntity() { ID = 5, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images, Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile("./Resources/timg2.jpg") });
-        data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("./Resources/timg2.jpg") });
+        data.Add(new TestEntity() { ID = 5, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images, Info = "ddds", State = false, CreateDate = createdate, Operate = Properties.Resources.TestDataForm_button1_4, PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile("./Resources/timg2.jpg") });
+        data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = Properties.Resources.TestDataForm_button1_4, PIC1 = "", PIC = Image.FromFile("./Resources/timg2.jpg") });
         for (int i = 0; i < 10; i++)
-            data.Add(new TestEntity() { ID = i + 7, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("./Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = i + 7, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = Properties.Resources.TestDataForm_button1_4, PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("./Resources/timg2.jpg") });
 
 
         this.dataGridView1.DataSource = data;

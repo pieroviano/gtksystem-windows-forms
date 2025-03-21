@@ -19,9 +19,7 @@
 
 	<ItemGroup>
 		<EmbeddedResource Remove="Form1.resx" />
-		<EmbeddedResource Remove="Form1.zh-Hans.resx" />
 		<EmbeddedResource Include="Form1.resx" Link="GtkForm.resx" />
-		<EmbeddedResource Include="Form1.zh-Hans.resx" Link="GtkForm.zh-Hans.resx" />
 	</ItemGroup>
 
 	<ItemGroup>

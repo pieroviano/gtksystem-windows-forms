@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Resources;
 using System.Text;
-using System.Windows.Forms.Resources;
+using System.Resources;
 
 namespace GtkTests.System.Resources;
 

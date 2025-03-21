@@ -15,7 +15,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Runtime.Serialization;
 using System.Reflection;
-using System.Windows.Forms.Resources;
+using System.Resources;
 using GtkTests.Helpers;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;

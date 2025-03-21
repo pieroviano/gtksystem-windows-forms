@@ -3,7 +3,7 @@ using System.Resources;
 using System.Resources.Extensions;
 using System.Text;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 public sealed class PreserializedResourceWriter : IResourceWriter
 {
@@ -319,8 +319,8 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         {
             var binaryWriter = new BinaryWriter(_output, Encoding.UTF8);
             List<string> list = [];
-            binaryWriter.Write(System.Resources.ResourceManager.MagicNumber);
-            binaryWriter.Write(System.Resources.ResourceManager.HeaderVersionNumber);
+            binaryWriter.Write(ResourceManager.MagicNumber);
+            binaryWriter.Write(ResourceManager.HeaderVersionNumber);
             var memoryStream = new MemoryStream(240);
             var binaryWriter2 = new BinaryWriter(memoryStream);
             binaryWriter2.Write(ResourceReaderTypeName);

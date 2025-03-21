@@ -58,7 +58,7 @@
 		<Compile Include="..\GtkWinFormsApp\Properties\Resources.Designer.cs" Link="Properties\Resources.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
-		  <DependentUpon>..\GtkWinFormsApp\Properties\Resources.resx</DependentUpon>
+		  <DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
@@ -101,19 +101,10 @@
 		<EmbeddedResource Include="..\GtkWinFormsApp\Form4.resx" Link="CommonDialogsForm.resx" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
-		<Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
-		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" IncludeAssets="All" Condition="'$(TargetFramework)'=='net8.0'" />
-		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" Aliases="sre" PrivateAssets="All" IncludeAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Drawing" PrivateAssets="All" IncludeAssets="All" Condition="'$(TargetFramework)'=='net4.8'" Aliases="sd" />
+		<PackageReference Include="Net4x.Gtk.Windows.Forms" Version="1.4.2463" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -122,10 +113,6 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 
 </Project>

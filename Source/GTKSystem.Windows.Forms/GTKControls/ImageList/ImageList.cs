@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace System.Windows.Forms;
 
@@ -14,7 +15,7 @@ namespace System.Windows.Forms;
 ///  Toolbar. You can add either bitmaps or Icons to the ImageList, and the
 ///  other controls will be able to use the Images as they desire.
 /// </summary>
-[ToolboxItemFilter("System.Windows.Forms")]
+[ToolboxItemFilter("System")]
 [DefaultProperty(nameof(Images))]
 [TypeConverter(typeof(ImageListConverter))]
 public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
@@ -28,12 +29,12 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     private static bool isScalingInitialized;
 #pragma warning restore CS0169 // Field is never used
 
-    private NativeImageList? _nativeImageList;
+    private ImageList.NativeImageList? _nativeImageList;
 
     private ColorDepth _colorDepth = ColorDepth.Depth32Bit;
     private Size _imageSize = defaultImageSize;
 
-    private ImageCollection? _imageCollection;
+    private ImageList.ImageCollection? _imageCollection;
 
     // The usual handle virtualization problem, with a new twist: image
     // lists are lossy. At runtime, we delay handle creation as long as possible, and store
@@ -84,7 +85,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     public bool HandleCreated => !(_nativeImageList is null);
 
-    public ImageCollection Images => _imageCollection ??= new ImageCollection(this);
+    public System.Windows.Forms.ImageList.ImageCollection Images => _imageCollection ??= new ImageList.ImageCollection(this);
 
     public Size ImageSize
     {

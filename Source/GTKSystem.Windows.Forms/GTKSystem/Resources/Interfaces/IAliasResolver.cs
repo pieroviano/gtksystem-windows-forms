@@ -9,7 +9,7 @@
 
 using System.Reflection;
 
-namespace System.Windows.Forms.Resources.Interfaces;
+namespace System.Resources.Interfaces;
 
 internal interface IAliasResolver
 {

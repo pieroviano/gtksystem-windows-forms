@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 internal static class AssemblyCultureProcessor
 {
@@ -27,7 +27,7 @@ internal static class AssemblyCultureProcessor
         var name = cultureName.Split('-').FirstOrDefault();
         if (!string.IsNullOrEmpty(name))
         {
-            var combine = Path.Combine(assemblyWithResourcesDirectory, name, $"{Path.GetFileNameWithoutExtension(assemblyWithResourcesLocation)}{ResourceManager.resFileExtension}{Path.GetExtension(assemblyWithResourcesLocation)}");
+            var combine = Path.Combine(assemblyWithResourcesDirectory, name, $"{Path.GetFileNameWithoutExtension(assemblyWithResourcesLocation)}{GtkResourceManager.resFileExtension}{Path.GetExtension(assemblyWithResourcesLocation)}");
             if (File.Exists(combine))
             {
                 assemblies.Insert(insertPoint, (name, Assembly.LoadFile(combine)));
@@ -38,7 +38,7 @@ internal static class AssemblyCultureProcessor
     private static int AddSpecificCultureAssembly(string cultureName, string assemblyWithResourcesLocation,
         string assemblyWithResourcesDirectory, List<(string Culture, Assembly Assembly)> assemblies)
     {
-        var resourceAssemblyName = $"{Path.GetFileNameWithoutExtension(assemblyWithResourcesLocation)}{ResourceManager.resFileExtension}{Path.GetExtension(assemblyWithResourcesLocation)}";
+        var resourceAssemblyName = $"{Path.GetFileNameWithoutExtension(assemblyWithResourcesLocation)}{GtkResourceManager.resFileExtension}{Path.GetExtension(assemblyWithResourcesLocation)}";
         var combine = Path.Combine(assemblyWithResourcesDirectory, cultureName, resourceAssemblyName);
         int insertPoint = 0;
         if (File.Exists(combine))

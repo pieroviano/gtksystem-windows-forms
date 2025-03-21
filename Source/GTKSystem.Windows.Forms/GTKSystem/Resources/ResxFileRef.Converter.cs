@@ -9,7 +9,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 public partial class ResXFileRef
 {

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 internal sealed class FastResourceComparer : IComparer, IEqualityComparer, IComparer<string>, IEqualityComparer<string>
 {

@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Windows.Forms.Numerics.Hashing;
+using System.Numerics.Hashing;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 internal sealed class TypeNameComparer : IEqualityComparer<string>
 {

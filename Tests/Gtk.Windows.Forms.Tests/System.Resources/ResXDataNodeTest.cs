@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Drawing;
 using System.Resources;
 using System.Collections;
-using System.Windows.Forms.Resources;
+using System.Resources;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 

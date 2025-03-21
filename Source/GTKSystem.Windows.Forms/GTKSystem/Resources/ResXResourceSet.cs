@@ -4,7 +4,7 @@
 
 using System.Resources;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 /// <summary>
 ///  ResX resource set.

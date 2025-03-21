@@ -1,16 +1,16 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GtkSystem.Windows.Forms.Resources.Extensions;
+using GtkSystem.Resources.Extensions;
 
 //using System.Resources;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 internal static class Messages
 {
-    private static ResourceManager? resourceManager;
+    private static GtkResourceManager? resourceManager;
 
-    internal static ResourceManager ResourceManager => resourceManager ?? (resourceManager = new ResourceManager(typeof(SystemResources)));
+    internal static GtkResourceManager ResourceManager => resourceManager ?? (resourceManager = new GtkResourceManager(typeof(SystemResources)));
 
     internal static string ArgumentOutOfRangeStreamLength => GetResourceString("ArgumentOutOfRange_StreamLength");
 

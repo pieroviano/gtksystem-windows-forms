@@ -5,9 +5,9 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
-using System.Windows.Forms.Resources.Estensions;
+using System.Resources.Estensions;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 /// <summary>
 ///  ResX File Reference class. This allows the developer to represent

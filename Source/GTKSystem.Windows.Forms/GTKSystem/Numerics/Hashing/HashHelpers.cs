@@ -1,4 +1,4 @@
-namespace System.Windows.Forms.Numerics.Hashing;
+namespace System.Numerics.Hashing;
 
 internal static class HashHelpers
 {

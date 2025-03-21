@@ -5,7 +5,7 @@
 using System.Globalization;
 using System.Security;
 
-namespace System.Windows.Forms;
+namespace System;
 
 internal static class ClientUtils
 {

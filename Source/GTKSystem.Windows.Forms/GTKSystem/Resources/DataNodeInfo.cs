@@ -4,7 +4,7 @@
 
 using System.Drawing;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 internal class DataNodeInfo
 {

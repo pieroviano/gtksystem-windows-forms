@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace System.Resources;
 
-public class ResourceManager : System.Windows.Forms.Resources.ResourceManager
+public class ResourceManager : System.Resources.GtkResourceManager
 {
     public ResourceManager(System.Type resourceSource) : base(null, null, resourceSource)
     {

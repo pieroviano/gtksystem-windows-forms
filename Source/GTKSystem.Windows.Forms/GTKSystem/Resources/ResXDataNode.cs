@@ -10,10 +10,10 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Windows.Forms.Resources.Estensions;
+using System.Resources.Estensions;
 using System.Xml;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 public sealed class ResXDataNode : ISerializable
 {
@@ -36,7 +36,7 @@ public sealed class ResXDataNode : ISerializable
     //private IFormatter _binaryFormatter;
     private DataContractSerializer? _binaryFormatter;
     // this is going to be used to check if a ResXDataNode is of type ResXFileRef
-    private static readonly ITypeResolutionService internalTypeResolver = new AssemblyNamesTypeResolutionService([new("System.Windows.Forms")
+    private static readonly ITypeResolutionService internalTypeResolver = new AssemblyNamesTypeResolutionService([new("System")
     ]);
 
     // callback function to get type name for multitargeting.

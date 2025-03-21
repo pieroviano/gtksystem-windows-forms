@@ -10,10 +10,10 @@ using System.Globalization;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.Serialization;
-using System.Windows.Forms.Resources.Interfaces;
+using System.Resources.Interfaces;
 using System.Xml;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 /// <summary>
 ///  ResX resource reader.

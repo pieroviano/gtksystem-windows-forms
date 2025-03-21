@@ -87,7 +87,7 @@ public sealed partial class ImageList
             // There are certain code paths where we are unable to track the lifetime of the object,
             // for example in the following scenarios:
             //
-            //      this.imageList1.ImageStream = (System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream"));
+            //      this.imageList1.ImageStream = (System.ImageListStreamer)(resources.GetObject("imageList1.ImageStream"));
             // or
             //      resources.ApplyResources(this.listView1, "listView1");
             //

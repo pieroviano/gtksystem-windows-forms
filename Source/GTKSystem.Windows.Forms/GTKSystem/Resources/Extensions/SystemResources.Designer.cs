@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GtkSystem.Windows.Forms.Resources.Extensions {
+namespace GtkSystem.Resources.Extensions {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace GtkSystem.Windows.Forms.Resources.Extensions {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Windows.Forms.Extensions.SystemResources", typeof(SystemResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Extensions.SystemResources", typeof(SystemResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

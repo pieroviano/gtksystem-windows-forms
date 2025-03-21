@@ -9,14 +9,14 @@ using Gtk;
 namespace System.Drawing;
 
 [Serializable]
-public abstract class Image : Widget, IWidget, ICloneable, ISerializable//,MarshalByRefObject
+public abstract class Image : Widget, IWidget, ICloneable, ISerializable
 {
     internal Image(byte[]? pixbuf)
     {
         PixbufData = pixbuf;
     }
     private byte[]? pixbufData;
-    //¡°jpeg¡±, ¡°tiff¡±, ¡°png¡±, ¡°ico¡± or ¡°bmp¡±.
+    // "jpeg", "tiff", "png", "ico", or "bmp"
     public byte[]? PixbufData
     {
         get { if (pixbufData == null && pixbuf != null) { pixbufData = pixbuf.SaveToBuffer("bmp"); } return pixbufData; }

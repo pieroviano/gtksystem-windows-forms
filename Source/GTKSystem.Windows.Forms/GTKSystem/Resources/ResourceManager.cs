@@ -9,11 +9,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Resources;
 using System.Resources.Extensions;
 using System.Security.AccessControl;
+using System.Windows.Forms;
 using System.Xml;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 #if NETSTANDARD
 using SdcBitmap = sdc::System.Drawing.Image;
@@ -26,7 +28,7 @@ using SdcImageFormat = sd::System.Drawing.Imaging.ImageFormat;
 #endif
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-public class ResourceManager : System.Resources.ResourceManager
+public class GtkResourceManager : ResourceManager
 {
     internal const string resFileExtension = ".resources";
     private readonly string? _baseName;
@@ -53,19 +55,19 @@ public class ResourceManager : System.Resources.ResourceManager
         return _assemblies[cultureName];
     }
 
-    public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+    public GtkResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
                                                        DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) :
         this(null, null, usingResourceSet)
     {
 
     }
 
-    public ResourceManager(string? baseName, Assembly? assemblyWithResources) : this(baseName, assemblyWithResources, null)
+    public GtkResourceManager(string? baseName, Assembly? assemblyWithResources) : this(baseName, assemblyWithResources, null)
     {
 
     }
 
-    public ResourceManager(string? baseName, Assembly? assemblyWithResources,
+    public GtkResourceManager(string? baseName, Assembly? assemblyWithResources,
                            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
                                                        DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) :
         base(baseName ?? string.Empty, assemblyWithResources ?? Assembly.GetExecutingAssembly(), usingResourceSet)
@@ -81,7 +83,7 @@ public class ResourceManager : System.Resources.ResourceManager
         }
     }
 
-    protected ResourceManager()
+    protected GtkResourceManager()
     {
 
     }
@@ -94,7 +96,7 @@ public class ResourceManager : System.Resources.ResourceManager
             //string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
             //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
             string filepath = $"./{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
-            if (System.IO.File.Exists(filepath))
+            if (File.Exists(filepath))
             {
                 try
                 {
@@ -237,7 +239,7 @@ public class ResourceManager : System.Resources.ResourceManager
 
             string fileName = name;
             byte[] filebytes = ReadResourceFile(name);
-            string _formName = Path.GetExtension(this.BaseName).TrimStart('.');
+            string _formName = Path.GetExtension(BaseName).TrimStart('.');
             var path = $"./Resources/{_formName}";
             var searchPattern = $"{fileName}.*";
             if (!Directory.Exists(path))

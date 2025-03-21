@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Resources;
 using System.Text;
-using System.Windows.Forms.Resources;
+using System.Resources;
 
 namespace GtkTests.System.Resources;
 

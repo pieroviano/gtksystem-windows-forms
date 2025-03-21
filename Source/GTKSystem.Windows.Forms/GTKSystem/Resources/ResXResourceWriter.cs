@@ -9,7 +9,7 @@ using System.Resources;
 using System.Text;
 using System.Xml;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 /// <summary>
 ///  ResX resource writer. See the text in "ResourceSchema" for more

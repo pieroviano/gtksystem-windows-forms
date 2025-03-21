@@ -37,7 +37,7 @@
         <AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
         <NoWarn>$(NoWarn);NUnit2015;NUnit2017</NoWarn>
         <Nullable>enable</Nullable>
-        <RootNamespace>System.Windows.Forms</RootNamespace>
+        <RootNamespace>System</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <PackageId>Net4x.Gtk.Resources.Extensions</PackageId>
     </PropertyGroup>
@@ -95,7 +95,7 @@
         <EmbeddedResource Update="..\GTKSystem.Windows.Forms\GTKSystem\Resources\Extensions\SystemResources.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>SystemResources.Designer.cs</LastGenOutput>
-            <CustomToolNamespace>GtkSystem.Windows.Forms.Resources.Extensions</CustomToolNamespace>
+            <CustomToolNamespace>GtkSystem.Resources.Extensions</CustomToolNamespace>
         </EmbeddedResource>
     </ItemGroup>
     <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />

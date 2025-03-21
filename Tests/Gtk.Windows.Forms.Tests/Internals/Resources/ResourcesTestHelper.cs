@@ -28,7 +28,7 @@
 
 using System.Collections;
 using System.Drawing;
-using System.Windows.Forms.Resources;
+using System.Resources;
 using GtkTests.Helpers;
 using Newtonsoft.Json;
 

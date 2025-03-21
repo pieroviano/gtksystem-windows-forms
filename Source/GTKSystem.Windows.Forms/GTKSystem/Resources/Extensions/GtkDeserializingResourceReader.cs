@@ -6,10 +6,11 @@ using System.Resources.Extensions;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Windows.Forms.Resources.IO;
-using GtkSystem.Windows.Forms.Resources.Extensions;
+using System.Resources.IO;
+using System.Windows.Forms;
+using GtkSystem.Resources.Extensions;
 
-namespace System.Windows.Forms.Resources;
+namespace System.Resources;
 
 public sealed class GtkDeserializingResourceReader : IResourceReader
 {
@@ -794,7 +795,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
     private unsafe void _ReadResources()
     {
         int num = _store.ReadInt32();
-        if (num != System.Resources.ResourceManager.MagicNumber)
+        if (num != ResourceManager.MagicNumber)
         {
             throw new ArgumentException(SystemResources.Resources_StreamNotValid);
         }

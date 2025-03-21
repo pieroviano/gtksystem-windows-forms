@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms.Resources.IO;
+namespace System.Resources.IO;
 
 internal sealed class PinnedBufferMemoryStream : UnmanagedMemoryStream
 {
