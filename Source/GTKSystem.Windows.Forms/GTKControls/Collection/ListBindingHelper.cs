@@ -17,14 +17,13 @@ internal class ListBindingHelper
         {
             return string.Empty;
         }
-        var typedList = list as ITypedList;
-        if (typedList == null)
+
+        if (list is not ITypedList typedList)
         {
             Type propertyType;
             if (listAccessors == null || listAccessors.Length == 0)
             {
-                var type = list as Type;
-                propertyType = type == null ? list.GetType() : type;
+                propertyType = list is not Type type ? list.GetType() : type;
             }
             else
             {
@@ -203,8 +202,7 @@ internal class ListBindingHelper
         var type = enumerable?.GetType();
         if (!typeof(Array).IsAssignableFrom(type))
         {
-            var typedList = enumerable as ITypedList;
-            if (typedList == null)
+            if (enumerable is not ITypedList typedList)
             {
                 var typedIndexer = GetTypedIndexer(type);
                 if (typedIndexer != null && !typeof(ICustomTypeDescriptor).IsAssignableFrom(typedIndexer.PropertyType))
@@ -313,8 +311,7 @@ internal class ListBindingHelper
         }
         else
         {
-            var lists = enumerable as IList;
-            current = lists is { Count: > 0 } ? lists[0] : null;
+            current = enumerable is IList { Count: > 0 } lists ? lists[0] : null;
         }
         return current;
     }
@@ -328,8 +325,7 @@ internal class ListBindingHelper
         }
         else
         {
-            var typedList = enumerable as ITypedList;
-            listItemPropertiesByEnumerable = typedList == null ? GetListItemPropertiesByEnumerable(enumerable, listAccessors, 0) : typedList.GetItemProperties(listAccessors);
+            listItemPropertiesByEnumerable = enumerable is not ITypedList typedList ? GetListItemPropertiesByEnumerable(enumerable, listAccessors, 0) : typedList.GetItemProperties(listAccessors);
         }
         return listItemPropertiesByEnumerable;
     }
@@ -346,8 +342,7 @@ internal class ListBindingHelper
         if (list != null)
         {
             startIndex++;
-            var enumerable = list as IEnumerable;
-            if (enumerable == null)
+            if (list is not IEnumerable enumerable)
             {
                 listItemPropertiesByInstance = GetListItemPropertiesByInstance(list, listAccessors, startIndex);
             }

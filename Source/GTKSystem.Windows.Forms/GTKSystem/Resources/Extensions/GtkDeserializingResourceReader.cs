@@ -68,7 +68,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                 {
                     throw new InvalidOperationException(SystemResources.ResourceReaderIsClosed);
                 }
-                string key = _reader.AllocateStringForNameIndex(_currentName, out _dataPosition);
+                var key = _reader.AllocateStringForNameIndex(_currentName, out _dataPosition);
                 object? obj = null;
                 lock (_reader._resCache)
                 {
@@ -140,7 +140,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
     {
         public override Type? BindToType(string assemblyName, string typeName)
         {
-            bool patch = false;
+            var patch = false;
             if (assemblyName == "System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089")
             {
                 if (typeName == "System.Windows.Forms.ImageListStreamer")
@@ -164,13 +164,13 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
         private static bool AreBracketsBalanced(string typeName)
         {
-            int num = typeName.IndexOf('[');
+            var num = typeName.IndexOf('[');
             if (num == -1)
             {
                 return true;
             }
-            int num2 = 1;
-            for (int i = num + 1; i < typeName.Length; i++)
+            var num2 = 1;
+            for (var i = num + 1; i < typeName.Length; i++)
             {
                 if (typeName[i] == '[')
                 {
@@ -272,7 +272,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
             _resCache = null;
             if (disposing)
             {
-                BinaryReader store = _store;
+                var store = _store;
                 _store = null;
                 store?.Close();
             }
@@ -292,7 +292,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
     private void SkipString()
     {
-        int num = _store.Read7BitEncodedInt();
+        var num = _store.Read7BitEncodedInt();
         if (num < 0)
         {
             throw new BadImageFormatException(SystemResources.BadImageFormat_NegativeStringLength);
@@ -311,7 +311,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
     private unsafe int GetNamePosition(int index)
     {
-        int num = ((_ums != null) ? ReadUnalignedI4(_namePositionsPtr + index) : _namePositions[index]);
+        var num = ((_ums != null) ? ReadUnalignedI4(_namePositionsPtr + index) : _namePositions[index]);
         if (num < 0 || num > _dataSectionOffset - _nameSectionOffset)
         {
             throw new FormatException(Messages.Format(SystemResources.BadImageFormat_ResourcesNameInvalidOffset, num));
@@ -340,16 +340,16 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
     internal int FindPosForResource(string name)
     {
-        int num = FastResourceComparer.HashFunction(name);
-        int num2 = 0;
-        int i = _numResources - 1;
-        int num3 = -1;
-        bool flag = false;
+        var num = FastResourceComparer.HashFunction(name);
+        var num2 = 0;
+        var i = _numResources - 1;
+        var num3 = -1;
+        var flag = false;
         while (num2 <= i)
         {
             num3 = num2 + i >> 1;
-            int nameHash = GetNameHash(num3);
-            int num4 = ((nameHash != num) ? ((nameHash >= num) ? 1 : (-1)) : 0);
+            var nameHash = GetNameHash(num3);
+            var num4 = ((nameHash != num) ? ((nameHash >= num) ? 1 : (-1)) : 0);
             if (num4 == 0)
             {
                 flag = true;
@@ -384,12 +384,12 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         }
         lock (this)
         {
-            for (int j = num2; j <= i; j++)
+            for (var j = num2; j <= i; j++)
             {
                 _store.BaseStream.Seek(_nameSectionOffset + GetNamePosition(j), SeekOrigin.Begin);
                 if (CompareStringEqualsName(name))
                 {
-                    int num5 = _store.ReadInt32();
+                    var num5 = _store.ReadInt32();
                     if (num5 < 0 || num5 >= _store.BaseStream.Length - _dataSectionOffset)
                     {
                         throw new FormatException(Messages.Format(SystemResources.BadImageFormat_ResourcesDataInvalidOffset, num5));
@@ -403,14 +403,14 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
     private unsafe bool CompareStringEqualsName(string name)
     {
-        int num = _store.Read7BitEncodedInt();
+        var num = _store.Read7BitEncodedInt();
         if (num < 0)
         {
             throw new BadImageFormatException(SystemResources.BadImageFormat_NegativeStringLength);
         }
         if (_ums != null)
         {
-            byte* positionPointer = _ums.PositionPointer;
+            var positionPointer = _ums.PositionPointer;
             _ums.Seek(num, SeekOrigin.Current);
             if (_ums.Position > _ums.Length)
             {
@@ -418,11 +418,11 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
             }
             return FastResourceComparer.CompareOrdinal(positionPointer, num, name) == 0;
         }
-        byte[] array = new byte[num];
-        int num2 = num;
+        var array = new byte[num];
+        var num2 = num;
         while (num2 > 0)
         {
-            int num3 = _store.Read(array, num - num2, num2);
+            var num3 = _store.Read(array, num - num2, num2);
             if (num3 == 0)
             {
                 throw new BadImageFormatException(SystemResources.BadImageFormat_ResourceNameCorrupted);
@@ -452,15 +452,15 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                     throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourcesIndexTooLong, index));
                 }
                 string? text = null;
-                char* positionPointer = (char*)_ums.PositionPointer;
+                var positionPointer = (char*)_ums.PositionPointer;
                 if (BitConverter.IsLittleEndian)
                 {
                     text = new string(positionPointer, 0, num2 / 2);
                 }
                 else
                 {
-                    char[] array = new char[num2 / 2];
-                    for (int i = 0; i < array.Length; i++)
+                    var array = new char[num2 / 2];
+                    for (var i = 0; i < array.Length; i++)
                     {
                         array[i] = (char)BinaryPrimitives.ReverseEndianness((short)positionPointer[i]);
                     }
@@ -475,10 +475,10 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                 return text;
             }
             array2 = new byte[num2];
-            int num3 = num2;
+            var num3 = num2;
             while (num3 > 0)
             {
-                int num4 = _store.Read(array2, num2 - num3, num3);
+                var num4 = _store.Read(array2, num2 - num3, num3);
                 if (num4 == 0)
                 {
                     throw new EndOfStreamException(Messages.Format(SystemResources.BadImageFormat_ResourceNameCorrupted_NameIndex, index));
@@ -501,7 +501,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         {
             _store.BaseStream.Seek(num + _nameSectionOffset, SeekOrigin.Begin);
             SkipString();
-            int num2 = _store.ReadInt32();
+            var num2 = _store.ReadInt32();
             if (num2 < 0 || num2 >= _store.BaseStream.Length - _dataSectionOffset)
             {
                 throw new FormatException(Messages.Format(SystemResources.BadImageFormat_ResourcesDataInvalidOffset, num2));
@@ -520,7 +520,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         {
             _store.BaseStream.Seek(_dataSectionOffset + pos, SeekOrigin.Begin);
             string? result = null;
-            int num = _store.Read7BitEncodedInt();
+            var num = _store.Read7BitEncodedInt();
             if (_version == 1)
             {
                 if (num == -1)
@@ -564,7 +564,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         {
             if (_version == 1)
             {
-                object obj = LoadObjectV1(pos);
+                var obj = LoadObjectV1(pos);
                 typeCode = ((obj is string) ? ResourceTypeCode.String : ResourceTypeCode.StartOfUserTypes);
                 return obj;
             }
@@ -591,12 +591,12 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
     private object _LoadObjectV1(int pos)
     {
         _store.BaseStream.Seek(_dataSectionOffset + pos, SeekOrigin.Begin);
-        int num = _store.Read7BitEncodedInt();
+        var num = _store.Read7BitEncodedInt();
         if (num == -1)
         {
             return null;
         }
-        Type type = FindType(num);
+        var type = FindType(num);
         if (type == typeof(string))
         {
             return _store.ReadString();
@@ -651,8 +651,8 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         }
         if (type == typeof(decimal))
         {
-            int[] array = new int[4];
-            for (int i = 0; i < array.Length; i++)
+            var array = new int[4];
+            for (var i = 0; i < array.Length; i++)
             {
                 array[i] = _store.ReadInt32();
             }
@@ -715,17 +715,17 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                 return _store.ReadDecimal();
             case ResourceTypeCode.DateTime:
                 {
-                    long dateData = _store.ReadInt64();
+                    var dateData = _store.ReadInt64();
                     return DateTime.FromBinary(dateData);
                 }
             case ResourceTypeCode.TimeSpan:
                 {
-                    long ticks = _store.ReadInt64();
+                    var ticks = _store.ReadInt64();
                     return new TimeSpan(ticks);
                 }
             case ResourceTypeCode.ByteArray:
                 {
-                    int num2 = _store.ReadInt32();
+                    var num2 = _store.ReadInt32();
                     if (num2 < 0)
                     {
                         throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourceDataLengthInvalid, num2));
@@ -742,20 +742,20 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                     {
                         throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourceDataLengthInvalid, num2));
                     }
-                    byte[] array2 = new byte[num2];
-                    int num3 = _ums.Read(array2, 0, num2);
+                    var array2 = new byte[num2];
+                    var num3 = _ums.Read(array2, 0, num2);
                     return array2;
                 }
             case ResourceTypeCode.Stream:
                 {
-                    int num = _store.ReadInt32();
+                    var num = _store.ReadInt32();
                     if (num < 0)
                     {
                         throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourceDataLengthInvalid, num));
                     }
                     if (_ums == null)
                     {
-                        byte[] array = _store.ReadBytes(num);
+                        var array = _store.ReadBytes(num);
                         return new PinnedBufferMemoryStream(array);
                     }
                     if (num > _ums.Length - _ums.Position)
@@ -770,7 +770,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                     {
                         throw new BadImageFormatException(SystemResources.BadImageFormat_TypeMismatch);
                     }
-                    int typeIndex = (int)(typeCode - 64);
+                    var typeIndex = (int)(typeCode - 64);
                     return DeserializeObject(typeIndex);
                 }
         }
@@ -794,13 +794,13 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
     private unsafe void _ReadResources()
     {
-        int num = _store.ReadInt32();
+        var num = _store.ReadInt32();
         if (num != ResourceManager.MagicNumber)
         {
             throw new ArgumentException(SystemResources.Resources_StreamNotValid);
         }
-        int num2 = _store.ReadInt32();
-        int num3 = _store.ReadInt32();
+        var num2 = _store.ReadInt32();
+        var num3 = _store.ReadInt32();
         if (num3 < 0 || num2 < 0)
         {
             throw new BadImageFormatException(SystemResources.BadImageFormat_ResourcesHeaderCorrupted);
@@ -811,14 +811,14 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         }
         else
         {
-            string text = _store.ReadString();
+            var text = _store.ReadString();
             if (!ValidateReaderType(text))
             {
                 throw new NotSupportedException(Messages.Format(SystemResources.NotSupported_WrongResourceReader_Type, text));
             }
             SkipString();
         }
-        int num4 = _store.ReadInt32();
+        var num4 = _store.ReadInt32();
         if (num4 != 2 && num4 != 1)
         {
             throw new ArgumentException(Messages.Format(SystemResources.Arg_ResourceFileUnsupportedVersion, 2, num4));
@@ -829,23 +829,23 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         {
             throw new BadImageFormatException(SystemResources.BadImageFormat_ResourcesHeaderCorrupted);
         }
-        int num5 = _store.ReadInt32();
+        var num5 = _store.ReadInt32();
         if (num5 < 0)
         {
             throw new BadImageFormatException(SystemResources.BadImageFormat_ResourcesHeaderCorrupted);
         }
         _typeTable = new Type[num5];
         _typeNamePositions = new int[num5];
-        for (int i = 0; i < num5; i++)
+        for (var i = 0; i < num5; i++)
         {
             _typeNamePositions[i] = (int)_store.BaseStream.Position;
             SkipString();
         }
-        long position = _store.BaseStream.Position;
-        int num6 = (int)position & 7;
+        var position = _store.BaseStream.Position;
+        var num6 = (int)position & 7;
         if (num6 != 0)
         {
-            for (int j = 0; j < 8 - num6; j++)
+            for (var j = 0; j < 8 - num6; j++)
             {
                 _store.ReadByte();
             }
@@ -853,14 +853,14 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         if (_ums == null)
         {
             _nameHashes = new int[_numResources];
-            for (int k = 0; k < _numResources; k++)
+            for (var k = 0; k < _numResources; k++)
             {
                 _nameHashes[k] = _store.ReadInt32();
             }
         }
         else
         {
-            int num7 = 4 * _numResources;
+            var num7 = 4 * _numResources;
             if (num7 < 0)
             {
                 throw new BadImageFormatException(SystemResources.BadImageFormat_ResourcesHeaderCorrupted);
@@ -872,9 +872,9 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         if (_ums == null)
         {
             _namePositions = new int[_numResources];
-            for (int l = 0; l < _numResources; l++)
+            for (var l = 0; l < _numResources; l++)
             {
-                int num8 = _store.ReadInt32();
+                var num8 = _store.ReadInt32();
                 if (num8 < 0)
                 {
                     throw new BadImageFormatException(SystemResources.BadImageFormat_ResourcesHeaderCorrupted);
@@ -884,7 +884,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         }
         else
         {
-            int num9 = 4 * _numResources;
+            var num9 = 4 * _numResources;
             if (num9 < 0)
             {
                 throw new BadImageFormatException(SystemResources.BadImageFormat_ResourcesHeaderCorrupted);
@@ -920,11 +920,11 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
     private Type UseReflectionToGetType(int typeIndex)
     {
-        long position = _store.BaseStream.Position;
+        var position = _store.BaseStream.Position;
         try
         {
             _store.BaseStream.Position = _typeNamePositions[typeIndex];
-            string typeName = _store.ReadString();
+            var typeName = _store.ReadString();
             _typeTable[typeIndex] = Type.GetType(typeName, throwOnError: true)!;
             return _typeTable[typeIndex];
         }
@@ -940,8 +940,8 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         {
             return "ResourceTypeCode." + typeCode;
         }
-        int num = (int)(typeCode - 64);
-        long position = _store.BaseStream.Position;
+        var num = (int)(typeCode - 64);
+        var position = _store.BaseStream.Position;
         try
         {
             _store.BaseStream.Position = _typeNamePositions[num];
@@ -984,7 +984,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
 
     private unsafe object DeserializeObject(int typeIndex)
     {
-        Type type = FindType(typeIndex);
+        var type = FindType(typeIndex);
         if (_assumeBinaryFormatter)
         {
             return ReadBinaryFormattedObject();
@@ -994,18 +994,18 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
         {
             case SerializationFormat.BinaryFormatter:
                 {
-                    int num3 = _store.Read7BitEncodedInt();
+                    var num3 = _store.Read7BitEncodedInt();
                     if (num3 < 0)
                     {
                         throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourceDataLengthInvalid, num3));
                     }
-                    long position = _store.BaseStream.Position;
+                    var position = _store.BaseStream.Position;
                     obj = ReadBinaryFormattedObject();
                     if (type == typeof(UnknownType))
                     {
                         type = obj.GetType();
                     }
-                    long num4 = _store.BaseStream.Position - position;
+                    var num4 = _store.BaseStream.Position - position;
                     if (num4 != num3)
                     {
                         throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourceDataLengthInvalid, num3));
@@ -1014,13 +1014,13 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                 }
             case SerializationFormat.TypeConverterByteArray:
                 {
-                    int num2 = _store.Read7BitEncodedInt();
+                    var num2 = _store.Read7BitEncodedInt();
                     if (num2 < 0)
                     {
                         throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourceDataLengthInvalid, num2));
                     }
-                    byte[] value = _store.ReadBytes(num2);
-                    TypeConverter converter = TypeDescriptor.GetConverter(type);
+                    var value = _store.ReadBytes(num2);
+                    var converter = TypeDescriptor.GetConverter(type);
                     if (converter == null)
                     {
                         throw new TypeLoadException(Messages.Format(SystemResources.TypeLoadException_CannotLoadConverter, type));
@@ -1030,8 +1030,8 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                 }
             case SerializationFormat.TypeConverterString:
                 {
-                    string text = _store.ReadString();
-                    TypeConverter converter2 = TypeDescriptor.GetConverter(type);
+                    var text = _store.ReadString();
+                    var converter2 = TypeDescriptor.GetConverter(type);
                     if (converter2 == null)
                     {
                         throw new TypeLoadException(Messages.Format(SystemResources.TypeLoadException_CannotLoadConverter, type));
@@ -1041,7 +1041,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                 }
             case SerializationFormat.ActivatorStream:
                 {
-                    int num = _store.Read7BitEncodedInt();
+                    var num = _store.Read7BitEncodedInt();
                     if (num < 0)
                     {
                         throw new BadImageFormatException(Messages.Format(SystemResources.BadImageFormat_ResourceDataLengthInvalid, num));
@@ -1053,7 +1053,7 @@ public sealed class GtkDeserializingResourceReader : IResourceReader
                     }
                     else
                     {
-                        byte[] buffer = _store.ReadBytes(num);
+                        var buffer = _store.ReadBytes(num);
                         stream = new MemoryStream(buffer, writable: false);
                     }
                     obj = Activator.CreateInstance(type, stream);

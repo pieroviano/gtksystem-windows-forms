@@ -60,14 +60,13 @@ public partial class TestDataForm : Form
         treeView1.CheckBoxes = true;
 
         var testdata1Json = Resources.testdata1Json;
-        string jsontext = File.ReadAllText(testdata1Json);
-        using (FileStream reader = new FileStream(testdata1Json, FileMode.Open, FileAccess.Read))
+        using (var reader = new FileStream(testdata1Json, FileMode.Open, FileAccess.Read))
         {
-            DataContractJsonSerializer dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
+            var dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
             List<TestDataMode> json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
             IEnumerable<TreeNode> childs = GetChild(null, json);
             treeView1.Nodes.AddRange(childs.ToArray());
-            foreach (TreeNode child in treeView1.Nodes)
+            foreach (var child in treeView1.Nodes)
                 child.Expand();
             var treeView1SelectedNode = treeView1.Nodes[0].Nodes[2];
             if (treeView1SelectedNode.Nodes.Count >= 3)
@@ -171,7 +170,7 @@ public partial class TestDataForm : Form
 
         data.Add(new TestEntity() { ID = 5, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images, Info = "ddds", State = false, CreateDate = createdate, Operate = Properties.Resources.TestDataForm_button1_4, PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile("./Resources/timg2.jpg") });
         data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = Properties.Resources.TestDataForm_button1_4, PIC1 = "", PIC = Image.FromFile("./Resources/timg2.jpg") });
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
             data.Add(new TestEntity() { ID = i + 7, Title = Resources.TestDataForm_button1_Click_Asynchronous_loading_of_network_images + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = Properties.Resources.TestDataForm_button1_4, PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("./Resources/timg2.jpg") });
 
 
@@ -207,7 +206,7 @@ public partial class TestDataForm : Form
 
     private void button2_Click(object? sender, EventArgs e)
     {
-        DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
+        var column = new DataGridViewTextBoxColumn();
         column.HeaderText = "test1";
         column.MinimumWidth = 6;
         column.Name = "test1";
@@ -216,7 +215,7 @@ public partial class TestDataForm : Form
 
         dataGridView1.Columns.Add(column);
 
-        ColorDialog cd = new ColorDialog();
+        var cd = new ColorDialog();
         if (textBox1.Text.Length >= 6)
         {
             try
@@ -225,7 +224,7 @@ public partial class TestDataForm : Form
             }
             catch { }
         }
-        DialogResult result = cd.ShowDialog(this);
+        var result = cd.ShowDialog(this);
 
         if (result == DialogResult.OK)
         {

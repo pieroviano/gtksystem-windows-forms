@@ -56,8 +56,7 @@ public partial class ComboBox : ListControl
     private void Self_Realized(object? sender, EventArgs e)
     {
         OnSetDataSource();
-        var ws = ((Box)self.Children[0].Parent).Children[1] as ToggleButton;
-        if (ws != null)
+        if (((Box)self.Children[0].Parent).Children[1] is ToggleButton ws)
         {
             ws.Toggled += Ws_Toggled;
             if (DropDownStyle == ComboBoxStyle.DropDownList)
@@ -95,8 +94,7 @@ public partial class ComboBox : ListControl
     private void Ws_Drawn(object? o, DrawnArgs args)
     {
         self.Entry.Visible = false;
-        var ws = o as ToggleButton;
-        if (ws != null)
+        if (o is ToggleButton ws)
         {
             ws.WidthRequest = -1;
             var pangocontext = ws.PangoContext;
@@ -155,7 +153,7 @@ public partial class ComboBox : ListControl
 
         public object SelectedItem { 
             get { return SelectedIndex == -1 ? null : itemsData[SelectedIndex]; }
-            set { int _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
+            set { var _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
         }
         internal int _selectedIndex;
         public override int SelectedIndex { get { return self.Active; } set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
@@ -165,7 +163,7 @@ public partial class ComboBox : ListControl
         {
             if (item is ObjectCollection.Entry entry)
             {
-                Type type = entry.Item.GetType();
+                var type = entry.Item.GetType();
                 if (entry.Item is DataRow dr)
                     return dr[DisplayMember]?.ToString();
                 else if (type.IsValueType && type.IsPrimitive)
@@ -177,8 +175,8 @@ public partial class ComboBox : ListControl
         }
         public string NativeGetItemText(int index)
         {
-            self.Model.GetIter(out TreeIter iter, new TreePath(new int[] { index }));
-            object val = self.Model.GetValue(iter, 1);
+            self.Model.GetIter(out var iter, new TreePath(new int[] { index }));
+            var val = self.Model.GetValue(iter, 1);
             return val?.ToString();
         }
         public void NativeAdd(int index, string value, string text)
@@ -248,7 +246,7 @@ public partial class ComboBox : ListControl
             itemsData.Clear();
             if (list.Count > 0)
             {
-                Type type = list[0].GetType();
+                var type = list[0].GetType();
                 var valproperty = type.GetProperty(ValueMember);
                 var disproperty = type.GetProperty(DisplayMember);
                 foreach (var entry in list)

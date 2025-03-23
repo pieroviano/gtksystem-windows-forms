@@ -21,10 +21,8 @@ public class SplitContainer : ContainerControl
         _panel1.contaner.Name = "Child1";
         _panel2 = new SplitterPanel(this);
         _panel2.contaner.Name = "Child2";
-        var panel1Widget = _panel1.Widget as Widget;
-        if (panel1Widget != null) self.Pack1(panel1Widget, false, true);
-        var panel2Widget = _panel2.Widget as Widget;
-        if (panel2Widget != null) self.Pack2(panel2Widget, true, true);
+        if (_panel1.Widget is Widget panel1Widget) self.Pack1(panel1Widget, false, true);
+        if (_panel2.Widget is Widget panel2Widget) self.Pack2(panel2Widget, true, true);
     }
     private SplitterPanel _panel1;
     private SplitterPanel _panel2;

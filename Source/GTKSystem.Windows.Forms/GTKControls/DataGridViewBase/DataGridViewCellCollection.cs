@@ -100,8 +100,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
 
     int IList.Add(object? value)
     {
-        var dataGridViewCell = value as DataGridViewCell;
-        if (dataGridViewCell != null)
+        if (value is DataGridViewCell dataGridViewCell)
         {
             return Add(dataGridViewCell);
         }
@@ -116,8 +115,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
 
     void IList.Remove(object? value)
     {
-        var dataGridViewCell = value as DataGridViewCell;
-        if (dataGridViewCell != null)
+        if (value is DataGridViewCell dataGridViewCell)
         {
             var gridViewCell = (DataGridViewCell?)value;
             if (gridViewCell != null)

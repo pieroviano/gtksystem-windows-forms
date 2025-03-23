@@ -228,7 +228,7 @@ public partial class Control
         }
         private Widget GetFrame(Widget widget)
         {
-            Widget parent = widget.Parent;
+            var parent = widget.Parent;
             while (parent != null)
             {
                 if (parent is IControlGtk)
@@ -345,8 +345,7 @@ public partial class Control
             {
                 foreach (var arrangedElement in InnerList)
                 {
-                    var element = arrangedElement as Control;
-                    if (element != null)
+                    if (arrangedElement is Control element)
                     {
                         var collection = element.Controls?.Find(key, true);
                         if (collection != null)
@@ -517,7 +516,7 @@ public partial class Control
 
         public IArrangedElement Container => throw new NotImplementedException();
 
-        public ArrangedElementCollection Children => throw new NotImplementedException();
+        public ArrangedElementCollection? Children => throw new NotImplementedException();
 
         public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

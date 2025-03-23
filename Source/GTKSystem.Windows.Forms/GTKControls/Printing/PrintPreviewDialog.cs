@@ -54,8 +54,7 @@ public class PrintPreviewDialog : ScrollableControl
         printbutton.ButtonReleaseEvent += Printbutton_ButtonReleaseEvent;
         header.PackEnd(printbutton, false, false, 0);
         box.PackStart(header, false, true, 0);
-        var widget = _previewControl.Widget as Widget;
-        if (widget != null) box.PackStart(widget, false, true, 0);
+        if (_previewControl.Widget is Widget widget) box.PackStart(widget, false, true, 0);
         box.MarginTop = 20;
         box.MarginStart = (previewForm.Width - _previewControl.Width) / 2;
         previewForm.Controls.Add(box);

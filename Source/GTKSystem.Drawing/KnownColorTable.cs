@@ -472,8 +472,8 @@ namespace System.Drawing.Gtk
             Debug.Assert((argb & Color.ARGBAlphaMask) == Color.ARGBAlphaMask);
             Debug.Assert(ColorValueTable.Length == ColorKindTable.Length);
 
-            ReadOnlySpan<uint> colorValueTable = ColorValueTable;
-            for (int index = 1; index < colorValueTable.Length; ++index)
+            var colorValueTable = ColorValueTable;
+            for (var index = 1; index < colorValueTable.Length; ++index)
             {
                 if (ColorKindTable[index] == KnownColorKindWeb && colorValueTable[index] == argb)
                 {

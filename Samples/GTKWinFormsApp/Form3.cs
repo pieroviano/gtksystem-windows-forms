@@ -102,7 +102,7 @@ public partial class GtkMainForm : Form
                 System.Threading.Thread.Sleep(100);
             }
 
-            for (int i = 1; i < 101; i++)
+            for (var i = 1; i < 101; i++)
             {
                 progressBar1.Invoke(new MethodInvoker(() => { progressBar1.Value = i; }));
                 System.Threading.Thread.Sleep(20);

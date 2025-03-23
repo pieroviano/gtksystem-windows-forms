@@ -430,25 +430,37 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         return null!;
     }
 
-    public virtual void EnsureVisible()
-    {
+		public virtual void EnsureVisible()
+		{
+			 
+		}
 
-    }
+        public ListViewSubItem GetSubItemAt(int x, int y)
+        {
+            if (_listView is not null && _listView.IsHandleCreated && _listView.View == View.Details)
+            {
+                _listView.GetSubItemAt(x, y, out var iItem, out var iSubItem);
+                if (Index > -1 && iSubItem > -1 && iSubItem < SubItems.Count)
+                {
+                    return SubItems[iSubItem];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return null;
+        }
 
-    public ListViewSubItem? GetSubItemAt(int x, int y)
-    {
-        return _subitems?[x];
-    }
-
-    internal void Host(ListView parent, int id, int index)
-    {
-
-    }
-
-    public virtual void Remove()
-    {
-
-    }
+        internal void Host(ListView parent, int id, int index)
+		{
+			
+		}
+		  
+		public virtual void Remove()
+		{
+			
+		}
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
     {

@@ -264,7 +264,7 @@ namespace System.Drawing
         /// </summary>
         public static Rectangle Inflate(Rectangle rect, int x, int y)
         {
-            Rectangle r = rect;
+            var r = rect;
             r.Inflate(x, y);
             return r;
         }
@@ -274,7 +274,7 @@ namespace System.Drawing
         /// </summary>
         public void Intersect(Rectangle rect)
         {
-            Rectangle result = Intersect(rect, this);
+            var result = Intersect(rect, this);
 
             X = result.X;
             Y = result.Y;
@@ -288,10 +288,10 @@ namespace System.Drawing
         /// </summary>
         public static Rectangle Intersect(Rectangle a, Rectangle b)
         {
-            int x1 = Math.Max(a.X, b.X);
-            int x2 = Math.Min(a.X + a.Width, b.X + b.Width);
-            int y1 = Math.Max(a.Y, b.Y);
-            int y2 = Math.Min(a.Y + a.Height, b.Y + b.Height);
+            var x1 = Math.Max(a.X, b.X);
+            var x2 = Math.Min(a.X + a.Width, b.X + b.Width);
+            var y1 = Math.Max(a.Y, b.Y);
+            var y2 = Math.Min(a.Y + a.Height, b.Y + b.Height);
 
             if (x2 >= x1 && y2 >= y1)
             {
@@ -313,10 +313,10 @@ namespace System.Drawing
         /// </summary>
         public static Rectangle Union(Rectangle a, Rectangle b)
         {
-            int x1 = Math.Min(a.X, b.X);
-            int x2 = Math.Max(a.X + a.Width, b.X + b.Width);
-            int y1 = Math.Min(a.Y, b.Y);
-            int y2 = Math.Max(a.Y + a.Height, b.Y + b.Height);
+            var x1 = Math.Min(a.X, b.X);
+            var x2 = Math.Max(a.X + a.Width, b.X + b.Width);
+            var y1 = Math.Min(a.Y, b.Y);
+            var y2 = Math.Max(a.Y + a.Height, b.Y + b.Height);
 
             return new Rectangle(x1, y1, x2 - x1, y2 - y1);
         }

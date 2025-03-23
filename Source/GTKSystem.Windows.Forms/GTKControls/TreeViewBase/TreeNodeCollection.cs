@@ -1,70 +1,70 @@
-﻿using Gtk;
-
-namespace System.Windows.Forms;
-
-public class TreeNodeCollection: List<TreeNode>
+﻿namespace System.Windows.Forms
 {
-    private readonly TreeNode? owner;
+    public class TreeNodeCollection : List<TreeNode>
+    {
+        private readonly TreeNode? owner;
 
-    internal TreeNodeCollection(TreeNode? owner)
-    {
-        this.owner = owner;
+        internal TreeNodeCollection(TreeNode? owner)
+        {
+            this.owner = owner;
 
-    }
-    public void AddRange(TreeNode[] nodes)
-    {
-        if (nodes == null)
-        {
-            throw new ArgumentNullException("nodes");
         }
-        foreach (var node in nodes)
+        public void AddRange(TreeNode[] nodes)
         {
-            Add(node);
+            if (nodes == null)
+            {
+                throw new ArgumentNullException("nodes");
+            }
+            foreach (var node in nodes)
+            {
+                Add(node);
+            }
         }
-    }
-    public new void AddRange(IEnumerable<TreeNode> nodes)
-    {
-        if (nodes == null)
+        public new void AddRange(IEnumerable<TreeNode> nodes)
         {
-            throw new ArgumentNullException("nodes");
+            if (nodes == null)
+            {
+                throw new ArgumentNullException("nodes");
+            }
+            foreach (var node in nodes)
+            {
+                Add(node);
+            }
         }
-        foreach (var node in nodes)
+        public new void Add(TreeNode node)
         {
-            Add(node);
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            node.Parent = owner;
+            node.treeView = owner?.TreeView;
+            base.Add(node);
+            if (owner is { TreeView: not null })
+            {
+                owner.TreeView.LoadNodeValue(node, owner.TreeIter);
+            }
         }
-    }
-    public new void Add(TreeNode node)
-    {
-        if (node == null)
-        {
-            throw new ArgumentNullException("node");
-        }
-        node.Parent = owner;
-        node.treeView = owner?.TreeView;
-        base.Add(node);
-        if (owner is { TreeView: not null })
-        {
-            owner.TreeView.LoadNodeValue(node, owner.TreeIter);
-        }
-    }
 
-    public new void Clear()
-    {
-        owner?.TreeView?.Clear();
-        base.Clear();
-    }
-    public new void Remove(TreeNode node)
-    {
-        var indx = FindIndex(m => m.Index == node.Index);
-        if (indx > -1)
-            RemoveAt(indx);
-    }
-    public new void RemoveAt(int index)
-    {
-        if (owner is { TreeView: not null } && owner.TreeView.Store.GetIter(out var iter, new TreePath([index])))
+        public new void Clear()
         {
-            owner.TreeView.Store.Remove(ref iter);
+            if (owner.TreeView != null)
+            {
+                foreach (var node in this)
+                    owner.TreeView.RemoveNode(node);
+            }
+            base.Clear();
         }
-        base.RemoveAt(index);
+        public new void Remove(TreeNode node)
+        {
+            if (owner.TreeView != null)
+                this.owner.TreeView.RemoveNode(node);
+            base.Remove(node);
+        }
+        public new void RemoveAt(int index)
+        {
+            if (index < this.Count)
+                Remove(this[index]);
+        }
     }
 }

@@ -46,9 +46,7 @@ internal class Formatter
 
     private static bool EqualsFormattedNullValue(object? value, object? formattedNullValue, IFormatProvider? formatInfo)
     {
-        var str = formattedNullValue as string;
-        var str1 = value as string;
-        if (str == null || str1 == null)
+        if (formattedNullValue is not string str || value is not string str1)
         {
             return Equals(value, formattedNullValue);
         }
@@ -233,8 +231,7 @@ internal class Formatter
 
     private static TypeConverter? NullableUnwrap(TypeConverter? typeConverter)
     {
-        var nullableConverter = typeConverter as NullableConverter;
-        if (nullableConverter == null)
+        if (typeConverter is not NullableConverter nullableConverter)
         {
             return typeConverter;
         }

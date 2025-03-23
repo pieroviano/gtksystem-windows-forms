@@ -557,8 +557,7 @@ public class DataGridViewRowCollection : IList
 
     int IList.Add(object? value)
     {
-        var dataGridViewRow = value as DataGridViewRow;
-        if (dataGridViewRow != null)
+        if (value is DataGridViewRow dataGridViewRow)
         {
             return Add(dataGridViewRow);
         }
@@ -588,8 +587,7 @@ public class DataGridViewRowCollection : IList
 
     void IList.Remove(object? value)
     {
-        var dataGridViewRow = value as DataGridViewRow;
-        if (dataGridViewRow != null)
+        if (value is DataGridViewRow dataGridViewRow)
         {
             Remove(dataGridViewRow);
         }

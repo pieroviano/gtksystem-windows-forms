@@ -6,6 +6,7 @@
  */
 
 using System.ComponentModel;
+using Container = Gtk.Container;
 
 namespace System.Windows.Forms
 {
@@ -22,8 +23,7 @@ namespace System.Windows.Forms
 
         private void Self_ParentSet(object o, Gtk.ParentSetArgs args)
         {
-            Gtk.Container? con = self.Parent as Gtk.Container;
-            if (con != null)
+            if (self.Parent is Container con)
             {
                 foreach (var widget in con.Children)
                 {

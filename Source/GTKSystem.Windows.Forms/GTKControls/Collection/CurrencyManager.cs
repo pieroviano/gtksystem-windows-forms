@@ -190,8 +190,7 @@ public class CurrencyManager : BindingManagerBase
     /// <filterpriority>1</filterpriority>
     public override void AddNew()
     {
-        var bindingLists = _list as IBindingList;
-        if (bindingLists == null)
+        if (_list is not IBindingList bindingLists)
         {
             throw new NotSupportedException("CurrencyManagerCantAddNew");
         }

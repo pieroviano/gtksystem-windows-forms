@@ -8,7 +8,7 @@
 using GLib;
 using Gtk;
 using System.ComponentModel;
-using Image = System.Drawing.Image;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -57,7 +57,7 @@ namespace System.Windows.Forms
             rendererPixbuf.IsExpanded = true;
             rendererPixbuf.Visible = false;
             column.PackStart(rendererPixbuf, false);
-            CellRendererText renderertext = new CellRendererText();
+            var renderertext = new CellRendererText();
             renderertext.IsExpanded = true;
             renderertext.PlaceholderText = "---";
             column.PackStart(renderertext, true);
@@ -68,10 +68,10 @@ namespace System.Windows.Forms
         {
             if (ImageList != null)
             {
-                TreeViewColumn? column = ((Gtk.TreeView?)sender)?.Columns[0];
+                var column = ((Gtk.TreeView?)sender)?.Columns[0];
                 if (string.IsNullOrWhiteSpace(ImageKey))
                 {
-                    Image? image = ImageList.GetBitmap(ImageIndex);
+                    var image = ImageList?.GetBitmap(ImageIndex);
                     if (image != null)
                     {
                         rendererPixbuf.Pixbuf = image.Pixbuf;
@@ -325,8 +325,8 @@ namespace System.Windows.Forms
         public event TreeViewEventHandler? AfterExpand;
         private void GetNodeChild(TreeNode? node, int[] indices, ref TreeNode? result)
         {
-            string nodeIndex= string.Join(",", indices);
-            foreach (TreeNode? child in node.Nodes)
+            var nodeIndex= string.Join(",", indices);
+            foreach (var child in node.Nodes)
             {
                 if (child.Index == nodeIndex)
                 {

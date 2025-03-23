@@ -130,13 +130,13 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     internal Image? GetOriginalImage(string name)
     {
         // string direc = Path.GetDirectoryName(Application.ExecutablePath);
-        string path1 = $"./Resources";
+        var path1 = $"./Resources";
         var value = ImageStream;
         if (value.ResourceInfo is { BaseName: not null })
         {
             // Load image data here
-            string dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
-            string path2 = $"{dir}/{name}";
+            var dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
+            var path2 = $"{dir}/{name}";
             if (File.Exists(path2))
             {
                 if (!Directory.Exists(dir))
@@ -152,10 +152,10 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     }
     private Bitmap ScaleSimpleBitmap(Image bitmp)
     {
-        Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
-        int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
-        int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
-        Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
+        var pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+        var w = Math.Max(16, Math.Min(ImageSize.Width, 200));
+        var h = Math.Max(16, Math.Min(ImageSize.Height, 200));
+        var newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
         return new Bitmap(w, h) { Pixbuf = newpixbuf };
     }
 #if DEBUG

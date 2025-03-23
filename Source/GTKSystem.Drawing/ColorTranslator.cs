@@ -221,7 +221,7 @@ namespace System.Drawing.Gtk
         /// </summary>
         public static string ToHtml(Color c)
         {
-            string colorString = string.Empty;
+            var colorString = string.Empty;
 
             if (c.IsEmpty)
                 return colorString;

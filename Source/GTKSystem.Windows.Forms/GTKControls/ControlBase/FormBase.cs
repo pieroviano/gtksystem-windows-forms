@@ -99,7 +99,7 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
         {
             if (Scroll != null)
             {
-                Adjustment? adj = (Adjustment?)sender;
+                var adj = (Adjustment?)sender;
                 Scroll(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
             }
         }

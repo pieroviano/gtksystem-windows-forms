@@ -95,16 +95,16 @@ public class GtkResourceManager : ResourceManager
         {
             //string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
             //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
-            string filepath = $"./{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
+            var filepath = $"./{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
             if (File.Exists(filepath))
             {
                 try
                 {
-                    XmlDocument doc = new XmlDocument();
-                    XmlReaderSettings xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
+                    var doc = new XmlDocument();
+                    var xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
                     doc.Load(filepath);
                     var docElem = doc.DocumentElement;
-                    XmlNodeList? nodes = docElem.SelectNodes("data");
+                    var nodes = docElem.SelectNodes("data");
                     //<data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
                     //<value> </value>
                     //</data>
@@ -237,9 +237,9 @@ public class GtkResourceManager : ResourceManager
                 return obj;
             }
 
-            string fileName = name;
-            byte[] filebytes = ReadResourceFile(name);
-            string _formName = Path.GetExtension(BaseName).TrimStart('.');
+            var fileName = name;
+            var filebytes = ReadResourceFile(name);
+            var _formName = Path.GetExtension(BaseName).TrimStart('.');
             var path = $"./Resources/{_formName}";
             var searchPattern = $"{fileName}.*";
             if (!Directory.Exists(path))

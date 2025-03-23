@@ -575,8 +575,7 @@ public class Binding
 
     internal static bool IsComponentCreated(IBindableComponent? component)
     {
-        var control = component as Control;
-        if (control == null)
+        if (component is not Control control)
         {
             return true;
         }
@@ -868,8 +867,7 @@ public class Binding
                 bindingContext = _control.BindingContext;
             }
             BindingContext.UpdateBinding(bindingContext, this);
-            var form = value as Form;
-            if (form != null)
+            if (value is Form form)
             {
                 form.Load += FormLoaded;
             }

@@ -20,8 +20,7 @@ using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 using Region = System.Drawing.Region;
 using Size = System.Drawing.Size;
-using static System.Windows.Forms.LinkLabel;
-using System.Diagnostics.Tracing;
+using Task = System.Threading.Tasks.Task;
 
 namespace System.Windows.Forms;
 
@@ -46,7 +45,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     private Padding margin;
     private bool _capture;
     private bool causesValidation;
-    private bool _handleCreated;
     private AccessibleObject? accessibilityObject;
     private BindingContext? bindingContext;
 
@@ -194,111 +192,69 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected internal void OnBindingContextChanged(EventArgs e)
-    {
-        BindingContextChanged?.Invoke(this, e);
-    }
-
-    private bool _loaded;
-
-    protected internal virtual void OnLoad(EventArgs e)
-    {
-        if (_loaded)
+        private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            return;
-        }
-        _loaded = true;
-        _handleCreated = true;
-        OnPreLoad(e);
-        Load?.Invoke(this, e);
-        if (!bindingContextSet)
-        {
-            OnBindingContextChanged(e);
-        }
-    }
-
-    private void Widget_ButtonPressEvent(object? o, ButtonPressEventArgs args)
-    {
-        //Console.WriteLine($"Widget_ButtonPressEvent1:{args.Event.XRoot},{args.Event.YRoot};{args.Event.X},{args.Event.Y}");
-        var result = MouseButtons.None;
-        if (args.Event.Button == 1)
-            result = MouseButtons.Left;
-        else if (args.Event.Button == 2)
-            result = MouseButtons.Middle;
-        else if (args.Event.Button == 3)
-            result = MouseButtons.Right;
-
-        Widget? owidget = (Widget?)o;
-        int x = 0;
-        int y = 0;
-        owidget?.Window.GetOrigin(out x, out y);// Avoiding event penetration errors
-        if (MouseDown != null)
-        {
-            var eventArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - ((int)x), (int)args.Event.YRoot - y, 0);
-            OnMouseDown(eventArgs);
-        }
-    }
-
-    protected virtual void OnMouseDown(MouseEventArgs e)
-    {
-        MouseDown?.Invoke(this, e);
-    }
-
-    private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-    {
-        MouseButtons result = MouseButtons.None;
-        if (args.Event.Button == 1)
-            result = MouseButtons.Left;
-        else if (args.Event.Button == 2)
-            result = MouseButtons.Middle;
-        else if (args.Event.Button == 3)
-            result = MouseButtons.Right;
-        Widget owidget = (Widget)o;
-        owidget.Window.GetOrigin(out int x, out int y);
-        OnMouseUp(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-        if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-        {
-            OnMouseDoubleClick(new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            OnDoubleClick(EventArgs.Empty);
-        }
-        else
-        {
-            OnClick(EventArgs.Empty);
-            OnMouseClick(new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-        }
-        if (ContextMenuStrip != null)
-        {
-            if (args.Event.Button == 3)
+            if (o is Widget { Window: not null } owidget)
             {
-                ContextMenuStrip.Widget.ShowAll();
-                ((Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                var result = MouseButtons.None;
+                if (args.Event.Button == 1)
+                    result = MouseButtons.Left;
+                else if (args.Event.Button == 2)
+                    result = MouseButtons.Middle;
+                else if (args.Event.Button == 3)
+                    result = MouseButtons.Right;
+
+                owidget.Window.GetOrigin(out var x, out var y);// Avoiding event penetration errors
+            if (MouseDown != null)
+                {
+                    MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                }
             }
         }
-    }
-
-    protected virtual void OnMouseDoubleClick(MouseEventArgs e)
-    {
-        MouseDoubleClick?.Invoke(this, e);
-    }
+        private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+        {
+            if (o is Widget { Window: not null } owidget)
+            {
+                var result = MouseButtons.None;
+                if (args.Event.Button == 1)
+                    result = MouseButtons.Left;
+                else if (args.Event.Button == 2)
+                    result = MouseButtons.Middle;
+                else if (args.Event.Button == 3)
+                    result = MouseButtons.Right;
+                owidget.Window.GetOrigin(out var x, out var y);
+                if (MouseUp != null)
+                {
+                    MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                }
+                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                {
+                    if (MouseDoubleClick != null)
+                        MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                    if (DoubleClick != null)
+                        DoubleClick(this, EventArgs.Empty);
+                }
+                else
+                {
+                    if (Click != null)
+                        Click(this, EventArgs.Empty);
+                    if (MouseClick != null)
+                        MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                }
+                if (ContextMenuStrip != null)
+                {
+                    if (args.Event.Button == 3)
+                    {
+                        ContextMenuStrip.Widget.ShowAll();
+                        ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                    }
+                }
+            }
+        }
 
     protected virtual void OnDoubleClick(EventArgs e)
     {
         DoubleClick?.Invoke(this, e);
-    }
-
-    protected virtual void OnMouseClick(MouseEventArgs e)
-    {
-        MouseClick?.Invoke(this, e);
-    }
-
-    protected virtual void OnClick(EventArgs e)
-    {
-        Click?.Invoke(this, e);
-    }
-
-    protected virtual void OnMouseUp(MouseEventArgs e)
-    {
-        MouseUp?.Invoke(this, e);
     }
 
     private void Widget_EnterNotifyEvent(object? o, EnterNotifyEventArgs args)
@@ -415,6 +371,16 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         Validating?.Invoke(this, e);
     }
 
+    protected virtual void OnTextChanged(EventArgs e)
+    {
+        TextChanged?.Invoke(this, e);
+    }
+
+    protected internal virtual void OnLoad(EventArgs e)
+    {
+        Load?.Invoke(this, e);
+    }
+
     protected virtual void OnLostFocus(FocusOutEventArgs e)
     {
         LostFocus?.Invoke(this, e);
@@ -471,8 +437,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         if (Widget is { IsMapped: true })
         {
-            var widget = Widget as Widget;
-            if (widget != null) SetStyle(widget);
+            if (Widget is Widget widget) SetStyle(widget);
         }
     }
 
@@ -483,19 +448,19 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
     protected virtual void SetStyle(Widget widget)
     {
-        StringBuilder style = new StringBuilder();
+        var style = new StringBuilder();
         if (widget is Gtk.Image) { }
         else
         {
             if (Image is { PixbufData: not null })
             {
-                string imgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
-                string imguri = $"{imgdir}/{widget.Name}_image.png";
+                var imgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                var imguri = $"{imgdir}/{widget.Name}_image.png";
                 if (!File.Exists(imguri))
                 {
                     if (!Directory.Exists(imgdir))
                         Directory.CreateDirectory(imgdir);
-                    Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(Image.PixbufData);
+                    var imagepixbuf = new Gdk.Pixbuf(Image.PixbufData);
                     imagepixbuf.Save(imguri, "png");
                 }
                 style.AppendFormat("background:url(\"{0}\")", imguri);
@@ -543,10 +508,10 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
                 if (BackgroundImage is { PixbufData: not null })
                 {
-                    string bgimguri = $"{imgdir}/{widget.Name}_bgimage.png";
+                    var bgimguri = $"{imgdir}/{widget.Name}_bgimage.png";
                     if (!File.Exists(bgimguri))
                     {
-                        Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
+                        var bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
                         bgpixbuf.Save(bgimguri, "png");
                     }
 
@@ -558,9 +523,9 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             }
             else if (BackgroundImage is { PixbufData: not null })
             {
-                string bgimgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
-                string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
-                Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
+                var bgimgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                var bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
+                var bgpixbuf = new Gdk.Pixbuf(BackgroundImage.PixbufData);
                 if (!File.Exists(bgimguri))
                 {
                     if (!Directory.Exists(bgimgdir))
@@ -776,7 +741,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         get
         {
-            _handleCreated = true;
+            IsHandleCreated = true;
             return accessibilityObject;
         }
         set => accessibilityObject = value;
@@ -879,6 +844,11 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
+    protected void OnBindingContextChanged(EventArgs e)
+    {
+        BindingContextChanged?.Invoke(this, e);
+    }
+
     public virtual Rectangle Bounds
     {
         get => new(Widget.Clip.X, Widget.Clip.Y, Widget.Clip.Width, Widget.Clip.Height);
@@ -902,11 +872,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         ClientSizeChanged?.Invoke(this, e);
     }
 
-    protected virtual void OnResize(EventArgs e)
-    {
-        Resize?.Invoke(this, e);
-    }
-
     protected virtual void OnLayout(LayoutEventArgs e)
     {
         Layout?.Invoke(this, e);
@@ -922,7 +887,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         set
         {
             _capture = value;
-            _handleCreated = true;
+            IsHandleCreated = true;
             Handle = IntPtr.Zero;
         }
     }
@@ -1155,13 +1120,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual bool IsHandleCreated
     {
-        get => _handleCreated;
-        set => _handleCreated = value;
+        get => this.Widget.IsRealized;
+        set => this.Widget.IsRealized = value;
     }
 
     public virtual bool IsMirrored { get; internal set; }
-
-    public virtual LayoutEngine? LayoutEngine { get; internal set; }
+    public virtual LayoutEngine? LayoutEngine { get; set; }
 
     public virtual string Text { get; set; } = string.Empty;
 
@@ -1473,7 +1437,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual void CreateControl()
     {
-        _handleCreated = true;
+        IsHandleCreated = true;
         created = true;
     }
 
@@ -1550,13 +1514,13 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual Control? GetChildAtPoint(Point pt)
     {
-        _handleCreated = true;
+        IsHandleCreated = true;
         return null;
     }
 
     public virtual Control? GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue)
     {
-        _handleCreated = true;
+        IsHandleCreated = true;
         return null;
     }
 
@@ -1664,7 +1628,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual object? Invoke(Delegate method, params object[] args)
     {
         object? result = null;
-        if (!_handleCreated)
+        if (!IsHandleCreated)
         {
             throw new InvalidOperationException();
         }
@@ -1707,7 +1671,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         var x = 0;
         var y = 0;
-        _handleCreated = true;
+        IsHandleCreated = true;
         if (Widget != null)
         {
             Widget.Window?.GetOrigin(out x, out y);
@@ -1721,7 +1685,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         var x = 0;
         var y = 0;
-        _handleCreated = true;
+        IsHandleCreated = true;
         if (Widget != null)
         {
             Widget.Window?.GetOrigin(out x, out y);
@@ -1745,7 +1709,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         var x = 0;
         var y = 0;
-        _handleCreated = true;
+        IsHandleCreated = true;
         if (Widget != null)
         {
             Widget.Window?.GetPosition(out x, out y);
@@ -1759,7 +1723,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         var x = 0;
         var y = 0;
-        _handleCreated = true;
+        IsHandleCreated = true;
         if (Widget != null)
         {
             Widget.Window?.GetPosition(out x, out y);
@@ -1938,9 +1902,9 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     protected virtual void OnHandleCreated(EventArgs e)
     {
-        if (!_handleCreated)
+        if (!IsHandleCreated)
         {
-            _handleCreated = true;
+            IsHandleCreated = true;
             HandleCreated?.Invoke(this, e);
         }
     }
@@ -2063,7 +2027,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
         Dispose(true);
         base.Dispose();
-        _handleCreated = false;
+        IsHandleCreated = false;
         OnDisposed(EventArgs.Empty);
     }
 
@@ -2122,32 +2086,57 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-    private readonly ArrangedElementCollection? arrangedElementCollection = default;
-    public ArrangedElementCollection? Children => arrangedElementCollection;
+        private ArrangedElementCollection? arrangedElementCollection;
+        public ArrangedElementCollection? Children => arrangedElementCollection;
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnResize(EventArgs e)
+        {
+            this.Widget?.QueueResize();
+            Resize?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnClick(EventArgs e)
+        {
+            Click?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseDoubleClick(MouseEventArgs e)
+        {
+            MouseDoubleClick?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseClick(MouseEventArgs e)
+        {
+            MouseClick?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseDown(MouseEventArgs e)
+        {
+            MouseDown?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseUp(MouseEventArgs e)
+        {
+            MouseUp?.Invoke(this, e);
+        }
+        protected virtual void OnKeyDown(KeyEventArgs e)
+        {
+            KeyDown?.Invoke(this, e);
+        }
+        protected virtual void OnKeyUp(KeyEventArgs e)
+        {
+            KeyUp?.Invoke(this, e);
+        }
+        protected virtual void OnVisibleChanged(EventArgs e)
+        {
 
-    protected virtual void OnKeyDown(KeyEventArgs e)
-    {
-        KeyDown?.Invoke(this, e);
-    }
-    protected virtual void OnKeyUp(KeyEventArgs e)
-    {
-        KeyUp?.Invoke(this, e);
-    }
-    protected virtual void OnVisibleChanged(EventArgs e)
-    {
-        VisibleChanged?.Invoke(this, e);
-    }
-    protected virtual void OnSizeChanged(EventArgs e)
-    {
-        SizeChanged?.Invoke(this, e);
-    }
-    protected virtual void OnTextChanged(EventArgs e)
-    {
-        TextChanged?.Invoke(this, e);
-    }
-
-    protected virtual void Select(bool directed, bool forward)
-    {
+        }
+        protected virtual void OnSizeChanged(EventArgs e)
+        {
+            SizeChanged?.Invoke(this, e);
+        }
+        protected virtual void Select(bool directed, bool forward)
+        {
 
     }
     protected virtual void OnGotFocus(EventArgs e)

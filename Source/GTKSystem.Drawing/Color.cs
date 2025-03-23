@@ -402,7 +402,7 @@ namespace System.Drawing.Gtk
 
                 if (IsKnownColor)
                 {
-                    string tablename = KnownColorNames.KnownColorToName((KnownColor)knownColor);
+                    var tablename = KnownColorNames.KnownColorToName((KnownColor)knownColor);
                     Debug.Assert(tablename != null, $"Could not find known color '{(KnownColor)knownColor}' in the KnownColorTable");
 
                     return tablename;
@@ -497,7 +497,7 @@ namespace System.Drawing.Gtk
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GetRgbValues(out int r, out int g, out int b)
         {
-            uint value = (uint)Value;
+            var value = (uint)Value;
             r = (int)(value & ARGBRedMask) >> ARGBRedShift;
             g = (int)(value & ARGBGreenMask) >> ARGBGreenShift;
             b = (int)(value & ARGBBlueMask) >> ARGBBlueShift;
@@ -528,21 +528,21 @@ namespace System.Drawing.Gtk
 
         public float GetBrightness()
         {
-            GetRgbValues(out int r, out int g, out int b);
+            GetRgbValues(out var r, out var g, out var b);
 
-            MinMaxRgb(out int min, out int max, r, g, b);
+            MinMaxRgb(out var min, out var max, r, g, b);
 
             return (max + min) / (byte.MaxValue * 2f);
         }
 
         public float GetHue()
         {
-            GetRgbValues(out int r, out int g, out int b);
+            GetRgbValues(out var r, out var g, out var b);
 
             if (r == g && g == b)
                 return 0f;
 
-            MinMaxRgb(out int min, out int max, r, g, b);
+            MinMaxRgb(out var min, out var max, r, g, b);
 
             float delta = max - min;
             float hue;
@@ -563,14 +563,14 @@ namespace System.Drawing.Gtk
 
         public float GetSaturation()
         {
-            GetRgbValues(out int r, out int g, out int b);
+            GetRgbValues(out var r, out var g, out var b);
 
             if (r == g && g == b)
                 return 0f;
 
-            MinMaxRgb(out int min, out int max, r, g, b);
+            MinMaxRgb(out var min, out var max, r, g, b);
 
-            int div = max + min;
+            var div = max + min;
             if (div > byte.MaxValue)
                 div = byte.MaxValue * 2 - max - min;
 

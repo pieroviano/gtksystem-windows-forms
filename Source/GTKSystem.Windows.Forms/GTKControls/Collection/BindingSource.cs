@@ -267,8 +267,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            var list = List as IBindingListView;
-            if (list == null || !list.SupportsFiltering)
+            if (List is not IBindingListView list || !list.SupportsFiltering)
             {
                 return string.Empty;
             }
@@ -284,8 +283,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             {
                 return;
             }
-            var list = List as IBindingListView;
-            if (list is { SupportsFiltering: true })
+
+            if (List is IBindingListView { SupportsFiltering: true } list)
             {
                 list.Filter = value;
             }
@@ -297,13 +296,11 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         get
         {
             ListSortDescriptionCollection? sortDescriptions = null;
-            var list = List as IBindingListView;
-            var bindingLists = List as IBindingList;
-            if (list is { SupportsAdvancedSorting: true })
+            if (List is IBindingListView { SupportsAdvancedSorting: true } list)
             {
                 sortDescriptions = list.SortDescriptions;
             }
-            else if (bindingLists is { SupportsSorting: true, IsSorted: true })
+            else if (List is IBindingList { SupportsSorting: true, IsSorted: true } bindingLists)
             {
                 ListSortDescription[] listSortDescription = [new(bindingLists.SortProperty, bindingLists.SortDirection)
                 ];
@@ -322,9 +319,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
                 return;
             }
             var listSortDescriptionCollections = ParseSortString(value);
-            var list = List as IBindingListView;
             var bindingLists = List as IBindingList;
-            if (list is { SupportsAdvancedSorting: true })
+            if (List is IBindingListView { SupportsAdvancedSorting: true } list)
             {
                 if (listSortDescriptionCollections.Count == 0)
                 {
@@ -464,8 +460,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            var list = List as IBindingListView;
-            if (list == null)
+            if (List is not IBindingListView list)
             {
                 return null;
             }
@@ -512,8 +507,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            var list = List as IBindingListView;
-            if (list == null)
+            if (List is not IBindingListView list)
             {
                 return false;
             }
@@ -533,8 +527,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     {
         get
         {
-            var list = List as IBindingListView;
-            if (list == null)
+            if (List is not IBindingListView list)
             {
                 return false;
             }
@@ -740,8 +733,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual void ApplySort(ListSortDescriptionCollection sorts)
     {
-        var list = List as IBindingListView;
-        if (list == null)
+        if (List is not IBindingListView list)
         {
             throw new NotSupportedException("OperationRequiresIBindingListView");
         }
@@ -1232,8 +1224,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">A <see cref="T:System.Windows.Forms.BindingManagerDataErrorEventArgs" /> that contains the event data. </param>
     protected virtual void OnDataError(BindingManagerDataErrorEventArgs e)
     {
-        var item = Events[EventDataError] as BindingManagerDataErrorEventHandler;
-        if (item != null)
+        if (Events[EventDataError] is BindingManagerDataErrorEventHandler item)
         {
             item(this, e);
         }
@@ -1243,8 +1234,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
     protected virtual void OnDataMemberChanged(EventArgs e)
     {
-        var item = Events[EventDataMemberChanged] as EventHandler;
-        if (item != null)
+        if (Events[EventDataMemberChanged] is EventHandler item)
         {
             item(this, e);
         }
@@ -1254,8 +1244,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
     protected virtual void OnDataSourceChanged(EventArgs e)
     {
-        var item = Events[EventDataSourceChanged] as EventHandler;
-        if (item != null)
+        if (Events[EventDataSourceChanged] is EventHandler item)
         {
             item(this, e);
         }
@@ -1461,8 +1450,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     public virtual void RemoveFilter()
     {
         _filter = null;
-        var list = List as IBindingListView;
-        if (list != null)
+        if (List is IBindingListView list)
         {
             list.RemoveFilter();
         }
@@ -1647,8 +1635,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             _addNewPos = -1;
             return;
         }
-        var list = List as ICancelAddNew;
-        if (list != null)
+
+        if (List is ICancelAddNew list)
         {
             list.CancelNew(position);
         }
@@ -1663,8 +1651,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             _addNewPos = -1;
             return;
         }
-        var list = List as ICancelAddNew;
-        if (list != null)
+
+        if (List is ICancelAddNew list)
         {
             list.EndNew(position);
         }
@@ -1679,8 +1667,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     /// <summary>Signals the <see cref="T:System.Windows.Forms.BindingSource" /> that initialization is complete. </summary>
     void ISupportInitialize.EndInit()
     {
-        var source = DataSource as ISupportInitializeNotification;
-        if (source == null || source.IsInitialized)
+        if (DataSource is not ISupportInitializeNotification source || source.IsInitialized)
         {
             EndInitCore();
             return;

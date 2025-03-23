@@ -55,8 +55,8 @@ internal class BindToObject
             {
                 return true;
             }
-            var supportInitializeNotification = _dataSource as ISupportInitializeNotification;
-            if (supportInitializeNotification == null || supportInitializeNotification.IsInitialized)
+
+            if (_dataSource is not ISupportInitializeNotification supportInitializeNotification || supportInitializeNotification.IsInitialized)
             {
                 _dataSourceInitialized = true;
                 return true;
@@ -118,8 +118,7 @@ internal class BindToObject
 
     private void DataSource_Initialized(object? sender, EventArgs e)
     {
-        var supportInitializeNotification = _dataSource as ISupportInitializeNotification;
-        if (supportInitializeNotification != null)
+        if (_dataSource is ISupportInitializeNotification supportInitializeNotification)
         {
             supportInitializeNotification.Initialized -= DataSource_Initialized;
         }
@@ -182,8 +181,7 @@ internal class BindToObject
         object? current = null;
         if (_fieldInfo == null)
         {
-            var currencyManager = _bindingManager as CurrencyManager;
-            if (currencyManager != null)
+            if (_bindingManager is CurrencyManager currencyManager)
             {
                 if (value != null)
                 {

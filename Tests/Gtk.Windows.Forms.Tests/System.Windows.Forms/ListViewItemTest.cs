@@ -627,7 +627,7 @@ public class ListViewItemTest : TestHelper
         var item1 = lv.Items.Add ("Item 1");
         item1.Checked = currentValue == CheckState.Checked;
 
-        ItemCheckEventHandler checkEventHandler = (object _, ItemCheckEventArgs args) => {
+        ItemCheckEventHandler? checkEventHandler = (object? _, ItemCheckEventArgs args) => {
             Assert.AreEqual (currentValue, args.CurrentValue, "#1");
             Assert.AreEqual (newValue, args.NewValue, "#2");
             args.NewValue = overrideNewValue;

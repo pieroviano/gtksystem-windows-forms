@@ -79,7 +79,7 @@ public partial class Form : ContainerControl, IWin32Window
         {
             if (this.windowState != value)
             {
-                WindowStateArgs windowStateArg = new WindowStateArgs(value);
+                var windowStateArg = new WindowStateArgs(value);
                 EventHandler<WindowStateArgs>? eventHandler = WindowStateChanging;
                 if (eventHandler != null)
                 {

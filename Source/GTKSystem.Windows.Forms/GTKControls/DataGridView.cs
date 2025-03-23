@@ -77,8 +77,7 @@ public class DataGridView : ScrollableControl
         // Single row selection is valid
         if (CellClick != null)
         {
-            var column = args.Column as DataGridViewColumn;
-            if (column != null)
+            if (args.Column is DataGridViewColumn column)
             {
                 CellClick(this, new DataGridViewCellEventArgs(column.Index, args.Path.Indices.Last()));
             }

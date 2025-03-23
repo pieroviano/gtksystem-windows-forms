@@ -40,7 +40,7 @@ internal static class AssemblyCultureProcessor
     {
         var resourceAssemblyName = $"{Path.GetFileNameWithoutExtension(assemblyWithResourcesLocation)}{GtkResourceManager.resFileExtension}{Path.GetExtension(assemblyWithResourcesLocation)}";
         var combine = Path.Combine(assemblyWithResourcesDirectory, cultureName, resourceAssemblyName);
-        int insertPoint = 0;
+        var insertPoint = 0;
         if (File.Exists(combine))
         {
             assemblies.Insert(insertPoint, (cultureName, Assembly.LoadFile(combine)));
