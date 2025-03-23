@@ -93,7 +93,7 @@ public partial class ListViewForm : Form
 
     private void ListView1_MouseDown(object? sender, MouseEventArgs e)
     {
-        ListViewItem? item = listView1.GetItemAt(e.X, e.Y);
+        var item = listView1.GetItemAt(e.X, e.Y);
         if (item != null)
         {
             Console.WriteLine(item.Text);
