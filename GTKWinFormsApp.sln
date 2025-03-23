@@ -31,9 +31,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{638C415D-5E77-4A81-8D5B-1D5ABF6D3E4C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		Directory.Build.Props = Directory.Build.Props
-		Directory.Nuget.json = Directory.Nuget.json
-		Directory.Nuget.Props = Directory.Nuget.Props
 		Nuget.Config = Nuget.Config
 	EndProjectSection
 EndProject

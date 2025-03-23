@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>False</UseWindowsForms>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<IsPublishable>False</IsPublishable>
+		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
+		<LangVersion>latest</LangVersion>
+		<AssemblyName>GTKWinFormsApp</AssemblyName>
+		<RootNamespace>GTKWinFormsApp</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Resources\010.jpg" Link="Resources\010.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\BindingNavigator.Delete.ico" Link="Resources\BindingNavigator.Delete.ico">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\img10.jpg" Link="Resources\img10.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\img11.jpg" Link="Resources\img11.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\timg.jpg" Link="Resources\timg.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\timg2.jpg" Link="Resources\timg2.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\timg6.jpg" Link="Resources\timg6.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
+		<None Include="TestData1.en.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="TestData1.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
+		<PackageReference Include="GTKSystem.Resources.Extensions" Version="1.3.24.64-piero" />
+		<PackageReference Include="GTKSystem.Windows.Forms" Version="1.3.24.64-piero" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>GTKWinFormsApp.Properties</CustomToolNamespace>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>
