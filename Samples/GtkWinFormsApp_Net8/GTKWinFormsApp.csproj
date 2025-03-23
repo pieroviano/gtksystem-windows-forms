@@ -58,7 +58,7 @@
 		<Compile Include="..\GtkWinFormsApp\Properties\Resources.Designer.cs" Link="Properties\Resources.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
-		  <DependentUpon>..\GtkWinFormsApp\Properties\Resources.resx</DependentUpon>
+		  <DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
