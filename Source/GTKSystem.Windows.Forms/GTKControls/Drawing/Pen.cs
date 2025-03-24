@@ -173,7 +173,7 @@ public sealed class Pen : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="width">The width of the new <see cref="T:System.Drawing.Pen" />.</param>
     /// <exception cref="T:System.ArgumentNullException">
     ///   <paramref name="brush" /> is <see langword="null" />.</exception>
-    public Pen(Brush? brush, float width):this(brush)
+    public Pen(Brush? brush, float width) : this(brush)
     {
         Width = width;
     }
@@ -194,12 +194,12 @@ public sealed class Pen : MarshalByRefObject, ICloneable, IDisposable
         Width = width;
     }
 
-		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Pen" />.</summary>
-		/// <returns>An <see cref="T:System.Object" /> that can be cast to a <see cref="T:System.Drawing.Pen" />.</returns>
-		public object Clone()
-		{
-            return null;
-        }
+    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Pen" />.</summary>
+    /// <returns>An <see cref="T:System.Object" /> that can be cast to a <see cref="T:System.Drawing.Pen" />.</returns>
+    public object Clone()
+    {
+        throw new NotImplementedException(nameof(Clone));
+    }
 
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Pen" />.</summary>
     public void Dispose()

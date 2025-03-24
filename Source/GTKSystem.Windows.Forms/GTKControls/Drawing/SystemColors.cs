@@ -8,9 +8,9 @@ namespace System.Drawing.Gtk;
 #endif
 
 #if NET462_OR_GREATER
-using GtkColor =System.Drawing.Color;
+using GtkColor = Color;
 #else
-using GtkColor = System.Drawing.Gtk.Color;
+using GtkColor = Color;
 #endif
 public static class SystemColors
 {

@@ -31,6 +31,7 @@ namespace System.Windows.Forms;
 public partial class Control : Component, IControl, ISynchronizeInvoke, ISupportInitialize, IArrangedElement, IBindableComponent
 {
     public Gtk.Application Application { get; } = Forms.Application.Init();
+
     public string? UniqueKey { get; protected set; }
 
     public virtual IWidget Widget => (IWidget)GtkControl!;
@@ -246,7 +247,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                     if (args.Event.Button == 3)
                     {
                         ContextMenuStrip.Widget.ShowAll();
-                        ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                        ((Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
                     }
                 }
             }
@@ -1320,7 +1321,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected internal virtual bool ShowKeyboardCues { get; set; }
 
-
     public virtual IWindowTarget? WindowTarget { get; set; }
     public event EventHandler? AutoSizeChanged;
     public event EventHandler? BackColorChanged;
@@ -1459,7 +1459,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
         catch (Exception ex)
         {
-            Console.WriteLine("画版创建失败：" + ex.Message);
+            Trace.WriteLine(@"Failed to create graphics：" + ex.Message);
             throw;
         }
     }
@@ -2086,8 +2086,10 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-        private ArrangedElementCollection? arrangedElementCollection;
-        public ArrangedElementCollection? Children => arrangedElementCollection;
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+    private ArrangedElementCollection? arrangedElementCollection;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
+    public ArrangedElementCollection? Children => arrangedElementCollection;
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnResize(EventArgs e)
         {

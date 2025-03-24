@@ -37,8 +37,8 @@ public class DataGridViewCellValueEventArgs : EventArgs
 
     internal void SetProperties(int columnIndex, int rowIndex, object? value)
     {
-        Debug.Assert(columnIndex >= -1);
-        Debug.Assert(rowIndex >= -1);
+        Trace.Assert(columnIndex >= -1);
+        Trace.Assert(rowIndex >= -1);
         ColumnIndex = columnIndex;
         RowIndex = rowIndex;
         Value = value;

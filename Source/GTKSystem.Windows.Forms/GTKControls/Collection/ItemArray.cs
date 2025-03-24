@@ -68,7 +68,7 @@ internal partial class ItemArray : IComparer<Entry>
     {
         var mask = LastMask;
         LastMask <<= 1;
-        //Debug.Assert(s_lastMask > mask, "We have overflowed our state mask.");
+        //Trace.Assert(s_lastMask > mask, "We have overflowed our state mask.");
         return mask;
     }
 

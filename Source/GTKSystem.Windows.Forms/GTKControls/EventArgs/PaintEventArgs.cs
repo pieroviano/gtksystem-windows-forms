@@ -66,7 +66,7 @@ public class PaintEventArgs : EventArgs, IDisposable
     /// </summary>
     internal PaintEventArgs(IntPtr dc, Rectangle clipRect)
     {
-        Debug.Assert(dc != IntPtr.Zero, "dc is not initialized.");
+        Trace.Assert(dc != IntPtr.Zero, "dc is not initialized.");
 
         _dc = dc;
         ClipRectangle = clipRect;

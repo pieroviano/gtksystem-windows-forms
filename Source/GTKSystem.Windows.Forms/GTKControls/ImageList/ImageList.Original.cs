@@ -40,7 +40,7 @@ public sealed partial class ImageList
             _customTransparentColor = customTransparentColor;
             if ((options & OriginalOptions.CustomTransparentColor) == 0)
             {
-                Debug.Assert(customTransparentColor.Equals(Color.Transparent), "Specified a custom transparent color then told us to ignore it");
+                Trace.Assert(customTransparentColor.Equals(Color.Transparent), "Specified a custom transparent color then told us to ignore it");
             }
         }
     }

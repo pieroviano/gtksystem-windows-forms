@@ -4,16 +4,16 @@
 using System.Diagnostics;
 
 #if NET462_OR_GREATER
-namespace System.Drawing
+namespace System.Drawing;
 #else
-namespace System.Drawing.Gtk
+namespace System.Drawing.Gtk;
 #endif
+
+internal static class KnownColorNames
 {
-    internal static class KnownColorNames
+    //  Names of all colors (in order of definition in the KnownColor enum).
+    private static readonly string[] s_colorNameTable = new string[]
     {
-        //  Names of all colors (in order of definition in the KnownColor enum).
-        private static readonly string[] s_colorNameTable = new string[]
-        {
             // "System" colors, Part 1
             "ActiveBorder",
             "ActiveCaption",
@@ -196,12 +196,11 @@ namespace System.Drawing.Gtk
 
             // "Web" colors, Part 2
             "RebeccaPurple",
-        };
+    };
 
-        public static string KnownColorToName(KnownColor color)
-        {
-            Debug.Assert(color is > 0 and <= KnownColor.RebeccaPurple);
-            return s_colorNameTable[unchecked((int)color) - 1];
-        }
+    public static string KnownColorToName(KnownColor color)
+    {
+        Trace.Assert(color is > 0 and <= KnownColor.RebeccaPurple);
+        return s_colorNameTable[unchecked((int)color) - 1];
     }
 }

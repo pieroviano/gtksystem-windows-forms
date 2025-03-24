@@ -91,7 +91,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class from the specified data stream.</summary>
     /// <param name="stream">The data stream from which to load the <see cref="T:System.Drawing.Icon" />.</param>
     /// <exception cref="T:System.ArgumentException">The <paramref name="stream" /> parameter is <see langword="null" />.</exception>
-    public Icon(Stream? stream) : this(stream, 0, 0)
+    public Icon(Stream stream) : this(stream, 0, 0)
     {
     }
 
@@ -99,7 +99,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <param name="stream">The stream that contains the icon data.</param>
     /// <param name="size">The desired size of the icon.</param>
     /// <exception cref="T:System.ArgumentException">The <paramref name="stream" /> is <see langword="null" /> or does not contain image data.</exception>
-    public Icon(Stream? stream, Size size) : this(stream, size.Width, size.Height)
+    public Icon(Stream stream, Size size) : this(stream, size.Width, size.Height)
     {
     }
 
@@ -108,7 +108,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <param name="width">The width, in pixels, of the icon.</param>
     /// <param name="height">The height, in pixels, of the icon.</param>
     /// <exception cref="T:System.ArgumentException">The <paramref name="stream" /> parameter is <see langword="null" />.</exception>
-    public Icon(Stream? stream, int width, int height)
+    public Icon(Stream stream, int width, int height)
     {
         Width = width;
         Height = height;
@@ -124,7 +124,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class from the specified file name.</summary>
     /// <param name="fileName">The file to load the <see cref="T:System.Drawing.Icon" /> from.</param>
-    public Icon(string? fileName) : this(fileName, 0, 0)
+    public Icon(string fileName) : this(fileName, 0, 0)
     {
     }
 
@@ -132,7 +132,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <param name="fileName">The name and path to the file that contains the icon data.</param>
     /// <param name="size">The desired size of the icon.</param>
     /// <exception cref="T:System.ArgumentException">The <paramref name="string" /> is <see langword="null" /> or does not contain image data.</exception>
-    public Icon(string? fileName, Size size) : this(fileName, size.Width, size.Height)
+    public Icon(string fileName, Size size) : this(fileName, size.Width, size.Height)
     {
     }
 
@@ -141,7 +141,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <param name="width">The desired width of the <see cref="T:System.Drawing.Icon" />.</param>
     /// <param name="height">The desired height of the <see cref="T:System.Drawing.Icon" />.</param>
     /// <exception cref="T:System.ArgumentException">The <paramref name="string" /> is <see langword="null" /> or does not contain image data.</exception>
-    public Icon(string? fileName, int width, int height)
+    public Icon(string fileName, int width, int height)
     {
         FileName = fileName;
         Width = width;
@@ -181,7 +181,11 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <returns>An object that can be cast to an <see cref="T:System.Drawing.Icon" />.</returns>
     public object Clone()
     {
-        return new Icon(FileName, Width, Height) { Pixbuf = Pixbuf, PixbufData = (byte[]?)PixbufData?.Clone() };
+        if (FileName != null && !File.Exists(FileName))
+        {
+            throw new InvalidOperationException($"{FileName} does not exists");
+        }
+        return new Icon(FileName!, Width, Height) { Pixbuf = Pixbuf, PixbufData = (byte[]?)PixbufData?.Clone() };
     }
 
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Icon" />.</summary>
@@ -198,7 +202,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <exception cref="T:System.ArgumentException">The <paramref name="filePath" /> does not indicate a valid file.
     /// -or-
     /// The <paramref name="filePath" /> indicates a Universal Naming Convention (UNC) path.</exception>
-    public static Icon ExtractAssociatedIcon(string? filePath)
+    public static Icon ExtractAssociatedIcon(string filePath)
     {
         return new Icon(filePath);
     }
@@ -241,7 +245,7 @@ public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISeriali
 
     /// <summary>Converts this <see cref="T:System.Drawing.Icon" /> to a GDI+ <see cref="T:System.Drawing.Bitmap" />.</summary>
     /// <returns>A <see cref="T:System.Drawing.Bitmap" /> that represents the converted <see cref="T:System.Drawing.Icon" />.</returns>
-    public Bitmap? ToBitmap()
+    public Bitmap ToBitmap()
     {
         return new Bitmap(Width, Height) { PixbufData = PixbufData, Pixbuf = Pixbuf, FileName = FileName };
     }

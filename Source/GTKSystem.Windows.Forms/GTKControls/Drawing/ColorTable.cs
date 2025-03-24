@@ -6,7 +6,7 @@ using System.Reflection;
 namespace System.Drawing;
 
 #if NETSTANDARD
-using System.Drawing.Gtk;
+using SystemColors = Gtk.SystemColors;
 #endif
 
 internal static class ColorTable

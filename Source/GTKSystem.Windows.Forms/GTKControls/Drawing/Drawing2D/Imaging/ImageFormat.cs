@@ -7,6 +7,8 @@ namespace System.Drawing.Imaging;
 [TypeConverter(typeof(ImageFormatConverter))]
 public sealed class ImageFormat
 {
+    public static readonly ImageFormat? Default = new(new Guid("{b96b3caa-0728-11d3-9d7b-0000f81ef32e}"));
+
     private static readonly ImageFormat? memoryBmp = new(new Guid("{b96b3caa-0728-11d3-9d7b-0000f81ef32e}"));
 
     private static readonly ImageFormat? bmp = new(new Guid("{b96b3cab-0728-11d3-9d7b-0000f81ef32e}"));

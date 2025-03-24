@@ -11,7 +11,7 @@ public class DataGridViewRowHeightInfoPushedEventArgs : HandledEventArgs
 {
     internal DataGridViewRowHeightInfoPushedEventArgs(int rowIndex, int height, int minimumHeight) : base(false)
     {
-        Debug.Assert(rowIndex >= -1);
+        Trace.Assert(rowIndex >= -1);
         RowIndex = rowIndex;
         Height = height;
         MinimumHeight = minimumHeight;

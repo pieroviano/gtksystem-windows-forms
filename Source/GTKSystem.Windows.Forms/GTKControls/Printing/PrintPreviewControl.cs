@@ -5,6 +5,8 @@ using Gtk;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
+using Rectangle = System.Drawing.Rectangle;
+using Size = System.Drawing.Size;
 #if NETSTANDARD
 using System.Drawing.Gtk;
 #endif

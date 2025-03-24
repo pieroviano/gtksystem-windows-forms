@@ -13,19 +13,23 @@ namespace System.Drawing.Printing;
 /// </summary>
 public class MarginsConverter : ExpandableObjectConverter
 {
-    public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
+    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         => sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
-    public override bool CanConvertTo(ITypeDescriptorContext? context, Type destinationType)
+    public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         => destinationType == typeof(InstanceDescriptor) || base.CanConvertTo(context, destinationType);
 
-    public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object? value)
+    public override object? ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object? value)
     {
         if (value is string strValue)
         {
         }
         else
         {
+            if (context == null)
+                throw new ArgumentException(nameof(context));
+            if (culture == null)
+                throw new ArgumentException(nameof(culture));
             return base.ConvertFrom(context, culture, value);
         }
 
@@ -46,7 +50,7 @@ public class MarginsConverter : ExpandableObjectConverter
         for (var i = 0; i < values.Length; i++)
         {
             // Note: ConvertFromString will raise exception if value cannot be converted.
-            values[i] = (int)intConverter.ConvertFromString(context!, culture, tokens[i])!;
+            values[i] = (int)intConverter.ConvertFromString(context, culture, tokens[i])!;
         }
 
         if (values.Length != 4)
@@ -59,7 +63,7 @@ public class MarginsConverter : ExpandableObjectConverter
 
     private static TypeConverter GetIntConverter() => TypeDescriptor.GetConverter(typeof(int));
 
-    public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
+    public override object? ConvertTo(ITypeDescriptorContext context, CultureInfo? culture, object? value, Type destinationType)
     {
         if (value is Margins margins)
         {
@@ -72,10 +76,10 @@ public class MarginsConverter : ExpandableObjectConverter
                 var nArg = 0;
 
                 // Note: ConvertToString will raise exception if value cannot be converted.
-                args[nArg++] = intConverter.ConvertToString(context, culture, margins.Left);
-                args[nArg++] = intConverter.ConvertToString(context, culture, margins.Right);
-                args[nArg++] = intConverter.ConvertToString(context, culture, margins.Top);
-                args[nArg] = intConverter.ConvertToString(context, culture, margins.Bottom);
+                args[nArg++] = intConverter.ConvertToString(context, culture, margins.Left) ?? string.Empty;
+                args[nArg++] = intConverter.ConvertToString(context, culture, margins.Right) ?? string.Empty;
+                args[nArg++] = intConverter.ConvertToString(context, culture, margins.Top) ?? string.Empty;
+                args[nArg] = intConverter.ConvertToString(context, culture, margins.Bottom) ?? string.Empty;
 
                 return string.Join(sep, args);
             }

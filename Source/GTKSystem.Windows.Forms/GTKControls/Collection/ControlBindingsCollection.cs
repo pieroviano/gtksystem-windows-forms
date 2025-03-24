@@ -187,7 +187,7 @@ public class ControlBindingsCollection : BindingsCollection
 
     internal void CheckDuplicates(Binding binding)
     {
-        Debug.Assert(!string.IsNullOrEmpty(binding.PropertyName), "The caller should check for this.");
+        Trace.Assert(!string.IsNullOrEmpty(binding.PropertyName), "The caller should check for this.");
 
         for (var i = 0; i < Count; i++)
         {

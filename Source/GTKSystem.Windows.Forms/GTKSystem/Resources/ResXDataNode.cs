@@ -509,7 +509,7 @@ public sealed class ResXDataNode : ISerializable
         else
         {
             // if mimeTypeName and typeName are not filled in, the value must be a string
-            Debug.Assert(_value is string, "Resource entries with no Type or MimeType must be encoded as strings");
+            Trace.Assert(_value is string, "Resource entries with no Type or MimeType must be encoded as strings");
         }
 
         return result;

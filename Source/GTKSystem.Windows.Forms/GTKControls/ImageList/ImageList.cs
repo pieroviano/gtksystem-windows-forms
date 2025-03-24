@@ -301,11 +301,11 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     private static unsafe void CopyBitmapData(BitmapData sourceData, BitmapData targetData)
     {
-        Debug.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == 32);
-        Debug.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == Image.GetPixelFormatSize(targetData.PixelFormat));
-        Debug.Assert(targetData.Width == sourceData.Width);
-        Debug.Assert(targetData.Height == sourceData.Height);
-        Debug.Assert(targetData.Stride == targetData.Width * 4);
+        Trace.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == 32);
+        Trace.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == Image.GetPixelFormatSize(targetData.PixelFormat));
+        Trace.Assert(targetData.Width == sourceData.Width);
+        Trace.Assert(targetData.Height == sourceData.Height);
+        Trace.Assert(targetData.Stride == targetData.Width * 4);
 
         // do the actual copy
         var offsetSrc = 0;

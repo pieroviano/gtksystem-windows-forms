@@ -33,6 +33,7 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
             }
         }
     }
+
     private Pixbuf? pixbuf;
     public Pixbuf? Pixbuf
     {
@@ -413,7 +414,11 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
             {
                 RawFormat = ImageFormat.Webp;
             }
-			return RawFormat;
+            else
+            {
+                RawFormat = ImageFormat.Default;
+            }
+			return RawFormat!;
         }
 		/// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file or stream.</summary>
 		/// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>

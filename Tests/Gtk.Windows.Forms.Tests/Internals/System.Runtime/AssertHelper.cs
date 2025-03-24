@@ -26,7 +26,7 @@ static class AssertHelper
         }
         finally
         {
-            Debug.Assert(false, message);
+            Trace.Assert(false, message);
         }
     }
 
