@@ -20,13 +20,14 @@ public class ImageUtility
                     pix.CopyArea(0, 0, Math.Min(pix.Width, showpix.Width), Math.Min(pix.Height, showpix.Height), showpix, 0, 0);
                 }
                 else if (sizeMode == PictureBoxSizeMode.StretchImage || backgroundMode == ImageLayout.Stretch)
-                { //缩放取全图铺满
+                {
+                    // Zoom to fill the entire image
                     var newpix = pix.ScaleSimple(width, height, InterpType.Tiles);
                     newpix.CopyArea(0, 0, newpix.Width, newpix.Height, showpix, 0, 0);
                 }
                 else if (sizeMode == PictureBoxSizeMode.CenterImage || backgroundMode == ImageLayout.Center)
                 {
-                    //取原图中间
+                    // Take the middle of the original image
                     var offsetx = (pix.Width - showpix.Width) / 2;
                     var offsety = (pix.Height - showpix.Height) / 2;
                     pix.CopyArea(offsetx > 0 ? offsetx : 0, offsety > 0 ? offsety : 0, Math.Min(pix.Width, showpix.Width), Math.Min(pix.Height, showpix.Height), showpix, offsetx < 0 ? -offsetx : 0, offsety < 0 ? -offsety : 0);
@@ -35,7 +36,7 @@ public class ImageUtility
                 {
                     if (pix.Width / width > pix.Height / height)
                     {
-                        //图片的宽高比大于设置宽高比，以宽为准
+                        // The image's aspect ratio is greater than the set aspect ratio, the width will prevail
                         var newpix = pix.ScaleSimple(width, width * pix.Height / pix.Width, InterpType.Tiles);
                         newpix.CopyArea(0, 0, newpix.Width, newpix.Height, showpix, (showpix.Width - newpix.Width) / 2, (showpix.Height - newpix.Height) / 2);
                     }
@@ -52,7 +53,7 @@ public class ImageUtility
 
                 if (backgroundMode == ImageLayout.Tile)
                 {
-                    //平铺背景图，原图铺满
+                    // Tiled background image, full of original image
                     if (pix.Width < width || pix.Height < height)
                     {
                         using var surface2 = new ImageSurface(Format.ARGB32, width, height);
@@ -145,7 +146,7 @@ public class ImageUtility
         }
     }
     /// <summary>
-    /// PictureBox图像显示模式
+    /// PictureBox Image Display Mode
     /// </summary>
     /// <param name="srcImageBytes"></param>
     /// <param name="width"></param>
@@ -159,7 +160,7 @@ public class ImageUtility
 
     }
     /// <summary>
-    /// PictureBox图像显示模式
+    /// PictureBox Image Display Mode
     /// </summary>
     /// <param name="srcPixbuf"></param>
     /// <param name="width"></param>
@@ -173,12 +174,12 @@ public class ImageUtility
 
         if (sizeMode == PictureBoxSizeMode.Normal)
         {
-            //从左上角开始原图铺开，截剪多余
+            // Start from the upper left corner of the original image and cut off the excess
             srcPixbuf?.Scale(destImage, 0, 0, Math.Min(srcPixbuf.Width, destImage.Width), Math.Min(srcPixbuf.Height, destImage.Height), 0, 0, 1, 1, InterpType.Tiles);
         }
         else if (sizeMode == PictureBoxSizeMode.StretchImage)
         {
-            //自由缩放取全图铺满
+            // Free zoom to fill the entire image
             if (srcPixbuf != null)
             {
                 destImage = srcPixbuf.ScaleSimple(width, height, InterpType.Tiles);
@@ -186,18 +187,18 @@ public class ImageUtility
         }
         else if (sizeMode == PictureBoxSizeMode.CenterImage)
         {
-            //取原图中间
+            // Take the middle of the original image
             var offsetx = (destImage.Width - srcPixbuf?.Width??0) / 2;
             var offsety = (destImage.Height - srcPixbuf?.Height??0) / 2;
             srcPixbuf?.Scale(destImage, 0, 0, destImage.Width, destImage.Height, offsetx, offsety, 1, 1, InterpType.Tiles);
         }
         else if (sizeMode == PictureBoxSizeMode.Zoom)
         {
-            //原图比例缩放，显示全图
+            // Scale the original image to display the full image
             double scaleX = destImage.Width * 1f / (srcPixbuf?.Width??0);
             double scaleY = destImage.Height * 1f / (srcPixbuf?.Height??0);
             var scaleR = Math.Min(scaleX, scaleY);
-            //按最小缩放
+            // Zoom to minimum
             var srcWidth = scaleX > scaleY ? (srcPixbuf?.Width??0) * scaleY : (srcPixbuf?.Width??0) * scaleX;
             var srcHeight = scaleX > scaleY ? (srcPixbuf?.Height ?? 0) * scaleY : (srcPixbuf?.Height ?? 0) * scaleX;
 
@@ -208,13 +209,13 @@ public class ImageUtility
         }
         else if (sizeMode == PictureBoxSizeMode.AutoSize)
         {
-            //原图不缩放，撑开PictureBox
+            // The original image is not scaled, expand the PictureBox
             //destImage = srcPixbuf;
             srcPixbuf?.Scale(destImage, 0, 0, Math.Min(srcPixbuf.Width, destImage.Width), Math.Min(srcPixbuf.Height, destImage.Height), 0, 0, 1, 1, InterpType.Tiles);
         }
     }
     /// <summary>
-    /// 背景图像显示模式
+    /// Background image display mode
     /// </summary>
     /// <param name="srcImageBytes"></param>
     /// <param name="width"></param>
@@ -228,7 +229,7 @@ public class ImageUtility
     }
 
     /// <summary>
-    /// 背景图像显示模式
+    /// Background image display mode
     /// </summary>
     /// <param name="srcPixbuf"></param>
     /// <param name="width"></param>
@@ -242,27 +243,28 @@ public class ImageUtility
 
         if (layoutMode == ImageLayout.None)
         {
-            //从左上角开始原图铺开，截剪多余
+            // Start from the upper left corner of the original image and cut off the excess
             srcPixbuf.Scale(destImage, 0, 0, Math.Min(srcPixbuf.Width, destImage.Width), Math.Min(srcPixbuf.Height, destImage.Height), 0, 0, 1, 1, InterpType.Tiles);
         }
         else if (layoutMode == ImageLayout.Stretch)
-        { //自由缩放取全图铺满
+        {
+            // Free zoom to fill the entire image
             destImage = srcPixbuf.ScaleSimple(width, height, InterpType.Tiles);
         }
         else if (layoutMode == ImageLayout.Center)
         {
-            //取原图中间
+            // Take the middle of the original image
             var offsetx = (destImage.Width - srcPixbuf.Width) / 2;
             var offsety = (destImage.Height - srcPixbuf.Height) / 2;
             srcPixbuf.Scale(destImage, 0, 0, destImage.Width, destImage.Height, offsetx, offsety, 1, 1, InterpType.Tiles);
         }
         else if (layoutMode == ImageLayout.Zoom)
         {
-            //原图比例缩放，显示全图
+            // Scale the original image to display the full image
             double scaleX = destImage.Width * 1f / srcPixbuf.Width;
             double scaleY = destImage.Height * 1f / srcPixbuf.Height;
             var scaleR = Math.Min(scaleX, scaleY);
-            //按最小缩放
+            // Zoom to minimum
             var srcWidth = scaleX > scaleY ? srcPixbuf.Width * scaleY : srcPixbuf.Width * scaleX;
             var srcHeight = scaleX > scaleY ? srcPixbuf.Height * scaleY : srcPixbuf.Height * scaleX;
 
@@ -273,8 +275,8 @@ public class ImageUtility
         }
         else if (layoutMode == ImageLayout.Tile)
         {
-            //原图不缩放重复直到铺满
-            //平铺背景图，原图铺满
+            // The original image is not scaled and repeated until it is full.
+            // Tiled background image, full of original image
             if (srcPixbuf.Width < width || srcPixbuf.Height < height)
             {
                 using var surface2 = new ImageSurface(Format.ARGB32, width, height);

@@ -62,12 +62,13 @@ public class DataGridViewRowTest : TestHelper
     [Test]
     public void Height_SetHeightLessThanMinHeightSilentlySetsToMinHeight()
     {
-        var row = new DataGridViewRow();
-        // Setup
-        row.MinimumHeight = 5;
-
-        // Execute
-        row.Height = 2;
+        var row = new DataGridViewRow
+        {
+            // Setup
+            MinimumHeight = 5,
+            // Execute
+            Height = 2
+        };
 
         // Verify
         Assert.AreEqual(5, row.Height, "Height didn't get set to MinimumHeight");
@@ -84,9 +85,11 @@ public class DataGridViewRowTest : TestHelper
     [Test]
     public void MinimumHeight_SetValues()
     {
-        var row = new DataGridViewRow();
-        row.MinimumHeight = 40;
-        row.Height = 50;
+        var row = new DataGridViewRow
+        {
+            MinimumHeight = 40,
+            Height = 50
+        };
         Assert.AreEqual(40, row.MinimumHeight, "#B1");
         Assert.AreEqual(50, row.Height, "#B2");
     }
@@ -94,9 +97,11 @@ public class DataGridViewRowTest : TestHelper
     [Test]
     public void MinimumHeight_IncreaseMinHeightChangesHeight()
     {
-        var row = new DataGridViewRow();
-        row.MinimumHeight = 20;
-        row.Height = 20;
+        var row = new DataGridViewRow
+        {
+            MinimumHeight = 20,
+            Height = 20
+        };
         Assert.AreEqual(20, row.MinimumHeight, "#C1");
         Assert.AreEqual(20, row.Height, "#C2");
         row.MinimumHeight = 40;
@@ -109,9 +114,11 @@ public class DataGridViewRowTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            var row = new DataGridViewRow();
-            // We expect the next line to throw an ArgumentOutOfRangeException
-            row.MinimumHeight = 1;
+            var row = new DataGridViewRow
+            {
+                // We expect the next line to throw an ArgumentOutOfRangeException
+                MinimumHeight = 1
+            };
         });
     }
 

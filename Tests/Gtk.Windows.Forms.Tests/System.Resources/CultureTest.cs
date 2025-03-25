@@ -5,10 +5,8 @@
 //     Robert Jordan <robertj@gmx.net>
 //
 
-using System.Collections;
 using System.Globalization;
 using System.Drawing;
-using System.Resources;
 using System.Resources;
 
 namespace GtkTests.System.Resources;

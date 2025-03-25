@@ -26,11 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Reflection;
-using System.Drawing;
 using System.Resources;
-using System.ComponentModel.Design;
-using System.Resources;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
@@ -43,9 +39,8 @@ public class ResXDataNodeFileRefGetValueTests : ResourcesTestHelper
     {
         Assert.Throws<TypeLoadException>(() =>
         {
-            ResXDataNode originalNode, returnedNode;
-            originalNode = GetNodeFileRefToSerializable("ser.bbb", false);
-            returnedNode = GetNodeFromResXReader(originalNode);
+            var originalNode = GetNodeFileRefToSerializable("ser.bbb", false);
+            var returnedNode = GetNodeFromResXReader(originalNode);
 
             Assert.IsNotNull(returnedNode, "#A1");
             var obj = returnedNode.GetValue((AssemblyName[])null);

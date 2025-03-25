@@ -28,11 +28,7 @@
 
 using System.Reflection;
 using System.Resources;
-using System.Collections;
-using System.Text;
 using System.ComponentModel.Design;
-using System.Resources;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
@@ -65,15 +61,17 @@ public class ResXDataNodeWriteBehavior : ResourcesTestHelper {
     [Test]
     public void ResXNullRef_WriteBack ()
     {
-        var node = new ResXDataNode ("NullRef", (object) null);
-        node.Comment = "acomment";
+        var node = new ResXDataNode ("NullRef", (object) null!)
+        {
+            Comment = "acomment"
+        };
         var returnedNode = GetNodeFromResXReader (node);
         Assert.IsNotNull (returnedNode, "#A1");
-        Assert.IsNull (returnedNode.GetValue ((AssemblyName []) null), "#A2");
+        Assert.IsNull (returnedNode.GetValue ((AssemblyName []) null!), "#A2");
         Assert.AreEqual ("acomment", returnedNode.Comment,"#A3");
         var finalNode = GetNodeFromResXReader (returnedNode);
         Assert.IsNotNull (finalNode, "#A4");
-        Assert.IsNull (finalNode.GetValue ((AssemblyName []) null), "#A5");
+        Assert.IsNull (finalNode.GetValue ((AssemblyName []) null!), "#A5");
         Assert.AreEqual ("acomment", finalNode.Comment,"#A6");
     }
 
@@ -93,16 +91,18 @@ public class ResXDataNodeWriteBehavior : ResourcesTestHelper {
     public void BinTypeConverter_WriteBack ()
     {
         var mb = new MyBinType ("contents");
-        var node = new ResXDataNode ("aname", mb);
-        node.Comment = "acomment";
+        var node = new ResXDataNode ("aname", mb)
+        {
+            Comment = "acomment"
+        };
         var returnedNode = GetNodeFromResXReader (node);
         Assert.IsNotNull (returnedNode, "#A1");
-        var returnedMB = (MyBinType) returnedNode.GetValue ((AssemblyName []) null);
+        var returnedMB = (MyBinType) returnedNode.GetValue ((AssemblyName []) null!)!;
         Assert.AreEqual ("contents", returnedMB.Value, "#A2");
         Assert.AreEqual ("acomment", returnedNode.Comment, "#A3");
         var finalNode = GetNodeFromResXReader (returnedNode);
         Assert.IsNotNull (finalNode, "#A4");
-        var finalMB = (MyBinType) finalNode.GetValue ((AssemblyName []) null);
+        var finalMB = (MyBinType) finalNode.GetValue ((AssemblyName []) null!)!;
         Assert.AreEqual ("contents", finalMB.Value, "#A5");
         Assert.AreEqual ("acomment", finalNode.Comment, "#A6");
     }
@@ -111,24 +111,25 @@ public class ResXDataNodeWriteBehavior : ResourcesTestHelper {
     public void ByteArray_WriteBack ()
     {
         var testBytes = new byte [] { 1,2,3,4,5,6,7,8,9,10 };
-        var node = new ResXDataNode ("aname", testBytes);
-        node.Comment = "acomment";
+        var node = new ResXDataNode ("aname", testBytes)
+        {
+            Comment = "acomment"
+        };
         var returnedNode = GetNodeFromResXReader (node);
         Assert.IsNotNull (returnedNode, "#A1");
-        Assert.AreEqual (testBytes, returnedNode.GetValue ((AssemblyName []) null), "#A2");
+        Assert.AreEqual (testBytes, returnedNode.GetValue ((AssemblyName []) null!), "#A2");
         Assert.AreEqual ("acomment", returnedNode.Comment, "#A3");
         var finalNode = GetNodeFromResXReader (returnedNode);
         Assert.IsNotNull (finalNode,"#A4");
-        Assert.AreEqual (testBytes, finalNode.GetValue ((AssemblyName []) null), "#A5");
+        Assert.AreEqual (testBytes, finalNode.GetValue ((AssemblyName []) null!), "#A5");
         Assert.AreEqual ("acomment", finalNode.Comment, "#A6");
     }
 
     [Test]
     public void ChangesToReturnedByteArrayNotLaterWrittenBack ()
     {
-        ResXDataNode originalNode, returnedNode, finalNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeEmdeddedBytes1To10 ();
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
 
@@ -139,7 +140,7 @@ public class ResXDataNodeWriteBehavior : ResourcesTestHelper {
         Assert.AreEqual (1, newBytes [0], "A3");
         newBytes [0] = 99;
 
-        finalNode = GetNodeFromResXReader (returnedNode);
+        var finalNode = GetNodeFromResXReader (returnedNode);
 			
         Assert.IsNotNull (finalNode, "#A4");
 

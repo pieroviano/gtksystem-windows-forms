@@ -2,9 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Color = System.Drawing.Color;
+using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
 
 /// <summary>
 ///  This is a small class that can efficiently store property values.

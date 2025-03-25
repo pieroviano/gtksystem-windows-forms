@@ -7,11 +7,8 @@
 // (C) 2005 Novell, Inc. (http://www.novell.com)
 //
 
-using System;
 using System.Drawing;
 using System.Windows.Forms;
-
-using NUnit.Framework;
 
 namespace GtkTests.System.Windows.Forms;
 

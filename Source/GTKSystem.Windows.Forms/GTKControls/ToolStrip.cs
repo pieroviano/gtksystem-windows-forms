@@ -6,9 +6,10 @@
  */
 
 using Gtk;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Size = System.Drawing.Size;
 
 public class ToolStrip : Control
 {

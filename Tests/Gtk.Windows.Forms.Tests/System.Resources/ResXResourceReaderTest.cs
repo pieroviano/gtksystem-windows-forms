@@ -7,15 +7,11 @@
 //     Gary Barnett <gary.barnett.mono@gmail.com>
 
 using System.Collections;
-using System.Drawing;
 using System.Globalization;
 using System.Resources;
 using System.Text;
-using System.Windows.Forms;
 using System.Xml;
-using System.Runtime.Serialization;
 using System.Reflection;
-using System.Resources;
 using GtkTests.Helpers;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;

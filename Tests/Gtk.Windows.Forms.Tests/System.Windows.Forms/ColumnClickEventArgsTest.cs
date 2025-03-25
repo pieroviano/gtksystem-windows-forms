@@ -24,14 +24,7 @@
 //
 //
 
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
-using System.Xml;
-using NUnit.Framework;
-using System.Data;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -41,9 +34,7 @@ public class ColumnClickEventArgsTest : TestHelper
     [Test]
     public void CtorTest ()
     {
-        ColumnClickEventArgs ce;
-
-        ce = new ColumnClickEventArgs (0);
+        var ce = new ColumnClickEventArgs (0);
         Assert.AreEqual (0, ce.Column, "1");
 
         ce = new ColumnClickEventArgs (-1);

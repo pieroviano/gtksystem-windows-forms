@@ -1,5 +1,10 @@
 namespace System.Drawing.Drawing2D;
 
+using Color = System.Drawing.Color;
+using RectangleF = System.Drawing.RectangleF;
+using Point = System.Drawing.Point;
+using PointF = System.Drawing.PointF;
+
 /// <summary>Encapsulates a <see cref="T:System.Drawing.Brush" /> object that fills the interior of a <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> object with a gradient. This class cannot be inherited.</summary>
 public sealed class PathGradientBrush : Brush
 {

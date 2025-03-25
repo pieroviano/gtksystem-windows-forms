@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
 
 public abstract class DataGridViewCell
 {

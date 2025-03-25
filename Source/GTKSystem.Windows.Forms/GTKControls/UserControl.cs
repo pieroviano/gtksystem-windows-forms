@@ -10,6 +10,8 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
+using SizeF = System.Drawing.SizeF;
+
 [DesignerCategory("UserControl")]
 [ToolboxItem(true)]
 public class UserControl : ContainerControl
@@ -60,7 +62,7 @@ public class UserControl : ContainerControl
         OnPaint(e);
     }
 
-    public Drawing.SizeF AutoScaleDimensions { get; set; }
+    public SizeF AutoScaleDimensions { get; set; }
     public AutoScaleMode AutoScaleMode { get; set; }
     public override ControlCollection Controls => _controls;
 

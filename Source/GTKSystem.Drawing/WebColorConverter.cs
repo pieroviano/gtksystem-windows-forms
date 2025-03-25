@@ -4,12 +4,9 @@ using System.Globalization;
 using System.Text;
 namespace System.Drawing;
 
-#if NETSTANDARD
-using WebColor = Gtk.Color;
-#else
-using WebColor = Color;
-#endif
+using GtkColor = System.Drawing.Color;
 
+using GtkKnownColor = System.Drawing.KnownColor;
 
 /// <summary>Converts a predefined color name or an RGB color value to and from a <see cref="T:System.Drawing.Color" /> object.</summary>
 public class WebColorConverter : ColorConverter
@@ -31,7 +28,7 @@ public class WebColorConverter : ColorConverter
         if (value is string)
         {
             string str = ((string)value).Trim();
-            Color empty = Color.Empty;
+            GtkColor empty = GtkColor.Empty;
             if (string.IsNullOrEmpty(str))
             {
                 return empty;
@@ -42,7 +39,7 @@ public class WebColorConverter : ColorConverter
             }
             if (string.Compare(str, "LightGrey", CultureInfo.InvariantCulture, CompareOptions.IgnoreCase) == 0)
             {
-                return Color.LightGray;
+                return GtkColor.LightGray;
             }
             if (htmlSysColorTable == null)
             {
@@ -51,7 +48,7 @@ public class WebColorConverter : ColorConverter
             object item = htmlSysColorTable![str];
             if (item != null)
             {
-                return (Color)item;
+                return (GtkColor)item;
             }
         }
         return base.ConvertFrom(context, culture, value);
@@ -73,12 +70,12 @@ public class WebColorConverter : ColorConverter
         }
         if (destinationType == typeof(string) && value != null)
         {
-            var color = (WebColor)value;
-            if (color == WebColor.Empty)
+            var color = (GtkColor)value;
+            if (color == GtkColor.Empty)
             {
                 return string.Empty;
             }
-            if (!color.IsKnownColor)
+            if (!color.IsKnownColor())
             {
                 StringBuilder stringBuilder = new StringBuilder("#", 7);
                 byte r = color.R;
@@ -103,33 +100,33 @@ public class WebColorConverter : ColorConverter
     {
         Hashtable hashtables = new Hashtable(StringComparer.OrdinalIgnoreCase)
         {
-            ["activeborder"] = WebColor.FromKnownColor(KnownColor.ActiveBorder),
-            ["activecaption"] = WebColor.FromKnownColor(KnownColor.ActiveCaption),
-            ["appworkspace"] = WebColor.FromKnownColor(KnownColor.AppWorkspace),
-            ["background"] = WebColor.FromKnownColor(KnownColor.Desktop),
-            ["buttonface"] = WebColor.FromKnownColor(KnownColor.Control),
-            ["buttonhighlight"] = WebColor.FromKnownColor(KnownColor.ControlLightLight),
-            ["buttonshadow"] = WebColor.FromKnownColor(KnownColor.ControlDark),
-            ["buttontext"] = WebColor.FromKnownColor(KnownColor.ControlText),
-            ["captiontext"] = WebColor.FromKnownColor(KnownColor.ActiveCaptionText),
-            ["graytext"] = WebColor.FromKnownColor(KnownColor.GrayText),
-            ["highlight"] = WebColor.FromKnownColor(KnownColor.Highlight),
-            ["highlighttext"] = WebColor.FromKnownColor(KnownColor.HighlightText),
-            ["inactiveborder"] = WebColor.FromKnownColor(KnownColor.InactiveBorder),
-            ["inactivecaption"] = WebColor.FromKnownColor(KnownColor.InactiveCaption),
-            ["inactivecaptiontext"] = WebColor.FromKnownColor(KnownColor.InactiveCaptionText),
-            ["infobackground"] = WebColor.FromKnownColor(KnownColor.Info),
-            ["infotext"] = WebColor.FromKnownColor(KnownColor.InfoText),
-            ["menu"] = WebColor.FromKnownColor(KnownColor.Menu),
-            ["menutext"] = WebColor.FromKnownColor(KnownColor.MenuText),
-            ["scrollbar"] = WebColor.FromKnownColor(KnownColor.ScrollBar),
-            ["threeddarkshadow"] = WebColor.FromKnownColor(KnownColor.ControlDarkDark),
-            ["threedface"] = WebColor.FromKnownColor(KnownColor.Control),
-            ["threedhighlight"] = WebColor.FromKnownColor(KnownColor.ControlLight),
-            ["threedlightshadow"] = WebColor.FromKnownColor(KnownColor.ControlLightLight),
-            ["window"] = WebColor.FromKnownColor(KnownColor.Window),
-            ["windowframe"] = WebColor.FromKnownColor(KnownColor.WindowFrame),
-            ["windowtext"] = WebColor.FromKnownColor(KnownColor.WindowText)
+            ["activeborder"] = GtkKnownColor.ActiveBorder.FromKnownColor(),
+            ["activecaption"] = GtkKnownColor.ActiveCaption.FromKnownColor(),
+            ["appworkspace"] = GtkKnownColor.AppWorkspace.FromKnownColor(),
+            ["background"] = GtkKnownColor.Desktop.FromKnownColor(),
+            ["buttonface"] = GtkKnownColor.Control.FromKnownColor(),
+            ["buttonhighlight"] = GtkKnownColor.ControlLightLight.FromKnownColor(),
+            ["buttonshadow"] = GtkKnownColor.ControlDark.FromKnownColor(),
+            ["buttontext"] = GtkKnownColor.ControlText.FromKnownColor(),
+            ["captiontext"] = GtkKnownColor.ActiveCaptionText.FromKnownColor(),
+            ["graytext"] = GtkKnownColor.GrayText.FromKnownColor(),
+            ["highlight"] = GtkKnownColor.Highlight.FromKnownColor(),
+            ["highlighttext"] = GtkKnownColor.HighlightText.FromKnownColor(),
+            ["inactiveborder"] = GtkKnownColor.InactiveBorder.FromKnownColor(),
+            ["inactivecaption"] = GtkKnownColor.InactiveCaption.FromKnownColor(),
+            ["inactivecaptiontext"] = GtkKnownColor.InactiveCaptionText.FromKnownColor(),
+            ["infobackground"] = GtkKnownColor.Info.FromKnownColor(),
+            ["infotext"] = GtkKnownColor.InfoText.FromKnownColor(),
+            ["menu"] = GtkKnownColor.Menu.FromKnownColor(),
+            ["menutext"] = GtkKnownColor.MenuText.FromKnownColor(),
+            ["scrollbar"] = GtkKnownColor.ScrollBar.FromKnownColor(),
+            ["threeddarkshadow"] = GtkKnownColor.ControlDarkDark.FromKnownColor(),
+            ["threedface"] = GtkKnownColor.Control.FromKnownColor(),
+            ["threedhighlight"] = GtkKnownColor.ControlLight.FromKnownColor(),
+            ["threedlightshadow"] = GtkKnownColor.ControlLightLight.FromKnownColor(),
+            ["window"] = GtkKnownColor.Window.FromKnownColor(),
+            ["windowframe"] = GtkKnownColor.WindowFrame.FromKnownColor(),
+            ["windowtext"] = GtkKnownColor.WindowText.FromKnownColor()
         };
         htmlSysColorTable = hashtables;
     }

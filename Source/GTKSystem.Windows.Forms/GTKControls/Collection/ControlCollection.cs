@@ -13,6 +13,10 @@ using Container = Gtk.Container;
 
 namespace System.Windows.Forms;
 
+using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
+
 public partial class Control
 {
     public class ControlCollection : ArrangedElementCollection, IList, ICloneable
@@ -226,7 +230,7 @@ public partial class Control
                 }
             }
         }
-        private Widget GetFrame(Widget widget)
+        private Widget? GetFrame(Widget widget)
         {
             var parent = widget.Parent;
             while (parent != null)
@@ -251,7 +255,7 @@ public partial class Control
         }
         public virtual void Add(Type itemType, Control item)
         {
-            //重载处理
+            // Overload handling
             Add(item);
         }
 
@@ -516,7 +520,7 @@ public partial class Control
 
         public IArrangedElement Container => throw new NotImplementedException();
 
-        public ArrangedElementCollection? Children => throw new NotImplementedException();
+        public ArrangedElementCollection Children => throw new NotImplementedException();
 
         public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -529,6 +533,8 @@ public partial class Control
                 _widget.Dispose();
                 _widget = null;
             }
+            OnDisposed(EventArgs.Empty);
+            GC.SuppressFinalize(this);
         }
 
         public Size GetPreferredSize(Size proposedSize)
@@ -542,6 +548,11 @@ public partial class Control
 
         public void SetBounds(Rectangle bounds, BoundsSpecified specified)
         {
+        }
+
+        protected virtual void OnDisposed(EventArgs e)
+        {
+            Disposed?.Invoke(this, e);
         }
     }
 }

@@ -42,7 +42,7 @@ public class CommonDialogsTest : TestHelper
     ColorDialog cd;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         ofd.Dispose();
         sfd.Dispose();

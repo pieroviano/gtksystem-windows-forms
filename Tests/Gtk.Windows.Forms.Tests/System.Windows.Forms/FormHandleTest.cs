@@ -411,8 +411,7 @@ public class FormHandleTest : TestHelper
         // Included just to absolutely certain.
         var c = new ProtectedPropertyForm ();
 
-        object o;
-        o = c.PublicCreateParams;
+        object o = c.PublicCreateParams;
         Assert.IsFalse (c.IsHandleCreated, "A2");
         o = c.PublicDefaultCursor;
         Assert.IsFalse (c.IsHandleCreated, "A3");
@@ -467,7 +466,7 @@ public class FormHandleTest : TestHelper
     readonly Form invokeform = new();
 
     [OneTimeTearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         invokeform.Dispose();
     }

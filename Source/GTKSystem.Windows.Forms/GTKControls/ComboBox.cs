@@ -151,33 +151,35 @@ public partial class ComboBox : ListControl
 
     public override string Text { get => self.Entry.Text; set => self.Entry.Text = value ?? string.Empty; }
 
-        public object SelectedItem { 
-            get { return SelectedIndex == -1 ? null : itemsData[SelectedIndex]; }
+        public object? SelectedItem { 
+            get => SelectedIndex == -1 ? null : itemsData[SelectedIndex];
             set { var _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
         }
         internal int _selectedIndex;
-        public override int SelectedIndex { get { return self.Active; } set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
-        public override object SelectedValue { get { return self.ActiveId; } set => self.ActiveId = value?.ToString(); }
-        public ObjectCollection Items { get { return itemsData; } }
-        public override string GetItemText(object item)
+        public override int SelectedIndex { get => self.Active;
+            set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
+        public override object? SelectedValue { get => self.ActiveId;
+            set => self.ActiveId = value?.ToString(); }
+        public ObjectCollection Items => itemsData;
+
+        public override string GetItemText(object? item)
         {
             if (item is ObjectCollection.Entry entry)
             {
-                var type = entry.Item.GetType();
+                var type = entry.Item?.GetType();
                 if (entry.Item is DataRow dr)
-                    return dr[DisplayMember]?.ToString();
-                else if (type.IsValueType && type.IsPrimitive)
-                    return type.GetProperty(DisplayMember).GetValue(entry)?.ToString();
-                else
-                    return item?.ToString();
+                    return dr[DisplayMember]?.ToString()??string.Empty;
+                if (type is { IsValueType: true, IsPrimitive: true })
+                    return type.GetProperty(DisplayMember)?.GetValue(entry)?.ToString()??string.Empty;
+                return item.ToString()?? string.Empty;
             }
-            return item?.ToString();
+            return item?.ToString() ?? string.Empty;
         }
         public string NativeGetItemText(int index)
         {
             self.Model.GetIter(out var iter, new TreePath(new int[] { index }));
             var val = self.Model.GetValue(iter, 1);
-            return val?.ToString();
+            return val?.ToString() ?? string.Empty;
         }
         public void NativeAdd(int index, string value, string text)
         {
@@ -193,8 +195,8 @@ public partial class ComboBox : ListControl
         }
         private bool _sorted;
         public bool Sorted { get=> _sorted; set=> _sorted = value; }
-        public object _DataSource = null!;
-        public override object DataSource
+        public object? _DataSource;
+        public override object? DataSource
         {
             get => _DataSource;
             set {

@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Windows.Forms;
-using GtkTests.System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -19,12 +18,9 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorLayoutEvents ()
     {
-        Panel p;
-        Button b;
+        var p = new Panel ();
 
-        p = new Panel ();
-
-        b = new Button ();
+        var b = new Button ();
         p.Controls.Add (b);
 
         p.Layout += p_Layout;

@@ -29,7 +29,6 @@ using System.Reflection;
 using System.Drawing;
 using System.Resources;
 using System.ComponentModel.Design;
-using System.Resources;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
@@ -40,13 +39,11 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
     [Test]
     public void CanGetStrongNameFromGetValueTypeNameWithOnlyFullNameAsTypeByProvidingAssemblyName ()
     {
-        ResXDataNode originalNode, returnedNode;
-
         var aName = GetType ().Assembly.FullName;
         AssemblyName [] assemblyNames = new AssemblyName [] { new(aName) };
 
-        originalNode = GetNodeFileRefToSerializable ("ser.bbb", false);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeFileRefToSerializable ("ser.bbb", false);
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var typeName = returnedNode.GetValueTypeName (assemblyNames);
@@ -55,10 +52,8 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
 
     public void CanGetValueTypeNameWithOnlyFullNameAsType ()
     {
-        ResXDataNode originalNode, returnedNode;
-
-        originalNode = GetNodeFileRefToSerializable ("ser.bbb", false);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeFileRefToSerializable ("ser.bbb", false);
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var typeName = returnedNode.GetValueTypeName ((AssemblyName []) null);
@@ -68,9 +63,8 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
     [Test]
     public void ITRSUsedWhenNodeFromReader ()
     {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeFileRefToSerializable ("ser.bbb",true);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeFileRefToSerializable ("ser.bbb",true);
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var returnedType = returnedNode.GetValueTypeName (new ReturnSerializableSubClassITRS ());
@@ -80,8 +74,7 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
     [Test]
     public void ITRSUsedWhenNodeCreatedNew ()
     {
-        ResXDataNode node;
-        node = GetNodeFileRefToSerializable ("ser.bbb",true);
+        var node = GetNodeFileRefToSerializable ("ser.bbb",true);
 
         var returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
         Assert.AreEqual ((typeof (serializableSubClass)).AssemblyQualifiedName, returnedType, "#A1");

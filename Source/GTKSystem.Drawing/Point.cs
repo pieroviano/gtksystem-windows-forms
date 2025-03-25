@@ -1,12 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NET462_OR_GREATER
 using System.ComponentModel;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
-#else
-namespace System.Drawing.Gtk;
+
+#if CONVERT
+extern alias sd;
+using SdPoint = sd::System.Drawing.Point;
 #endif
 
 /// <summary>
@@ -22,13 +24,13 @@ public struct Point : IEquatable<Point>
     /// </summary>
     public static readonly Point Empty = new();
 
-#if NETSTANDARD
-    public static implicit operator Drawing.Point(Point r)
+#if CONVERT
+    public static implicit operator SdPoint(Point r)
     {
-        return new Drawing.Point(r.X, r.Y);
+        return new SdPoint(r.X, r.Y);
     }
 
-    public static implicit operator Point(Drawing.Point r)
+    public static implicit operator Point(SdPoint r)
     {
         return new Point(r.X, r.Y);
     }
@@ -186,3 +188,4 @@ public struct Point : IEquatable<Point>
 
     private static short LowInt16(int n) => unchecked((short)(n & 0xffff));
 }
+#endif

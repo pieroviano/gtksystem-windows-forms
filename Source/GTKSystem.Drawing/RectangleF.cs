@@ -1,13 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NET462_OR_GREATER
 using System.ComponentModel;
 using System.Numerics;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
+
+#if CONVERT
+extern alias sd;
+using SdRectangleF = sd::System.Drawing.RectangleF;
 #else
-namespace System.Drawing.Gtk;
+using SdRectangleF = System.Drawing.RectangleF;
 #endif
 
 /// <summary>
@@ -22,13 +26,13 @@ public struct RectangleF : IEquatable<RectangleF>
     /// </summary>
     public static readonly RectangleF Empty= new();
 
-#if NETSTANDARD
-    public static implicit operator Drawing.RectangleF(RectangleF r)
+#if CONVERT
+    public static implicit operator SdRectangleF(RectangleF r)
     {
-        return new Drawing.RectangleF(r.X, r.Y, r.Width, r.Height);
+        return new SdRectangleF(r.X, r.Y, r.Width, r.Height);
     }
 
-    public static implicit operator RectangleF(Drawing.RectangleF r)
+    public static implicit operator RectangleF(SdRectangleF r)
     {
         return new RectangleF(r.X, r.Y, r.Width, r.Height);
     }
@@ -343,3 +347,4 @@ public struct RectangleF : IEquatable<RectangleF>
     /// </summary>
     public override readonly string ToString() => $"{{X={X},Y={Y},Width={Width},Height={Height}}}";
 }
+#endif

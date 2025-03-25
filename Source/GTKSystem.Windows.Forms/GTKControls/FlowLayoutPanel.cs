@@ -10,6 +10,8 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
+using Point = System.Drawing.Point;
+
 [ProvideProperty("FlowBreak", typeof(Control))]
 [DefaultProperty("FlowDirection")]
 [DesignerCategory("Component")]
@@ -72,7 +74,7 @@ public class FlowLayoutPanel : Control, IExtenderProvider
             box.Expand = false;
             if (control != null)
             {
-                control.Location = new Drawing.Point(0, 0);
+                control.Location = new Point(0, 0);
                 control.LockLocation = true;
                 control.Parent = _owner;
                 var widg = control.Widget;

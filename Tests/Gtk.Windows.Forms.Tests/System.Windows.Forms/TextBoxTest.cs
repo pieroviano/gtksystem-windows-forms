@@ -20,7 +20,7 @@ public class TextBoxTest : TestHelper
     int _paint;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         textBox.Dispose();
     }

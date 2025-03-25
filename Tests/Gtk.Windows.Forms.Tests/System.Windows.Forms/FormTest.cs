@@ -7,7 +7,6 @@
 // (C) 2005 Novell, Inc. (http://www.novell.com)
 //
 
-using GtkTests.System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -23,20 +22,15 @@ public class FormTest : TestHelper
     public void bug_82358 ()
     {
         //Console.WriteLine ("Starting bug_82358");
-        int sizeable_factor;
-        int title_bar;
-        int tool_bar;
-        int tool_border;
-        int d3;
-        int d2;
 
-        // WinXP, default theme
-        sizeable_factor = 2;
-        title_bar = 26;
-        tool_bar = 18;
-        tool_border = 6;
-        d3 = 10;
-        d2 = 6;
+        var sizeable_factor =
+            // WinXP, default theme
+            2;
+        var title_bar = 26;
+        var tool_bar = 18;
+        var tool_border = 6;
+        var d3 = 10;
+        var d2 = 6;
 
         // WinXP, Win32 theme:
         sizeable_factor = 2;
@@ -1115,12 +1109,10 @@ public class FormTest : TestHelper
         Assert.IsFalse (myform.Visible, "A3");
         Assert.IsTrue (myform.IsDisposed, "A4");
 
-        DialogResult result;
-
         myform = new Form ();
         myform.ShowInTaskbar = false;
         myform.VisibleChanged += myform_set_dialogresult;
-        result = myform.ShowDialog ();
+        var result = myform.ShowDialog ();
 
         Assert.AreEqual (result, DialogResult.OK, "A5");
         Assert.IsFalse (myform.Visible, "A6");

@@ -7,6 +7,8 @@ using System.Diagnostics;
 
 namespace System.Windows.Forms;
 
+using Rectangle = System.Drawing.Rectangle;
+
 public class DataGridViewRowPostPaintEventArgs : EventArgs
 {
     private readonly DataGridView? _dataGridView;

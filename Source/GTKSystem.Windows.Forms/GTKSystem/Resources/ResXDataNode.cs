@@ -15,6 +15,8 @@ using System.Xml;
 
 namespace System.Resources;
 
+using GtkPoint = System.Drawing.Point;
+
 public sealed class ResXDataNode : ISerializable
 {
     private static readonly char[] specialChars = [' ', '\r', '\n'];
@@ -556,9 +558,9 @@ public sealed class ResXDataNode : ISerializable
     ///  Might return the position in the resx file of the current node, if known
     ///  otherwise, will return Point(0,0) since point is a struct
     /// </summary>
-    public Point GetNodePosition()
+    public GtkPoint GetNodePosition()
     {
-        return _nodeInfo?.readerPosition ?? new Point();
+        return _nodeInfo?.readerPosition ?? new GtkPoint();
     }
 
     /// <summary>

@@ -1,5 +1,11 @@
 namespace System.Drawing.Drawing2D;
 
+using Color = System.Drawing.Color;
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = System.Drawing.RectangleF;
+using Point = System.Drawing.Point;
+using PointF = System.Drawing.PointF;
+
 /// <summary>Encapsulates a <see cref="T:System.Drawing.Brush" /> with a linear gradient. This class cannot be inherited.</summary>
 public sealed class LinearGradientBrush : Brush
 {

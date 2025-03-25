@@ -247,8 +247,10 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
         form.Controls.Add (lvw);
         form.Show ();
 
-        var item = new ListViewItem ();
-        item.Selected = true;
+        var item = new ListViewItem
+        {
+            Selected = true
+        };
         Assert.AreEqual (0, selectedIndexChanged, "#A1");
         lvw.Items.Insert (0, item);
         Assert.AreEqual (1, selectedIndexChanged, "#A1");

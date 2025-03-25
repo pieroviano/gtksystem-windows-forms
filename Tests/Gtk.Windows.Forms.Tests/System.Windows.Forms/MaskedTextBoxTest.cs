@@ -40,10 +40,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void ValidatingTypeTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.IsNull (mtb.ValidatingType, "#V1");
         mtb.ValidatingType = typeof(int);
         Assert.IsNotNull (mtb.ValidatingType, "#V2");
@@ -54,10 +51,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void TextMaskFormatTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual (MaskFormat.IncludeLiterals, mtb.TextMaskFormat, "#T1");
         mtb.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
         Assert.AreEqual (MaskFormat.ExcludePromptAndLiterals, mtb.TextMaskFormat, "#T2");
@@ -75,9 +69,7 @@ public class MaskedTextBoxTest : TestHelper
     {
         Assert.Throws<InvalidEnumArgumentException>(() =>
         {
-            MaskedTextBox mtb;
-
-            mtb = new MaskedTextBox();
+            var mtb = new MaskedTextBox();
             mtb.TextMaskFormat = (MaskFormat)123;
             mtb.Dispose();
         });
@@ -86,10 +78,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void TextTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual ("", mtb.Text, "#T1");
         mtb.Text = "abc";
         Assert.AreEqual ("abc", mtb.Text, "#T2");
@@ -108,9 +97,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void TextTest2 ()
     {
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         mtb.Mask = "99 99";
 
         mtb.Text = "23 34";
@@ -122,9 +109,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void TextTest3 ()
     {
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         mtb.Mask = "00-00";
         mtb.Text = "12 3";
         Assert.AreEqual ("12- 3", mtb.Text, "#T1");
@@ -141,10 +126,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void ReadOnlyTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual (false, mtb.ReadOnly, "#R1");
         mtb.ReadOnly = true;
         Assert.AreEqual (true, mtb.ReadOnly, "#R2");
@@ -154,10 +136,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void PasswordCharTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual ('\0', mtb.PasswordChar, "#P1");
         mtb.PasswordChar = '*';
         Assert.AreEqual ('*', mtb.PasswordChar, "#P2");
@@ -167,10 +146,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void MultilineTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual (false, mtb.Multiline, "#M1");
         mtb.Multiline = true;
         Assert.AreEqual (false, mtb.Multiline, "#M2");
@@ -180,10 +156,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void MaskTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual ("", mtb.Mask, "#M1");
         mtb.Mask = "abc";
         Assert.AreEqual ("abc", mtb.Mask, "#M2");
@@ -199,10 +172,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void LinesTest ()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual (0, mtb.Lines.Length, "#L1");
         mtb.Text = "abc";
         Assert.AreEqual (1, mtb.Lines.Length, "#L2");

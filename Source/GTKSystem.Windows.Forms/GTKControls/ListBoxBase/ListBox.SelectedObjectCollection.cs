@@ -235,7 +235,10 @@ public partial class ListBox
                 var index = items.IndexOf(value);
                 if (index != -1 && !GetSelected(index))
                 {
-                    _owner.SelectedIndex = index;
+                    if (_owner != null)
+                    {
+                        _owner.SelectedIndex = index;
+                    }
                 }
             }
         }
@@ -248,7 +251,7 @@ public partial class ListBox
                 var index = items.IndexOf(value);
                 if (index != -1 && GetSelected(index))
                 {
-                    _owner.SetSelected(index, false);
+                    _owner?.SetSelected(index, false);
                 }
             }
         }

@@ -8,6 +8,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Rectangle = System.Drawing.Rectangle;
+
 public class DataGridViewCellPaintingEventArgs : HandledEventArgs
 {
     private readonly DataGridView? _dataGridView;

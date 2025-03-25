@@ -27,8 +27,6 @@
 
 using System.Reflection;
 using System.Resources;
-using System.ComponentModel.Design;
-using System.Resources;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
@@ -39,8 +37,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
     [Test]
     public void ITRSNotUsedWhenNodeCreatedNew ()
     {
-        ResXDataNode node;
-        node = GetNodeEmdeddedSerializable ();
+        var node = GetNodeEmdeddedSerializable ();
 
         var returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
         Assert.AreEqual ((typeof (serializable)).AssemblyQualifiedName, returnedType, "#A1");

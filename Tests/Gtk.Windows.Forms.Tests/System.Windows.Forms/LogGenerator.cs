@@ -334,12 +334,9 @@ namespace GtkTests.System.Windows.Forms
 ";
 
         foreach (var ev in type.GetEvents ()) {
-            string handler;
-            string adder;
-
             ParameterInfo [] ps = ev.EventHandlerType.GetMethod ("Invoke").GetParameters ();
-            handler = string.Format (method, ev.Name, ps [0].ParameterType.Name, ps [1].ParameterType.Name);
-            adder = "\t\t_obj." + ev.Name + " += new " + ev.EventHandlerType.Name + " (_obj_" + ev.Name + ");";
+            var handler = string.Format (method, ev.Name, ps [0].ParameterType.Name, ps [1].ParameterType.Name);
+            var adder = "\t\t_obj." + ev.Name + " += new " + ev.EventHandlerType.Name + " (_obj_" + ev.Name + ");";
 
             adders.Append (adder + Environment.NewLine);
             handlers.Append (handler);

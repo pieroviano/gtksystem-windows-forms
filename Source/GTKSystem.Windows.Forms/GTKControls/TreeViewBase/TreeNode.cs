@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace System.Windows.Forms;
@@ -79,7 +78,7 @@ public class TreeNode : ICloneable, ISerializable, IEquatable<TreeNode>
         get; set;
     }
 
-    public string Name
+    public string? Name
     {
         get;
         set;

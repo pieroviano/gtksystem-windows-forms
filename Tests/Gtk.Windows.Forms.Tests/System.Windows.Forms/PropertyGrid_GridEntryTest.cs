@@ -33,10 +33,16 @@ public class PropertyGrid_GridEntryTest : TestHelper
     {
         var pg = new PropertyGrid ();
 
-        var rootObj = new NestedObj0 ();
-        rootObj.Property1 = new NestedObj1 ();
-        rootObj.Property1.Property2 = new NestedObj2 ();
-        rootObj.Property1.Property2.Property3 = new NestedObj3 ();
+        var rootObj = new NestedObj0
+        {
+            Property1 = new NestedObj1
+            {
+                Property2 = new NestedObj2
+                {
+                    Property3 = new NestedObj3 ()
+                }
+            }
+        };
         pg.SelectedObject = rootObj;
 
         var gridItem_Property1 = pg.GetRootItem ();

@@ -5,9 +5,12 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
 
 namespace System.Windows.Forms;
+
+using GtkColor = System.Drawing.Color;
+using GtkSize = System.Drawing.Size;
+using GtkPoint = System.Drawing.Point;
 
 /// <summary>
 ///  The ImageList is an object that stores a collection of Images, most
@@ -20,8 +23,8 @@ namespace System.Windows.Forms;
 [TypeConverter(typeof(ImageListConverter))]
 public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 {
-    private static readonly Color fakeTransparencyColor = Color.FromArgb(0x0d, 0x0b, 0x0c);
-    private static readonly Size defaultImageSize = new(16, 16);
+    private static readonly GtkColor fakeTransparencyColor = GtkColor.FromArgb(0x0d, 0x0b, 0x0c);
+    private static readonly GtkSize defaultImageSize = new(16, 16);
 
 #pragma warning disable CS0169 // Field is never used
     private static int maxImageWidth;
@@ -29,12 +32,12 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     private static bool isScalingInitialized;
 #pragma warning restore CS0169 // Field is never used
 
-    private ImageList.NativeImageList? _nativeImageList;
+    private NativeImageList? _nativeImageList;
 
     private ColorDepth _colorDepth = ColorDepth.Depth32Bit;
-    private Size _imageSize = defaultImageSize;
+    private GtkSize _imageSize = defaultImageSize;
 
-    private ImageList.ImageCollection? _imageCollection;
+    private ImageCollection? _imageCollection;
 
     // The usual handle virtualization problem, with a new twist: image
     // lists are lossy. At runtime, we delay handle creation as long as possible, and store
@@ -85,9 +88,9 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     public bool HandleCreated => !(_nativeImageList is null);
 
-    public System.Windows.Forms.ImageList.ImageCollection Images => _imageCollection ??= new ImageList.ImageCollection(this);
+    public ImageCollection Images => _imageCollection ??= new ImageCollection(this);
 
-    public Size ImageSize
+    public GtkSize ImageSize
     {
         get => _imageSize;
         set
@@ -95,7 +98,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
             if (_imageSize.Width != value.Width || _imageSize.Height != value.Height)
             {
-                _imageSize = new Size(value.Width, value.Height);
+                _imageSize = new GtkSize(value.Width, value.Height);
             }
         }
     }
@@ -132,7 +135,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
         // string direc = Path.GetDirectoryName(Application.ExecutablePath);
         var path1 = $"./Resources";
         var value = ImageStream;
-        if (value.ResourceInfo is { BaseName: not null })
+        if (value?.ResourceInfo is { BaseName: not null })
         {
             // Load image data here
             var dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
@@ -165,7 +168,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     public object? Tag { get; set; }
 
-    public Color TransparentColor { get; set; } = Color.Transparent;
+    public GtkColor TransparentColor { get; set; } = GtkColor.Transparent;
 
     private bool UseTransparentColor => TransparentColor.A > 0;
 
@@ -260,7 +263,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     ///  Draw the image indicated by the given index on the given Graphics
     ///  at the given location.
     /// </summary>
-    public void Draw(Graphics g, Point pt, int index) => Draw(g, pt.X, pt.Y, index);
+    public void Draw(Graphics g, GtkPoint pt, int index) => Draw(g, pt.X, pt.Y, index);
 
     /// <summary>
     ///  Draw the image indicated by the given index on the given Graphics
@@ -350,11 +353,20 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     /// </summary>
     // NOTE: forces handle creation, so doesn't return things from the original list
 
-    public Bitmap? GetBitmap(int index)
+    public Bitmap GetBitmap(int index)
     {
         try
         {
-            return _originals?[index]._image as Bitmap;
+            if (_originals != null)
+            {
+                var bitmap = _originals[index]._image as Bitmap;
+                if (bitmap != null)
+                {
+                    return bitmap;
+                }
+            }
+
+            throw new InvalidOperationException($"Unable to get the bitmap with index {index}");
         }
         catch (IndexOutOfRangeException ex)
         {
@@ -364,7 +376,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     public Bitmap GetBitmap(string? name)
     {
-        var index = _imageCollection.IndexOfKey(name);
+        var index = _imageCollection?.IndexOfKey(name)??-1;
         if (index == -1)
         {
             throw new FileNotFoundException($"\"{name}\" is not loaded. Please save the relevant pictures to the Resources directory.", name);

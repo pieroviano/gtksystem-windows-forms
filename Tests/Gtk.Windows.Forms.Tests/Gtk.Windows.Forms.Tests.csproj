@@ -10,7 +10,7 @@
 		<IsTestProject>true</IsTestProject>
 		<RootNamespace>GtkTests</RootNamespace>
 		<LangVersion>latest</LangVersion>
-		<NoWarn>NUnit2005</NoWarn>
+		<NoWarn>NUnit2005;NUnit2015;CS0115;CS0618;CS8618</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

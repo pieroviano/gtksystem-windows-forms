@@ -634,21 +634,31 @@ public class ListViewCollectionsTest : TestHelper
     public void SelectedItemCollectionTest_IndexOfKey ()
     {
         var lvw = new ListView ();
-        var lvi1 = new ListViewItem ("A");
-        lvi1.Name = "A name";
-        lvi1.Selected = true;
-        var lvi2 = new ListViewItem ("B");
-        lvi2.Name = "Same name";
-        lvi2.Selected = false;
-        var lvi3 = new ListViewItem ("C");
-        lvi3.Name = "Same name";
-        lvi3.Selected = true;
-        var lvi4 = new ListViewItem ("D");
-        lvi4.Name = String.Empty;
-        lvi4.Selected = true;
-        var lvi5 = new ListViewItem ("E");
-        lvi5.Name = "E name";
-        lvi5.Selected = false;
+        var lvi1 = new ListViewItem ("A")
+        {
+            Name = "A name",
+            Selected = true
+        };
+        var lvi2 = new ListViewItem ("B")
+        {
+            Name = "Same name",
+            Selected = false
+        };
+        var lvi3 = new ListViewItem ("C")
+        {
+            Name = "Same name",
+            Selected = true
+        };
+        var lvi4 = new ListViewItem ("D")
+        {
+            Name = String.Empty,
+            Selected = true
+        };
+        var lvi5 = new ListViewItem ("E")
+        {
+            Name = "E name",
+            Selected = false
+        };
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
 
         // Force to create the control
@@ -669,21 +679,31 @@ public class ListViewCollectionsTest : TestHelper
     public void SelectedItemCollectionTest_Indexer2 ()
     {
         var lvw = new ListView ();
-        var lvi1 = new ListViewItem ("A");
-        lvi1.Name = "A name";
-        lvi1.Selected = true;
-        var lvi2 = new ListViewItem ("B");
-        lvi2.Name = "Same name";
-        lvi2.Selected = false;
-        var lvi3 = new ListViewItem ("C");
-        lvi3.Name = "Same name";
-        lvi3.Selected = true;
-        var lvi4 = new ListViewItem ("D");
-        lvi4.Name = String.Empty;
-        lvi4.Selected = true;
-        var lvi5 = new ListViewItem ("E");
-        lvi5.Name = "E name";
-        lvi5.Selected = false;
+        var lvi1 = new ListViewItem ("A")
+        {
+            Name = "A name",
+            Selected = true
+        };
+        var lvi2 = new ListViewItem ("B")
+        {
+            Name = "Same name",
+            Selected = false
+        };
+        var lvi3 = new ListViewItem ("C")
+        {
+            Name = "Same name",
+            Selected = true
+        };
+        var lvi4 = new ListViewItem ("D")
+        {
+            Name = String.Empty,
+            Selected = true
+        };
+        var lvi5 = new ListViewItem ("E")
+        {
+            Name = "E name",
+            Selected = false
+        };
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
 
         // Force to create the control
@@ -1266,16 +1286,26 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewItemCollectionTest_RemoveByKey ()
     {
         var lvw = new ListView ();
-        var lvi1 = new ListViewItem ("A");
-        lvi1.Name = "A name";
-        var lvi2 = new ListViewItem ("B");
-        lvi2.Name = "B name";
-        var lvi3 = new ListViewItem ("C");
-        lvi3.Name = "Same name";
-        var lvi4 = new ListViewItem ("D");
-        lvi4.Name = "Same name";
-        var lvi5 = new ListViewItem ("E");
-        lvi5.Name = String.Empty;
+        var lvi1 = new ListViewItem ("A")
+        {
+            Name = "A name"
+        };
+        var lvi2 = new ListViewItem ("B")
+        {
+            Name = "B name"
+        };
+        var lvi3 = new ListViewItem ("C")
+        {
+            Name = "Same name"
+        };
+        var lvi4 = new ListViewItem ("D")
+        {
+            Name = "Same name"
+        };
+        var lvi5 = new ListViewItem ("E")
+        {
+            Name = String.Empty
+        };
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
 
         Assert.AreEqual (5, lvw.Items.Count, "#A1");
@@ -1314,14 +1344,22 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewItemCollectionTest_IndexOfKey ()
     {
         var lvw = new ListView ();
-        var lvi1 = new ListViewItem ("A");
-        lvi1.Name = "A name";
-        var lvi2 = new ListViewItem ("B");
-        lvi2.Name = "Same name";
-        var lvi3 = new ListViewItem ("C");
-        lvi3.Name = "Same name";
-        var lvi4 = new ListViewItem ("D");
-        lvi4.Name = String.Empty;
+        var lvi1 = new ListViewItem ("A")
+        {
+            Name = "A name"
+        };
+        var lvi2 = new ListViewItem ("B")
+        {
+            Name = "Same name"
+        };
+        var lvi3 = new ListViewItem ("C")
+        {
+            Name = "Same name"
+        };
+        var lvi4 = new ListViewItem ("D")
+        {
+            Name = String.Empty
+        };
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4 });
 
         Assert.AreEqual (4, lvw.Items.Count, "#A1");
@@ -1342,14 +1380,22 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewItemCollectionTest_Indexer ()
     {
         var lvw = new ListView ();
-        var lvi1 = new ListViewItem ("A");
-        lvi1.Name = "A name";
-        var lvi2 = new ListViewItem ("B");
-        lvi2.Name = "Same name";
-        var lvi3 = new ListViewItem ("C");
-        lvi3.Name = "Same name";
-        var lvi4 = new ListViewItem ("D");
-        lvi4.Name = String.Empty;
+        var lvi1 = new ListViewItem ("A")
+        {
+            Name = "A name"
+        };
+        var lvi2 = new ListViewItem ("B")
+        {
+            Name = "Same name"
+        };
+        var lvi3 = new ListViewItem ("C")
+        {
+            Name = "Same name"
+        };
+        var lvi4 = new ListViewItem ("D")
+        {
+            Name = String.Empty
+        };
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4 });
 
         Assert.AreEqual (4, lvw.Items.Count, "#A1");
@@ -1370,12 +1416,18 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewItemCollectionTest_ContainsKey ()
     {
         var lvw = new ListView();
-        var lvi1 = new ListViewItem("A");
-        lvi1.Name = "A name";
-        var lvi2 = new ListViewItem("B");
-        lvi2.Name = "B name";
-        var lvi3 = new ListViewItem("D");
-        lvi3.Name = String.Empty;
+        var lvi1 = new ListViewItem("A")
+        {
+            Name = "A name"
+        };
+        var lvi2 = new ListViewItem("B")
+        {
+            Name = "B name"
+        };
+        var lvi3 = new ListViewItem("D")
+        {
+            Name = String.Empty
+        };
         lvw.Items.AddRange(new ListViewItem[] { lvi1, lvi2, lvi3 });
 
         Assert.AreEqual(3, lvw.Items.Count, "#A1");
@@ -1396,16 +1448,26 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewItemCollectionTest_Find ()
     {
         var lvw = new ListView ();
-        var lvi1 = new ListViewItem ("A");
-        lvi1.Name = "A name";
-        var lvi2 = new ListViewItem ("B");
-        lvi2.Name = "a NAME";
-        var lvi3 = new ListViewItem ("C");
-        lvi3.Name = "a NAME";
-        var lvi4 = new ListViewItem ("D");
-        lvi4.Name = String.Empty;
-        var lvi5 = new ListViewItem ("F");
-        lvi5.Name = String.Empty;
+        var lvi1 = new ListViewItem ("A")
+        {
+            Name = "A name"
+        };
+        var lvi2 = new ListViewItem ("B")
+        {
+            Name = "a NAME"
+        };
+        var lvi3 = new ListViewItem ("C")
+        {
+            Name = "a NAME"
+        };
+        var lvi4 = new ListViewItem ("D")
+        {
+            Name = String.Empty
+        };
+        var lvi5 = new ListViewItem ("F")
+        {
+            Name = String.Empty
+        };
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
 
         Assert.AreEqual (5, lvw.Items.Count, "#A1");
@@ -1428,12 +1490,18 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewSubItemCollectionTest_ContainsKey ()
     {
         var lvi = new ListViewItem ("A");
-        var si1 = new ListViewItem.ListViewSubItem ();
-        si1.Name = "A name";
-        var si2 = new ListViewItem.ListViewSubItem ();
-        si2.Name = "B name";
-        var si3 = new ListViewItem.ListViewSubItem ();
-        si3.Name = String.Empty;
+        var si1 = new ListViewItem.ListViewSubItem
+        {
+            Name = "A name"
+        };
+        var si2 = new ListViewItem.ListViewSubItem
+        {
+            Name = "B name"
+        };
+        var si3 = new ListViewItem.ListViewSubItem
+        {
+            Name = String.Empty
+        };
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3 });
 
         Assert.AreEqual (4, lvi.SubItems.Count, "#A1");
@@ -1454,14 +1522,22 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewSubItemCollectionTest_IndexOfKey ()
     {
         var lvi = new ListViewItem ();
-        var si1 = new ListViewItem.ListViewSubItem ();
-        si1.Name = "A name";
-        var si2 = new ListViewItem.ListViewSubItem ();
-        si2.Name = "Same name";
-        var si3 = new ListViewItem.ListViewSubItem ();
-        si3.Name = "Same name";
-        var si4 = new ListViewItem.ListViewSubItem ();
-        si4.Name = String.Empty;
+        var si1 = new ListViewItem.ListViewSubItem
+        {
+            Name = "A name"
+        };
+        var si2 = new ListViewItem.ListViewSubItem
+        {
+            Name = "Same name"
+        };
+        var si3 = new ListViewItem.ListViewSubItem
+        {
+            Name = "Same name"
+        };
+        var si4 = new ListViewItem.ListViewSubItem
+        {
+            Name = String.Empty
+        };
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3, si4 });
 
         Assert.AreEqual (5, lvi.SubItems.Count, "#A1");
@@ -1482,16 +1558,26 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewSubItemCollectionTest_RemoveByKey ()
     {
         var lvi = new ListViewItem ();
-        var si1 = new ListViewItem.ListViewSubItem ();
-        si1.Name = "A name";
-        var si2 = new ListViewItem.ListViewSubItem ();
-        si2.Name = "B name";
-        var si3 = new ListViewItem.ListViewSubItem ();
-        si3.Name = "Same name";
-        var si4 = new ListViewItem.ListViewSubItem ();
-        si4.Name = "Same name";
-        var si5 = new ListViewItem.ListViewSubItem ();
-        si5.Name = String.Empty;
+        var si1 = new ListViewItem.ListViewSubItem
+        {
+            Name = "A name"
+        };
+        var si2 = new ListViewItem.ListViewSubItem
+        {
+            Name = "B name"
+        };
+        var si3 = new ListViewItem.ListViewSubItem
+        {
+            Name = "Same name"
+        };
+        var si4 = new ListViewItem.ListViewSubItem
+        {
+            Name = "Same name"
+        };
+        var si5 = new ListViewItem.ListViewSubItem
+        {
+            Name = String.Empty
+        };
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3, si4, si5 });
 
         Assert.AreEqual (6, lvi.SubItems.Count, "#A1");
@@ -1524,14 +1610,22 @@ public class ListViewCollectionsTest : TestHelper
     public void ListViewSubItemCollectionTest_Indexer ()
     {
         var lvi = new ListViewItem ();
-        var si1 = new ListViewItem.ListViewSubItem ();
-        si1.Name = "A name";
-        var si2 = new ListViewItem.ListViewSubItem ();
-        si2.Name = "Same name";
-        var si3 = new ListViewItem.ListViewSubItem ();
-        si3.Name = "Same name";
-        var si4 = new ListViewItem.ListViewSubItem ();
-        si4.Name = String.Empty;
+        var si1 = new ListViewItem.ListViewSubItem
+        {
+            Name = "A name"
+        };
+        var si2 = new ListViewItem.ListViewSubItem
+        {
+            Name = "Same name"
+        };
+        var si3 = new ListViewItem.ListViewSubItem
+        {
+            Name = "Same name"
+        };
+        var si4 = new ListViewItem.ListViewSubItem
+        {
+            Name = String.Empty
+        };
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3, si4 });
 
         Assert.AreEqual (5, lvi.SubItems.Count, "#A1");

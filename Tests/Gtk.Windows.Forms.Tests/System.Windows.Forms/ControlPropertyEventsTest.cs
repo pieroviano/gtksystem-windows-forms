@@ -553,7 +553,7 @@ public class ControlPropertyEventsTest : TestHelper
             c.BackgroundImageLayoutChanged += delegate (Object _, EventArgs _) { events += ("BackgroundImageLayoutChanged;"); };
             c.BindingContextChanged += delegate (Object _, EventArgs _) { events += ("BindingContextChanged;"); };
             c.CausesValidationChanged += delegate (Object _, EventArgs _) { events += ("CausesValidationChanged;"); };
-            c.ChangeUiCues += delegate (Object _, UiCuesEventArgs _) { events += ("ChangeUICues;"); };
+            c.ChangeUICues += delegate (Object _, UiCuesEventArgs _) { events += ("ChangeUICues;"); };
             c.Click += delegate (Object _, EventArgs _) { events += ("Click;"); };
             c.ClientSizeChanged += delegate (Object _, EventArgs _) { events += ("ClientSizeChanged;"); };
             c.ContextMenuStripChanged += delegate (Object _, EventArgs _) { events += ("ContextMenuStripChanged;"); };

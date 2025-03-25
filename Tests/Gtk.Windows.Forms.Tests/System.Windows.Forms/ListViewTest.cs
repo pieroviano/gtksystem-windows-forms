@@ -8,7 +8,6 @@
 //
 
 using System.Collections;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;

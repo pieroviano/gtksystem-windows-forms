@@ -3,11 +3,9 @@
 
 using System.Diagnostics;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
-#else
-namespace System.Drawing.Gtk;
-#endif
+
+using GtkKnownColor = System.Drawing.KnownColor;
 
 internal static class KnownColorNames
 {
@@ -198,9 +196,9 @@ internal static class KnownColorNames
             "RebeccaPurple",
     };
 
-    public static string KnownColorToName(KnownColor color)
+    public static string KnownColorToName(Drawing.KnownColor color)
     {
-        Trace.Assert(color is > 0 and <= KnownColor.RebeccaPurple);
+        Trace.Assert(color is > 0 and <= GtkKnownColor.RebeccaPurple);
         return s_colorNameTable[unchecked((int)color) - 1];
     }
 }

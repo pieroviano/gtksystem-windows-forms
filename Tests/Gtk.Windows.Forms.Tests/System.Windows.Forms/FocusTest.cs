@@ -7,9 +7,7 @@
 
 using System.Text;
 using System.Windows.Forms;
-using GtkTests.System.Windows.Forms;
 using CancelEventArgs = System.ComponentModel.CancelEventArgs;
-using CancelEventHandler = System.ComponentModel.CancelEventHandler;
 
 namespace GtkTests.System.Windows.Forms;
 

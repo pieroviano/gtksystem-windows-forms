@@ -6,10 +6,11 @@
  */
 
 using System.ComponentModel;
-using System.Drawing;
 using Gtk;
 
 namespace System.Windows.Forms;
+
+using Color = System.Drawing.Color;
 
 public class ColorDialog : CommonDialog
 {

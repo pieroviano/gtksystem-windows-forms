@@ -29,7 +29,6 @@ using System.Reflection;
 using System.Drawing;
 using System.Resources;
 using System.Collections;
-using System.Resources;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
@@ -64,7 +63,7 @@ public class ResXDataNodeTest : ResourcesTestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var d = new ResXDataNode("aname", (ResXFileRef)null);
+            var d = new ResXDataNode("aname", (ResXFileRef)null!);
         });
     }
 
@@ -73,7 +72,7 @@ public class ResXDataNodeTest : ResourcesTestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var d = new ResXDataNode("", (object?)null);
+            var d = new ResXDataNode("", (object?)null!);
         });
     }
 
@@ -118,8 +117,10 @@ public class ResXDataNodeTest : ResourcesTestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var node = new ResXDataNode("startname", (object?)null);
-            node.Name = null;
+            var node = new ResXDataNode("startname", (object?)null)
+            {
+                Name = null
+            };
         });
     }
 
@@ -128,8 +129,10 @@ public class ResXDataNodeTest : ResourcesTestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var node = new ResXDataNode("name", (object?)null);
-            node.Name = "";
+            var node = new ResXDataNode("name", (object?)null)
+            {
+                Name = ""
+            };
         });
     }
 
@@ -144,16 +147,20 @@ public class ResXDataNodeTest : ResourcesTestHelper
     [Test]
     public void Comment()
     {
-        var node = new ResXDataNode("name", (object?)null);
-        node.Comment = "acomment";
+        var node = new ResXDataNode("name", (object?)null)
+        {
+            Comment = "acomment"
+        };
         Assert.AreEqual("acomment", node.Comment, "#A1");
     }
 
     [Test]
     public void CommentNullToStringEmpty()
     {
-        var node = new ResXDataNode("name", (object?)null);
-        node.Comment = null;
+        var node = new ResXDataNode("name", (object?)null)
+        {
+            Comment = null
+        };
         Assert.AreEqual(String.Empty, node.Comment, "#A1");
     }
 
@@ -269,8 +276,6 @@ public class ResXDataNodeTest : ResourcesTestHelper
 
     string GetResXFileWithNode(ResXDataNode node, string filename)
     {
-        string fullfileName;
-
         _tempDirectory = Path.Combine(Path.GetTempPath(), "ResXDataNodeTest");
         _otherTempDirectory = Path.Combine(_tempDirectory, "in");
         if (!Directory.Exists(_otherTempDirectory))
@@ -278,7 +283,7 @@ public class ResXDataNodeTest : ResourcesTestHelper
             Directory.CreateDirectory(_otherTempDirectory);
         }
 
-        fullfileName = Path.Combine(_tempDirectory, filename);
+        var fullfileName = Path.Combine(_tempDirectory, filename);
 
         using var writer = new ResXResourceWriter(fullfileName);
         writer.AddResource(node);

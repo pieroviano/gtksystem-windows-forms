@@ -5,26 +5,24 @@
  * author:chenhongjin
  */
 
-#if NETSTANDARD
-extern alias sdc;
-#else
-extern alias sd;
-#endif
-
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using Icon = System.Drawing.Icon;
-#if NETSTANDARD
-using SdcColor = sdc::System.Drawing.SystemColors;
+using SdSystemColors = System.Drawing.
+#if NET462_OR_GREATER
+                                      SystemColors;
 #else
-using SdcColor = sd::System.Drawing.SystemColors;
+                                      GtkSystemColors;
 #endif
 
+using SdSize = System.Drawing.Size;
+using SdSizeF = System.Drawing.SizeF;
+
 namespace System.Windows.Forms;
+using SdColor = System.Drawing.Color;
 
 [DesignerCategory("Form")]
 [DefaultEvent(nameof(Load)),
@@ -33,7 +31,6 @@ public partial class Form : ContainerControl, IWin32Window
 {
     private Gtk.Application app = System.Windows.Forms.Application.Init();
     public FormBase self = new();
-
     public override object GtkControl
     {
         get => self;
@@ -55,8 +52,8 @@ public partial class Form : ContainerControl, IWin32Window
 
     private void Init()
     {
-        var systemColors = SdcColor.Window;
-        BackColor = Color.FromArgb(systemColors.ToArgb());
+        var systemColors = SdSystemColors.Window;
+        BackColor = SdColor.FromArgb(systemColors.ToArgb());
         SetScrolledWindow(self);
         contanter.Valign = Align.Fill;
         contanter.Halign = Align.Fill;
@@ -74,10 +71,10 @@ public partial class Form : ContainerControl, IWin32Window
 
     public FormWindowState WindowState
     {
-        get { return this.windowState; }
+        get { return windowState; }
         set
         {
-            if (this.windowState != value)
+            if (windowState != value)
             {
                 var windowStateArg = new WindowStateArgs(value);
                 EventHandler<WindowStateArgs>? eventHandler = WindowStateChanging;
@@ -95,7 +92,7 @@ public partial class Form : ContainerControl, IWin32Window
                 }
             }
 
-            this.windowState = value;
+            windowState = value;
             if (self.IsMapped)
             {
                 if (value == FormWindowState.Maximized)
@@ -220,21 +217,19 @@ public partial class Form : ContainerControl, IWin32Window
         self.Iconify();
     }
 
-    public override event ScrollEventHandler? Scroll
+    protected override void RemoveScrollHandler(ScrollEventHandler? value)
     {
-        add
+        if (value != null)
         {
-            if (value != null)
-            {
-                self.Scroll += value;
-            }
+            self.Scroll += value;
         }
-        remove
+    }
+
+    protected override void AddScrollHandler(ScrollEventHandler? value)
+    {
+        if (value != null)
         {
-            if (value != null)
-            {
-                self.Scroll += value;
-            }
+            self.Scroll += value;
         }
     }
 
@@ -392,7 +387,7 @@ public partial class Form : ContainerControl, IWin32Window
         set => self.Title = value;
     }
 
-    public override Size ClientSize
+    public override SdSize ClientSize
     {
         get => new(self.AllocatedWidth, self.AllocatedHeight);
         set
@@ -403,7 +398,7 @@ public partial class Form : ContainerControl, IWin32Window
         }
     }
 
-    public SizeF AutoScaleDimensions { get; set; }
+    public SdSizeF AutoScaleDimensions { get; set; }
     public AutoScaleMode AutoScaleMode { get; set; }
     public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
 

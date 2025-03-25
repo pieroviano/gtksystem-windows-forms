@@ -566,7 +566,7 @@ public class DataGridViewColumn : TreeViewColumn
 
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public virtual event EventHandler? Disposed;
+    public event EventHandler? Disposed;
 
     public object? Clone()
     {
@@ -587,5 +587,10 @@ public class DataGridViewColumn : TreeViewColumn
             _index = value; if (_SortMode != DataGridViewColumnSortMode.NotSortable) { SortColumnId = value; }
             foreach (var cell in Cells) { AddAttribute(cell, "cellvalue", _index); }
         }
+    }
+
+    protected virtual void OnDisposed(EventArgs e)
+    {
+        Disposed?.Invoke(this, e);
     }
 }

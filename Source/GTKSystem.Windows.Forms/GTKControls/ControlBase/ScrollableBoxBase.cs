@@ -33,10 +33,17 @@ public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollab
         }
     }
 
+    void IScrollableBoxBase.OnScroll(ScrollEventArgs e)
+    {
+        OnScroll(e);
+    }
+
     protected virtual void OnScroll(ScrollEventArgs e)
     {
         Scroll?.Invoke(this, e);
     }
+
+
 
     private void Hadjustment_ValueChanged(object? sender, EventArgs e)
     {

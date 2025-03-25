@@ -102,8 +102,8 @@ public class DataSetBindingTest : TestHelper
         Assert.AreEqual (true, dgv.Columns[0].IsDataBound, "A8");
         Assert.AreEqual (false, dgv.Columns[0].ReadOnly, "A9");
         Assert.AreEqual (true, dgv.Columns[0].Visible, "A10");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[0].CellType.ToString (), "A11");
-        Assert.AreEqual ("System.String", dgv.Columns[0].ValueType.ToString (), "A11-B");
+        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[0].CellType?.ToString(), "A11");
+        Assert.AreEqual ("System.String", dgv.Columns[0].ValueType?.ToString(), "A11-B");
         Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxColumn", dgv.Columns[0].GetType ().ToString (), "A11-C");
 
         Assert.AreEqual ("Name", dgv.Columns[1].Name, "A12");
@@ -114,8 +114,8 @@ public class DataSetBindingTest : TestHelper
         Assert.AreEqual (true, dgv.Columns[1].IsDataBound, "A17");
         Assert.AreEqual (false, dgv.Columns[1].ReadOnly, "A18");
         Assert.AreEqual (true, dgv.Columns[1].Visible, "A19");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[1].CellType.ToString (), "A20");
-        Assert.AreEqual ("System.String", dgv.Columns[1].ValueType.ToString (), "A20-B");
+        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[1].CellType?.ToString (), "A20");
+        Assert.AreEqual ("System.String", dgv.Columns[1].ValueType?.ToString (), "A20-B");
 
         Assert.AreEqual ("Sex", dgv.Columns[2].Name, "A21");
         Assert.AreEqual ("Sex", dgv.Columns[2].DataPropertyName, "A22");
@@ -125,8 +125,8 @@ public class DataSetBindingTest : TestHelper
         Assert.AreEqual (true, dgv.Columns[2].IsDataBound, "A26");
         Assert.AreEqual (false, dgv.Columns[2].ReadOnly, "A27");
         Assert.AreEqual (true, dgv.Columns[2].Visible, "A28");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[2].CellType.ToString (), "A29");
-        Assert.AreEqual ("System.String", dgv.Columns[2].ValueType.ToString (), "A29-B");
+        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[2].CellType?.ToString (), "A29");
+        Assert.AreEqual ("System.String", dgv.Columns[2].ValueType?.ToString (), "A29-B");
 
         Assert.AreEqual ("1", dgv.Rows[0].Cells[0].Value, "A30");
         Assert.AreEqual ("Kermit", dgv.Rows[0].Cells[1].Value, "A31");
@@ -183,8 +183,8 @@ public class DataSetBindingTest : TestHelper
         Assert.AreEqual (true, dgv.Columns[2].IsDataBound, "A8");
         Assert.AreEqual (false, dgv.Columns[2].ReadOnly, "A9");
         Assert.AreEqual (true, dgv.Columns[2].Visible, "A10");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewCheckBoxCell", dgv.Columns[2].CellType.ToString (), "A11");
-        Assert.AreEqual ("System.Boolean", dgv.Columns[2].ValueType.ToString (), "A12");
+        Assert.AreEqual ("System.Windows.Forms.DataGridViewCheckBoxCell", dgv.Columns[2].CellType?.ToString(), "A11");
+        Assert.AreEqual ("System.Boolean", dgv.Columns[2].ValueType?.ToString(), "A12");
         Assert.AreEqual ("System.Windows.Forms.DataGridViewCheckBoxColumn", dgv.Columns[2].GetType ().ToString (), "A12-B");
 
         Assert.AreEqual (true, dgv.Rows[0].Cells[2].Value, "A13");

@@ -3,6 +3,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Size = System.Drawing.Size;
+
 public class ToolStripDropDownMenu : ToolStripDropDown
 {
     //public Rectangle DisplayRectangle { get; }

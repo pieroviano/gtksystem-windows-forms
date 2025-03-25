@@ -15,6 +15,9 @@ using Region = System.Drawing.Region;
 
 namespace System.Windows.Forms;
 
+using Color = System.Drawing.Color;
+using Size = System.Drawing.Size;
+
 public class WidgetToolStrip<T> : ToolStripItem
 {
     public override string? UniqueKey { get; protected set; }
@@ -121,16 +124,6 @@ public class WidgetToolStrip<T> : ToolStripItem
         OnDropDownItemClicked(new ToolStripItemClickedEventArgs(this));
 
         OnClick(args);
-    }
-
-    protected virtual void OnClick(EventArgs e)
-    {
-        Click?.Invoke(this, e);
-    }
-
-    protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs e)
-    {
-        DropDownItemClicked?.Invoke(this, e);
     }
 
     private void MenuItem_Activated(object? sender, EventArgs e)
@@ -251,11 +244,6 @@ public class WidgetToolStrip<T> : ToolStripItem
         OnCheckedChanged(e);
     }
 
-    protected virtual void OnCheckedChanged(EventArgs e)
-    {
-        CheckedChanged?.Invoke(this, e);
-    }
-
     internal void UpdateStyle()
     {
         if (Widget is { IsMapped: true })
@@ -353,7 +341,7 @@ public class WidgetToolStrip<T> : ToolStripItem
 
             return label.Text;
         }
-        set { label.Text = value; button.Label = value; }
+        set { label.Text = value??string.Empty; button.Label = value??string.Empty; }
     }
     public override Color ImageTransparentColor { get; set; }
     public override ToolStripItemDisplayStyle DisplayStyle { get; set; }
@@ -489,8 +477,4 @@ public class WidgetToolStrip<T> : ToolStripItem
         }
     }
 
-    public override event EventHandler? Click;
-    public override event EventHandler? CheckedChanged;
-    public override event EventHandler? CheckStateChanged;
-    public override event ToolStripItemClickedEventHandler? DropDownItemClicked;
 }

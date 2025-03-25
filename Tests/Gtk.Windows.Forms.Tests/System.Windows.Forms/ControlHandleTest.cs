@@ -242,9 +242,8 @@ public class ControlHandleTest : TestHelper
         // Included just to absolutely certain.
         var c = new ProtectedPropertyControl ();
 
-        object o;
 #if !MONO
-        o = c.PublicCanRaiseEvents;
+        object o = c.PublicCanRaiseEvents;
         Assert.IsFalse (c.IsHandleCreated, "A1");
 #endif
         o = c.PublicCreateParams;

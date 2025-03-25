@@ -8,12 +8,13 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
-using System.Resources;
 using System.Runtime.Serialization;
 using System.Resources.Interfaces;
 using System.Xml;
 
 namespace System.Resources;
+
+using GtkPoint = System.Drawing.Point;
 
 /// <summary>
 ///  ResX resource reader.
@@ -332,9 +333,9 @@ public partial class ResXResourceReader : IResourceReader
     /// <summary>
     ///  Attempts to return the line and column (Y, X) of the XML reader.
     /// </summary>
-    private static Point GetPosition(XmlReader? reader)
+    private static GtkPoint GetPosition(XmlReader? reader)
     {
-        var pt = new Point(0, 0);
+        var pt = new GtkPoint(0, 0);
 
         if (reader is IXmlLineInfo lineInfo)
         {

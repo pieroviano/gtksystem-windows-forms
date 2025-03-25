@@ -35,7 +35,7 @@ public class ListViewGroupTest : TestHelper
     ListView lv = null;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         lv.Dispose();
     }

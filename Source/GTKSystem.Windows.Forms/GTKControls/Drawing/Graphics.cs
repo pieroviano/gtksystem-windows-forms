@@ -1532,7 +1532,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     /// <PermissionSet>
     ///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
     /// </PermissionSet>
-    public static Graphics? FromImage(Image image)
+    public static Graphics FromImage(Image image)
     {
         var _width = image.Width;
         var _height = image.Height;
@@ -1556,7 +1556,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
             return new Graphics(widgetValue, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
         }
 
-        return null;
+        throw new InvalidOperationException();
     }
 
     public void Flush()

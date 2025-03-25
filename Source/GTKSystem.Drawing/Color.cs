@@ -1,14 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NET462_OR_GREATER
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
-#else
-namespace System.Drawing.Gtk;
+
+#if CONVERT
+extern alias sd;
+using SdColor = sd::System.Drawing.Color;
 #endif
 
 [DebuggerDisplay("{NameAndARGBValue}")]
@@ -17,17 +19,17 @@ namespace System.Drawing.Gtk;
 [Serializable]
 [TypeConverter("System.Drawing.ColorConverter, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 [TypeForwardedFrom("System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-public readonly struct Color : IEquatable<Color>
+public struct Color : IEquatable<Color>
 {
     public static readonly Color Empty= new ();
 
-#if NETSTANDARD
-    public static implicit operator Drawing.Color(Color r)
+#if CONVERT
+    public static implicit operator SdColor(Color r)
     {
-        return Drawing.Color.FromArgb(r.ToArgb());
+        return SdColor.FromArgb(r.ToArgb());
     }
 
-    public static implicit operator Color(Drawing.Color r)
+    public static implicit operator Color(SdColor r)
     {
         return Color.FromArgb(r.ToArgb());
     }
@@ -36,293 +38,293 @@ public readonly struct Color : IEquatable<Color>
     // -------------------------------------------------------------------
     //  static list of "web" colors...
     //
-    public static Color Transparent => new(KnownColor.Transparent);
+    public static Color Transparent => (KnownColor.Transparent).FromKnownColor();
 
-    public static Color AliceBlue => new(KnownColor.AliceBlue);
+    public static Color AliceBlue => KnownColor.AliceBlue.FromKnownColor();
 
-    public static Color AntiqueWhite => new(KnownColor.AntiqueWhite);
+    public static Color AntiqueWhite => KnownColor.AntiqueWhite.FromKnownColor();
 
-    public static Color Aqua => new(KnownColor.Aqua);
+    public static Color Aqua => KnownColor.Aqua.FromKnownColor();
 
-    public static Color Aquamarine => new(KnownColor.Aquamarine);
+    public static Color Aquamarine => KnownColor.Aquamarine.FromKnownColor();
 
-    public static Color Azure => new(KnownColor.Azure);
+    public static Color Azure => KnownColor.Azure.FromKnownColor();
 
-    public static Color Beige => new(KnownColor.Beige);
+    public static Color Beige => KnownColor.Beige.FromKnownColor();
 
-    public static Color Bisque => new(KnownColor.Bisque);
+    public static Color Bisque => KnownColor.Bisque.FromKnownColor();
 
-    public static Color Black => new(KnownColor.Black);
+    public static Color Black => KnownColor.Black.FromKnownColor();
 
-    public static Color BlanchedAlmond => new(KnownColor.BlanchedAlmond);
+    public static Color BlanchedAlmond => KnownColor.BlanchedAlmond.FromKnownColor();
 
-    public static Color Blue => new(KnownColor.Blue);
+    public static Color Blue => KnownColor.Blue.FromKnownColor();
 
-    public static Color BlueViolet => new(KnownColor.BlueViolet);
+    public static Color BlueViolet => KnownColor.BlueViolet.FromKnownColor();
 
-    public static Color Brown => new(KnownColor.Brown);
+    public static Color Brown => KnownColor.Brown.FromKnownColor();
 
-    public static Color BurlyWood => new(KnownColor.BurlyWood);
+    public static Color BurlyWood => KnownColor.BurlyWood.FromKnownColor();
 
-    public static Color CadetBlue => new(KnownColor.CadetBlue);
+    public static Color CadetBlue => KnownColor.CadetBlue.FromKnownColor();
 
-    public static Color Chartreuse => new(KnownColor.Chartreuse);
+    public static Color Chartreuse => KnownColor.Chartreuse.FromKnownColor();
 
-    public static Color Chocolate => new(KnownColor.Chocolate);
+    public static Color Chocolate => KnownColor.Chocolate.FromKnownColor();
 
-    public static Color Coral => new(KnownColor.Coral);
+    public static Color Coral => KnownColor.Coral.FromKnownColor();
 
-    public static Color CornflowerBlue => new(KnownColor.CornflowerBlue);
+    public static Color CornflowerBlue => KnownColor.CornflowerBlue.FromKnownColor();
 
-    public static Color Cornsilk => new(KnownColor.Cornsilk);
+    public static Color Cornsilk => KnownColor.Cornsilk.FromKnownColor();
 
-    public static Color Crimson => new(KnownColor.Crimson);
+    public static Color Crimson => KnownColor.Crimson.FromKnownColor();
 
-    public static Color Cyan => new(KnownColor.Cyan);
+    public static Color Cyan => KnownColor.Cyan.FromKnownColor();
 
-    public static Color DarkBlue => new(KnownColor.DarkBlue);
+    public static Color DarkBlue => KnownColor.DarkBlue.FromKnownColor();
 
-    public static Color DarkCyan => new(KnownColor.DarkCyan);
+    public static Color DarkCyan => KnownColor.DarkCyan.FromKnownColor();
 
-    public static Color DarkGoldenrod => new(KnownColor.DarkGoldenrod);
+    public static Color DarkGoldenrod => KnownColor.DarkGoldenrod.FromKnownColor();
 
-    public static Color DarkGray => new(KnownColor.DarkGray);
+    public static Color DarkGray => KnownColor.DarkGray.FromKnownColor();
 
-    public static Color DarkGreen => new(KnownColor.DarkGreen);
+    public static Color DarkGreen => KnownColor.DarkGreen.FromKnownColor();
 
-    public static Color DarkKhaki => new(KnownColor.DarkKhaki);
+    public static Color DarkKhaki => KnownColor.DarkKhaki.FromKnownColor();
 
-    public static Color DarkMagenta => new(KnownColor.DarkMagenta);
+    public static Color DarkMagenta => KnownColor.DarkMagenta.FromKnownColor();
 
-    public static Color DarkOliveGreen => new(KnownColor.DarkOliveGreen);
+    public static Color DarkOliveGreen => KnownColor.DarkOliveGreen.FromKnownColor();
 
-    public static Color DarkOrange => new(KnownColor.DarkOrange);
+    public static Color DarkOrange => KnownColor.DarkOrange.FromKnownColor();
 
-    public static Color DarkOrchid => new(KnownColor.DarkOrchid);
+    public static Color DarkOrchid => KnownColor.DarkOrchid.FromKnownColor();
 
-    public static Color DarkRed => new(KnownColor.DarkRed);
+    public static Color DarkRed => KnownColor.DarkRed.FromKnownColor();
 
-    public static Color DarkSalmon => new(KnownColor.DarkSalmon);
+    public static Color DarkSalmon => KnownColor.DarkSalmon.FromKnownColor();
 
-    public static Color DarkSeaGreen => new(KnownColor.DarkSeaGreen);
+    public static Color DarkSeaGreen => KnownColor.DarkSeaGreen.FromKnownColor();
 
-    public static Color DarkSlateBlue => new(KnownColor.DarkSlateBlue);
+    public static Color DarkSlateBlue => KnownColor.DarkSlateBlue.FromKnownColor();
 
-    public static Color DarkSlateGray => new(KnownColor.DarkSlateGray);
+    public static Color DarkSlateGray => KnownColor.DarkSlateGray.FromKnownColor();
 
-    public static Color DarkTurquoise => new(KnownColor.DarkTurquoise);
+    public static Color DarkTurquoise => KnownColor.DarkTurquoise.FromKnownColor();
 
-    public static Color DarkViolet => new(KnownColor.DarkViolet);
+    public static Color DarkViolet => KnownColor.DarkViolet.FromKnownColor();
 
-    public static Color DeepPink => new(KnownColor.DeepPink);
+    public static Color DeepPink => KnownColor.DeepPink.FromKnownColor();
 
-    public static Color DeepSkyBlue => new(KnownColor.DeepSkyBlue);
+    public static Color DeepSkyBlue => KnownColor.DeepSkyBlue.FromKnownColor();
 
-    public static Color DimGray => new(KnownColor.DimGray);
+    public static Color DimGray => KnownColor.DimGray.FromKnownColor();
 
-    public static Color DodgerBlue => new(KnownColor.DodgerBlue);
+    public static Color DodgerBlue => KnownColor.DodgerBlue.FromKnownColor();
 
-    public static Color Firebrick => new(KnownColor.Firebrick);
+    public static Color Firebrick => KnownColor.Firebrick.FromKnownColor();
 
-    public static Color FloralWhite => new(KnownColor.FloralWhite);
+    public static Color FloralWhite => KnownColor.FloralWhite.FromKnownColor();
 
-    public static Color ForestGreen => new(KnownColor.ForestGreen);
+    public static Color ForestGreen => KnownColor.ForestGreen.FromKnownColor();
 
-    public static Color Fuchsia => new(KnownColor.Fuchsia);
+    public static Color Fuchsia => KnownColor.Fuchsia.FromKnownColor();
 
-    public static Color Gainsboro => new(KnownColor.Gainsboro);
+    public static Color Gainsboro => KnownColor.Gainsboro.FromKnownColor();
 
-    public static Color GhostWhite => new(KnownColor.GhostWhite);
+    public static Color GhostWhite => KnownColor.GhostWhite.FromKnownColor();
 
-    public static Color Gold => new(KnownColor.Gold);
+    public static Color Gold => KnownColor.Gold.FromKnownColor();
 
-    public static Color Goldenrod => new(KnownColor.Goldenrod);
+    public static Color Goldenrod => KnownColor.Goldenrod.FromKnownColor();
 
-    public static Color Gray => new(KnownColor.Gray);
+    public static Color Gray => KnownColor.Gray.FromKnownColor();
 
-    public static Color Green => new(KnownColor.Green);
+    public static Color Green => KnownColor.Green.FromKnownColor();
 
-    public static Color GreenYellow => new(KnownColor.GreenYellow);
+    public static Color GreenYellow => KnownColor.GreenYellow.FromKnownColor();
 
-    public static Color Honeydew => new(KnownColor.Honeydew);
+    public static Color Honeydew => KnownColor.Honeydew.FromKnownColor();
 
-    public static Color HotPink => new(KnownColor.HotPink);
+    public static Color HotPink => KnownColor.HotPink.FromKnownColor();
 
-    public static Color IndianRed => new(KnownColor.IndianRed);
+    public static Color IndianRed => KnownColor.IndianRed.FromKnownColor();
 
-    public static Color Indigo => new(KnownColor.Indigo);
+    public static Color Indigo => KnownColor.Indigo.FromKnownColor();
 
-    public static Color Ivory => new(KnownColor.Ivory);
+    public static Color Ivory => KnownColor.Ivory.FromKnownColor();
 
-    public static Color Khaki => new(KnownColor.Khaki);
+    public static Color Khaki => KnownColor.Khaki.FromKnownColor();
 
-    public static Color Lavender => new(KnownColor.Lavender);
+    public static Color Lavender => KnownColor.Lavender.FromKnownColor();
 
-    public static Color LavenderBlush => new(KnownColor.LavenderBlush);
+    public static Color LavenderBlush => KnownColor.LavenderBlush.FromKnownColor();
 
-    public static Color LawnGreen => new(KnownColor.LawnGreen);
+    public static Color LawnGreen => KnownColor.LawnGreen.FromKnownColor();
 
-    public static Color LemonChiffon => new(KnownColor.LemonChiffon);
+    public static Color LemonChiffon => KnownColor.LemonChiffon.FromKnownColor();
 
-    public static Color LightBlue => new(KnownColor.LightBlue);
+    public static Color LightBlue => KnownColor.LightBlue.FromKnownColor();
 
-    public static Color LightCoral => new(KnownColor.LightCoral);
+    public static Color LightCoral => KnownColor.LightCoral.FromKnownColor();
 
-    public static Color LightCyan => new(KnownColor.LightCyan);
+    public static Color LightCyan => KnownColor.LightCyan.FromKnownColor();
 
-    public static Color LightGoldenrodYellow => new(KnownColor.LightGoldenrodYellow);
+    public static Color LightGoldenrodYellow => KnownColor.LightGoldenrodYellow.FromKnownColor();
 
-    public static Color LightGreen => new(KnownColor.LightGreen);
+    public static Color LightGreen => KnownColor.LightGreen.FromKnownColor();
 
-    public static Color LightGray => new(KnownColor.LightGray);
+    public static Color LightGray => KnownColor.LightGray.FromKnownColor();
 
-    public static Color LightPink => new(KnownColor.LightPink);
+    public static Color LightPink => KnownColor.LightPink.FromKnownColor();
 
-    public static Color LightSalmon => new(KnownColor.LightSalmon);
+    public static Color LightSalmon => KnownColor.LightSalmon.FromKnownColor();
 
-    public static Color LightSeaGreen => new(KnownColor.LightSeaGreen);
+    public static Color LightSeaGreen => KnownColor.LightSeaGreen.FromKnownColor();
 
-    public static Color LightSkyBlue => new(KnownColor.LightSkyBlue);
+    public static Color LightSkyBlue => KnownColor.LightSkyBlue.FromKnownColor();
 
-    public static Color LightSlateGray => new(KnownColor.LightSlateGray);
+    public static Color LightSlateGray => KnownColor.LightSlateGray.FromKnownColor();
 
-    public static Color LightSteelBlue => new(KnownColor.LightSteelBlue);
+    public static Color LightSteelBlue => KnownColor.LightSteelBlue.FromKnownColor();
 
-    public static Color LightYellow => new(KnownColor.LightYellow);
+    public static Color LightYellow => KnownColor.LightYellow.FromKnownColor();
 
-    public static Color Lime => new(KnownColor.Lime);
+    public static Color Lime => KnownColor.Lime.FromKnownColor();
 
-    public static Color LimeGreen => new(KnownColor.LimeGreen);
+    public static Color LimeGreen => KnownColor.LimeGreen.FromKnownColor();
 
-    public static Color Linen => new(KnownColor.Linen);
+    public static Color Linen => KnownColor.Linen.FromKnownColor();
 
-    public static Color Magenta => new(KnownColor.Magenta);
+    public static Color Magenta => KnownColor.Magenta.FromKnownColor();
 
-    public static Color Maroon => new(KnownColor.Maroon);
+    public static Color Maroon => KnownColor.Maroon.FromKnownColor();
 
-    public static Color MediumAquamarine => new(KnownColor.MediumAquamarine);
+    public static Color MediumAquamarine => KnownColor.MediumAquamarine.FromKnownColor();
 
-    public static Color MediumBlue => new(KnownColor.MediumBlue);
+    public static Color MediumBlue => KnownColor.MediumBlue.FromKnownColor();
 
-    public static Color MediumOrchid => new(KnownColor.MediumOrchid);
+    public static Color MediumOrchid => KnownColor.MediumOrchid.FromKnownColor();
 
-    public static Color MediumPurple => new(KnownColor.MediumPurple);
+    public static Color MediumPurple => KnownColor.MediumPurple.FromKnownColor();
 
-    public static Color MediumSeaGreen => new(KnownColor.MediumSeaGreen);
+    public static Color MediumSeaGreen => KnownColor.MediumSeaGreen.FromKnownColor();
 
-    public static Color MediumSlateBlue => new(KnownColor.MediumSlateBlue);
+    public static Color MediumSlateBlue => KnownColor.MediumSlateBlue.FromKnownColor();
 
-    public static Color MediumSpringGreen => new(KnownColor.MediumSpringGreen);
+    public static Color MediumSpringGreen => KnownColor.MediumSpringGreen.FromKnownColor();
 
-    public static Color MediumTurquoise => new(KnownColor.MediumTurquoise);
+    public static Color MediumTurquoise => KnownColor.MediumTurquoise.FromKnownColor();
 
-    public static Color MediumVioletRed => new(KnownColor.MediumVioletRed);
+    public static Color MediumVioletRed => KnownColor.MediumVioletRed.FromKnownColor();
 
-    public static Color MidnightBlue => new(KnownColor.MidnightBlue);
+    public static Color MidnightBlue => KnownColor.MidnightBlue.FromKnownColor();
 
-    public static Color MintCream => new(KnownColor.MintCream);
+    public static Color MintCream => KnownColor.MintCream.FromKnownColor();
 
-    public static Color MistyRose => new(KnownColor.MistyRose);
+    public static Color MistyRose => KnownColor.MistyRose.FromKnownColor();
 
-    public static Color Moccasin => new(KnownColor.Moccasin);
+    public static Color Moccasin => KnownColor.Moccasin.FromKnownColor();
 
-    public static Color NavajoWhite => new(KnownColor.NavajoWhite);
+    public static Color NavajoWhite => KnownColor.NavajoWhite.FromKnownColor();
 
-    public static Color Navy => new(KnownColor.Navy);
+    public static Color Navy => KnownColor.Navy.FromKnownColor();
 
-    public static Color OldLace => new(KnownColor.OldLace);
+    public static Color OldLace => KnownColor.OldLace.FromKnownColor();
 
-    public static Color Olive => new(KnownColor.Olive);
+    public static Color Olive => KnownColor.Olive.FromKnownColor();
 
-    public static Color OliveDrab => new(KnownColor.OliveDrab);
+    public static Color OliveDrab => KnownColor.OliveDrab.FromKnownColor();
 
-    public static Color Orange => new(KnownColor.Orange);
+    public static Color Orange => KnownColor.Orange.FromKnownColor();
 
-    public static Color OrangeRed => new(KnownColor.OrangeRed);
+    public static Color OrangeRed => KnownColor.OrangeRed.FromKnownColor();
 
-    public static Color Orchid => new(KnownColor.Orchid);
+    public static Color Orchid => KnownColor.Orchid.FromKnownColor();
 
-    public static Color PaleGoldenrod => new(KnownColor.PaleGoldenrod);
+    public static Color PaleGoldenrod => KnownColor.PaleGoldenrod.FromKnownColor();
 
-    public static Color PaleGreen => new(KnownColor.PaleGreen);
+    public static Color PaleGreen => KnownColor.PaleGreen.FromKnownColor();
 
-    public static Color PaleTurquoise => new(KnownColor.PaleTurquoise);
+    public static Color PaleTurquoise => KnownColor.PaleTurquoise.FromKnownColor();
 
-    public static Color PaleVioletRed => new(KnownColor.PaleVioletRed);
+    public static Color PaleVioletRed => KnownColor.PaleVioletRed.FromKnownColor();
 
-    public static Color PapayaWhip => new(KnownColor.PapayaWhip);
+    public static Color PapayaWhip => KnownColor.PapayaWhip.FromKnownColor();
 
-    public static Color PeachPuff => new(KnownColor.PeachPuff);
+    public static Color PeachPuff => KnownColor.PeachPuff.FromKnownColor();
 
-    public static Color Peru => new(KnownColor.Peru);
+    public static Color Peru => KnownColor.Peru.FromKnownColor();
 
-    public static Color Pink => new(KnownColor.Pink);
+    public static Color Pink => KnownColor.Pink.FromKnownColor();
 
-    public static Color Plum => new(KnownColor.Plum);
+    public static Color Plum => KnownColor.Plum.FromKnownColor();
 
-    public static Color PowderBlue => new(KnownColor.PowderBlue);
+    public static Color PowderBlue => KnownColor.PowderBlue.FromKnownColor();
 
-    public static Color Purple => new(KnownColor.Purple);
+    public static Color Purple => KnownColor.Purple.FromKnownColor();
 
     /// <summary>
     /// Gets a system-defined color that has an ARGB value of <c>#663399</c>.
     /// </summary>
     /// <value>A system-defined color.</value>
-    public static Color RebeccaPurple => new(KnownColor.RebeccaPurple);
+    public static Color RebeccaPurple => KnownColor.Purple.FromKnownColor();
 
-    public static Color Red => new(KnownColor.Red);
+    public static Color Red => KnownColor.Red.FromKnownColor();
 
-    public static Color RosyBrown => new(KnownColor.RosyBrown);
+    public static Color RosyBrown => KnownColor.RosyBrown.FromKnownColor();
 
-    public static Color RoyalBlue => new(KnownColor.RoyalBlue);
+    public static Color RoyalBlue => KnownColor.RoyalBlue.FromKnownColor();
 
-    public static Color SaddleBrown => new(KnownColor.SaddleBrown);
+    public static Color SaddleBrown => KnownColor.SaddleBrown.FromKnownColor();
 
-    public static Color Salmon => new(KnownColor.Salmon);
+    public static Color Salmon => KnownColor.Salmon.FromKnownColor();
 
-    public static Color SandyBrown => new(KnownColor.SandyBrown);
+    public static Color SandyBrown => KnownColor.SandyBrown.FromKnownColor();
 
-    public static Color SeaGreen => new(KnownColor.SeaGreen);
+    public static Color SeaGreen => KnownColor.SeaGreen.FromKnownColor();
 
-    public static Color SeaShell => new(KnownColor.SeaShell);
+    public static Color SeaShell => KnownColor.SeaShell.FromKnownColor();
 
-    public static Color Sienna => new(KnownColor.Sienna);
+    public static Color Sienna => KnownColor.Sienna.FromKnownColor();
 
-    public static Color Silver => new(KnownColor.Silver);
+    public static Color Silver => KnownColor.Silver.FromKnownColor();
 
-    public static Color SkyBlue => new(KnownColor.SkyBlue);
+    public static Color SkyBlue => KnownColor.SkyBlue.FromKnownColor();
 
-    public static Color SlateBlue => new(KnownColor.SlateBlue);
+    public static Color SlateBlue => KnownColor.SlateBlue.FromKnownColor();
 
-    public static Color SlateGray => new(KnownColor.SlateGray);
+    public static Color SlateGray => KnownColor.SlateGray.FromKnownColor();
 
-    public static Color Snow => new(KnownColor.Snow);
+    public static Color Snow => KnownColor.Snow.FromKnownColor();
 
-    public static Color SpringGreen => new(KnownColor.SpringGreen);
+    public static Color SpringGreen => KnownColor.SpringGreen.FromKnownColor();
 
-    public static Color SteelBlue => new(KnownColor.SteelBlue);
+    public static Color SteelBlue => KnownColor.SteelBlue.FromKnownColor();
 
-    public static Color Tan => new(KnownColor.Tan);
+    public static Color Tan => KnownColor.Tan.FromKnownColor();
 
-    public static Color Teal => new(KnownColor.Teal);
+    public static Color Teal => KnownColor.Teal.FromKnownColor();
 
-    public static Color Thistle => new(KnownColor.Thistle);
+    public static Color Thistle => KnownColor.Thistle.FromKnownColor();
 
-    public static Color Tomato => new(KnownColor.Tomato);
+    public static Color Tomato => KnownColor.Tomato.FromKnownColor();
 
-    public static Color Turquoise => new(KnownColor.Turquoise);
+    public static Color Turquoise => KnownColor.Turquoise.FromKnownColor();
 
-    public static Color Violet => new(KnownColor.Violet);
+    public static Color Violet => KnownColor.Violet.FromKnownColor();
 
-    public static Color Wheat => new(KnownColor.Wheat);
+    public static Color Wheat => KnownColor.Wheat.FromKnownColor();
 
-    public static Color White => new(KnownColor.White);
+    public static Color White => KnownColor.White.FromKnownColor();
 
-    public static Color WhiteSmoke => new(KnownColor.WhiteSmoke);
+    public static Color WhiteSmoke => KnownColor.WhiteSmoke.FromKnownColor();
 
-    public static Color Yellow => new(KnownColor.Yellow);
+    public static Color Yellow => KnownColor.Yellow.FromKnownColor();
 
-    public static Color YellowGreen => new(KnownColor.YellowGreen);
+    public static Color YellowGreen => KnownColor.YellowGreen.FromKnownColor();
     //
     //  end "web" colors
     // -------------------------------------------------------------------
@@ -338,62 +340,22 @@ public readonly struct Color : IEquatable<Color>
 
     // Shift counts and bit masks for A, R, G, B components in ARGB mode
 
-    internal const int ARGBAlphaShift = 24;
-    internal const int ARGBRedShift = 16;
-    internal const int ARGBGreenShift = 8;
-    internal const int ARGBBlueShift = 0;
-    internal const uint ARGBAlphaMask = 0xFFu << ARGBAlphaShift;
-    internal const uint ARGBRedMask = 0xFFu << ARGBRedShift;
-    internal const uint ARGBGreenMask = 0xFFu << ARGBGreenShift;
-    internal const uint ARGBBlueMask = 0xFFu << ARGBBlueShift;
-
-    // User supplied name of color. Will not be filled in if
-    // we map to a "knowncolor"
-    private readonly string? name; // Do not rename (binary serialization)
-
     // Standard 32bit sRGB (ARGB)
-    private readonly long value; // Do not rename (binary serialization)
+    private long value=0; // Do not rename (binary serialization)
 
-    // Ignored, unless "state" says it is valid
-    private readonly short knownColor; // Do not rename (binary serialization)
-
-    // State flags.
-    private readonly short state; // Do not rename (binary serialization)
-
-    internal Color(KnownColor knownColor)
+    public Color()
     {
-        value = 0;
-        state = StateKnownColorValid;
-        name = null;
-        this.knownColor = unchecked((short)knownColor);
     }
 
-    private Color(long value, short state, string? name, KnownColor knownColor)
-    {
-        this.value = value;
-        this.state = state;
-        this.name = name;
-        this.knownColor = unchecked((short)knownColor);
-    }
+    public byte R => unchecked((byte)(value >> ColorConstants.ARGBRedShift));
 
-    public byte R => unchecked((byte)(Value >> ARGBRedShift));
+    public byte G => unchecked((byte)(value >> ColorConstants.ARGBGreenShift));
 
-    public byte G => unchecked((byte)(Value >> ARGBGreenShift));
+    public byte B => unchecked((byte)(value >> ColorConstants.ARGBBlueShift));
 
-    public byte B => unchecked((byte)(Value >> ARGBBlueShift));
+    public byte A => unchecked((byte)(value >> ColorConstants.ARGBAlphaShift));
 
-    public byte A => unchecked((byte)(Value >> ARGBAlphaShift));
-
-    public bool IsKnownColor => (state & StateKnownColorValid) != 0;
-
-    public bool IsEmpty => state == 0;
-
-    public bool IsNamedColor => ((state & StateNameValid) != 0) || IsKnownColor;
-
-    public bool IsSystemColor => IsKnownColor && IsKnownColorSystem((KnownColor)knownColor);
-
-    internal static bool IsKnownColorSystem(KnownColor knownColor)
-        => KnownColorTable.ColorKindTable[(int)knownColor] == KnownColorTable.KnownColorKindSystem;
+    public bool IsEmpty => ToArgb() == 0;
 
     // Used for the [DebuggerDisplay]. Inlining in the attribute is possible, but
     // against best practices as the current project language parses the string with
@@ -405,42 +367,8 @@ public readonly struct Color : IEquatable<Color>
     {
         get
         {
-            if ((state & StateNameValid) != 0)
-            {
-                Trace.Assert(name != null);
-                return name!;
-            }
-
-            if (IsKnownColor)
-            {
-                var tablename = KnownColorNames.KnownColorToName((KnownColor)knownColor);
-                Trace.Assert(tablename != null, $"Could not find known color '{(KnownColor)knownColor}' in the KnownColorTable");
-
-                return tablename!;
-            }
-
-            // if we reached here, just encode the value
-            //
-            return value.ToString("x");
-        }
-    }
-
-    private long Value
-    {
-        get
-        {
-            if ((state & StateValueMask) != 0)
-            {
-                return value;
-            }
-
-            // This is the only place we have system colors value exposed
-            if (IsKnownColor)
-            {
-                return KnownColorTable.KnownColorToArgb((KnownColor)knownColor);
-            }
-
-            return NotDefinedValue;
+            var name = this.GetName();
+            return !(string.IsNullOrEmpty(name))?name :value.ToString("x");
         }
     }
 
@@ -453,9 +381,9 @@ public readonly struct Color : IEquatable<Color>
             ThrowOutOfByteRange(value, name);
     }
 
-    private static Color FromArgb(uint argb) => new(argb, StateARGBValueValid, null, KnownColor.Default);
+    private static Color FromArgb(uint argb) => new Color() { value = argb };
 
-    public static Color FromArgb(int argb) => FromArgb(unchecked((uint)argb));
+    public static Color FromArgb(int argb) => new Color() { value = argb };
 
     public static Color FromArgb(int alpha, int red, int green, int blue)
     {
@@ -465,10 +393,10 @@ public readonly struct Color : IEquatable<Color>
         CheckByte(blue, nameof(blue));
 
         return FromArgb(
-            (uint)alpha << ARGBAlphaShift |
-            (uint)red << ARGBRedShift |
-            (uint)green << ARGBGreenShift |
-            (uint)blue << ARGBBlueShift
+            (uint)alpha << ColorConstants.ARGBAlphaShift |
+            (uint)red << ColorConstants.ARGBRedShift |
+            (uint)green << ColorConstants.ARGBGreenShift |
+            (uint)blue << ColorConstants.ARGBBlueShift
         );
     }
 
@@ -477,41 +405,30 @@ public readonly struct Color : IEquatable<Color>
         CheckByte(alpha, nameof(alpha));
 
         return FromArgb(
-            (uint)alpha << ARGBAlphaShift |
-            (uint)baseColor.Value & ~ARGBAlphaMask
+            (uint)alpha << ColorConstants.ARGBAlphaShift |
+            (uint)baseColor.value & ~ColorConstants.ARGBAlphaMask
         );
     }
 
     public static Color FromArgb(int red, int green, int blue) => FromArgb(byte.MaxValue, red, green, blue);
 
-    public static Color FromKnownColor(KnownColor color) =>
-        color <= 0 || color > KnownColor.RebeccaPurple ? FromName(color.ToString()) : new Color(color);
-
-#if NET462_OR_GREATER
-        public static Color FromName(string name)
-#else
     public static Color FromName(string name)
-#endif
     {
         // try to get a known color first
         if (ColorTable.TryGetNamedColor(name, out var color))
-#if NET462_OR_GREATER
                 return color;
-#else
-            return FromArgb(color.ToArgb());
-#endif
 
         // otherwise treat it as a named color
-        return new Color(NotDefinedValue, StateNameValid, name, KnownColor.Default);
+        return Color.Transparent;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void GetRgbValues(out int r, out int g, out int b)
     {
-        var localValue = (uint)Value;
-        r = (int)(localValue & ARGBRedMask) >> ARGBRedShift;
-        g = (int)(localValue & ARGBGreenMask) >> ARGBGreenShift;
-        b = (int)(localValue & ARGBBlueMask) >> ARGBBlueShift;
+        var localValue = (uint)value;
+        r = (int)(localValue & ColorConstants.ARGBRedMask) >> ColorConstants.ARGBRedShift;
+        g = (int)(localValue & ColorConstants.ARGBGreenMask) >> ColorConstants.ARGBGreenShift;
+        b = (int)(localValue & ColorConstants.ARGBBlueMask) >> ColorConstants.ARGBBlueShift;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -588,20 +505,14 @@ public readonly struct Color : IEquatable<Color>
         return (max - min) / (float)div;
     }
 
-    public int ToArgb() => unchecked((int)Value);
-
-    public KnownColor ToKnownColor() => (KnownColor)knownColor;
+    public int ToArgb() => unchecked((int)value);
 
     public override string ToString() =>
-        IsNamedColor ? $"{nameof(Color)} [{Name}]" :
-        (state & StateValueMask) != 0 ? $"{nameof(Color)} [A={A}, R={R}, G={G}, B={B}]" :
-        $"{nameof(Color)} [Empty]";
+        this.IsNamedColor() ? $"{nameof(Color)} [{Name}]" :
+        $"{nameof(Color)} [A={A}, R={R}, G={G}, B={B}]";
 
     public static bool operator ==(Color left, Color right) =>
-        left.value == right.value
-        && left.state == right.state
-        && left.knownColor == right.knownColor
-        && left.name == right.name;
+        left.value == right.value;
 
     public static bool operator !=(Color left, Color right) => !(left == right);
 
@@ -618,9 +529,10 @@ public readonly struct Color : IEquatable<Color>
         // an unnamed color with the same ARGB value.
         // 3. Have an unknown name. Will differ from other unknown-named colors only by name, so we
         // can usefully use the names hash code alone.
-        if (name != null && !IsKnownColor)
-            return name.GetHashCode();
+        if (!string.IsNullOrEmpty(this.GetName()) && !this.IsKnownColor())
+            return this.GetName().GetHashCode();
 
-        return HashCode.Combine(value.GetHashCode(), state.GetHashCode(), knownColor.GetHashCode());
+        return HashCode.Combine(value.GetHashCode());
     }
 }
+#endif

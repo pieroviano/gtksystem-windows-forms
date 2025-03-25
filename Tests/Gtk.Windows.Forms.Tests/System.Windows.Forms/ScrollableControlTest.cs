@@ -18,9 +18,7 @@ public class ScrollableControlTest : TestHelper
     [Test]
     public void AutoScrollPositionTest ()
     {
-        ScrollableControl sc;
-
-        sc = new ScrollableControl ();
+        var sc = new ScrollableControl ();
         sc.AutoScroll = true;
 			
         sc.AutoScrollPosition = new Point (-25, -50);
@@ -54,15 +52,14 @@ public class ScrollableControlTest : TestHelper
 
         sc.AutoScrollPosition = new Point (25, 50);
         Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#09");
-			
-			
-        Control c1, c2;
-        c1 = new Control ();
+
+
+        var c1 = new Control ();
         c1.Location = new Point (-100, -200);
         c1.Size = new Size (10, 10);
         sc.Controls.Add (c1);
 
-        c2 = new Control ();
+        var c2 = new Control ();
         c2.Location = new Point (400, 800);
         c2.Size = new Size (10, 10);
         sc.Controls.Add (c2);
@@ -254,8 +251,7 @@ public class ScrollableControlTest : TestHelper
         sc.Size = new Size (100, 100);
         sc.AutoScroll = true;
 
-        Control c;
-        c = new Control ();
+        var c = new Control ();
         c.Location = new Point (0, 0);
         c.Size = new Size (200, 200);
         sc.Controls.Add (c);

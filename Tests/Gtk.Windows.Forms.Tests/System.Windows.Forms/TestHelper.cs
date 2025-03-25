@@ -135,10 +135,9 @@ public class TestHelper
         var members = new Hashtable ();
 			
         foreach (var property in properties) {
-            MethodInfo getter;
             object value;
 				
-            getter = property.GetGetMethod ();
+            var getter = property.GetGetMethod ();
 				
             if (getter == null)
                 continue;

@@ -5,6 +5,6 @@
 namespace System.Windows.Forms;
 
 /// <summary>
-///  Represents a method that will handle the <see cref='Control.ChangeUiCues'/> event of a <see cref='Control'/>.
+///  Represents a method that will handle the <see cref='Control.ChangeUICues'/> event of a <see cref='Control'/>.
 /// </summary>
 public delegate void UiCuesEventHandler(object? sender, UiCuesEventArgs e);

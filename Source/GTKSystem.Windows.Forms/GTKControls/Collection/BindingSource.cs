@@ -1317,7 +1317,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         {
             object? list = null;
             IList? lists = null;
-            if (manager.Count > 0)
+            if (manager is { Count: > 0 })
             {
                 if (_dataMember != null)
                 {
@@ -1346,8 +1346,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             {
                 SetList(WrapObjectInBindingList(list), false, false);
             }
-            var flag1 = _lastCurrentItem == null || manager.Count == 0 || _lastCurrentItem != manager.Current ? true : Position >= Count;
-            _lastCurrentItem = manager.Count > 0 ? manager.Current : null;
+            var flag1 = manager != null && (_lastCurrentItem == null || manager.Count == 0 || _lastCurrentItem != manager.Current || Position >= Count);
+            _lastCurrentItem = manager?.Count > 0 ? manager.Current : null;
             if (flag1)
             {
                 Position = Count > 0 ? 0 : -1;

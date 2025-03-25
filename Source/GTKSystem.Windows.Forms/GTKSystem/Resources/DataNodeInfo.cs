@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Drawing;
-
 namespace System.Resources;
+
+using GtkPoint = System.Drawing.Point;
 
 internal class DataNodeInfo
 {
@@ -13,7 +13,7 @@ internal class DataNodeInfo
     public string? typeName;
     public string? mimeType;
     public string? valueData;
-    public Point readerPosition; //only used to track position in the reader
+    public GtkPoint readerPosition; //only used to track position in the reader
 
     internal DataNodeInfo Clone()
     {
@@ -24,7 +24,7 @@ internal class DataNodeInfo
             typeName = typeName,
             mimeType = mimeType,
             valueData = valueData,
-            readerPosition = new Point(readerPosition.X, readerPosition.Y)
+            readerPosition = new GtkPoint(readerPosition.X, readerPosition.Y)
         };
     }
 }

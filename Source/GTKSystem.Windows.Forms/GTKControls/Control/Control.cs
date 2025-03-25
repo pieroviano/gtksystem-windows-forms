@@ -12,17 +12,19 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms.Design;
 using Cairo;
-using Color = System.Drawing.Color;
 using Font = System.Drawing.Font;
 using Graphics = System.Drawing.Graphics;
 using Image = System.Drawing.Image;
-using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
 using Region = System.Drawing.Region;
-using Size = System.Drawing.Size;
 using Task = System.Threading.Tasks.Task;
 
 namespace System.Windows.Forms;
+
+using Color = System.Drawing.Color;
+using Size = System.Drawing.Size;
+using SizeF = System.Drawing.SizeF;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
 
 [DefaultEvent("Click")]
 [DefaultProperty("Text")]
@@ -193,65 +195,65 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-        private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
+    private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
+    {
+        if (o is Widget { Window: not null } owidget)
         {
-            if (o is Widget { Window: not null } owidget)
-            {
-                var result = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
-                else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
-                else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
+            var result = MouseButtons.None;
+            if (args.Event.Button == 1)
+                result = MouseButtons.Left;
+            else if (args.Event.Button == 2)
+                result = MouseButtons.Middle;
+            else if (args.Event.Button == 3)
+                result = MouseButtons.Right;
 
-                owidget.Window.GetOrigin(out var x, out var y);// Avoiding event penetration errors
+            owidget.Window.GetOrigin(out var x, out var y);// Avoiding event penetration errors
             if (MouseDown != null)
-                {
-                    MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                }
-            }
-        }
-        private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-        {
-            if (o is Widget { Window: not null } owidget)
             {
-                var result = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
-                else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
-                else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
-                owidget.Window.GetOrigin(out var x, out var y);
-                if (MouseUp != null)
+                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            }
+        }
+    }
+    private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+    {
+        if (o is Widget { Window: not null } owidget)
+        {
+            var result = MouseButtons.None;
+            if (args.Event.Button == 1)
+                result = MouseButtons.Left;
+            else if (args.Event.Button == 2)
+                result = MouseButtons.Middle;
+            else if (args.Event.Button == 3)
+                result = MouseButtons.Right;
+            owidget.Window.GetOrigin(out var x, out var y);
+            if (MouseUp != null)
+            {
+                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            }
+            if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+            {
+                if (MouseDoubleClick != null)
+                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                if (DoubleClick != null)
+                    DoubleClick(this, EventArgs.Empty);
+            }
+            else
+            {
+                if (Click != null)
+                    Click(this, EventArgs.Empty);
+                if (MouseClick != null)
+                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            }
+            if (ContextMenuStrip != null)
+            {
+                if (args.Event.Button == 3)
                 {
-                    MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                }
-                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-                {
-                    if (MouseDoubleClick != null)
-                        MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                    if (DoubleClick != null)
-                        DoubleClick(this, EventArgs.Empty);
-                }
-                else
-                {
-                    if (Click != null)
-                        Click(this, EventArgs.Empty);
-                    if (MouseClick != null)
-                        MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                }
-                if (ContextMenuStrip != null)
-                {
-                    if (args.Event.Button == 3)
-                    {
-                        ContextMenuStrip.Widget.ShowAll();
-                        ((Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
-                    }
+                    ContextMenuStrip.Widget.ShowAll();
+                    ((Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
                 }
             }
         }
+    }
 
     protected virtual void OnDoubleClick(EventArgs e)
     {
@@ -357,6 +359,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         OnLostFocus(args);
 
+        var cancelEventArgs = new CancelEventArgs(false);
         OnValidating(cancelEventArgs);
         if (Validated != null && cancelEventArgs.Cancel == false)
             OnValidated(cancelEventArgs);
@@ -1121,8 +1124,8 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual bool IsHandleCreated
     {
-        get => this.Widget.IsRealized;
-        set => this.Widget.IsRealized = value;
+        get => Widget.IsRealized;
+        set => Widget.IsRealized = value;
     }
 
     public virtual bool IsMirrored { get; internal set; }
@@ -1328,7 +1331,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public event EventHandler? BackgroundImageLayoutChanged;
     public event EventHandler? BindingContextChanged;
     public event EventHandler? CausesValidationChanged;
-    public event UiCuesEventHandler? ChangeUiCues;
+    public event UiCuesEventHandler? ChangeUICues;
     public event EventHandler? Click;
     public event EventHandler? ClientSizeChanged;
     public event EventHandler? ContextMenuStripChanged;
@@ -1391,7 +1394,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public event EventHandler? TextChanged;
     public event EventHandler? PropertyChanged;
 
-    readonly CancelEventArgs cancelEventArgs = new(false);
     public event EventHandler? Validated;
     public event CancelEventHandler? Validating;
     public event EventHandler? VisibleChanged;
@@ -2090,57 +2092,56 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     private ArrangedElementCollection? arrangedElementCollection;
 #pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
     public ArrangedElementCollection? Children => arrangedElementCollection;
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnResize(EventArgs e)
-        {
-            this.Widget?.QueueResize();
-            Resize?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnClick(EventArgs e)
-        {
-            Click?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseDoubleClick(MouseEventArgs e)
-        {
-            MouseDoubleClick?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseClick(MouseEventArgs e)
-        {
-            MouseClick?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseDown(MouseEventArgs e)
-        {
-            MouseDown?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseUp(MouseEventArgs e)
-        {
-            MouseUp?.Invoke(this, e);
-        }
-        protected virtual void OnKeyDown(KeyEventArgs e)
-        {
-            KeyDown?.Invoke(this, e);
-        }
-        protected virtual void OnKeyUp(KeyEventArgs e)
-        {
-            KeyUp?.Invoke(this, e);
-        }
-        protected virtual void OnVisibleChanged(EventArgs e)
-        {
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnResize(EventArgs e)
+    {
+        Widget?.QueueResize();
+        Resize?.Invoke(this, e);
+    }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnClick(EventArgs e)
+    {
+        Click?.Invoke(this, e);
+    }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnMouseDoubleClick(MouseEventArgs e)
+    {
+        MouseDoubleClick?.Invoke(this, e);
+    }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnMouseClick(MouseEventArgs e)
+    {
+        MouseClick?.Invoke(this, e);
+    }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnMouseDown(MouseEventArgs e)
+    {
+        MouseDown?.Invoke(this, e);
+    }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnMouseUp(MouseEventArgs e)
+    {
+        MouseUp?.Invoke(this, e);
+    }
+    protected virtual void OnKeyDown(KeyEventArgs e)
+    {
+        KeyDown?.Invoke(this, e);
+    }
+    protected virtual void OnKeyUp(KeyEventArgs e)
+    {
+        KeyUp?.Invoke(this, e);
+    }
 
-        }
-        protected virtual void OnSizeChanged(EventArgs e)
-        {
-            SizeChanged?.Invoke(this, e);
-        }
-        protected virtual void Select(bool directed, bool forward)
-        {
+    protected virtual void OnSizeChanged(EventArgs e)
+    {
+        SizeChanged?.Invoke(this, e);
+    }
+
+    protected virtual void Select(bool directed, bool forward)
+    {
 
     }
+    
     protected virtual void OnGotFocus(EventArgs e)
     {
         GotFocus?.Invoke(this, e);
@@ -2167,5 +2168,125 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     protected virtual void OnPreLoad(EventArgs e)
     {
         PreLoad?.Invoke(this, e);
+    }
+
+    protected virtual void OnChangeUiCues(UiCuesEventArgs e)
+    {
+        ChangeUICues?.Invoke(this, e);
+    }
+
+    protected virtual void OnControlAdded(ControlEventArgs e)
+    {
+        ControlAdded?.Invoke(this, e);
+    }
+
+    protected virtual void OnControlRemoved(ControlEventArgs e)
+    {
+        ControlRemoved?.Invoke(this, e);
+    }
+
+    protected virtual void OnDpiChangedAfterParent(EventArgs e)
+    {
+        DpiChangedAfterParent?.Invoke(this, e);
+    }
+
+    protected virtual void OnDpiChangedBeforeParent(EventArgs e)
+    {
+        DpiChangedBeforeParent?.Invoke(this, e);
+    }
+
+    protected virtual void OnDragDrop(DragEventArgs e)
+    {
+        DragDrop?.Invoke(this, e);
+    }
+
+    protected virtual void OnDragEnter(DragEventArgs e)
+    {
+        DragEnter?.Invoke(this, e);
+    }
+
+    protected virtual void OnDragLeave(EventArgs e)
+    {
+        DragLeave?.Invoke(this, e);
+    }
+
+    protected virtual void OnDragOver(DragEventArgs e)
+    {
+        DragOver?.Invoke(this, e);
+    }
+
+    protected virtual void OnGiveFeedback(GiveFeedbackEventArgs e)
+    {
+        GiveFeedback?.Invoke(this, e);
+    }
+
+    protected virtual void OnHelpRequested(HelpEventArgs e)
+    {
+        HelpRequested?.Invoke(this, e);
+    }
+
+    protected virtual void OnInvalidated(InvalidateEventArgs e)
+    {
+        Invalidated?.Invoke(this, e);
+    }
+
+    protected virtual void OnMouseCaptureChanged(EventArgs e)
+    {
+        MouseCaptureChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnPaddingChanged(EventArgs e)
+    {
+        PaddingChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
+    {
+        PreviewKeyDown?.Invoke(this, e);
+    }
+
+    protected virtual void OnQueryAccessibilityHelp(QueryAccessibilityHelpEventArgs e)
+    {
+        QueryAccessibilityHelp?.Invoke(this, e);
+    }
+
+    protected virtual void OnQueryContinueDrag(QueryContinueDragEventArgs e)
+    {
+        QueryContinueDrag?.Invoke(this, e);
+    }
+
+    protected virtual void OnRegionChanged(EventArgs e)
+    {
+        RegionChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnRightToLeftChanged(EventArgs e)
+    {
+        RightToLeftChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnStyleChanged(EventArgs e)
+    {
+        StyleChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnSystemColorsChanged(EventArgs e)
+    {
+        SystemColorsChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnTabIndexChanged(EventArgs e)
+    {
+        TabIndexChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnTabStopChanged(EventArgs e)
+    {
+        TabStopChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnVisibleChanged(EventArgs e)
+    {
+        VisibleChanged?.Invoke(this, e);
     }
 }

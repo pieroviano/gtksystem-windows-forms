@@ -1,12 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NET462_OR_GREATER
 using System.ComponentModel;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
+
+#if CONVERT
+extern alias sd;
+using SdRectangle = sd::System.Drawing.Rectangle;
 #else
-namespace System.Drawing.Gtk;
+using SdRectangle = System.Drawing.Rectangle;
 #endif
 
 /// <summary>
@@ -24,13 +28,13 @@ public struct Rectangle : IEquatable<Rectangle>
     private int width; // Do not rename (binary serialization)
     private int height; // Do not rename (binary serialization)
 
-#if NETSTANDARD
-    public static implicit operator Drawing.Rectangle(Rectangle r)
+#if CONVERT
+    public static implicit operator SdRectangle(Rectangle r)
     {
-        return new Drawing.Rectangle(r.X, r.Y, r.Width, r.Height);
+        return new SdRectangle(r.X, r.Y, r.Width, r.Height);
     }
 
-    public static implicit operator Rectangle(Drawing.Rectangle r)
+    public static implicit operator Rectangle(SdRectangle r)
     {
         return new Rectangle(r.X, r.Y, r.Width, r.Height);
     }
@@ -357,3 +361,4 @@ public struct Rectangle : IEquatable<Rectangle>
     /// </summary>
     public override readonly string ToString() => $"{{X={X},Y={Y},Width={Width},Height={Height}}}";
 }
+#endif

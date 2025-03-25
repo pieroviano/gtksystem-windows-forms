@@ -1,15 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NET462_OR_GREATER
 using System.ComponentModel;
 using System.Numerics;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
-#else
-namespace System.Drawing.Gtk;
-#endif
 
+#if CONVERT
+extern alias sd;
+using SdPointF = sd::System.Drawing.PointF;
+#else
+using SdPointF = System.Drawing.PointF;
+#endif
 
 /// <summary>
 /// Represents an ordered pair of x and y coordinates that define a point in a two-dimensional plane.
@@ -23,18 +26,17 @@ public struct PointF : IEquatable<PointF>
     /// </summary>
     public static readonly PointF Empty= new();
 
-#if NETSTANDARD
-    public static implicit operator Drawing.PointF(PointF r)
+#if CONVERT
+    public static implicit operator SdPointF(PointF r)
     {
-        return new Drawing.PointF(r.X, r.Y);
+        return new SdPointF(r.X, r.Y);
     }
 
-    public static implicit operator PointF(Drawing.PointF r)
+    public static implicit operator PointF(SdPointF r)
     {
         return new PointF(r.X, r.Y);
     }
 #endif
-
 
     private float x; // Do not rename (binary serialization)
     private float y; // Do not rename (binary serialization)
@@ -159,3 +161,4 @@ public struct PointF : IEquatable<PointF>
 
     public override readonly string ToString() => $"{{X={x}, Y={y}}}";
 }
+#endif

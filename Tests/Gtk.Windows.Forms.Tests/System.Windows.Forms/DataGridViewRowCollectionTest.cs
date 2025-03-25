@@ -52,9 +52,7 @@ public class DataGridViewRowCollectionTest : TestHelper
     [Test]
     public void CtorTest ()
     {
-        DataGridViewRowCollection rc;
-			
-        rc = new DataGridViewRowCollection (null);
+        var rc = new DataGridViewRowCollection (null);
         Assert.AreEqual (0, rc.Count, "#01");
 
         using var dgv = new DataGridView ();

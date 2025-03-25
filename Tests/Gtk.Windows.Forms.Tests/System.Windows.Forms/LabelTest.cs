@@ -357,7 +357,7 @@ public class MyLabelInvalidate : MyLabel
         Invalidated += OnInvalidated;
     }
 
-    protected void OnInvalidated(object? sender, InvalidateEventArgs e)
+    protected new void OnInvalidated(object? sender, InvalidateEventArgs e)
     {
         var res = (string)results[results.Count - 1];
         results[results.Count - 1] = string.Concat(res, "," + e.InvalidRect.ToString());
@@ -464,14 +464,14 @@ public class MyLabel : Label
 
     public void KeyPressA()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = (int)WndMsg.WM_KEYDOWN,
+            HWnd = Handle,
+            WParam = (IntPtr)0x41,
+            LParam = (IntPtr)0x1e0001
+        };
 
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
         WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
@@ -489,14 +489,14 @@ public class MyLabel : Label
 
     public void KeyDownA()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = (int)WndMsg.WM_KEYDOWN,
+            HWnd = Handle,
+            WParam = (IntPtr)0x41,
+            LParam = (IntPtr)0x1e0001
+        };
 
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
         WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
@@ -508,14 +508,14 @@ public class MyLabel : Label
 
     public void KeyUpA()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = (int)WndMsg.WM_KEYUP,
+            HWnd = Handle,
+            WParam = (IntPtr)0x41,
+            LParam = (IntPtr)unchecked((int)0xC01e0001)
+        };
 
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)unchecked((int)0xC01e0001);
         WndProc(ref m);
     }
 
@@ -880,14 +880,14 @@ public class MyLabel2 : Label
 
     public void KeyPressA()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = (int)WndMsg.WM_KEYDOWN,
+            HWnd = Handle,
+            WParam = (IntPtr)0x41,
+            LParam = (IntPtr)0x1e0001
+        };
 
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
         WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
@@ -905,14 +905,14 @@ public class MyLabel2 : Label
 
     public void KeyDownA()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = (int)WndMsg.WM_KEYDOWN,
+            HWnd = Handle,
+            WParam = (IntPtr)0x41,
+            LParam = (IntPtr)0x1e0001
+        };
 
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)0x1e0001;
         WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
@@ -924,14 +924,14 @@ public class MyLabel2 : Label
 
     public void KeyUpA()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = (int)WndMsg.WM_KEYUP,
+            HWnd = Handle,
+            WParam = (IntPtr)0x41,
+            LParam = (IntPtr)unchecked((int)0xC01e0001)
+        };
 
-        m = new Message();
-
-        m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x41;
-        m.LParam = (IntPtr)unchecked((int)0xC01e0001);
         WndProc(ref m);
     }
 

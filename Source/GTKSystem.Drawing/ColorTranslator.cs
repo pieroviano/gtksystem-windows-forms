@@ -1,16 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
-#else
-namespace System.Drawing.Gtk;
-#endif
+
+using GtkKnownColor = System.Drawing.KnownColor;
 
 /// <summary>
 /// Translates colors to and from GDI+ <see cref='Color'/> objects.
 /// </summary>
-public static class ColorTranslator
+public static class
+#if NET462_OR_GREATER
+    ColorTranslator
+#else
+    GtkColorTranslator
+#endif
 {
     // COLORREF is 0x00BBGGRR
     internal const int COLORREF_RedShift = 0;
@@ -22,10 +25,10 @@ public static class ColorTranslator
     private static Dictionary<string, Color>? s_htmlSysColorTable;
 
     internal static uint COLORREFToARGB(uint value)
-        => ((value >> COLORREF_RedShift) & 0xFF) << Color.ARGBRedShift
-           | ((value >> COLORREF_GreenShift) & 0xFF) << Color.ARGBGreenShift
-           | ((value >> COLORREF_BlueShift) & 0xFF) << Color.ARGBBlueShift
-           | Color.ARGBAlphaMask; // COLORREF's are always fully opaque
+        => ((value >> COLORREF_RedShift) & 0xFF) << Drawing.ColorConstants.ARGBRedShift
+           | ((value >> COLORREF_GreenShift) & 0xFF) << Drawing.ColorConstants.ARGBGreenShift
+           | ((value >> COLORREF_BlueShift) & 0xFF) << Drawing.ColorConstants.ARGBBlueShift
+           | Drawing.ColorConstants.ARGBAlphaMask; // COLORREF's are always fully opaque
 
     /// <summary>
     /// Translates the specified <see cref='Color'/> to a Win32 color.
@@ -46,78 +49,78 @@ public static class ColorTranslator
         // This method converts Color to an OLE_COLOR.
         // https://docs.microsoft.com/openspecs/office_file_formats/ms-oforms/4b8f4be0-3fff-4e42-9fc1-b9fd00251e8e
 
-        if (c is { IsKnownColor: true, IsSystemColor: true })
+        if (c.IsKnownColor() && c.IsSystemColor())
         {
             // Unfortunately KnownColor didn't keep the same ordering as the various GetSysColor()
             // COLOR_ * values, otherwise this could be greatly simplified.
 
-            switch (c.ToKnownColor())
+            switch (KnownColorTable.ArgbToGtkKnownColor(unchecked((uint)c.ToArgb())))
             {
-                case KnownColor.ActiveBorder:
+                case GtkKnownColor.ActiveBorder:
                     return unchecked((int)0x8000000A);
-                case KnownColor.ActiveCaption:
+                case GtkKnownColor.ActiveCaption:
                     return unchecked((int)0x80000002);
-                case KnownColor.ActiveCaptionText:
+                case GtkKnownColor.ActiveCaptionText:
                     return unchecked((int)0x80000009);
-                case KnownColor.AppWorkspace:
+                case GtkKnownColor.AppWorkspace:
                     return unchecked((int)0x8000000C);
-                case KnownColor.ButtonFace:
+                case GtkKnownColor.ButtonFace:
                     return unchecked((int)0x8000000F);
-                case KnownColor.ButtonHighlight:
+                case GtkKnownColor.ButtonHighlight:
                     return unchecked((int)0x80000014);
-                case KnownColor.ButtonShadow:
+                case GtkKnownColor.ButtonShadow:
                     return unchecked((int)0x80000010);
-                case KnownColor.Control:
+                case GtkKnownColor.Control:
                     return unchecked((int)0x8000000F);
-                case KnownColor.ControlDark:
+                case GtkKnownColor.ControlDark:
                     return unchecked((int)0x80000010);
-                case KnownColor.ControlDarkDark:
+                case GtkKnownColor.ControlDarkDark:
                     return unchecked((int)0x80000015);
-                case KnownColor.ControlLight:
+                case GtkKnownColor.ControlLight:
                     return unchecked((int)0x80000016);
-                case KnownColor.ControlLightLight:
+                case GtkKnownColor.ControlLightLight:
                     return unchecked((int)0x80000014);
-                case KnownColor.ControlText:
+                case GtkKnownColor.ControlText:
                     return unchecked((int)0x80000012);
-                case KnownColor.Desktop:
+                case GtkKnownColor.Desktop:
                     return unchecked((int)0x80000001);
-                case KnownColor.GradientActiveCaption:
+                case GtkKnownColor.GradientActiveCaption:
                     return unchecked((int)0x8000001B);
-                case KnownColor.GradientInactiveCaption:
+                case GtkKnownColor.GradientInactiveCaption:
                     return unchecked((int)0x8000001C);
-                case KnownColor.GrayText:
+                case GtkKnownColor.GrayText:
                     return unchecked((int)0x80000011);
-                case KnownColor.Highlight:
+                case GtkKnownColor.Highlight:
                     return unchecked((int)0x8000000D);
-                case KnownColor.HighlightText:
+                case GtkKnownColor.HighlightText:
                     return unchecked((int)0x8000000E);
-                case KnownColor.HotTrack:
+                case GtkKnownColor.HotTrack:
                     return unchecked((int)0x8000001A);
-                case KnownColor.InactiveBorder:
+                case GtkKnownColor.InactiveBorder:
                     return unchecked((int)0x8000000B);
-                case KnownColor.InactiveCaption:
+                case GtkKnownColor.InactiveCaption:
                     return unchecked((int)0x80000003);
-                case KnownColor.InactiveCaptionText:
+                case GtkKnownColor.InactiveCaptionText:
                     return unchecked((int)0x80000013);
-                case KnownColor.Info:
+                case GtkKnownColor.Info:
                     return unchecked((int)0x80000018);
-                case KnownColor.InfoText:
+                case GtkKnownColor.InfoText:
                     return unchecked((int)0x80000017);
-                case KnownColor.Menu:
+                case GtkKnownColor.Menu:
                     return unchecked((int)0x80000004);
-                case KnownColor.MenuBar:
+                case GtkKnownColor.MenuBar:
                     return unchecked((int)0x8000001E);
-                case KnownColor.MenuHighlight:
+                case GtkKnownColor.MenuHighlight:
                     return unchecked((int)0x8000001D);
-                case KnownColor.MenuText:
+                case GtkKnownColor.MenuText:
                     return unchecked((int)0x80000007);
-                case KnownColor.ScrollBar:
+                case GtkKnownColor.ScrollBar:
                     return unchecked((int)0x80000000);
-                case KnownColor.Window:
+                case GtkKnownColor.Window:
                     return unchecked((int)0x80000005);
-                case KnownColor.WindowFrame:
+                case GtkKnownColor.WindowFrame:
                     return unchecked((int)0x80000006);
-                case KnownColor.WindowText:
+                case GtkKnownColor.WindowText:
                     return unchecked((int)0x80000008);
             }
         }
@@ -138,65 +141,65 @@ public static class ColorTranslator
             switch (oleColor)
             {
                 case unchecked((int)0x8000000A):
-                    return Color.FromKnownColor(KnownColor.ActiveBorder);
+                    return GtkKnownColor.ActiveBorder.FromKnownColor();
                 case unchecked((int)0x80000002):
-                    return Color.FromKnownColor(KnownColor.ActiveCaption);
+                    return GtkKnownColor.ActiveCaption.FromKnownColor();
                 case unchecked((int)0x80000009):
-                    return Color.FromKnownColor(KnownColor.ActiveCaptionText);
+                    return GtkKnownColor.ActiveCaptionText.FromKnownColor();
                 case unchecked((int)0x8000000C):
-                    return Color.FromKnownColor(KnownColor.AppWorkspace);
+                    return GtkKnownColor.AppWorkspace.FromKnownColor();
                 case unchecked((int)0x8000000F):
-                    return Color.FromKnownColor(KnownColor.Control);
+                    return GtkKnownColor.Control.FromKnownColor();
                 case unchecked((int)0x80000010):
-                    return Color.FromKnownColor(KnownColor.ControlDark);
+                    return GtkKnownColor.ControlDark.FromKnownColor();
                 case unchecked((int)0x80000015):
-                    return Color.FromKnownColor(KnownColor.ControlDarkDark);
+                    return GtkKnownColor.ControlDarkDark.FromKnownColor();
                 case unchecked((int)0x80000016):
-                    return Color.FromKnownColor(KnownColor.ControlLight);
+                    return GtkKnownColor.ControlLight.FromKnownColor();
                 case unchecked((int)0x80000014):
-                    return Color.FromKnownColor(KnownColor.ControlLightLight);
+                    return GtkKnownColor.ControlLightLight.FromKnownColor();
                 case unchecked((int)0x80000012):
-                    return Color.FromKnownColor(KnownColor.ControlText);
+                    return GtkKnownColor.ControlText.FromKnownColor();
                 case unchecked((int)0x80000001):
-                    return Color.FromKnownColor(KnownColor.Desktop);
+                    return GtkKnownColor.Desktop.FromKnownColor();
                 case unchecked((int)0x8000001B):
-                    return Color.FromKnownColor(KnownColor.GradientActiveCaption);
+                    return GtkKnownColor.GradientActiveCaption.FromKnownColor();
                 case unchecked((int)0x8000001C):
-                    return Color.FromKnownColor(KnownColor.GradientInactiveCaption);
+                    return GtkKnownColor.GradientInactiveCaption.FromKnownColor();
                 case unchecked((int)0x80000011):
-                    return Color.FromKnownColor(KnownColor.GrayText);
+                    return GtkKnownColor.GrayText.FromKnownColor();
                 case unchecked((int)0x8000000D):
-                    return Color.FromKnownColor(KnownColor.Highlight);
+                    return GtkKnownColor.Highlight.FromKnownColor();
                 case unchecked((int)0x8000000E):
-                    return Color.FromKnownColor(KnownColor.HighlightText);
+                    return GtkKnownColor.HighlightText.FromKnownColor();
                 case unchecked((int)0x8000001A):
-                    return Color.FromKnownColor(KnownColor.HotTrack);
+                    return GtkKnownColor.HotTrack.FromKnownColor();
                 case unchecked((int)0x8000000B):
-                    return Color.FromKnownColor(KnownColor.InactiveBorder);
+                    return GtkKnownColor.InactiveBorder.FromKnownColor();
                 case unchecked((int)0x80000003):
-                    return Color.FromKnownColor(KnownColor.InactiveCaption);
+                    return GtkKnownColor.InactiveCaption.FromKnownColor();
                 case unchecked((int)0x80000013):
-                    return Color.FromKnownColor(KnownColor.InactiveCaptionText);
+                    return GtkKnownColor.InactiveCaptionText.FromKnownColor();
                 case unchecked((int)0x80000018):
-                    return Color.FromKnownColor(KnownColor.Info);
+                    return GtkKnownColor.Info.FromKnownColor();
                 case unchecked((int)0x80000017):
-                    return Color.FromKnownColor(KnownColor.InfoText);
+                    return GtkKnownColor.InfoText.FromKnownColor();
                 case unchecked((int)0x80000004):
-                    return Color.FromKnownColor(KnownColor.Menu);
+                    return GtkKnownColor.Menu.FromKnownColor();
                 case unchecked((int)0x8000001E):
-                    return Color.FromKnownColor(KnownColor.MenuBar);
+                    return GtkKnownColor.MenuBar.FromKnownColor();
                 case unchecked((int)0x8000001D):
-                    return Color.FromKnownColor(KnownColor.MenuHighlight);
+                    return GtkKnownColor.MenuHighlight.FromKnownColor();
                 case unchecked((int)0x80000007):
-                    return Color.FromKnownColor(KnownColor.MenuText);
+                    return GtkKnownColor.MenuText.FromKnownColor();
                 case unchecked((int)0x80000000):
-                    return Color.FromKnownColor(KnownColor.ScrollBar);
+                    return GtkKnownColor.ScrollBar.FromKnownColor();
                 case unchecked((int)0x80000005):
-                    return Color.FromKnownColor(KnownColor.Window);
+                    return GtkKnownColor.Window.FromKnownColor();
                 case unchecked((int)0x80000006):
-                    return Color.FromKnownColor(KnownColor.WindowFrame);
+                    return GtkKnownColor.WindowFrame.FromKnownColor();
                 case unchecked((int)0x80000008):
-                    return Color.FromKnownColor(KnownColor.WindowText);
+                    return GtkKnownColor.WindowText.FromKnownColor();
             }
         }
 
@@ -222,91 +225,91 @@ public static class ColorTranslator
         if (c.IsEmpty)
             return colorString;
 
-        if (c.IsSystemColor)
+        if (c.IsSystemColor())
         {
-            switch (c.ToKnownColor())
+            switch (KnownColorTable.ArgbToGtkKnownColor(unchecked((uint)c.ToArgb())))
             {
-                case KnownColor.ActiveBorder:
+                case GtkKnownColor.ActiveBorder:
                     colorString = "activeborder";
                     break;
-                case KnownColor.GradientActiveCaption:
-                case KnownColor.ActiveCaption:
+                case GtkKnownColor.GradientActiveCaption:
+                case GtkKnownColor.ActiveCaption:
                     colorString = "activecaption";
                     break;
-                case KnownColor.AppWorkspace:
+                case GtkKnownColor.AppWorkspace:
                     colorString = "appworkspace";
                     break;
-                case KnownColor.Desktop:
+                case GtkKnownColor.Desktop:
                     colorString = "background";
                     break;
-                case KnownColor.Control:
-                case KnownColor.ControlLight:
+                case GtkKnownColor.Control:
+                case GtkKnownColor.ControlLight:
                     colorString = "buttonface";
                     break;
-                case KnownColor.ControlDark:
+                case GtkKnownColor.ControlDark:
                     colorString = "buttonshadow";
                     break;
-                case KnownColor.ControlText:
+                case GtkKnownColor.ControlText:
                     colorString = "buttontext";
                     break;
-                case KnownColor.ActiveCaptionText:
+                case GtkKnownColor.ActiveCaptionText:
                     colorString = "captiontext";
                     break;
-                case KnownColor.GrayText:
+                case GtkKnownColor.GrayText:
                     colorString = "graytext";
                     break;
-                case KnownColor.HotTrack:
-                case KnownColor.Highlight:
+                case GtkKnownColor.HotTrack:
+                case GtkKnownColor.Highlight:
                     colorString = "highlight";
                     break;
-                case KnownColor.MenuHighlight:
-                case KnownColor.HighlightText:
+                case GtkKnownColor.MenuHighlight:
+                case GtkKnownColor.HighlightText:
                     colorString = "highlighttext";
                     break;
-                case KnownColor.InactiveBorder:
+                case GtkKnownColor.InactiveBorder:
                     colorString = "inactiveborder";
                     break;
-                case KnownColor.GradientInactiveCaption:
-                case KnownColor.InactiveCaption:
+                case GtkKnownColor.GradientInactiveCaption:
+                case GtkKnownColor.InactiveCaption:
                     colorString = "inactivecaption";
                     break;
-                case KnownColor.InactiveCaptionText:
+                case GtkKnownColor.InactiveCaptionText:
                     colorString = "inactivecaptiontext";
                     break;
-                case KnownColor.Info:
+                case GtkKnownColor.Info:
                     colorString = "infobackground";
                     break;
-                case KnownColor.InfoText:
+                case GtkKnownColor.InfoText:
                     colorString = "infotext";
                     break;
-                case KnownColor.MenuBar:
-                case KnownColor.Menu:
+                case GtkKnownColor.MenuBar:
+                case GtkKnownColor.Menu:
                     colorString = "menu";
                     break;
-                case KnownColor.MenuText:
+                case GtkKnownColor.MenuText:
                     colorString = "menutext";
                     break;
-                case KnownColor.ScrollBar:
+                case GtkKnownColor.ScrollBar:
                     colorString = "scrollbar";
                     break;
-                case KnownColor.ControlDarkDark:
+                case GtkKnownColor.ControlDarkDark:
                     colorString = "threeddarkshadow";
                     break;
-                case KnownColor.ControlLightLight:
+                case GtkKnownColor.ControlLightLight:
                     colorString = "buttonhighlight";
                     break;
-                case KnownColor.Window:
+                case GtkKnownColor.Window:
                     colorString = "window";
                     break;
-                case KnownColor.WindowFrame:
+                case GtkKnownColor.WindowFrame:
                     colorString = "windowframe";
                     break;
-                case KnownColor.WindowText:
+                case GtkKnownColor.WindowText:
                     colorString = "windowtext";
                     break;
             }
         }
-        else if (c.IsNamedColor)
+        else if (c.IsNamedColor())
         {
             if (c == Color.LightGray)
             {
@@ -330,39 +333,45 @@ public static class ColorTranslator
     {
         s_htmlSysColorTable = new Dictionary<string, Color>(27)
         {
-            ["activeborder"] = Color.FromKnownColor(KnownColor.ActiveBorder),
-            ["activecaption"] = Color.FromKnownColor(KnownColor.ActiveCaption),
-            ["appworkspace"] = Color.FromKnownColor(KnownColor.AppWorkspace),
-            ["background"] = Color.FromKnownColor(KnownColor.Desktop),
-            ["buttonface"] = Color.FromKnownColor(KnownColor.Control),
-            ["buttonhighlight"] = Color.FromKnownColor(KnownColor.ControlLightLight),
-            ["buttonshadow"] = Color.FromKnownColor(KnownColor.ControlDark),
-            ["buttontext"] = Color.FromKnownColor(KnownColor.ControlText),
-            ["captiontext"] = Color.FromKnownColor(KnownColor.ActiveCaptionText),
-            ["graytext"] = Color.FromKnownColor(KnownColor.GrayText),
-            ["highlight"] = Color.FromKnownColor(KnownColor.Highlight),
-            ["highlighttext"] = Color.FromKnownColor(KnownColor.HighlightText),
-            ["inactiveborder"] = Color.FromKnownColor(KnownColor.InactiveBorder),
-            ["inactivecaption"] = Color.FromKnownColor(KnownColor.InactiveCaption),
-            ["inactivecaptiontext"] = Color.FromKnownColor(KnownColor.InactiveCaptionText),
-            ["infobackground"] = Color.FromKnownColor(KnownColor.Info),
-            ["infotext"] = Color.FromKnownColor(KnownColor.InfoText),
-            ["menu"] = Color.FromKnownColor(KnownColor.Menu),
-            ["menutext"] = Color.FromKnownColor(KnownColor.MenuText),
-            ["scrollbar"] = Color.FromKnownColor(KnownColor.ScrollBar),
-            ["threeddarkshadow"] = Color.FromKnownColor(KnownColor.ControlDarkDark),
-            ["threedface"] = Color.FromKnownColor(KnownColor.Control),
-            ["threedhighlight"] = Color.FromKnownColor(KnownColor.ControlLight),
-            ["threedlightshadow"] = Color.FromKnownColor(KnownColor.ControlLightLight),
-            ["window"] = Color.FromKnownColor(KnownColor.Window),
-            ["windowframe"] = Color.FromKnownColor(KnownColor.WindowFrame),
-            ["windowtext"] = Color.FromKnownColor(KnownColor.WindowText)
+            ["activeborder"] = GtkKnownColor.ActiveBorder.FromKnownColor(),
+            ["activecaption"] = GtkKnownColor.ActiveCaption.FromKnownColor(),
+            ["appworkspace"] = GtkKnownColor.AppWorkspace.FromKnownColor(),
+            ["background"] = GtkKnownColor.Desktop.FromKnownColor(),
+            ["buttonface"] = GtkKnownColor.Control.FromKnownColor(),
+            ["buttonhighlight"] = GtkKnownColor.ControlLightLight.FromKnownColor(),
+            ["buttonshadow"] = GtkKnownColor.ControlDark.FromKnownColor(),
+            ["buttontext"] = GtkKnownColor.ControlText.FromKnownColor(),
+            ["captiontext"] = GtkKnownColor.ActiveCaptionText.FromKnownColor(),
+            ["graytext"] = GtkKnownColor.GrayText.FromKnownColor(),
+            ["highlight"] = GtkKnownColor.Highlight.FromKnownColor(),
+            ["highlighttext"] = GtkKnownColor.HighlightText.FromKnownColor(),
+            ["inactiveborder"] = GtkKnownColor.InactiveBorder.FromKnownColor(),
+            ["inactivecaption"] = GtkKnownColor.InactiveCaption.FromKnownColor(),
+            ["inactivecaptiontext"] = GtkKnownColor.InactiveCaptionText.FromKnownColor(),
+            ["infobackground"] = GtkKnownColor.Info.FromKnownColor(),
+            ["infotext"] = GtkKnownColor.InfoText.FromKnownColor(),
+            ["menu"] = GtkKnownColor.Menu.FromKnownColor(),
+            ["menutext"] = GtkKnownColor.MenuText.FromKnownColor(),
+            ["scrollbar"] = GtkKnownColor.ScrollBar.FromKnownColor(),
+            ["threeddarkshadow"] = GtkKnownColor.ControlDarkDark.FromKnownColor(),
+            ["threedface"] = GtkKnownColor.Control.FromKnownColor(),
+            ["threedhighlight"] = GtkKnownColor.ControlLight.FromKnownColor(),
+            ["threedlightshadow"] = GtkKnownColor.ControlLightLight.FromKnownColor(),
+            ["window"] = GtkKnownColor.Window.FromKnownColor(),
+            ["windowframe"] = GtkKnownColor.WindowFrame.FromKnownColor(),
+            ["windowtext"] = GtkKnownColor.WindowText.FromKnownColor()
         };
     }
 
     public static Color FromHtml(string text)
     {
-        var value = typeof(SystemColors).GetProperty(text)?.GetValue(null);
+        var value = typeof(
+#if NET462_OR_GREATER
+                                      SystemColors
+#else
+                                      GtkSystemColors
+#endif
+                                 ).GetProperty(text)?.GetValue(null);
         return value == null ? default : (Color)value;
     }
 }

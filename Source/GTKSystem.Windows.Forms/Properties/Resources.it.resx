@@ -214,4 +214,10 @@
   <data name="FontDialog_RunDialog_Select_Font" xml:space="preserve">
     <value>Selezionare il Font</value>
   </data>
+  <data name="PrintPreviewDialog_Init_Print_preview" xml:space="preserve">
+	  <value>Anteprima di stampa</value>
+  </data>
+  <data name="PrintPreviewDialog_Init_Print" xml:space="preserve">
+	  <value>Stampa</value>
+  </data>
 </root>

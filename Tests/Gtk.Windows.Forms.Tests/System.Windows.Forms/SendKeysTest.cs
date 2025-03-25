@@ -70,7 +70,7 @@ public class SendKeysTest  : TestHelper {
     Custom c;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         f?.Dispose();
         t.Dispose();

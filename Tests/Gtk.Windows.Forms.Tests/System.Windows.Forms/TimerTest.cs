@@ -7,7 +7,6 @@
 
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
-using Sys_Threading=System.Threading;
 using FormsApplication=System.Windows.Forms.Application;
 
 namespace GtkTests.System.Windows.Forms;
@@ -159,8 +158,10 @@ public class TimerTest : TestHelper
 
         void Form_Load (object? sender, EventArgs e)
         {
-            var t = new Thread (Run);
-            t.IsBackground = true;
+            var t = new Thread (Run)
+            {
+                IsBackground = true
+            };
             t.Start ();
             t.Join ();
             Close ();

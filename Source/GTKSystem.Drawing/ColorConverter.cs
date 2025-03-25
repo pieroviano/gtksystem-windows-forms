@@ -1,9 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
-#if NETSTANDARD
-using System.Drawing.Gtk;
-#endif
 using System.Globalization;
 using System.Reflection;
 
@@ -56,7 +53,13 @@ public class ColorConverter : TypeConverter
                     if (systemColorConstants == null)
                     {
                         Hashtable hashtables = new Hashtable(StringComparer.OrdinalIgnoreCase);
-                        FillConstants(hashtables, typeof(SystemColors));
+                        FillConstants(hashtables, typeof(
+#if NET462_OR_GREATER
+                                                            SystemColors
+#else
+                                                            GtkSystemColors
+#endif
+                                                        ));
                         systemColorConstants = hashtables;
                     }
                 }
@@ -160,34 +163,34 @@ public class ColorConverter : TypeConverter
                     switch (numArray.Length)
                     {
                         case 1:
-                        {
-                            namedColor = Color.FromArgb(numArray[0]);
-                            goto case 2;
-                        }
+                            {
+                                namedColor = Color.FromArgb(numArray[0]);
+                                goto case 2;
+                            }
                         case 2:
-                        {
-                            flag = true;
-                            break;
-                        }
+                            {
+                                flag = true;
+                                break;
+                            }
                         case 3:
-                        {
-                            namedColor = Color.FromArgb(numArray[0], numArray[1], numArray[2]);
-                            goto case 2;
-                        }
+                            {
+                                namedColor = Color.FromArgb(numArray[0], numArray[1], numArray[2]);
+                                goto case 2;
+                            }
                         case 4:
-                        {
-                            namedColor = Color.FromArgb(numArray[0], numArray[1], numArray[2], numArray[3]);
-                            goto case 2;
-                        }
+                            {
+                                namedColor = Color.FromArgb(numArray[0], numArray[1], numArray[2], numArray[3]);
+                                goto case 2;
+                            }
                         default:
-                        {
-                            goto case 2;
-                        }
+                            {
+                                goto case 2;
+                            }
                     }
                 }
                 if (namedColor != null & flag)
                 {
-                    int argb = ((Color)(namedColor??Color.Empty)).ToArgb();
+                    int argb = ((Color)(namedColor ?? Color.Empty)).ToArgb();
                     foreach (Color color in Colors.Values)
                     {
                         if (color.ToArgb() != argb)
@@ -240,13 +243,11 @@ public class ColorConverter : TypeConverter
                 {
                     return string.Empty;
                 }
-#if NET462_OR_GREATER
-                    if (color.IsKnownColor)
-                    {
-                        return color.Name;
-                    }
-#endif
-                if (color.IsNamedColor)
+                if (color.IsKnownColor())
+                {
+                    return color.Name;
+                }
+                if (color.IsNamedColor())
                 {
                     return string.Concat("'", color.Name, "'");
                 }
@@ -289,22 +290,26 @@ public class ColorConverter : TypeConverter
                 {
                     field = typeof(Color).GetField("Empty");
                 }
+                else if (color1.IsSystemColor())
+                {
+                    field = typeof(
 #if NET462_OR_GREATER
-                    else if (color1.IsSystemColor)
-                    {
-                        field = typeof(SystemColors).GetProperty(color1.Name);
-                    }
-                    else if (color1.IsKnownColor)
-                    {
-                        field = typeof(Color).GetProperty(color1.Name);
-                    }
+                                    SystemColors
+#else
+                                    GtkSystemColors
 #endif
+                                  ).GetProperty(color1.Name);
+                }
+                else if (color1.IsKnownColor())
+                {
+                    field = typeof(Color).GetProperty(color1.Name);
+                }
                 else if (color1.A != 255)
                 {
                     field = typeof(Color).GetMethod("FromArgb", new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
                     a = new object[] { color1.A, color1.R, color1.G, color1.B };
                 }
-                else if (!color1.IsNamedColor)
+                else if (!color1.IsNamedColor())
                 {
                     field = typeof(Color).GetMethod("FromArgb", new[] { typeof(int), typeof(int), typeof(int) });
                     a = new object[] { color1.R, color1.G, color1.B };

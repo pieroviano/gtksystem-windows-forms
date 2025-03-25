@@ -12,7 +12,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Resources;
 using System.Text;
-using System.Resources;
 
 namespace GtkTests.System.Resources;
 
@@ -98,8 +97,10 @@ public class WriterTest : Windows.Forms.TestHelper
     public void AddResource_WithComment ()
     {
         var w = new ResXResourceWriter (fileName);
-        var node = new ResXDataNode ("key", "value");
-        node.Comment = "comment is preserved";
+        var node = new ResXDataNode ("key", "value")
+        {
+            Comment = "comment is preserved"
+        };
         w.AddResource (node);
         w.Generate ();
         w.Close ();

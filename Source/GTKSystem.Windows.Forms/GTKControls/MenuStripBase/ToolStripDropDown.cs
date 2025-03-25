@@ -3,6 +3,8 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
+using Size = System.Drawing.Size;
+
 public class ToolStripDropDown : ToolStripItem
 {
     //public readonly ToolStripDropDownBase self = new ToolStripDropDownBase();

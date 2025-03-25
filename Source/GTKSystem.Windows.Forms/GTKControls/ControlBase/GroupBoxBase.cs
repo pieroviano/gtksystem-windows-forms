@@ -45,4 +45,14 @@ public sealed class GroupBoxBase : Frame, IControlGtk, IScrollableBoxBase
         child.Expand = expand;
         Add(child);
     }
+
+    void IScrollableBoxBase.OnScroll(ScrollEventArgs e)
+    {
+        OnScroll(e);
+    }
+
+    private void OnScroll(ScrollEventArgs e)
+    {
+        Scroll?.Invoke(this, e);
+    }
 }

@@ -1,9 +1,10 @@
 ﻿using Cairo;
 using Gtk;
-using Color = System.Drawing.Color;
 using Image = System.Drawing.Image;
 
 namespace System.Windows.Forms;
+
+using Color = System.Drawing.Color;
 
 public interface IControlOverride
 {

@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.ComponentModel;
-using System.Drawing;
-
 namespace System.Windows.Forms;
+
+using Size = System.Drawing.Size;
 
 /// <summary>
 ///  This class contains the information a user needs to paint the ToolTip.

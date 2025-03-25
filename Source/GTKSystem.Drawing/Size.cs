@@ -1,12 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NET462_OR_GREATER
 using System.ComponentModel;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
+
+#if CONVERT
+extern alias sd;
+using SdSize = sd::System.Drawing.Size;
 #else
-namespace System.Drawing.Gtk;
+using SdSize = System.Drawing.Size;
 #endif
 
 /// <summary>
@@ -25,13 +29,13 @@ public struct Size : IEquatable<Size>
     private int width; // Do not rename (binary serialization)
     private int height; // Do not rename (binary serialization)
 
-#if NETSTANDARD
-    public static implicit operator Drawing.Size(Size r)
+#if CONVERT
+    public static implicit operator SdSize(Size r)
     {
-        return new Drawing.Size(r.Width, r.Height);
+        return new SdSize(r.Width, r.Height);
     }
 
-    public static implicit operator Size(Drawing.Size r)
+    public static implicit operator Size(SdSize r)
     {
         return new Size(r.Width, r.Height);
     }
@@ -224,3 +228,4 @@ public struct Size : IEquatable<Size>
     private static SizeF Multiply(Size size, float multiplier) =>
         new(size.width * multiplier, size.height * multiplier);
 }
+#endif

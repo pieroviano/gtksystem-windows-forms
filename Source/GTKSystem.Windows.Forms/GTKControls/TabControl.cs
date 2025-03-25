@@ -12,6 +12,9 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
+
 [DesignerCategory("Component")]
 public class TabControl : ContainerControl
 {
@@ -155,11 +158,7 @@ public class TabControl : ContainerControl
                         var width = allocation.Width + 24;
                         var height = allocation.Height + 2;
                         OnDrawItem(new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { DiffLeft = -12, DiffTop = -2 }, _owner.Font,
-#if NETSTANDARD
-                            new Drawing.Gtk.Rectangle(0, 0, width, height),
-#else
                             new Rectangle(0, 0, width, height), 
-#endif
                             Convert.ToInt32(tab.Name), DrawItemState.Default));
 
                     }

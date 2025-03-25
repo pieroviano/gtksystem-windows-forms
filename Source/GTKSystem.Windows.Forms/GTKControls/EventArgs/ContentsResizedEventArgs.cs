@@ -6,6 +6,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Rectangle = System.Drawing.Rectangle;
+
 /// <summary>
 ///  Provides data for the <see cref='RichTextBox.ContentsResized'/> event.
 /// </summary>

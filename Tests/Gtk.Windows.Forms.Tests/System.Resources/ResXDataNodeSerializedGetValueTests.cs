@@ -25,10 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Resources;
-using System.ComponentModel.Design;
 using System.Reflection;
-using System.Runtime.Serialization;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 

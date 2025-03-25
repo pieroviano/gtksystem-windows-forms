@@ -9,6 +9,7 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
 		<DisableImplicitFrameworkReferences Condition="'$(TargetFramework)'=='net48'">true</DisableImplicitFrameworkReferences>
+		<NoWarn>CS0115;CS0618</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,12 +34,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
 		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" Aliases="sre" PrivateAssets="All" IncludeAssets="All" />
-		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" IncludeAssets="All" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sd" PrivateAssets="All" IncludeAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\GTKSystem.Drawing\GTKSystem.Drawing.csproj">
+		  <Aliases></Aliases>
+		</ProjectReference>
 		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 

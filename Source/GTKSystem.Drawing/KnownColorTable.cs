@@ -3,11 +3,10 @@
 
 using System.Diagnostics;
 
-#if NET462_OR_GREATER
 namespace System.Drawing;
-#else
-namespace System.Drawing.Gtk;
-#endif
+
+using GtkKnownColor = System.Drawing.KnownColor;
+
 internal static class KnownColorTable
 {
     public const byte KnownColorKindSystem = 0;
@@ -468,7 +467,7 @@ internal static class KnownColorTable
 
     internal static Color ArgbToKnownColor(uint argb)
     {
-        Trace.Assert((argb & Color.ARGBAlphaMask) == Color.ARGBAlphaMask);
+        Trace.Assert((argb & ColorConstants.ARGBAlphaMask) == ColorConstants.ARGBAlphaMask);
         Trace.Assert(ColorValueTable.Length == ColorKindTable.Length);
 
         var colorValueTable = ColorValueTable;
@@ -476,7 +475,7 @@ internal static class KnownColorTable
         {
             if (ColorKindTable[index] == KnownColorKindWeb && colorValueTable[index] == argb)
             {
-                return Color.FromKnownColor((KnownColor)index);
+                return ((GtkKnownColor)index).FromKnownColor();
             }
         }
 
@@ -484,9 +483,27 @@ internal static class KnownColorTable
         return Color.FromArgb((int)argb);
     }
 
-    public static uint KnownColorToArgb(KnownColor color)
+    internal static GtkKnownColor ArgbToGtkKnownColor(uint argb)
     {
-        Trace.Assert(color is > 0 and <= KnownColor.RebeccaPurple);
+        Trace.Assert((argb & ColorConstants.ARGBAlphaMask) == ColorConstants.ARGBAlphaMask);
+        Trace.Assert(ColorValueTable.Length == ColorKindTable.Length);
+
+        var colorValueTable = ColorValueTable;
+        for (var index = 1; index < colorValueTable.Length; ++index)
+        {
+            if (ColorKindTable[index] == KnownColorKindWeb && colorValueTable[index] == argb)
+            {
+                return ((GtkKnownColor)index);
+            }
+        }
+
+        // Not a known color
+        return default;
+    }
+
+    public static uint KnownColorToArgb(GtkKnownColor color)
+    {
+        Trace.Assert(color is > 0 and <= GtkKnownColor.RebeccaPurple);
 
         return ColorKindTable[(int)color] == KnownColorKindSystem
              ? GetSystemColorArgb(color)
@@ -501,9 +518,9 @@ internal static class KnownColorTable
         return ColorTranslator.COLORREFToARGB(Interop.User32.GetSysColor((byte)ColorValueTable[(int)color]));
     }
 #else
-    public static uint GetSystemColorArgb(KnownColor color)
+    public static uint GetSystemColorArgb(GtkKnownColor color)
     {
-        Trace.Assert(Color.IsKnownColorSystem(color));
+        Trace.Assert(color.IsKnownColorSystem());
 
         return ColorValueTable[(int)color];
     }
