@@ -3,6 +3,12 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Color = System.Drawing.Color;
+using Size = System.Drawing.Size;
+using SizeF = System.Drawing.SizeF;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
+
 public interface IControl
 {
     // The widget contains methods to log out
@@ -85,7 +91,7 @@ public interface IControl
     event EventHandler? BackgroundImageLayoutChanged;
     event EventHandler? BindingContextChanged;
     event EventHandler? CausesValidationChanged;
-    event UiCuesEventHandler? ChangeUiCues;
+    event UiCuesEventHandler? ChangeUICues;
     event EventHandler? Click;
     event EventHandler? ClientSizeChanged;
     event EventHandler? ContextMenuStripChanged;

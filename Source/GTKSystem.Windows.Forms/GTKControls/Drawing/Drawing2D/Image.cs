@@ -8,6 +8,10 @@ using Gtk;
 
 namespace System.Drawing;
 
+using SdSize = System.Drawing.Size;
+using SdSizeF = System.Drawing.SizeF;
+using SdRectangleF = System.Drawing.RectangleF;
+
 [Serializable]
 public abstract class Image : Widget, IWidget, ICloneable, ISerializable
 {
@@ -33,6 +37,7 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
             }
         }
     }
+
     private Pixbuf? pixbuf;
     public Pixbuf? Pixbuf
     {
@@ -71,19 +76,19 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
 
     /// <summary>Gets the width and height of this image.</summary>
     /// <returns>A <see cref="T:System.Drawing.SizeF" /> structure that represents the width and height of this <see cref="T:System.Drawing.Image" />.</returns>
-    public SizeF PhysicalDimension
+    public SdSizeF PhysicalDimension
     {
         get
         {
             float width = 10;
             float height = 10;
-            return new SizeF(width, height);
+            return new SdSizeF(width, height);
         }
     }
 
     /// <summary>Gets the width and height, in pixels, of this image.</summary>
     /// <returns>A <see cref="T:System.Drawing.Size" /> structure that represents the width and height, in pixels, of this image.</returns>
-    public Size Size => new(Width, Height);
+    public SdSize Size => new SdSize(Width, Height);
     private int _width;
     public int Width
     {
@@ -233,7 +238,7 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
     /// <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
     /// <exception cref="T:System.ArgumentException">
     ///   <paramref name="filename" /> is a <see cref="T:System.Uri" />.</exception>
-    public static Image? FromFile(string? filename)
+    public static Image FromFile(string filename)
     {
         return FromFile(filename, useEmbeddedColorManagement: false);
     }
@@ -248,7 +253,7 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
     /// <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
     /// <exception cref="T:System.ArgumentException">
     ///   <paramref name="filename" /> is a <see cref="T:System.Uri" />.</exception>
-    public static Image? FromFile(string? filename, bool useEmbeddedColorManagement)
+    public static Image FromFile(string filename, bool useEmbeddedColorManagement)
     {
         if (!File.Exists(filename))
         {
@@ -273,7 +278,7 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
             return bitmap;
         }
 
-        return null;
+        throw new InvalidOperationException();
     }
 
     /// <summary>Creates an <see cref="T:System.Drawing.Image" /> from the specified data stream.</summary>
@@ -352,82 +357,86 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
         return this;
     }
 
-		/// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Image" /> and optionally releases the managed resources.</summary>
-		/// <param name="disposing">
-		///   <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-		protected new virtual void Dispose(bool disposing)
-		{
-            if (Pixbuf != null)
-                Pixbuf.Dispose();
-            if (PixbufData != null)
-                PixbufData = null;
-			base.Dispose(disposing);
+    /// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Image" /> and optionally releases the managed resources.</summary>
+    /// <param name="disposing">
+    ///   <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
+    protected new virtual void Dispose(bool disposing)
+    {
+        if (Pixbuf != null)
+            Pixbuf.Dispose();
+        if (PixbufData != null)
+            PixbufData = null;
+        base.Dispose(disposing);
+    }
+    private ImageFormat GetImageFormat(string extension)
+    {
+        if (extension == ".memorybmp")
+        {
+            RawFormat = ImageFormat.MemoryBmp;
         }
-		private ImageFormat GetImageFormat(string extension)
-		{
-            if (extension == ".memorybmp")
-            {
-                RawFormat = ImageFormat.MemoryBmp;
-            }
-            else if (extension == ".bmp")
-            {
-                RawFormat = ImageFormat.Bmp;
-            }
-            else if (extension == ".emf")
-            {
-                RawFormat = ImageFormat.Emf;
-            }
-            else if (extension == ".wmf")
-            {
-                RawFormat = ImageFormat.Wmf;
-            }
-            else if (extension == ".gif")
-            {
-                RawFormat = ImageFormat.Gif;
-            }
-            else if (extension == ".jpeg")
-            {
-                RawFormat = ImageFormat.Jpeg;
-            }
-            else if (extension == ".png")
-            {
-                RawFormat = ImageFormat.Png;
-            }
-            else if (extension == ".tiff")
-            {
-                RawFormat = ImageFormat.Tiff;
-            }
-            else if (extension == ".exif")
-            {
-                RawFormat = ImageFormat.Exif;
-            }
-            else if (extension == ".icon")
-            {
-                RawFormat = ImageFormat.Icon;
-            }
-            else if (extension == ".heif")
-            {
-                RawFormat = ImageFormat.Heif;
-            }
-            else if (extension == ".webp")
-            {
-                RawFormat = ImageFormat.Webp;
-            }
-			return RawFormat;
+        else if (extension == ".bmp")
+        {
+            RawFormat = ImageFormat.Bmp;
         }
-		/// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file or stream.</summary>
-		/// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
-		/// <exception cref="T:System.ArgumentNullException">
-		///   <paramref name="filename" /> is <see langword="null." /></exception>
-		/// <exception cref="T:System.Runtime.InteropServices.ExternalException">The image was saved with the wrong image format.
-		/// -or-
-		/// The image was saved to the same file it was created from.</exception>
-		public void Save(string filename)
-		{
-			var extension = IO.Path.GetExtension(filename)?.ToLower();
-			GetImageFormat(extension??string.Empty);
-            Save(filename, RawFormat);
+        else if (extension == ".emf")
+        {
+            RawFormat = ImageFormat.Emf;
         }
+        else if (extension == ".wmf")
+        {
+            RawFormat = ImageFormat.Wmf;
+        }
+        else if (extension == ".gif")
+        {
+            RawFormat = ImageFormat.Gif;
+        }
+        else if (extension == ".jpeg")
+        {
+            RawFormat = ImageFormat.Jpeg;
+        }
+        else if (extension == ".png")
+        {
+            RawFormat = ImageFormat.Png;
+        }
+        else if (extension == ".tiff")
+        {
+            RawFormat = ImageFormat.Tiff;
+        }
+        else if (extension == ".exif")
+        {
+            RawFormat = ImageFormat.Exif;
+        }
+        else if (extension == ".icon")
+        {
+            RawFormat = ImageFormat.Icon;
+        }
+        else if (extension == ".heif")
+        {
+            RawFormat = ImageFormat.Heif;
+        }
+        else if (extension == ".webp")
+        {
+            RawFormat = ImageFormat.Webp;
+        }
+        else
+        {
+            RawFormat = ImageFormat.Default;
+        }
+        return RawFormat!;
+    }
+    /// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file or stream.</summary>
+    /// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
+    /// <exception cref="T:System.ArgumentNullException">
+    ///   <paramref name="filename" /> is <see langword="null." /></exception>
+    /// <exception cref="T:System.Runtime.InteropServices.ExternalException">The image was saved with the wrong image format.
+    /// -or-
+    /// The image was saved to the same file it was created from.</exception>
+    public void Save(string filename)
+    {
+        var extension = IO.Path.GetExtension(filename)?.ToLower();
+        GetImageFormat(extension ?? string.Empty);
+        Save(filename, RawFormat);
+    }
 
     /// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file in the specified format.</summary>
     /// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
@@ -511,9 +520,9 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
     /// <summary>Gets the bounds of the image in the specified unit.</summary>
     /// <param name="pageUnit">One of the <see cref="T:System.Drawing.GraphicsUnit" /> values indicating the unit of measure for the bounding rectangle.</param>
     /// <returns>The <see cref="T:System.Drawing.RectangleF" /> that represents the bounds of the image, in the specified unit.</returns>
-    public RectangleF GetBounds(ref GraphicsUnit pageUnit)
+    public SdRectangleF GetBounds(ref GraphicsUnit pageUnit)
     {
-        return new RectangleF();
+        return new SdRectangleF();
     }
 
     /// <summary>Returns a thumbnail for this <see cref="T:System.Drawing.Image" />.</summary>
@@ -667,11 +676,11 @@ public abstract class Image : Widget, IWidget, ICloneable, ISerializable
 
     }
 
-        public new void Dispose()
-        {
-			Dispose(true);
-        }
+    public new void Dispose()
+    {
+        Dispose(true);
     }
+}
 
 
 public class GtkImageConverter : TypeConverter

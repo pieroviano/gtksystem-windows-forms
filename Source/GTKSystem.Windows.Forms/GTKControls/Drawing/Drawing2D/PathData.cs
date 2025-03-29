@@ -1,5 +1,7 @@
 namespace System.Drawing.Drawing2D;
 
+using PointF = System.Drawing.PointF;
+
 /// <summary>Contains the graphical data that makes up a <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> object. This class cannot be inherited.</summary>
 public sealed class PathData
 {

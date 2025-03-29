@@ -3,6 +3,8 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
+using Point = System.Drawing.Point;
+
 public delegate void ToolStripItemClickedEventHandler(object? sender, ToolStripItemClickedEventArgs e);
 public abstract class ToolStripDropDownItem : WidgetToolStrip<Gtk.MenuItem>
 {

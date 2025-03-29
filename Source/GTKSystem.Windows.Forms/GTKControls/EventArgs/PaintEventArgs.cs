@@ -8,6 +8,8 @@ using System.Drawing.Drawing2D;
 
 namespace System.Windows.Forms;
 
+using Rectangle = System.Drawing.Rectangle;
+
 /// <summary>
 ///  Provides data for the <see cref='Control.Paint'/>
 ///  event.
@@ -66,7 +68,7 @@ public class PaintEventArgs : EventArgs, IDisposable
     /// </summary>
     internal PaintEventArgs(IntPtr dc, Rectangle clipRect)
     {
-        Debug.Assert(dc != IntPtr.Zero, "dc is not initialized.");
+        Trace.Assert(dc != IntPtr.Zero, "dc is not initialized.");
 
         _dc = dc;
         ClipRectangle = clipRect;

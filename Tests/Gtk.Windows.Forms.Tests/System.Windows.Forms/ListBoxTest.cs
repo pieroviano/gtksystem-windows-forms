@@ -934,7 +934,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     ListBox listBox;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         listBox.Dispose();
     }

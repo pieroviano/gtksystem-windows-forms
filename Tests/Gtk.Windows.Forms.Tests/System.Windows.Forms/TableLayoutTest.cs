@@ -947,16 +947,11 @@ public class TableLayoutTests : TestHelper
     {
         var f = new Form ();
         f.ShowInTaskbar = false;
-			
-        TableLayoutPanel tableLayoutPanel1;
-        Button button2;
-        TextBox textBox1;
-        Button button4;
 
-        tableLayoutPanel1 = new TableLayoutPanel ();
-        button2 = new Button ();
-        button4 = new Button ();
-        textBox1 = new TextBox ();
+        var tableLayoutPanel1 = new TableLayoutPanel ();
+        var button2 = new Button ();
+        var button4 = new Button ();
+        var textBox1 = new TextBox ();
         tableLayoutPanel1.SuspendLayout ();
         f.SuspendLayout ();
 
@@ -1129,13 +1124,9 @@ public class TableLayoutTests : TestHelper
         var f = new Form ();
         f.ShowInTaskbar = false;
 
-        TableLayoutPanel tableLayoutPanel1;
-        Label button2;
-        Label button4;
-
-        tableLayoutPanel1 = new TableLayoutPanel ();
-        button2 = new Label ();
-        button4 = new Label ();
+        var tableLayoutPanel1 = new TableLayoutPanel ();
+        var button2 = new Label ();
+        var button4 = new Label ();
         button2.Text = "Test1";
         button4.Text = "Test2";
         button2.Anchor = AnchorStyles.Left;

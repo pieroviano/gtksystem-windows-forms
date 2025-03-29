@@ -68,8 +68,10 @@ public class RowStyleTest : TestHelper {
     [Test]
     public void HeightTest1 ()
     {
-        var rs = new RowStyle ();
-        rs.Height = 1.0f;
+        var rs = new RowStyle
+        {
+            Height = 1.0f
+        };
         Assert.AreEqual (1.0f, rs.Height, "1");
     }
 
@@ -78,8 +80,10 @@ public class RowStyleTest : TestHelper {
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            var rs = new RowStyle();
-            rs.Height = -1.0f;
+            var rs = new RowStyle
+            {
+                Height = -1.0f
+            };
         });
     }
 }

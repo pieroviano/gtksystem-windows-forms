@@ -4,6 +4,8 @@ using System.Reflection;
 
 namespace System.Windows.Forms;
 
+using Color = System.Drawing.Color;
+
 public class DataGridViewCellStyle : ICloneable
 {
     private readonly DataGridViewCellStyle? dataGridViewCellStyle;

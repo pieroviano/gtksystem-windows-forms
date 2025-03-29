@@ -13,6 +13,8 @@ using System.Text.RegularExpressions;
 
 namespace System.Windows.Forms;
 
+using Color = System.Drawing.Color;
+
 [DesignerCategory("Component")]
 public class DateTimePicker : MaskedTextBox
 {

@@ -6,6 +6,7 @@ namespace System.Drawing;
 [TypeForwardedFrom("System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 public enum KnownColor
 {
+    Default = 0,
     /// <summary>The system-defined color of the active window's border.</summary>
     ActiveBorder = 1,
     /// <summary>The system-defined color of the background of the active window's title bar.</summary>

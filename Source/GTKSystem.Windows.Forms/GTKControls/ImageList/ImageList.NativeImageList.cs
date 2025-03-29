@@ -23,7 +23,7 @@ public sealed partial class ImageList
         //    //lock (s_syncLock)
         //    //{
         //    //    using var stream = ComHelpers.TryGetComScope<IStream>(pstm, out HRESULT hr);
-        //    //    Debug.Assert(hr.Succeeded);
+        //    //    Trace.Assert(hr.Succeeded);
         //    //    himl = PInvoke.ImageList_Read(stream);
         //    //    Init(himl);
         //    //}

@@ -2,6 +2,8 @@ using System.Runtime.InteropServices;
 
 namespace System.Drawing.Imaging;
 
+using Rectangle = System.Drawing.Rectangle;
+
 /// <summary>Contains attributes of an associated <see cref="T:System.Drawing.Imaging.Metafile" />. Not inheritable.</summary>
 [StructLayout(LayoutKind.Sequential)]
 public sealed class MetafileHeader

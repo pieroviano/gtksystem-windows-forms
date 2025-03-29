@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
+		<PackageReference Include="Gtk.Resources.Extensions" Version="1.3.24.64-piero" />
 		<PackageReference Include="GTKSystem.Windows.Forms" Version="1.3.24.64-piero" />
 	</ItemGroup>
 

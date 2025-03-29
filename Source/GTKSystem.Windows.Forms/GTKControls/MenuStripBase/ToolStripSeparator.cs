@@ -2,6 +2,8 @@
 
 namespace System.Windows.Forms;
 
+using Size = System.Drawing.Size;
+
 public class ToolStripSeparator : WidgetToolStrip<Gtk.SeparatorMenuItem>
 {
     public ToolStripSeparator() : base("ToolStripSeparator")

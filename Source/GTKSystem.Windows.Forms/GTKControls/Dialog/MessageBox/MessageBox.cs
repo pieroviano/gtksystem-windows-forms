@@ -205,7 +205,7 @@ internal class NonStaticMessageBox : IMessageBox
         if (owner is Form control)
         {
             //irun = ShowMessageDialogCore(control.self, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon, defaultButton, options, showHelp);
-            irun = ShowCore((Window)control.Widget, WindowPosition.CenterOnParent, text, caption, buttons, icon);
+            irun = ShowCore((Window)control.Widget, WindowPosition.CenterOnParent, text ?? string.Empty, caption, buttons, icon);
         }
         else
         {
@@ -215,7 +215,7 @@ internal class NonStaticMessageBox : IMessageBox
                 activeWindow = window;
             }
             //irun = ShowMessageDialogCore(null, Gtk.WindowPosition.Center, text, caption, buttons, icon, defaultButton, options, showHelp);
-            irun = ShowCore(activeWindow, WindowPosition.CenterOnParent, text, caption, buttons, icon);
+            irun = ShowCore(activeWindow, WindowPosition.CenterOnParent, text ?? string.Empty, caption, buttons, icon);
         }
 
         var resp = (ResponseType)Enum.Parse(typeof(ResponseType), irun.ToString());

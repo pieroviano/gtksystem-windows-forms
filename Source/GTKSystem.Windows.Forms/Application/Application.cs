@@ -118,7 +118,7 @@ namespace System.Windows.Forms
 
 .DropDownList button{padding:0px;}
 .SplitContainer{padding:0px;border:0px;box-shadow:none;}
-/* 当有滚动条时，宽高小于60px有异常信息输出 */
+/* When there is a scroll bar, abnormal information is output when the width and height are less than 60px */
 .SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}
 .SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
 .SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
@@ -154,7 +154,7 @@ namespace System.Windows.Forms
 ";
 
 
-                var appdirectory = "./";// StartupPath; //由于linux系统常用到环境变量路径，会导至Directory/Environment获取到的当前目录不正确
+                var appdirectory = "./";// StartupPath; // Since Linux systems often use environment variable paths, the current directory obtained by Directory/Environment is incorrect.
                 if (!File.Exists($"{appdirectory}/GTKSystem.Windows.Forms.dll"))
                 {
                     appdirectory = Path.GetDirectoryName(ExecutablePath)??Environment.CurrentDirectory;

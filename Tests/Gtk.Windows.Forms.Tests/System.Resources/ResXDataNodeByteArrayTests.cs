@@ -28,7 +28,6 @@
 
 using System.Resources;
 using System.ComponentModel.Design;
-using System.Resources;
 using GtkTests.Resources;
 using GtkTests.TypeResolutionService_;
 
@@ -40,9 +39,8 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
     [Test]
     public void GetValueITRSNotUsedWhenNodeReturnedFromReader ()
     {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeEmdeddedBytes1To10 ();
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var val = returnedNode.GetValue (new ReturnIntITRS ());
@@ -52,8 +50,7 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
     [Test]
     public void GetValueITRSNotTouchedWhenNodeCreatedNew ()
     {
-        ResXDataNode node;
-        node = GetNodeEmdeddedBytes1To10 ();
+        var node = GetNodeEmdeddedBytes1To10 ();
 
         //would raise exception if param used
         var obj = node.GetValue (new ExceptionalITRS ());
@@ -63,9 +60,8 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
     [Test]
     public void GetValueTypeNameITRSIsUsedWithNodeFromReader ()
     {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeEmdeddedBytes1To10 ();
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
@@ -75,9 +71,8 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
     [Test]
     public void GetValueTypeNameITRSIsUsedAfterGetValueCalledWithNodeFromReader ()
     {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeEmdeddedBytes1To10 ();
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var obj = returnedNode.GetValue ((ITypeResolutionService) null);
@@ -88,8 +83,7 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
     [Test]
     public void GetValueTypeNameITRSNotUsedWhenNodeCreatedNew ()
     {
-        ResXDataNode node;
-        node = GetNodeEmdeddedBytes1To10 ();
+        var node = GetNodeEmdeddedBytes1To10 ();
 
         var returnedType = node.GetValueTypeName (new ReturnIntITRS ());
         Assert.AreEqual ((typeof (byte[])).AssemblyQualifiedName, returnedType, "#A1");

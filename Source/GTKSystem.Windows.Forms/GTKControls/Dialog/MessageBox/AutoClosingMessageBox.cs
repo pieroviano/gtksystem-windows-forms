@@ -1,5 +1,4 @@
 ﻿using Gtk;
-using System.Security.Cryptography;
 
 namespace System.Windows.Forms;
 
@@ -44,7 +43,7 @@ public class AutoClosingMessageBox
     {
         _ = Task.Run(async () =>
         {
-            await Task.Delay(System.TimeSpan.FromMilliseconds(MessageBoxTimeout));
+            await Task.Delay(TimeSpan.FromMilliseconds(MessageBoxTimeout));
             if (_dialog != null)
             {
                 _dialog.PangoContext?.Dispose();

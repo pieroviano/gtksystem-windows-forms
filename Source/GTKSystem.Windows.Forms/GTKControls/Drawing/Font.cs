@@ -352,7 +352,7 @@ public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// A System.Drawing.GraphicsUnit that represents the unit of measure for this System.Drawing.Font.
     /// </returns>
     public GraphicsUnit Unit { get; }
-    
+
     /// <summary>
     /// Gets a value that indicates whether this System.Drawing.Font is underlined.
     /// </summary>
@@ -402,7 +402,7 @@ public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// </param>
     /// <returns>The System.Drawing.Font that this method creates.</returns>
     public static Font FromLogFont(object lf) { return new Font("Arial", 12); }
-    
+
     /// <summary>
     /// Creates an exact copy of this System.Drawing.Font.
     /// </summary>
@@ -427,7 +427,24 @@ public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// System.Drawing.Font.Size, and System.Drawing.Font.Unit property values as this
     /// System.Drawing.Font; otherwise, false.
     /// </returns>
-    public override bool Equals(object? obj) { return base.Equals(obj as Font); }
+    public override bool Equals(object? obj)
+    {
+        if (obj == this)
+        {
+            return true;
+        }
+        Font? font = obj as Font;
+        if (font == null)
+        {
+            return false;
+        }
+        if (font.FontFamily != null && (!font.FontFamily.Equals(FontFamily) || font.FontFamily == null && FontFamily==null || font.GdiVerticalFont != GdiVerticalFont || font.GdiCharSet != GdiCharSet || font.Style != Style || Math.Abs(font.Size - Size) > 0.0))
+        {
+            return false;
+        }
+        return font.Unit == Unit;
+    }
+
     /// <summary>
     /// Gets the hash code for this System.Drawing.Font.
     /// </summary>
@@ -474,7 +491,7 @@ public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// <returns>A Windows handle to this System.Drawing.Font.</returns>
     /// /// <exception cref="System.ComponentModel.Win32Exception">The operation was unsuccessful.</exception>
     public IntPtr ToHfont() { return IntPtr.Zero; }
-    
+
     /// <summary>
     /// Creates a GDI logical font (LOGFONT) structure from this System.Drawing.Font.
     /// </summary>
@@ -485,7 +502,7 @@ public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     /// </param>
     /// <exception cref="System.ArgumentNullException">graphics is null.</exception>
     public void ToLogFont(object? logFont, Graphics graphics) { }
-    
+
     /// <summary>
     /// Creates a GDI logical font (LOGFONT) structure from this System.Drawing.Font.
     /// </summary>

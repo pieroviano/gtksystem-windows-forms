@@ -6,9 +6,10 @@
  */
 
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Size = System.Drawing.Size;
 
 [DesignerCategory("Component")]
 public sealed class SplitterPanel : Panel

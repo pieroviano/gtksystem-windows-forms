@@ -5,9 +5,10 @@
  * author:chenhongjin
  */
 
-using System.Drawing;
-
 namespace System.Windows.Forms;
+
+using Size = System.Drawing.Size;
+using Point = System.Drawing.Point;
 
 public class TabPage : ContainerControl
 {
@@ -63,6 +64,7 @@ public class TabPage : ContainerControl
             }
         }
     }
+
     private Size _size;
     public override Size Size { get => _size; set => _size = value;
     }

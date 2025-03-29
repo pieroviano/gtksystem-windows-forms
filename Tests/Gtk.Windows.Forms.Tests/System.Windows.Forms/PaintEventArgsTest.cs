@@ -38,7 +38,7 @@ public class PaintEventArgsTest : TestHelper {
     private Rectangle default_rect;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         default_graphics.Dispose();
     }

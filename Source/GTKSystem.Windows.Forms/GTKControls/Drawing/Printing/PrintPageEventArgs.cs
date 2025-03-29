@@ -3,6 +3,8 @@
 
 namespace System.Drawing.Printing;
 
+using Rectangle = System.Drawing.Rectangle;
+
 /// <summary>
 ///  Provides data for the <see cref='PrintDocument.PrintPage'/> event.
 /// </summary>

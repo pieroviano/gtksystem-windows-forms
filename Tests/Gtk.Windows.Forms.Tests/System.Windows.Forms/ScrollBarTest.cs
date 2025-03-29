@@ -863,14 +863,14 @@ public class MyScrollBar2 : HScrollBar
 
     public void ScrollNow()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = 8468,
+            HWnd = Handle,
+            WParam = (IntPtr)0x1,
+            LParam = (IntPtr)0x1a051a
+        };
 
-        m = new Message();
-
-        m.Msg = 8468;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x1;
-        m.LParam = (IntPtr)0x1a051a;
         WndProc(ref m);
 
         m.Msg = 233;
@@ -1418,14 +1418,14 @@ public class MyScrollBar : HScrollBar
 
     public void ScrollNow()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = 8468,
+            HWnd = Handle,
+            WParam = (IntPtr)0x1,
+            LParam = (IntPtr)0x1a051a
+        };
 
-        m = new Message();
-
-        m.Msg = 8468;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x1;
-        m.LParam = (IntPtr)0x1a051a;
         WndProc(ref m);
 
         m.Msg = 233;

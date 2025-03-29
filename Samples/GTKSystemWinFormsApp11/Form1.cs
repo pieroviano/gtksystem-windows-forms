@@ -1,9 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Gdk;
-using Gtk;
+﻿using System.Drawing;
 using GTKSystemWinFormsApp11.Properties;
 
 namespace GTKSystemWinFormsApp11;

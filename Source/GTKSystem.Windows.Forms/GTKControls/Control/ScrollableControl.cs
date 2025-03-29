@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
 
 [Designer("System.Windows.Forms.Design.ScrollableControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 public class ScrollableControl : Control
@@ -67,9 +70,19 @@ public class ScrollableControl : Control
         }
     }
 
-    public virtual event ScrollEventHandler? Scroll
+    public event ScrollEventHandler? Scroll
     {
-        add { if (scrollbase != null) { scrollbase.Scroll += value; } }
-        remove { if (scrollbase != null) { scrollbase.Scroll -= value; } }
+        add => AddScrollHandler(value);
+        remove => RemoveScrollHandler(value);
+    }
+
+    protected virtual void RemoveScrollHandler(ScrollEventHandler? value)
+    {
+        if (scrollbase != null) { scrollbase.Scroll -= value; }
+    }
+
+    protected virtual void AddScrollHandler(ScrollEventHandler? value)
+    {
+        if (scrollbase != null) { scrollbase.Scroll += value; }
     }
 }

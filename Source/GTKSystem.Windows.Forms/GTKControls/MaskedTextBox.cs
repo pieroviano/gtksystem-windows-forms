@@ -34,7 +34,8 @@ public class MaskedTextBox : TextBox
             self.Visibility = false;
         }
         else if (!string.IsNullOrWhiteSpace(Mask))
-        {//按格式化赋值
+        {
+            // Assign value according to format
             var txt = Regex.Match(Text, "\\d").Value;
             var windex = -1;
             Text = Regex.Replace(Mask, "\\d", _ =>
@@ -67,7 +68,7 @@ public class MaskedTextBox : TextBox
                 {
                     if (IsNumberText(correctText!.Substring(position - 1, 1)) && IsNumberText(newText))
                     {
-                        //正常
+                        // normal
                         self.DeleteText(position, position + 1);
                     }
                     else
@@ -89,9 +90,9 @@ public class MaskedTextBox : TextBox
     {
         if (IsMaskPassword)
         {
-            //格式化掩码，只改数字
+            // Format mask, only change numbers
             var position = self.CursorPosition;
-            if (self.Text.Length + 1 == (correctText ?? string.Empty).Length) //删除一个字符
+            if (self.Text.Length + 1 == (correctText ?? string.Empty).Length) // delete a character
             {
                 isBackspace = true;
                 if (IsNumberChar(correctText![position]))
@@ -103,7 +104,7 @@ public class MaskedTextBox : TextBox
                     self.InsertText(correctText[position].ToString(), ref position);
                 }
             }
-            else if (self.Text.Length + 1 < (correctText ?? string.Empty).Length) //选择多字符删除
+            else if (self.Text.Length + 1 < (correctText ?? string.Empty).Length) // Select multiple characters to delete
             {
                 self.Text = correctText;
             }

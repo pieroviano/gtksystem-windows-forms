@@ -5,6 +5,9 @@ using System.Runtime.Serialization;
 
 namespace System.Drawing.Imaging;
 
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = System.Drawing.RectangleF;
+
 /// <summary>Defines a graphic metafile. A metafile contains records that describe a sequence of graphics operations that can be recorded (constructed) and played back (displayed). This class is not inheritable.</summary>
 [Serializable]
 [Editor("System.Drawing.Design.MetafileEditor, System.Drawing.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", "System.Drawing.Design.UITypeEditor, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]

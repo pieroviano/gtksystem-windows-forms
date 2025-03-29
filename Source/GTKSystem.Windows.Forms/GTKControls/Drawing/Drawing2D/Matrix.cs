@@ -1,5 +1,10 @@
 namespace System.Drawing.Drawing2D;
 
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = System.Drawing.RectangleF;
+using Point = System.Drawing.Point;
+using PointF = System.Drawing.PointF;
+
 /// <summary>Encapsulates a 3-by-3 affine matrix that represents a geometric transform. This class cannot be inherited.</summary>
 public sealed class Matrix : MarshalByRefObject, IDisposable
 {

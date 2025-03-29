@@ -2,12 +2,13 @@
 using Cairo;
 using Gdk;
 using Gtk;
-using Color = System.Drawing.Color;
 using Graphics = System.Drawing.Graphics;
 using Image = System.Drawing.Image;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace System.Windows.Forms;
+
+using Color = System.Drawing.Color;
+using Rectangle = System.Drawing.Rectangle;
 
 public delegate void PaintGraphicsEventHandler(Context? cr, Rectangle rec);
 public class GtkControlOverride: IControlOverride, IGtkControlOverride

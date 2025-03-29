@@ -8,8 +8,6 @@
 //
 
 using System.Windows.Forms;
-using GtkTests.System.Windows.Forms;
-using CategoryAttribute=NUnit.Framework.CategoryAttribute;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -21,7 +19,7 @@ public class ApplicationContextTest : TestHelper
     bool reached_form_handle_destroyed;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         ctx?.Dispose();
     }

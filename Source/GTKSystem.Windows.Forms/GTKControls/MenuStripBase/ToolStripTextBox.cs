@@ -5,9 +5,9 @@
  * author:chenhongjin
  */
 
-using System.Drawing;
-
 namespace System.Windows.Forms;
+
+using Size = System.Drawing.Size;
 
 public class ToolStripTextBox : WidgetToolStrip<Gtk.MenuItem>
 {

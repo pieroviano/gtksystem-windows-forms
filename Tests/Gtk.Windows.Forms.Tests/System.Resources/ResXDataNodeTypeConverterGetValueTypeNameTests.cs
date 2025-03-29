@@ -27,9 +27,6 @@
 
 using System.Resources;
 using System.ComponentModel.Design;
-using System.Drawing;
-using System.Reflection;
-using System.Resources;
 using GtkTests.Resources;
 using GtkTests.TypeResolutionService_;
 
@@ -40,9 +37,8 @@ public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelpe
     [Test]
     public void ITRSUsedWithNodeFromReader ()
     {
-        ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = new ResXDataNode ("aNumber", 23L);
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
@@ -52,9 +48,8 @@ public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelpe
     [Test]
     public void ITRSUsedEachTimeWhenNodeFromReader ()
     {
-        ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = new ResXDataNode ("aNumber", 23L);
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
         var newType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
@@ -66,8 +61,7 @@ public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelpe
     [Test]
     public void ITRSNotUsedWhenNodeCreatedNew ()
     {
-        ResXDataNode node;
-        node = new ResXDataNode ("along", 34L);
+        var node = new ResXDataNode ("along", 34L);
 
         var returnedType = node.GetValueTypeName (new ReturnIntITRS ());
         Assert.AreEqual ((typeof (long)).AssemblyQualifiedName, returnedType, "#A1");

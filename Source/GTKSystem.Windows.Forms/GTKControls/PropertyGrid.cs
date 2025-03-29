@@ -15,6 +15,10 @@ using System.Windows.Forms.PropertyGridInternal;
 
 namespace System.Windows.Forms;
 
+using Color = System.Drawing.Color;
+using Size = System.Drawing.Size;
+using Point = System.Drawing.Point;
+
 /// <summary>
 /// 
 /// </summary>
@@ -329,5 +333,10 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     void IComPropertyBrowser.LoadState(RegistryKey key)
     {
         throw new NotImplementedException();
+    }
+
+    protected virtual void OnComComponentNameChanged(ComponentRenameEventArgs e)
+    {
+        ComComponentNameChanged?.Invoke(this, e);
     }
 }

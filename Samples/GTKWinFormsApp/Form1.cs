@@ -56,16 +56,16 @@ public partial class TestDataForm : Form
     private void TestDataForm_Load(object? sender, EventArgs e)
     {
 
-        treeView1.Nodes.Clear();
+        treeView1.Nodes?.Clear();
         treeView1.CheckBoxes = true;
 
         var testdata1Json = Resources.testdata1Json;
         using (var reader = new FileStream(testdata1Json, FileMode.Open, FileAccess.Read))
         {
             var dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
-            List<TestDataMode> json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
-            IEnumerable<TreeNode> childs = GetChild(null, json);
-            treeView1.Nodes.AddRange(childs.ToArray());
+            List<TestDataMode>? json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
+            IEnumerable<TreeNode> childs = GetChild(null!, json!);
+            treeView1.Nodes!.AddRange(childs.ToArray());
             foreach (var child in treeView1.Nodes)
                 child.Expand();
             var treeView1SelectedNode = treeView1.Nodes[0].Nodes[2];
@@ -88,13 +88,13 @@ public partial class TestDataForm : Form
         }
     }
 
-    private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
+    private IEnumerable<TreeNode> GetChild(string? treeID, IEnumerable<TestDataMode> data)
     {
         List<TreeNode> children = new();
         var list = data.Where(w => w.parent == treeID);
         foreach (var d in list)
         {
-            var node = new TreeNode(d.name) { Name = d.treeID };
+            var node = new TreeNode(d.name!) { Name = d.treeID };
             IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
             if (childs.Count() > 0)
                 node.Nodes.AddRange(childs.ToArray());
@@ -105,7 +105,7 @@ public partial class TestDataForm : Form
     public class TestDataMode
     {
         public string? name { get; set; }
-        public string treeID { get; set; }
+        public string? treeID { get; set; }
         public string parent { get; set; }
         public string treeName { get; set; }
     }

@@ -348,5 +348,23 @@ namespace System.Windows.Forms.Properties {
                 return ResourceManager.GetString("PrintDialog_RunPrint_File is in use and cannot be overwritten", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        internal static string PrintPreviewDialog_Init_Print {
+            get {
+                return ResourceManager.GetString("PrintPreviewDialog_Init_Print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print preview.
+        /// </summary>
+        internal static string PrintPreviewDialog_Init_Print_preview {
+            get {
+                return ResourceManager.GetString("PrintPreviewDialog_Init_Print_preview", resourceCulture);
+            }
+        }
     }
 }

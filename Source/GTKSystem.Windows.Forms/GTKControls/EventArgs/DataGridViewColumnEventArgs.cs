@@ -15,7 +15,7 @@ public class DataGridViewColumnEventArgs : EventArgs
             throw new ArgumentNullException(nameof(dataGridViewColumn));
         }
 
-        Debug.Assert(dataGridViewColumn.Index >= -1);
+        Trace.Assert(dataGridViewColumn.Index >= -1);
         Column = dataGridViewColumn;
     }
 

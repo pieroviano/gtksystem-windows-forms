@@ -27,9 +27,6 @@
 
 using System.Resources;
 using System.ComponentModel.Design;
-using System.Reflection;
-using System.Drawing;
-using System.Resources;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
@@ -40,8 +37,7 @@ public class ResXDataNodeTypeConverterGetValueTests : ResourcesTestHelper {
     [Test]
     public void ITRSNotUsedWhenCreatedNew ()
     {
-        ResXDataNode node;
-        node = new ResXDataNode ("along", 34L);
+        var node = new ResXDataNode ("along", 34L);
 
         var obj = node.GetValue (new ReturnIntITRS ());
         Assert.True(typeof(long) == obj.GetType(), "#A1");
@@ -50,9 +46,8 @@ public class ResXDataNodeTypeConverterGetValueTests : ResourcesTestHelper {
     [Test]
     public void ITRSUsedEachTimeWithNodeFromReader ()
     {
-        ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = new ResXDataNode ("aNumber", 23L);
+        var returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
 

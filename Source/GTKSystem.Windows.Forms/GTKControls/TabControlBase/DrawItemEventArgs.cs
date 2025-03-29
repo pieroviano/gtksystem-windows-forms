@@ -6,9 +6,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
-#if NETSTANDARD
-using System.Drawing.Gtk;
-#endif
+using SdColor = System.Drawing.Color;
+using SdRectangle = System.Drawing.Rectangle;
 
 /// <summary>
 ///  This event is fired by owner drawn <see cref="Control"/> objects, such as <see cref="ListBox"/> and
@@ -22,18 +21,18 @@ public class DrawItemEventArgs : EventArgs, IDeviceContext
     /// <summary>
     ///  The backColor to paint each menu item with.
     /// </summary>
-    private readonly Color _backColor;
+    private readonly SdColor _backColor;
 
     /// <summary>
     ///  The foreColor to paint each menu item with.
     /// </summary>
-    private readonly Color _foreColor;
+    private readonly SdColor _foreColor;
 
     /// <summary>
     ///  Creates a new DrawItemEventArgs with the given parameters.
     /// </summary>
-    public DrawItemEventArgs(Graphics graphics, Font? font, Rectangle rect, int index, DrawItemState state)
-        : this(graphics, font, rect, index, state, SystemColors.WindowText, SystemColors.Window)
+    public DrawItemEventArgs(Graphics graphics, Font? font, SdRectangle rect, int index, DrawItemState state)
+        : this(graphics, font, rect, index, state, Drawing.KnownColor.WindowText.FromKnownColor(), Drawing.KnownColor.Window.FromKnownColor())
     { }
 
     /// <summary>
@@ -43,11 +42,11 @@ public class DrawItemEventArgs : EventArgs, IDeviceContext
     public DrawItemEventArgs(
         Graphics graphics,
         Font? font,
-        Rectangle rect,
+        SdRectangle rect,
         int index,
         DrawItemState state,
-        Color foreColor,
-        Color backColor)
+        SdColor foreColor,
+        SdColor backColor)
     {
         this.graphics=graphics ?? throw new ArgumentNullException(nameof(graphics));
         Bounds = rect;
@@ -71,7 +70,7 @@ public class DrawItemEventArgs : EventArgs, IDeviceContext
     /// <summary>
     ///  The rectangle outlining the area in which the painting should be  done.
     /// </summary>
-    public Rectangle Bounds { get; }
+    public SdRectangle Bounds { get; }
 
     /// <summary>
     ///  The index of the item that should be painted.
@@ -90,11 +89,23 @@ public class DrawItemEventArgs : EventArgs, IDeviceContext
     ///  A suggested color drawing: either SystemColors.WindowText or SystemColors.HighlightText,
     ///  depending on whether this item is selected.
     /// </summary>
-    public Color ForeColor
-        => (State & DrawItemState.Selected) == DrawItemState.Selected ? SystemColors.HighlightText : _foreColor;
+    public SdColor ForeColor
+        => (State & DrawItemState.Selected) == DrawItemState.Selected ? System.Drawing.
+#if NET462_OR_GREATER
+            SystemColors
+#else
+            GtkSystemColors
+#endif
+            .HighlightText : _foreColor;
 
-    public Color BackColor
-        => (State & DrawItemState.Selected) == DrawItemState.Selected ? SystemColors.Highlight : _backColor;
+    public SdColor BackColor
+        => (State & DrawItemState.Selected) == DrawItemState.Selected ? System.Drawing.
+#if NET462_OR_GREATER
+            SystemColors
+#else
+            GtkSystemColors
+#endif
+            .Highlight : _backColor;
 
     public void Dispose()
     {

@@ -14,6 +14,10 @@ using Timeout = GLib.Timeout;
 
 namespace System.Windows.Forms;
 
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
+
+
 [DesignerCategory("Component")]
 [DefaultEvent("SelectedIndexChanged")]
 [DefaultProperty("Items")]
@@ -468,7 +472,7 @@ public partial class ListBox : ListControl
         throw new NotImplementedException();
     }
 
-    public Drawing.Rectangle GetItemRectangle(int index)
+    public Rectangle GetItemRectangle(int index)
     {
         throw new NotImplementedException();
     }
@@ -478,7 +482,7 @@ public partial class ListBox : ListControl
         return self.ListBox.GetRowAtIndex(index).IsSelected;
     }
 
-    public int IndexFromPoint(Drawing.Point p)
+    public int IndexFromPoint(Point p)
     {
         throw new NotImplementedException();
     }

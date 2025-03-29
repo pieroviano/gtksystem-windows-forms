@@ -5,6 +5,10 @@ using System.Diagnostics;
 
 namespace System.Drawing.Printing;
 
+using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
+
 /// <summary>
 ///  Specifies a series of conversion methods that are useful when interoperating with the raw Win32 printing API.
 /// </summary>

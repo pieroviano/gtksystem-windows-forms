@@ -38,7 +38,7 @@ public class ListViewGroupCollectionTest : TestHelper
     ListView lv = null;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         lv.Dispose();
     }
@@ -187,8 +187,10 @@ public class ListViewGroupCollectionTest : TestHelper
         Assert.AreEqual (group2, grpCol ["A"], "#A3");
         Assert.AreEqual (null, grpCol ["a"], "#A4"); /* Inconsistent, again */
 
-        var group4 = new ListViewGroup ("Item4");
-        group4.Name = "A";
+        var group4 = new ListViewGroup ("Item4")
+        {
+            Name = "A"
+        };
 
         grpCol [String.Empty] = group4;
         Assert.AreEqual (group4, grpCol [0], "#A5"); /* First position */

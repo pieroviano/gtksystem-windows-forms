@@ -4,6 +4,8 @@ using Container = Gtk.Container;
 
 namespace System.Windows.Forms;
 
+using Point = System.Drawing.Point;
+
 [ListBindable(false)]
 public class TableLayoutControlCollection : Control.ControlCollection
 {
@@ -18,7 +20,7 @@ public class TableLayoutControlCollection : Control.ControlCollection
 
     public virtual void Add(Control control, int column, int row)
     {
-        control.Location = new Drawing.Point(0, 0);
+        control.Location = new Point(0, 0);
         control.LockLocation = true;
         control.Parent = Container;
         control.Widget.Margin = 4;

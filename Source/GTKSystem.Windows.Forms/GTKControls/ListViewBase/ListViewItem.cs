@@ -4,6 +4,10 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
+using Color = System.Drawing.Color;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
+
 public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 {
     private ListViewSubItemCollection? _subitems;
@@ -435,12 +439,12 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 			 
 		}
 
-        public ListViewSubItem GetSubItemAt(int x, int y)
+        public ListViewSubItem? GetSubItemAt(int x, int y)
         {
             if (_listView is not null && _listView.IsHandleCreated && _listView.View == View.Details)
             {
                 _listView.GetSubItemAt(x, y, out var iItem, out var iSubItem);
-                if (Index > -1 && iSubItem > -1 && iSubItem < SubItems.Count)
+                if (Index > -1 && iSubItem > -1 && iSubItem < SubItems?.Count)
                 {
                     return SubItems[iSubItem];
                 }

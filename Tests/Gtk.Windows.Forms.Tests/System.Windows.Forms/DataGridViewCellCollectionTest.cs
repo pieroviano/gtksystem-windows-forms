@@ -33,7 +33,7 @@ public class DataGridViewCellCollectionTest : TestHelper
     private DataGridView _dataGridView;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         _dataGridView.Dispose();
     }

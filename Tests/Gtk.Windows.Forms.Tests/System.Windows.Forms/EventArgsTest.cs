@@ -1,7 +1,6 @@
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
-using GtkTests.System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
 

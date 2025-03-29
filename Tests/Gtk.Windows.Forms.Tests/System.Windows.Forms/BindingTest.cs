@@ -67,12 +67,11 @@ public class BindingTest : TestHelper
     {
         var c1 = new Control();
         var c2 = new Control();
-        Binding binding;
 
         c1.BindingContext = new BindingContext();
         c2.BindingContext = c1.BindingContext;
 
-        binding = c2.DataBindings.Add("Text", c1, "Text");
+        var binding = c2.DataBindings.Add("Text", c1, "Text");
 
         Assert.IsNull(binding.BindingManagerBase, "1");
 
@@ -275,8 +274,10 @@ public class BindingTest : TestHelper
         c.CreateControl();
 
         var item = new MockItem("A", 0);
-        var parent = new One();
-        parent.MockItem = item;
+        var parent = new One
+        {
+            MockItem = item
+        };
         var binding = new Binding("Text", parent, "MockItem.Text");
 
         c.DataBindings.Add(binding);
@@ -294,10 +295,16 @@ public class BindingTest : TestHelper
         c.CreateControl();
 
         var item = new MockItem("A", 0);
-        var parent = new One();
-        parent.Two = new Two();
-        parent.Two.Three = new Three();
-        parent.Two.Three.MockItem = item;
+        var parent = new One
+        {
+            Two = new Two
+            {
+                Three = new Three
+                {
+                    MockItem = item
+                }
+            }
+        };
         var binding = new Binding("Text", parent, "Two.Three.MockItem.Text");
 
         c.DataBindings.Add(binding);
@@ -366,10 +373,14 @@ public class BindingTest : TestHelper
         c.BindingContext = new BindingContext();
         c.CreateControl();
 
-        var item = new ChildMockItem();
-        item.ObjectValue = "A";
-        var binding = new Binding("Tag", item, "ObjectValue");
-        binding.ControlUpdateMode = ControlUpdateMode.Never;
+        var item = new ChildMockItem
+        {
+            ObjectValue = "A"
+        };
+        var binding = new Binding("Tag", item, "ObjectValue")
+        {
+            ControlUpdateMode = ControlUpdateMode.Never
+        };
 
         c.DataBindings.Add(binding);
         Assert.AreEqual(null, c.Tag, "#A1");
@@ -394,10 +405,14 @@ public class BindingTest : TestHelper
         c.BindingContext = new BindingContext();
         c.CreateControl();
 
-        var item = new MockItem();
-        item.Text = "A";
-        var binding = new Binding("Text", item, "Text");
-        binding.DataSourceUpdateMode = DataSourceUpdateMode.Never;
+        var item = new MockItem
+        {
+            Text = "A"
+        };
+        var binding = new Binding("Text", item, "Text")
+        {
+            DataSourceUpdateMode = DataSourceUpdateMode.Never
+        };
 
         c.DataBindings.Add(binding);
         Assert.AreEqual("A", c.Text, "#A1");
@@ -427,8 +442,10 @@ public class BindingTest : TestHelper
         //
         var toolstrip_item = new BindableToolStripItem();
         toolstrip_item.BindingContext = new BindingContext();
-        var binding2 = new Binding("Text", item, "Text");
-        binding2.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
+        var binding2 = new Binding("Text", item, "Text")
+        {
+            DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+        };
 
         toolstrip_item.DataBindings.Add(binding2);
         Assert.AreEqual(null, binding2.Control, "#B1");
@@ -443,8 +460,10 @@ public class BindingTest : TestHelper
         c.CreateControl();
 
         var item = new MockItem("A", 0);
-        var binding = new Binding("Text", item, "Text");
-        binding.ControlUpdateMode = ControlUpdateMode.Never;
+        var binding = new Binding("Text", item, "Text")
+        {
+            ControlUpdateMode = ControlUpdateMode.Never
+        };
 
         c.DataBindings.Add(binding);
         Assert.AreEqual(String.Empty, c.Text, "#A1");
@@ -461,8 +480,10 @@ public class BindingTest : TestHelper
         c.CreateControl();
 
         var item = new MockItem("A", 0);
-        var binding = new Binding("Text", item, "Text");
-        binding.DataSourceUpdateMode = DataSourceUpdateMode.Never;
+        var binding = new Binding("Text", item, "Text")
+        {
+            DataSourceUpdateMode = DataSourceUpdateMode.Never
+        };
 
         c.DataBindings.Add(binding);
         Assert.AreEqual("A", c.Text, "#A1");
@@ -491,10 +512,14 @@ public class BindingTest : TestHelper
         c.BindingContext = new BindingContext();
         c.CreateControl();
 
-        var item = new ChildMockItem();
-        item.ObjectValue = "A";
-        var binding = new Binding("Tag", item, "ObjectValue");
-        binding.DataSourceNullValue = "NonNull";
+        var item = new ChildMockItem
+        {
+            ObjectValue = "A"
+        };
+        var binding = new Binding("Tag", item, "ObjectValue")
+        {
+            DataSourceNullValue = "NonNull"
+        };
 
         c.DataBindings.Add(binding);
         Assert.AreEqual(c.Tag, "A", "#A1");
@@ -540,11 +565,15 @@ public class BindingTest : TestHelper
         c.BindingContext = new BindingContext();
         c.CreateControl();
 
-        var item = new MockItem();
-        item.Value = 666;
-        var binding = new Binding("Text", item, "Value");
-        binding.FormattingEnabled = true;
-        binding.FormatString = "p";
+        var item = new MockItem
+        {
+            Value = 666
+        };
+        var binding = new Binding("Text", item, "Value")
+        {
+            FormattingEnabled = true,
+            FormatString = "p"
+        };
 
         c.DataBindings.Add(binding);
         Assert.AreEqual((666).ToString("p"), c.Text, "#A1");
@@ -559,8 +588,10 @@ public class BindingTest : TestHelper
     [Test]
     public void FormatStringTest()
     {
-        var binding = new Binding("Text", null, "Text");
-        binding.FormatString = null;
+        var binding = new Binding("Text", null, "Text")
+        {
+            FormatString = null
+        };
 
         Assert.AreEqual(String.Empty, binding.FormatString, "#A1");
     }

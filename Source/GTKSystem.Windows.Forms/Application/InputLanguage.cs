@@ -30,7 +30,7 @@ public sealed class InputLanguage
     /// <summary>
     ///  Gets or sets the input language for the current thread.
     /// </summary>
-    public static InputLanguage? CurrentInputLanguage
+    public static InputLanguage CurrentInputLanguage
     {
         get => new(PangoHelper.ContextGet().Language.Handle);
         set

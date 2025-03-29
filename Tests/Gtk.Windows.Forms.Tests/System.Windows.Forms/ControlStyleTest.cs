@@ -54,9 +54,7 @@ public class TestControlStyle  : TestHelper {
     }
 
     public static string[] GetStyles(Control control) {
-        string[] result;
-
-        result = new string[style_names.Length];
+        string[] result = new string[style_names.Length];
 
         for (var i = 0; i < style_values.Length; i++) {
             result[i] = style_names[i] + "=" + control.GetType().GetMethod("GetStyle", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(control, new object[1] {(ControlStyles)style_values.GetValue(i)});

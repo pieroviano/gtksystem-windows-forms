@@ -43,11 +43,4 @@ public class ToolStripButton : WidgetToolStrip<Gtk.MenuItem>
         return new AccessibleObject();
     }
      
-    protected virtual void OnCheckedChanged(EventArgs e) { }
-       
-    protected virtual void OnCheckStateChanged(EventArgs e)
-    {
-
-    }
-
 }

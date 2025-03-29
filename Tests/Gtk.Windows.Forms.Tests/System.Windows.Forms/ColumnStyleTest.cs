@@ -68,8 +68,10 @@ public class ColumnStyleTest : TestHelper {
     [Test]
     public void WidthTest1 ()
     {
-        var cs = new ColumnStyle ();
-        cs.Width = 1.0f;
+        var cs = new ColumnStyle
+        {
+            Width = 1.0f
+        };
         Assert.AreEqual (1.0f, cs.Width, "1");
     }
 
@@ -78,8 +80,10 @@ public class ColumnStyleTest : TestHelper {
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            var cs = new ColumnStyle();
-            cs.Width = -1.0f;
+            var cs = new ColumnStyle
+            {
+                Width = -1.0f
+            };
         });
     }
 }

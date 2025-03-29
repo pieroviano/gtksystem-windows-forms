@@ -9,7 +9,6 @@
 
 using System.Diagnostics;
 using System.Runtime.Versioning;
-using System.Security;
 
 namespace GtkTests.System.Runtime;
 
@@ -26,7 +25,7 @@ static class AssertHelper
         }
         finally
         {
-            Debug.Assert(false, message);
+            Trace.Assert(false, message);
         }
     }
 

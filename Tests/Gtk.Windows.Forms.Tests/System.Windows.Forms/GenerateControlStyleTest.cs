@@ -43,9 +43,7 @@ class MainForm {
     static readonly string TestFooter =	"\t}\n}\n";
 
     public static string[] GetStyles(Control control) {
-        string[] result;
-
-        result = new string[style_names.Length];
+        string[] result = new string[style_names.Length];
 
         for (var i = 0; i < style_values.Length; i++) {
             result[i] = style_names[i] + "=" + control.GetType().GetMethod("GetStyle", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(control, new object[1] {(ControlStyles)style_values.GetValue(i)});
@@ -55,9 +53,7 @@ class MainForm {
     }
 
     public static void TestStyles(StreamWriter file, Control control, string name) {
-        string[] results;
-
-        results = GetStyles(control);
+        string[] results = GetStyles(control);
 
         file.WriteLine("\t\t[Test]");
         file.WriteLine("\t\tpublic void {0}StyleTest ()", name);

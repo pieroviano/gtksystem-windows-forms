@@ -44,9 +44,7 @@ public class DataGridViewColumnCollectionTest : TestHelper
     [Test]
     public void Add ()
     {
-        DataGridViewColumnCollection c;
-			
-        c = (new DataGridView ()).Columns;
+        var c = (new DataGridView ()).Columns;
         c.Add ("A", "B");
 			
         var col = c [0];

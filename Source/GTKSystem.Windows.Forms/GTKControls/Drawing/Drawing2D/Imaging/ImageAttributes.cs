@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace System.Drawing.Imaging;
 
+using Color = System.Drawing.Color;
+
 /// <summary>Contains information about how bitmap and metafile colors are manipulated during rendering.</summary>
 [StructLayout(LayoutKind.Sequential)]
 public sealed class ImageAttributes : ICloneable, IDisposable

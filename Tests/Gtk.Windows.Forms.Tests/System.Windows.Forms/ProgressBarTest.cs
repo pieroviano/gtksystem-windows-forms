@@ -103,8 +103,7 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void MinMax()
     {
-        Type expectedArgExType;
-        expectedArgExType = typeof (ArgumentOutOfRangeException);
+        var expectedArgExType = typeof (ArgumentOutOfRangeException);
         //
         var c = new ProgressBar ();
         Assert.AreEqual (0, c.Minimum, "default_min");

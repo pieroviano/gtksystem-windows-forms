@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Windows.Forms;
-using Threading = System.Threading;
 
 namespace GtkTests.System.Windows.Forms;
 

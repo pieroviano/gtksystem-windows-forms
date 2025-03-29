@@ -12,6 +12,7 @@ public interface IScrollableBoxBase
     IGtkControlOverride Override { get; set; }
     bool VScroll { get; set; }
     event ScrollEventHandler? Scroll;
+    void OnScroll(ScrollEventArgs e);
     void Add(Widget child);
     void AddClass(string cssClass);
 }

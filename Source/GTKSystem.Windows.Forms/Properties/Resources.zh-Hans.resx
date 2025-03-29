@@ -216,4 +216,10 @@
   <data name="FontDialog_RunDialog_Select_Font" xml:space="preserve">
     <value>选择字体</value>
   </data>
+  <data name="PrintPreviewDialog_Init_Print_preview" xml:space="preserve">
+	  <value>打印预览</value>
+  </data>
+  <data name="PrintPreviewDialog_Init_Print" xml:space="preserve">
+	  <value>打印</value>
+  </data>
 </root>

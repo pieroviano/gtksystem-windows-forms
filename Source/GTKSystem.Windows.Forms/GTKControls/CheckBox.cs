@@ -30,9 +30,14 @@ public class CheckBox : Control
     private void Self_Toggled(object? sender, EventArgs e)
     {
         if (CheckedChanged != null && self.IsVisible)
-            CheckedChanged(this, EventArgs.Empty);
+            OnCheckedChanged(EventArgs.Empty);
         if (CheckStateChanged != null && self.IsVisible)
             OnCheckStateChanged(EventArgs.Empty);
+    }
+
+    protected virtual void OnCheckedChanged(EventArgs e)
+    {
+        CheckedChanged?.Invoke(this, e);
     }
 
     protected virtual void OnCheckStateChanged(EventArgs e)
@@ -78,5 +83,5 @@ public class CheckBox : Control
     }
 
     public event EventHandler? CheckedChanged;
-    public virtual event EventHandler? CheckStateChanged;
+    public event EventHandler? CheckStateChanged;
 }

@@ -9,6 +9,7 @@
 		<IsPublishable>False</IsPublishable>
 		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
 		<LangVersion>latest</LangVersion>
+		<NoWarn>CS0115;CS0618</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

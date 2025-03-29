@@ -15,6 +15,8 @@ using System.Xml;
 
 namespace System.Resources;
 
+using GtkPoint = System.Drawing.Point;
+
 public sealed class ResXDataNode : ISerializable
 {
     private static readonly char[] specialChars = [' ', '\r', '\n'];
@@ -509,7 +511,7 @@ public sealed class ResXDataNode : ISerializable
         else
         {
             // if mimeTypeName and typeName are not filled in, the value must be a string
-            Debug.Assert(_value is string, "Resource entries with no Type or MimeType must be encoded as strings");
+            Trace.Assert(_value is string, "Resource entries with no Type or MimeType must be encoded as strings");
         }
 
         return result;
@@ -556,9 +558,9 @@ public sealed class ResXDataNode : ISerializable
     ///  Might return the position in the resx file of the current node, if known
     ///  otherwise, will return Point(0,0) since point is a struct
     /// </summary>
-    public Point GetNodePosition()
+    public GtkPoint GetNodePosition()
     {
-        return _nodeInfo?.readerPosition ?? new Point();
+        return _nodeInfo?.readerPosition ?? new GtkPoint();
     }
 
     /// <summary>

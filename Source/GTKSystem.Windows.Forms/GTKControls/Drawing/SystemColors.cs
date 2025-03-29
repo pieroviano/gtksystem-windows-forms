@@ -1,59 +1,62 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-
-#if NET462_OR_GREATER
 namespace System.Drawing;
-#else
-namespace System.Drawing.Gtk;
-#endif
 
+#if CONVERT && NET462_OR_GREATER
+extern alias sd;
+using SdColor = sd::System.Drawing.Color;
+#else
+using SdColor = System.Drawing.Color;
+#endif
+using GtkKnownColor = System.Drawing.KnownColor;
+
+public static class
 #if NET462_OR_GREATER
-using GtkColor =System.Drawing.Color;
+    SystemColors
 #else
-using GtkColor = System.Drawing.Gtk.Color;
+    GtkSystemColors
 #endif
-public static class SystemColors
 {
-    public static Color ActiveBorder => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ActiveBorder).ToArgb());
-    public static Color ActiveCaption => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ActiveCaption).ToArgb());
-    public static Color ActiveCaptionText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ActiveCaptionText).ToArgb());
-    public static Color AppWorkspace => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.AppWorkspace).ToArgb());
+    public static SdColor ActiveBorder => SdColor.FromArgb(GtkKnownColor.ActiveBorder.FromKnownColor().ToArgb());
+    public static SdColor ActiveCaption => SdColor.FromArgb(GtkKnownColor.ActiveCaption.FromKnownColor().ToArgb());
+    public static SdColor ActiveCaptionText => SdColor.FromArgb(GtkKnownColor.ActiveCaptionText.FromKnownColor().ToArgb());
+    public static SdColor AppWorkspace => SdColor.FromArgb(GtkKnownColor.AppWorkspace.FromKnownColor().ToArgb());
 
-    public static Color ButtonFace => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ButtonFace).ToArgb());
-    public static Color ButtonHighlight => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ButtonHighlight).ToArgb());
-    public static Color ButtonShadow => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ButtonShadow).ToArgb());
+    public static SdColor ButtonFace => SdColor.FromArgb(GtkKnownColor.ButtonFace.FromKnownColor().ToArgb());
+    public static SdColor ButtonHighlight => SdColor.FromArgb(GtkKnownColor.ButtonHighlight.FromKnownColor().ToArgb());
+    public static SdColor ButtonShadow => SdColor.FromArgb(GtkKnownColor.ButtonShadow.FromKnownColor().ToArgb());
 
-    public static Color Control => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.Control).ToArgb());
-    public static Color ControlDark => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ControlDark).ToArgb());
-    public static Color ControlDarkDark => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ControlDarkDark).ToArgb());
-    public static Color ControlLight => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ControlLight).ToArgb());
-    public static Color ControlLightLight => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ControlLightLight).ToArgb());
-    public static Color ControlText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ControlText).ToArgb());
+    public static SdColor Control => SdColor.FromArgb(GtkKnownColor.Control.FromKnownColor().ToArgb());
+    public static SdColor ControlDark => SdColor.FromArgb(GtkKnownColor.ControlDark.FromKnownColor().ToArgb());
+    public static SdColor ControlDarkDark => SdColor.FromArgb(GtkKnownColor.ControlDarkDark.FromKnownColor().ToArgb());
+    public static SdColor ControlLight => SdColor.FromArgb(GtkKnownColor.ControlLight.FromKnownColor().ToArgb());
+    public static SdColor ControlLightLight => SdColor.FromArgb(GtkKnownColor.ControlLightLight.FromKnownColor().ToArgb());
+    public static SdColor ControlText => SdColor.FromArgb(GtkKnownColor.ControlText.FromKnownColor().ToArgb());
 
-    public static Color Desktop => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.Desktop).ToArgb());
+    public static SdColor Desktop => SdColor.FromArgb(GtkKnownColor.Desktop.FromKnownColor().ToArgb());
 
-    public static Color GradientActiveCaption => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.GradientActiveCaption).ToArgb());
-    public static Color GradientInactiveCaption => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.GradientInactiveCaption).ToArgb());
-    public static Color GrayText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.GrayText).ToArgb());
+    public static SdColor GradientActiveCaption => SdColor.FromArgb(GtkKnownColor.GradientActiveCaption.FromKnownColor().ToArgb());
+    public static SdColor GradientInactiveCaption => SdColor.FromArgb(GtkKnownColor.GradientInactiveCaption.FromKnownColor().ToArgb());
+    public static SdColor GrayText => SdColor.FromArgb(GtkKnownColor.GrayText.FromKnownColor().ToArgb());
 
-    public static Color Highlight => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.Highlight).ToArgb());
-    public static Color HighlightText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.HighlightText).ToArgb());
-    public static Color HotTrack => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.HotTrack).ToArgb());
+    public static SdColor Highlight => SdColor.FromArgb(GtkKnownColor.Highlight.FromKnownColor().ToArgb());
+    public static SdColor HighlightText => SdColor.FromArgb(GtkKnownColor.HighlightText.FromKnownColor().ToArgb());
+    public static SdColor HotTrack => SdColor.FromArgb(GtkKnownColor.HotTrack.FromKnownColor().ToArgb());
 
-    public static Color InactiveBorder => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.InactiveBorder).ToArgb());
-    public static Color InactiveCaption => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.InactiveCaption).ToArgb());
-    public static Color InactiveCaptionText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.InactiveCaptionText).ToArgb());
-    public static Color Info => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.Info).ToArgb());
-    public static Color InfoText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.InfoText).ToArgb());
+    public static SdColor InactiveBorder => SdColor.FromArgb(GtkKnownColor.InactiveBorder.FromKnownColor().ToArgb());
+    public static SdColor InactiveCaption => SdColor.FromArgb(GtkKnownColor.InactiveCaption.FromKnownColor().ToArgb());
+    public static SdColor InactiveCaptionText => SdColor.FromArgb(GtkKnownColor.InactiveCaptionText.FromKnownColor().ToArgb());
+    public static SdColor Info => SdColor.FromArgb(GtkKnownColor.Info.FromKnownColor().ToArgb());
+    public static SdColor InfoText => SdColor.FromArgb(GtkKnownColor.InfoText.FromKnownColor().ToArgb());
 
-    public static Color Menu => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.Menu).ToArgb());
-    public static Color MenuBar => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.MenuBar).ToArgb());
-    public static Color MenuHighlight => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.MenuHighlight).ToArgb());
-    public static Color MenuText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.MenuText).ToArgb());
+    public static SdColor Menu => SdColor.FromArgb(GtkKnownColor.Menu.FromKnownColor().ToArgb());
+    public static SdColor MenuBar => SdColor.FromArgb(GtkKnownColor.MenuBar.FromKnownColor().ToArgb());
+    public static SdColor MenuHighlight => SdColor.FromArgb(GtkKnownColor.MenuHighlight.FromKnownColor().ToArgb());
+    public static SdColor MenuText => SdColor.FromArgb(GtkKnownColor.MenuText.FromKnownColor().ToArgb());
 
-    public static Color ScrollBar => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.ScrollBar).ToArgb());
+    public static SdColor ScrollBar => SdColor.FromArgb(GtkKnownColor.ScrollBar.FromKnownColor().ToArgb());
 
-    public static Color Window => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.Window).ToArgb());
-    public static Color WindowFrame => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.WindowFrame).ToArgb());
-    public static Color WindowText => Color.FromArgb(GtkColor.FromKnownColor(KnownColor.WindowText).ToArgb());
+    public static SdColor Window => SdColor.FromArgb(GtkKnownColor.Window.FromKnownColor().ToArgb());
+    public static SdColor WindowFrame => SdColor.FromArgb(GtkKnownColor.WindowFrame.FromKnownColor().ToArgb());
+    public static SdColor WindowText => SdColor.FromArgb(GtkKnownColor.WindowText.FromKnownColor().ToArgb());
 }

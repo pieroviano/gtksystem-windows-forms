@@ -10,30 +10,31 @@ using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+namespace System.Windows.Forms;
+
+using Color = System.Drawing.Color;
 using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
 
-namespace System.Windows.Forms
+[DefaultEvent("SelectedIndexChanged")]
+public class ListView : ContainerControl
 {
-
-    [DefaultEvent("SelectedIndexChanged")]
-    public class ListView : ContainerControl
+    public readonly ListViewBase self = new ListViewBase();
+    public override object GtkControl => self;
+    private readonly ListViewItemCollection _items;
+    private readonly ListViewGroupCollection _groups;
+    private readonly ColumnHeaderCollection _columns;
+    internal ScrolledWindow scrolledWindow = new ScrolledWindow();
+    internal Box flowBoxContainer = new Box(Gtk.Orientation.Vertical, 0);
+    internal Box header = new Box(Gtk.Orientation.Horizontal, 0);
+    internal Layout headerView;
+    private readonly int _headerheight = 30;
+    public ListView()
     {
-        public readonly ListViewBase self = new ListViewBase();
-        public override object GtkControl => self;
-        private readonly ListViewItemCollection _items;
-        private readonly ListViewGroupCollection _groups;
-        private readonly ColumnHeaderCollection _columns;
-        internal Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-        internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
-        internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-        internal Gtk.Layout headerView;
-        private readonly int _headerheight = 30;
-        public ListView() : base()
-        {
-            _items = new ListViewItemCollection(this);
-            _groups = new ListViewGroupCollection(this);
-            _columns = new ColumnHeaderCollection(this);
-            self.Realized += Control_Realized;
+        _items = new ListViewItemCollection(this);
+        _groups = new ListViewGroupCollection(this);
+        _columns = new ColumnHeaderCollection(this);
+        self.Realized += Control_Realized;
 
         header.StyleContext.AddClass("ListViewHeader");
         header.Spacing = 0;
@@ -582,30 +583,30 @@ namespace System.Windows.Forms
                 viewport.Add(fistcell);
                 hBox.PackStart(viewport, false, true, 0);
 
-                    var index = 0;
-                    foreach (var col in Columns)
+                var index = 0;
+                foreach (var col in Columns)
+                {
+                    if (index > 0)
                     {
-                        if (index > 0)
+                        var sublayout = new Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
+                        sublayout.Halign = Align.Start;
+                        sublayout.Valign = Align.Fill;
+                        sublayout.WidthRequest = col.Width;
+                        if (item.SubItems != null && item.SubItems.Count > index)
                         {
-                            var sublayout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
-                            sublayout.Halign = Gtk.Align.Start;
-                            sublayout.Valign = Gtk.Align.Fill;
-                            sublayout.WidthRequest = col.Width;
-                            if (item.SubItems != null && item.SubItems.Count > index)
+                            var subitem = item.SubItems[index];
+                            var sublabel = new Gtk.Label();
+                            subitem._label = sublabel;
+                            var subattributes = new Pango.AttrList();
+                            if (subitem.ForeColor.HasValue)
                             {
-                                var subitem = item.SubItems[index];
-                                var sublabel = new Gtk.Label();
-                                subitem._label = sublabel;
-                                var subattributes = new Pango.AttrList();
-                                if (subitem.ForeColor.HasValue)
-                                {
-                                    var fg = new Pango.AttrForeground(Convert.ToUInt16(subitem.ForeColor.Value.R * 257), Convert.ToUInt16(subitem.ForeColor.Value.G * 257), Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
-                                    subattributes.Insert(fg);
-                                    sublabel.Attributes = subattributes;
-                                }
+                                var fg = new Pango.AttrForeground(Convert.ToUInt16(subitem.ForeColor.Value.R * 257), Convert.ToUInt16(subitem.ForeColor.Value.G * 257), Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
+                                subattributes.Insert(fg);
                                 sublabel.Attributes = subattributes;
-                                sublabel.WidthRequest = col.Width + 2;
-                                sublabel.MaxWidthChars = 0;
+                            }
+                            sublabel.Attributes = subattributes;
+                            sublabel.WidthRequest = col.Width + 2;
+                            sublabel.MaxWidthChars = 0;
 
                             sublabel.Halign = Align.Fill;
                             sublabel.Valign = Align.Fill;
@@ -884,7 +885,7 @@ namespace System.Windows.Forms
                 return 0;
             };
             _flow.ChildActivated += FlowChildOnActivated;
-            _flow.SelectedChildrenChanged += _flow_SelectedChildrenChanged;
+            _flow.SelectedChildrenChanged += Flow_SelectedChildrenChanged;
             hBox.PackStart(_flow, false, true, 0);
 
             if (ShowGroups && View != View.List && View != View.Tile)
@@ -911,7 +912,7 @@ namespace System.Windows.Forms
         }
     }
 
-    private void _flow_SelectedChildrenChanged(object? sender, EventArgs e)
+    private void Flow_SelectedChildrenChanged(object? sender, EventArgs e)
     {
         if (MultiSelect)
         {
@@ -1495,56 +1496,56 @@ namespace System.Windows.Forms
         return idx == -1 ? null : Items[idx];
     }
 
-        public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
+    public ListViewItem? FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
+    {
+        var idx = Items.FindIndex(startIndex, w => w.Text == text);
+        return idx == -1 ? null : Items[idx];
+    }
+    public ListViewItem? GetItemAt(int x, int y)
+    {
+        foreach (var widget in flowBoxContainer.Children)
         {
-            var idx = Items.FindIndex(startIndex, w => w.Text == text);
-            return idx == -1 ? null : Items[idx];
-        }
-        public ListViewItem GetItemAt(int x, int y)
-        {
-            foreach (Gtk.Box vbox in flowBoxContainer.Children)
+            var vbox = (Box)widget;
+            foreach (var flow in vbox.Children)
             {
-                foreach (var flow in vbox.Children)
+                if (flow is FlowBox _flow)
                 {
-                    if (flow is Gtk.FlowBox _flow)
+                    var top = _flow.Allocation.Top + _headerheight - (int)scrolledWindow.Vadjustment.Value;
+                    var child = _flow.GetChildAtPos(x + (int)scrolledWindow.Hadjustment.Value, y - top);
+                    if (child != null)
                     {
-                        var top = _flow.Allocation.Top + _headerheight - (int)scrolledWindow.Vadjustment.Value;
-                        var child = _flow.GetChildAtPos(x + (int)scrolledWindow.Hadjustment.Value, y - top);
-                        if (child != null)
-                        {
-                            return this.Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
-                        }
+                        return Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
                     }
                 }
             }
-            return null;
         }
-        internal void GetSubItemAt(int x, int y, out int iItem, out int iSubItem)
-        {
-            iItem = -1;
-            iSubItem = -1;
-            var position = -(int)headerView.Hadjustment.Value;
-            for (var i = 0; i < Columns.Count; i++)
-            {
-                if (position < x && position + Columns[i].Width > x)
-                {
-                    iSubItem = i;
-                    break;
-                }
-                position += Columns[i].Width;
-            }
-        }
-        public Drawing.Rectangle GetItemRect(int index)
-        {
-            throw null;
-        }
-
-        public event ColumnClickEventHandler? ColumnClick;
-        public event ColumnReorderedEventHandler? ColumnReordered;
-        public event ItemCheckEventHandler? ItemCheck;
-        public event ItemCheckedEventHandler? ItemChecked;
-        public event ListViewItemSelectionChangedEventHandler? ItemSelectionChanged;
-        public event EventHandler? SelectedIndexChanged;
-        public event EventHandler? ItemActivate;
+        return null;
     }
+    internal void GetSubItemAt(int x, int y, out int iItem, out int iSubItem)
+    {
+        iItem = -1;
+        iSubItem = -1;
+        var position = -(int)headerView.Hadjustment.Value;
+        for (var i = 0; i < Columns.Count; i++)
+        {
+            if (position < x && position + Columns[i].Width > x)
+            {
+                iSubItem = i;
+                break;
+            }
+            position += Columns[i].Width;
+        }
+    }
+    public Rectangle GetItemRect(int index)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event ColumnClickEventHandler? ColumnClick;
+    public event ColumnReorderedEventHandler? ColumnReordered;
+    public event ItemCheckEventHandler? ItemCheck;
+    public event ItemCheckedEventHandler? ItemChecked;
+    public event ListViewItemSelectionChangedEventHandler? ItemSelectionChanged;
+    public event EventHandler? SelectedIndexChanged;
+    public event EventHandler? ItemActivate;
 }

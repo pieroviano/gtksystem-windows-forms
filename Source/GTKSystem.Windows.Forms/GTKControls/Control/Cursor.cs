@@ -6,6 +6,10 @@ using System.Runtime.Serialization;
 
 namespace System.Windows.Forms;
 
+using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
+
 public sealed class Cursor : IDisposable, ISerializable
 {
     private static Size cursorSize = Size.Empty;

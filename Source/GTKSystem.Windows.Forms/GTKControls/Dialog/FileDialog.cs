@@ -86,7 +86,7 @@ public abstract class FileDialog : CommonDialog
 
     public virtual bool CheckFileExists { get; set; } = true;
 
-    public event CancelEventHandler? FileOk;
+    public event CancelEventHandler? FileOK;
     internal FileChooserAction ActionType { get; set; }
     public new virtual void Dispose()
     {
@@ -114,7 +114,7 @@ public abstract class FileDialog : CommonDialog
         _dialog = null;
         if (owner is Form ownerform)
         {
-            _dialog = new FileChooserDialog(System.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
+            _dialog = new FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
             _dialog.WindowPosition = WindowPosition.CenterOnParent;
         }
         else
@@ -515,5 +515,10 @@ public abstract class FileDialog : CommonDialog
         MimeMapping.Add(".xwd", "image/x-xwindowdump");
         MimeMapping.Add(".z", "application/x-compress");
         MimeMapping.Add(".zip", "application/x-zip-compressed");
+    }
+
+    protected virtual void OnFileOk(CancelEventArgs e)
+    {
+        FileOK?.Invoke(this, e);
     }
 }

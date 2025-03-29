@@ -1519,13 +1519,20 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     private static ImageSurface? imagesurface;
     private static Surface? simisurface;
     private static Context? imagecontext;
-    /// <summary>
-    /// 使用此方法必须要执行Flush()方法输出Image
-    /// </summary>
-    /// <param name="image"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static Graphics? FromImage(Image? image)
+
+    /// <summary>Creates a new <see cref="T:System.Drawing.Graphics" /> from the specified <see cref="T:System.Drawing.Image" />.</summary>
+    /// <returns>This method returns a new <see cref="T:System.Drawing.Graphics" /> for the specified <see cref="T:System.Drawing.Image" />.</returns>
+    /// <param name="image">
+    ///   <see cref="T:System.Drawing.Image" /> from which to create the new <see cref="T:System.Drawing.Graphics" />. </param>
+    /// <exception cref="T:System.ArgumentNullException">
+    ///   <paramref name="image" /> is null.</exception>
+    /// <exception cref="T:System.Exception">
+    ///   <paramref name="image" /> has an indexed pixel format or its format is undefined.</exception>
+    /// <filterpriority>1</filterpriority>
+    /// <PermissionSet>
+    ///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+    /// </PermissionSet>
+    public static Graphics FromImage(Image image)
     {
         var _width = image.Width;
         var _height = image.Height;
@@ -1549,7 +1556,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
             return new Graphics(widgetValue, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
         }
 
-        return null;
+        throw new InvalidOperationException();
     }
 
     public void Flush()
