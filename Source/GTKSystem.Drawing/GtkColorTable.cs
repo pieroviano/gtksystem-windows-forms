@@ -192,7 +192,10 @@ internal class GtkColorTable
         {
             try
             {
-                ArgbValues.Add(kvp.Key, kvp.Value);
+                if (!ArgbValues.ContainsKey(kvp.Key))
+                {
+                    ArgbValues.Add(kvp.Key, kvp.Value);
+                }
             }
             catch (Exception e)
             {
