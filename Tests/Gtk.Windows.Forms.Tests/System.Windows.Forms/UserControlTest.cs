@@ -28,18 +28,19 @@
 using System.Windows.Forms;
 using System.Drawing;
 using System.ComponentModel;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
 [TestFixture]
 public class UserControlTest : TestHelper
 {
-    UserControl? uc = null;
+    private UserControl? uc;
 
     [TearDown]
     public void TestTearDown()
     {
-        uc.Dispose();
+        uc?.Dispose();
     }
 
     [SetUp]
@@ -51,15 +52,16 @@ public class UserControlTest : TestHelper
     [Test]
     public void PropertyTest()
     {
-        Assert.AreEqual(string.Empty, uc.Text, "#A1");
+        object expected = string.Empty;
+        Assert.That((object?)uc!.Text, Is.EqualTo(expected));
 
-        Assert.AreEqual(BorderStyle.None, uc.BorderStyle, "#A2");
+        Assert.That((object?)uc.BorderStyle, Is.EqualTo(BorderStyle.None));
         uc.BorderStyle = BorderStyle.Fixed3D;
-        Assert.AreEqual(BorderStyle.Fixed3D, uc.BorderStyle, "#A3");
+        Assert.That((object?)uc.BorderStyle, Is.EqualTo(BorderStyle.Fixed3D));
         uc.BorderStyle = BorderStyle.FixedSingle;
-        Assert.AreEqual(BorderStyle.FixedSingle, uc.BorderStyle, "#A4");
+        Assert.That((object?)uc.BorderStyle, Is.EqualTo(BorderStyle.FixedSingle));
         uc.BorderStyle = BorderStyle.None;
-        Assert.AreEqual(BorderStyle.None, uc.BorderStyle, "#A5");
+        Assert.That((object?)uc.BorderStyle, Is.EqualTo(BorderStyle.None));
     }
 
     [Test]
@@ -67,7 +69,7 @@ public class UserControlTest : TestHelper
     {
         Assert.Throws<InvalidEnumArgumentException>(() =>
         {
-            uc.BorderStyle = (BorderStyle)9999;
+            uc!.BorderStyle = (BorderStyle)9999;
         });
     }
 		
@@ -76,13 +78,13 @@ public class UserControlTest : TestHelper
     {
         var uc = new ExposeProtectedProperties ();
 
-        Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD, (WindowStyles)uc.CreateParams.Style, "D1");
-        Assert.AreEqual (WindowExStyles.WS_EX_CONTROLPARENT, (WindowExStyles)uc.CreateParams.ExStyle, "D2");
+        Assert.That((object?)(WindowStyles)uc.CreateParams.Style, Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD));
+        Assert.That((object?)(WindowExStyles)uc.CreateParams.ExStyle, Is.EqualTo(WindowExStyles.WS_EX_CONTROLPARENT));
     }
 
     private class ExposeProtectedProperties : UserControl
     {
-        public new CreateParams CreateParams { get { return base.CreateParams; } }
+        public new CreateParams CreateParams => base.CreateParams;
     }
 
     [Test]
@@ -102,10 +104,12 @@ public class UserControlTest : TestHelper
 
         f.Show ();
 
-        Assert.AreEqual (new Size (403, 403), p.ClientSize, "A1");
+        object expected = new Size (403, 403);
+        Assert.That((object?)p.ClientSize, Is.EqualTo(expected));
 
         p.Controls.Remove (b);
-        Assert.AreEqual (new Size (200, 100), p.ClientSize, "A2");
+        object expected1 = new Size (200, 100);
+        Assert.That((object?)p.ClientSize, Is.EqualTo(expected1));
 
         f.Close ();
     }
@@ -130,41 +134,51 @@ public class UserControlTest : TestHelper
         p.Controls.Add (b);
 			
         f.Show ();
-			
-        Assert.AreEqual (new Size (0, 100), p.PreferredSize, "A1");
+
+        object expected = new Size (0, 100);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected));
 			
         b1.Dock = DockStyle.Left;
-        Assert.AreEqual (new Size (200, 100), p.PreferredSize, "A2");
+        object expected1 = new Size (200, 100);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected1));
 
         b1.Dock = DockStyle.None;
-        Assert.AreEqual (new Size (203, 203), p.PreferredSize, "A3");
+        object expected2 = new Size (203, 203);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected2));
 
         b1.Dock = DockStyle.Fill;
         b.Dock = DockStyle.Fill;
-        Assert.AreEqual (new Size (0, 0), p.PreferredSize, "A4");
+        object expected3 = new Size (0, 0);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected3));
 			
         b1.Dock = DockStyle.Top;
         b.Dock = DockStyle.Left;
 
-        Assert.AreEqual (new Size (100, 200), p.PreferredSize, "A5");
+        object expected4 = new Size (100, 200);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected4));
 		
         var b2 = new Button ();
         b2.Size = new Size (50, 50);
         p.Controls.Add (b2);
 
-        Assert.AreEqual (new Size (100, 200), p.PreferredSize, "A6");
+        object expected5 = new Size (100, 200);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected5));
 			
         b2.Left = 300;
-        Assert.AreEqual (new Size (353, 200), p.PreferredSize, "A7");
+        object expected6 = new Size (353, 200);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected6));
 
         b2.Top = 300;
-        Assert.AreEqual (new Size (353, 353), p.PreferredSize, "A8");
+        object expected7 = new Size (353, 353);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected7));
 
         b2.Anchor = AnchorStyles.Bottom;
-        Assert.AreEqual (new Size (100, 200), p.PreferredSize, "A9");
+        object expected8 = new Size (100, 200);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected8));
 
         b2.Anchor = AnchorStyles.Left;
-        Assert.AreEqual (new Size (353, 353), p.PreferredSize, "A10");
+        object expected9 = new Size (353, 353);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected9));
 			
         f.Dispose ();
     }

@@ -3,6 +3,8 @@
 // If the resource image file is not used in the project, there is no need to create this file.
 
 using System.Globalization;
+using Image = System.Drawing.Image;
+using ImageListStreamer = System.Windows.Forms.ImageListStreamer;
 
 namespace System.ComponentModel;
 
@@ -21,5 +23,17 @@ internal class ComponentResourceManager : GtkComponentResourceManager
     public new object? GetObject(string name)
     {
         return base.GetObject(name);
+    }
+
+    public new T? GetObject<T>(string name)
+    {
+        if (typeof(T).FullName == typeof(ImageListStreamer).FullName)
+        {
+            if (base.GetObject(name) is Image i)
+            {
+                return (T)(object)((ImageListStreamer)i);
+            }
+        }
+        return (T?)base.GetObject(name);
     }
 }

@@ -7,7 +7,7 @@
 // (C) 2005 Novell, Inc. (http://www.novell.com)
 //
 
-using GtkTests.System.Windows.Forms;
+using GtkTests.Helpers;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -20,23 +20,18 @@ namespace GtkTests.System.Windows.Forms;
 public class FormTest : TestHelper
 {
     [Test]
-    public void bug_82358 ()
+    public void bug_82358()
     {
         //Console.WriteLine ("Starting bug_82358");
-        int sizeable_factor;
-        int title_bar;
-        int tool_bar;
-        int tool_border;
-        int d3;
-        int d2;
 
-        // WinXP, default theme
-        sizeable_factor = 2;
-        title_bar = 26;
-        tool_bar = 18;
-        tool_border = 6;
-        d3 = 10;
-        d2 = 6;
+        var sizeable_factor =
+            // WinXP, default theme
+            2;
+        var title_bar = 26;
+        var tool_bar = 18;
+        var tool_border = 6;
+        var d3 = 10;
+        var d2 = 6;
 
         // WinXP, Win32 theme:
         sizeable_factor = 2;
@@ -47,450 +42,706 @@ public class FormTest : TestHelper
         d2 = 6;
 
 
-        var size = new Size (200, 200);
-			
+        var size = new Size(200, 200);
+
         // Universal theme??
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             f.FormBorderStyle = FormBorderStyle.FixedSingle;
             f.Visible = true;
             d2 = f.Size.Width - f.ClientSize.Width;
             title_bar = f.Size.Height - f.ClientSize.Height - d2;
         }
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             f.FormBorderStyle = FormBorderStyle.Sizable;
             f.Visible = true;
             sizeable_factor = f.Size.Width - f.ClientSize.Width - d2;
         }
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             f.ClientSize = size;
             f.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             //f.Visible = true;
             tool_border = f.Size.Width - f.ClientSize.Width;
             tool_bar = f.Size.Height - f.ClientSize.Height - tool_border;
         }
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             f.FormBorderStyle = FormBorderStyle.Fixed3D;
             f.Visible = true;
-            d3 = f.Size.Width - f.ClientSize.Width; 
-        }			
-		
+            d3 = f.Size.Width - f.ClientSize.Width;
+        }
+
         FormBorderStyle style;
-			
-			
+
+
         //Console.WriteLine ("Universal theme says: d2={0}, d3={1}, title_bar={2}, sizeable_factor={3}, tool_border={4}, tool_bar={5}", d2, d3, title_bar, sizeable_factor, tool_border, tool_bar);
-			
+
         // Changing client size, then FormBorderStyle.
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedToolWindow;
             //Console.WriteLine ("Created form, size: {0}, clientsize: {1}", f.Size, f.ClientSize);
             f.ClientSize = size;
             //Console.WriteLine ("Changed ClientSize, size: {0}, clientsize: {1}", f.Size, f.ClientSize);
             f.FormBorderStyle = style;
             //Console.WriteLine ("Changed FormBorderStyle, size: {0}, clientsize: {1}", f.Size, f.ClientSize);
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A1");
-            Assert.AreEqual (new Size (size.Width + tool_border, size.Height + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-A2");
+            var message = style.ToString() + "-A1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + tool_border, size.Height + tool_border + tool_bar).ToString();
+            var message1 = style.ToString() + "-A2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
             //Console.WriteLine ("Made visible, size: {0}, clientsize: {1}", f.Size, f.ClientSize);
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A3");
-            Assert.AreEqual (new Size (size.Width + tool_border, size.Height + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-A4");
+            var message2 = style.ToString() + "-A3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + tool_border, size.Height + tool_border + tool_bar).ToString();
+            var message3 = style.ToString() + "-A4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.SizableToolWindow;
             f.ClientSize = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A1");
-            Assert.AreEqual (new Size (size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-A2");
+            var message = style.ToString() + "-A1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString();
+            var message1 = style.ToString() + "-A2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A3");
-            Assert.AreEqual (new Size (size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-A4");
+            var message2 = style.ToString() + "-A3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString();
+            var message3 = style.ToString() + "-A4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Fixed3D;
             f.ClientSize = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A1");
-            Assert.AreEqual (new Size (size.Width + d3, size.Height + title_bar + d3).ToString () , f.Size.ToString (), style.ToString () + "-A2");
+            var message = style.ToString() + "-A1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d3, size.Height + title_bar + d3).ToString();
+            var message1 = style.ToString() + "-A2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A3");
-            Assert.AreEqual (new Size (size.Width + d3, size.Height + title_bar + d3).ToString (), f.Size.ToString (), style.ToString () + "-A4");
+            var message2 = style.ToString() + "-A3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d3, size.Height + title_bar + d3).ToString();
+            var message3 = style.ToString() + "-A4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedDialog;
             f.ClientSize = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A1");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-A2");
+            var message = style.ToString() + "-A1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message1 = style.ToString() + "-A2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A3");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-A4");
-			
+            var message2 = style.ToString() + "-A3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message3 = style.ToString() + "-A4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
+
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedSingle;
             f.ClientSize = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A1");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-A2");
+            var message = style.ToString() + "-A1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message1 = style.ToString() + "-A2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A3");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-A4");
+            var message2 = style.ToString() + "-A3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message3 = style.ToString() + "-A4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.None;
             f.ClientSize = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A1");
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-A2");
+            var message = style.ToString() + "-A1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            var message1 = style.ToString() + "-A2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A3");
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-A4");
+            var message2 = style.ToString() + "-A3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            var message3 = style.ToString() + "-A4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Sizable;
             f.ClientSize = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A1");
-            Assert.AreEqual (new Size (size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-A2");
+            var message = style.ToString() + "-A1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString();
+            var message1 = style.ToString() + "-A2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-A3");
-            Assert.AreEqual (new Size (size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-A4");
+            var message2 = style.ToString() + "-A3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString();
+            var message3 = style.ToString() + "-A4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
-			
-			
+
+
         // Changing size, then FormBorderStyle.
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedToolWindow;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B2");
+            var message = style.ToString() + "-B1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-B2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B3");
-            Assert.AreEqual (new Size (size.Width - tool_border, size.Height - tool_border - tool_bar).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
+            var message2 = style.ToString() + "-B3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - tool_border, size.Height - tool_border - tool_bar).ToString();
+            var message3 = style.ToString() + "-B4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.SizableToolWindow;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B2");
+            var message = style.ToString() + "-B1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-B2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B3");
-            Assert.AreEqual (new Size (size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
+            var message2 = style.ToString() + "-B3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-B4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Fixed3D;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B2");
+            var message = style.ToString() + "-B1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-B2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B3");
-            Assert.AreEqual (new Size (size.Width - d3, size.Height - title_bar - d3).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
+            var message2 = style.ToString() + "-B3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d3, size.Height - title_bar - d3).ToString();
+            var message3 = style.ToString() + "-B4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedDialog;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B2");
+            var message = style.ToString() + "-B1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-B2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B3");
-            Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
+            var message2 = style.ToString() + "-B3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d2, size.Height - title_bar - d2).ToString();
+            var message3 = style.ToString() + "-B4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
 
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedSingle;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B2");
+            var message = style.ToString() + "-B1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-B2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B3");
-            Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
+            var message2 = style.ToString() + "-B3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d2, size.Height - title_bar - d2).ToString();
+            var message3 = style.ToString() + "-B4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.None;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B2");
+            var message = style.ToString() + "-B1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-B2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B3");
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
+            var message2 = style.ToString() + "-B3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            var message3 = style.ToString() + "-B4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Sizable;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B2");
+            var message = style.ToString() + "-B1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-B2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-B3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
+            var message2 = style.ToString() + "-B3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-B4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
 
 
         // Changing FormBorderStyle, then client size
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedToolWindow;
             f.FormBorderStyle = style;
             f.ClientSize = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C1");
-            Assert.AreEqual (new Size (size.Width + tool_border, size.Height + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-C2");
+            var message = style.ToString() + "-C1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + tool_border, size.Height + tool_border + tool_bar).ToString();
+            var message1 = style.ToString() + "-C2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C3");
-            Assert.AreEqual (new Size (size.Width + tool_border, size.Height + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-C4");
+            var message2 = style.ToString() + "-C3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + tool_border, size.Height + tool_border + tool_bar).ToString();
+            var message3 = style.ToString() + "-C4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.SizableToolWindow;
             f.FormBorderStyle = style;
             f.ClientSize = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C1");
-            Assert.AreEqual (new Size (size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-C2");
+            var message = style.ToString() + "-C1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString();
+            var message1 = style.ToString() + "-C2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C3");
-            Assert.AreEqual (new Size (size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-C4");
+            var message2 = style.ToString() + "-C3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString();
+            var message3 = style.ToString() + "-C4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Fixed3D;
             f.FormBorderStyle = style;
             f.ClientSize = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C1");
-            Assert.AreEqual (new Size (size.Width + d3, size.Height + title_bar + d3).ToString (), f.Size.ToString (), style.ToString () + "-C2");
+            var message = style.ToString() + "-C1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d3, size.Height + title_bar + d3).ToString();
+            var message1 = style.ToString() + "-C2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C3");
-            Assert.AreEqual (new Size (size.Width + d3, size.Height + title_bar + d3).ToString (), f.Size.ToString (), style.ToString () + "-C4");
+            var message2 = style.ToString() + "-C3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d3, size.Height + title_bar + d3).ToString();
+            var message3 = style.ToString() + "-C4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedDialog;
             f.FormBorderStyle = style;
             f.ClientSize = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C1");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-C2");
+            var message = style.ToString() + "-C1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message1 = style.ToString() + "-C2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C3");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-C4");
+            var message2 = style.ToString() + "-C3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message3 = style.ToString() + "-C4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
 
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedSingle;
             f.FormBorderStyle = style;
             f.ClientSize = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C1");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-C2");
+            var message = style.ToString() + "-C1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message1 = style.ToString() + "-C2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C3");
-            Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-C4");
+            var message2 = style.ToString() + "-C3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d2, size.Height + title_bar + d2).ToString();
+            var message3 = style.ToString() + "-C4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.None;
             f.FormBorderStyle = style;
             f.ClientSize = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C1");
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-C2");
+            var message = style.ToString() + "-C1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            var message1 = style.ToString() + "-C2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C3");
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-C4");
+            var message2 = style.ToString() + "-C3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            var message3 = style.ToString() + "-C4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Sizable;
             f.FormBorderStyle = style;
             f.ClientSize = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C1");
-            Assert.AreEqual (new Size (size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-C2");
+            var message = style.ToString() + "-C1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString();
+            var message1 = style.ToString() + "-C2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-C3");
-            Assert.AreEqual (new Size (size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-C4");
+            var message2 = style.ToString() + "-C3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width + d2 + sizeable_factor, size.Height + title_bar + d2 + sizeable_factor).ToString();
+            var message3 = style.ToString() + "-C4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected1), message3);
         }
 
 
         // Changing FormBorderStyle, then size
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedToolWindow;
             f.FormBorderStyle = style;
             f.Size = size;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D1");
-            Assert.AreEqual (new Size (size.Width - tool_border, size.Height - tool_border - tool_bar).ToString (), f.ClientSize.ToString (), style.ToString () + "-D2");
+            var message = style.ToString() + "-D1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - tool_border, size.Height - tool_border - tool_bar).ToString();
+            var message1 = style.ToString() + "-D2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D3");
-            Assert.AreEqual (new Size (size.Width - tool_border, size.Height - tool_border - tool_bar).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
+            var message2 = style.ToString() + "-D3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - tool_border, size.Height - tool_border - tool_bar).ToString();
+            var message3 = style.ToString() + "-D4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.SizableToolWindow;
             f.FormBorderStyle = style;
             f.Size = size;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D1");
-            Assert.AreEqual (new Size (size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-D2");
+            var message = style.ToString() + "-D1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-D2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D3");
-            Assert.AreEqual (new Size (size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
+            var message2 = style.ToString() + "-D3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-D4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Fixed3D;
             f.FormBorderStyle = style;
             f.Size = size;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D1");
-            Assert.AreEqual (new Size (size.Width - d3, size.Height - title_bar - d3).ToString (), f.ClientSize.ToString (), style.ToString () + "-D2");
+            var message = style.ToString() + "-D1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d3, size.Height - title_bar - d3).ToString();
+            var message1 = style.ToString() + "-D2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D3");
-            Assert.AreEqual (new Size (size.Width - d3, size.Height - title_bar - d3).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
+            var message2 = style.ToString() + "-D3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d3, size.Height - title_bar - d3).ToString();
+            var message3 = style.ToString() + "-D4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedDialog;
             f.FormBorderStyle = style;
             f.Size = size;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D1");
-            Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-D2");
+            var message = style.ToString() + "-D1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2, size.Height - title_bar - d2).ToString();
+            var message1 = style.ToString() + "-D2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D3");
-            Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
+            var message2 = style.ToString() + "-D3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d2, size.Height - title_bar - d2).ToString();
+            var message3 = style.ToString() + "-D4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
 
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedSingle;
             f.FormBorderStyle = style;
             f.Size = size;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D1");
-            Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-D2");
+            var message = style.ToString() + "-D1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2, size.Height - title_bar - d2).ToString();
+            var message1 = style.ToString() + "-D2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D3");
-            Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
+            var message2 = style.ToString() + "-D3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d2, size.Height - title_bar - d2).ToString();
+            var message3 = style.ToString() + "-D4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.None;
             f.FormBorderStyle = style;
             f.Size = size;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-D1");
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D2");
+            var message = style.ToString() + "-D1";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()));
+            var message1 = style.ToString() + "-D2";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-D3");
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D4");
+            var message2 = style.ToString() + "-D3";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(size.ToString()), message2);
+            var message3 = style.ToString() + "-D4";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Sizable;
             f.FormBorderStyle = style;
             f.Size = size;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-D2");
+            var message = style.ToString() + "-D1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()));
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-D2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected), message1);
             f.Visible = true;
-            Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
+            var message2 = style.ToString() + "-D3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(size.ToString()), message2);
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-D4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message3);
         }
 
 
 
         // Set clientsize, then change size, then FormBorderStyle.
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedToolWindow;
             f.ClientSize = f.ClientSize;
             f.Size = size;
             f.FormBorderStyle = style;
             // Here we subtract the Sizable borders (default) then add FixedToolWindow's border.
             // Note how now the sizes doesn't change when creating the handle.
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + tool_border, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-E1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E2");
+            object expected = new Size(size.Width - d2 - sizeable_factor + tool_border, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar).ToString();
+            var message = style.ToString() + "-E1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected));
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-E2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message1);
             f.Visible = true;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + tool_border, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-E3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
+            object expected2 = new Size(size.Width - d2 - sizeable_factor + tool_border, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar).ToString();
+            var message2 = style.ToString() + "-E3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected2), message2);
+            object expected3 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-E4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected3), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.SizableToolWindow;
             f.ClientSize = f.ClientSize;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + tool_border + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-E1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E2");
+            object expected = new Size(size.Width - d2 - sizeable_factor + tool_border + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar + sizeable_factor).ToString();
+            var message = style.ToString() + "-E1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected));
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-E2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message1);
             f.Visible = true;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + tool_border + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-E3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
+            object expected2 = new Size(size.Width - d2 - sizeable_factor + tool_border + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + tool_border + tool_bar + sizeable_factor).ToString();
+            var message2 = style.ToString() + "-E3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected2), message2);
+            object expected3 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-E4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected3), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Fixed3D;
             f.ClientSize = f.ClientSize;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d3, size.Height - title_bar - d2 - sizeable_factor + title_bar + d3).ToString (), f.Size.ToString (), style.ToString () + "-E1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E2");
+            object expected = new Size(size.Width - d2 - sizeable_factor + d3, size.Height - title_bar - d2 - sizeable_factor + title_bar + d3).ToString();
+            var message = style.ToString() + "-E1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected));
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-E2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message1);
             f.Visible = true;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d3, size.Height - title_bar - d2 - sizeable_factor + title_bar + d3).ToString (), f.Size.ToString (), style.ToString () + "-E3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
+            object expected2 = new Size(size.Width - d2 - sizeable_factor + d3, size.Height - title_bar - d2 - sizeable_factor + title_bar + d3).ToString();
+            var message2 = style.ToString() + "-E3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected2), message2);
+            object expected3 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-E4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected3), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedDialog;
             f.ClientSize = f.ClientSize;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-E1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E2");
+            object expected = new Size(size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString();
+            var message = style.ToString() + "-E1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected));
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-E2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message1);
             f.Visible = true;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-E3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
+            object expected2 = new Size(size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString();
+            var message2 = style.ToString() + "-E3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected2), message2);
+            object expected3 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-E4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected3), message3);
 
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.FixedSingle;
             f.ClientSize = f.ClientSize;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-E1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E2");
+            object expected = new Size(size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString();
+            var message = style.ToString() + "-E1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected));
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-E2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message1);
             f.Visible = true;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-E3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
+            object expected2 = new Size(size.Width - d2 - sizeable_factor + d2, size.Height - title_bar - d2 - sizeable_factor + title_bar + d2).ToString();
+            var message2 = style.ToString() + "-E3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected2), message2);
+            object expected3 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-E4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected3), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.None;
             f.ClientSize = f.ClientSize;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-E1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E2");
+            object expected = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message = style.ToString() + "-E1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected));
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-E2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message1);
             f.Visible = true;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-E3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
+            object expected2 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message2 = style.ToString() + "-E3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected2), message2);
+            object expected3 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-E4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected3), message3);
         }
 
-        using (var f = new Form ()) {
+        using (var f = new Form())
+        {
             style = FormBorderStyle.Sizable;
             f.ClientSize = f.ClientSize;
             f.Size = size;
             f.FormBorderStyle = style;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d2 + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + d2 + sizeable_factor + title_bar).ToString (), f.Size.ToString (), style.ToString () + "-E1");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E2");
+            object expected = new Size(size.Width - d2 - sizeable_factor + d2 + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + d2 + sizeable_factor + title_bar).ToString();
+            var message = style.ToString() + "-E1";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected));
+            object expected1 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message1 = style.ToString() + "-E2";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected1), message1);
             f.Visible = true;
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor + d2 + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + d2 + sizeable_factor + title_bar).ToString (), f.Size.ToString (), style.ToString () + "-E3");
-            Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
+            object expected2 = new Size(size.Width - d2 - sizeable_factor + d2 + sizeable_factor, size.Height - title_bar - d2 - sizeable_factor + d2 + sizeable_factor + title_bar).ToString();
+            var message2 = style.ToString() + "-E3";
+            Assert.That((object?)f.Size.ToString(), Is.EqualTo(expected2), message2);
+            object expected3 = new Size(size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString();
+            var message3 = style.ToString() + "-E4";
+            Assert.That((object?)f.ClientSize.ToString(), Is.EqualTo(expected3), message3);
         }
 
 
@@ -499,777 +750,845 @@ public class FormTest : TestHelper
     }
 
     [Test] // bug 81969
-    public void StartPositionClosedForm ()
+    public void StartPositionClosedForm()
     {
-        using (var form = new Form ()) {
+        using (var form = new Form())
+        {
             form.StartPosition = FormStartPosition.CenterParent;
             form.Load += CenterDisposedForm_Load;
-            form.Show ();
+            form.Show();
         }
 
-        using (var form = new Form ()) {
+        using (var form = new Form())
+        {
             form.StartPosition = FormStartPosition.CenterScreen;
             form.Load += CenterDisposedForm_Load;
-            form.Show ();
+            form.Show();
         }
 
 
-        using (var form = new Form ()) {
+        using (var form = new Form())
+        {
             form.StartPosition = FormStartPosition.Manual;
             form.Load += CenterDisposedForm_Load;
-            form.Show ();
+            form.Show();
         }
 
 
-        using (var form = new Form ()) {
+        using (var form = new Form())
+        {
             form.StartPosition = FormStartPosition.WindowsDefaultBounds;
             form.Load += CenterDisposedForm_Load;
-            form.Show ();
+            form.Show();
         }
 
-        using (var form = new Form ()) {
+        using (var form = new Form())
+        {
             form.StartPosition = FormStartPosition.WindowsDefaultLocation;
             form.Load += CenterDisposedForm_Load;
-            form.Show ();
+            form.Show();
         }
     }
 
-    private void CenterDisposedForm_Load (object? sender, EventArgs e)
+    private void CenterDisposedForm_Load(object? sender, EventArgs e)
     {
-        ((Form) sender).Close ();
+        ((Form)sender!).Close();
     }
 
-    void Form_VisibleChanged1 (object? sender, EventArgs e)
+    private void Form_VisibleChanged1(object? sender, EventArgs e)
     {
-        var f = (TimeBombedForm) sender;
+        var f = (TimeBombedForm)sender!;
         f.Reason = "VisibleChanged";
         f.Visible = false;
     }
 
-    void Form_VisibleChanged2 (object? sender, EventArgs e)
+    private void Form_VisibleChanged2(object? sender, EventArgs e)
     {
-        var f = (TimeBombedForm) sender;
+        var f = (TimeBombedForm)sender!;
         f.Reason = "VisibleChanged";
         f.Visible = false;
         f.DialogResult = DialogResult.OK;
-        Assert.IsFalse (f.Visible);
+        Assert.IsFalse(f.Visible);
     }
 
     [Test]
-    [Category ("NotWorking")]
-    public void FormStartupPositionChangeTest ()
+    [Category("NotWorking")]
+    public void FormStartupPositionChangeTest()
     {
-        using var frm = new Form ();
+        using var frm = new Form();
         frm.ShowInTaskbar = false;
         frm.StartPosition = FormStartPosition.Manual;
-        frm.Location = new Point (0, 0);
-        frm.Show ();
+        frm.Location = new Point(0, 0);
+        frm.Show();
 
         // On X there seem to be pending messages in the queue aren't processed
         // before Show returns, so process them. Otherwise the Location returns
         // something like (5,23)
-        Application.DoEvents ();
-				
-        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#01");
+        Application.DoEvents();
+
+        Assert.That((object?)frm.Location.ToString(), Is.EqualTo("{X=0,Y=0}"));
 
         frm.StartPosition = FormStartPosition.CenterParent;
-        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#02");
+        Assert.That((object?)frm.Location.ToString(), Is.EqualTo("{X=0,Y=0}"));
 
         frm.StartPosition = FormStartPosition.CenterScreen;
-        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#03");
+        Assert.That((object?)frm.Location.ToString(), Is.EqualTo("{X=0,Y=0}"));
 
         frm.StartPosition = FormStartPosition.Manual;
-        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#04");
+        Assert.That((object?)frm.Location.ToString(), Is.EqualTo("{X=0,Y=0}"));
 
         frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#05");
+        Assert.That((object?)frm.Location.ToString(), Is.EqualTo("{X=0,Y=0}"));
 
         frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#06");
+        Assert.That((object?)frm.Location.ToString(), Is.EqualTo("{X=0,Y=0}"));
     }
-		
+
     [Test]
-    public void FormStartupPositionTest ()
+    public void FormStartupPositionTest()
     {
         CreateParams cp;
-			
-        using (var frm = new Form ())
+
+        using (var frm = new Form())
         {
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$01");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#01");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$01");
+            object expected = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected));
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$01");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#02");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterParent), "$01");
+            object expected1 = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected1));
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$01");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen), "$01");
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$01");
-            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#04");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.Manual), "$01");
+            object expected2 = new Point(0, 0).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected2));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$01");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#05");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds), "$01");
+            object expected3 = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected3));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$01");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#06");
-				
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$01");
+            object expected4 = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected4));
+
         }
 
 
-        using (var frm = new Form ()) {
-            frm.Location = new Point (23, 45);
+        using (var frm = new Form())
+        {
+            frm.Location = new Point(23, 45);
 
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A1");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A1");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$A1");
+            object expected = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected));
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$A2");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A2");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterParent), "$A2");
+            object expected1 = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected1));
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$A3");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen), "$A3");
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$A4");
-            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A4");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.Manual), "$A4");
+            object expected2 = new Point(23, 45).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected2));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$A5");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A5");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds), "$A5");
+            object expected3 = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected3));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A6");
-            Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A6");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$A6");
+            object expected4 = new Point(int.MinValue, int.MinValue).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected4));
         }
     }
-		
+
     [Test]
-    public void ParentedFormStartupPositionTest ()
+    public void ParentedFormStartupPositionTest()
     {
         CreateParams cp;
-        using var Main = new Form ();
+        using var Main = new Form();
         Main.ShowInTaskbar = false;
-        Main.Show ();
+        Main.Show();
 
-        using (var frm = new Form ()) {
-            Main.Controls.Add (frm);
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$01");
-            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#01");
+        using (var frm = new Form())
+        {
+            Main.Controls.Add(frm);
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$01");
+            object expected = new Point(0, 0).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected));
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$02");
-            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#02");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterParent), "$02");
+            object expected1 = new Point(0, 0).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected1));
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$03");
-            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#03");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen), "$03");
+            object expected2 = new Point(0, 0).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected2));
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$04");
-            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#04");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.Manual), "$04");
+            object expected3 = new Point(0, 0).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected3));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$05");
-            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#05");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds), "$05");
+            object expected4 = new Point(0, 0).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected4));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$06");
-            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#06");
-            frm.Show ();
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$06");
+            object expected5 = new Point(0, 0).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected5));
+            frm.Show();
         }
 
-        using (var frm = new Form ()) {
-            Main.Controls.Add (frm);
-            frm.Location = new Point (23, 45);
+        using (var frm = new Form())
+        {
+            Main.Controls.Add(frm);
+            frm.Location = new Point(23, 45);
 
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A1");
-            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A1");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$A1");
+            object expected = new Point(23, 45).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected));
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$A2");
-            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A2");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterParent), "$A2");
+            object expected1 = new Point(23, 45).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected1));
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$A3");
-            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A3");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen), "$A3");
+            object expected2 = new Point(23, 45).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected2));
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$A4");
-            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A4");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.Manual), "$A4");
+            object expected3 = new Point(23, 45).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected3));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$A5");
-            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A5");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds), "$A5");
+            object expected4 = new Point(23, 45).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected4));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A6");
-            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A6");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$A6");
+            object expected5 = new Point(23, 45).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected5));
 
-            frm.Show ();
+            frm.Show();
         }
 
-        using (var frm = new Form ()) {
-            Main.Controls.Add (frm);
-            frm.Location = new Point (34, 56);
+        using (var frm = new Form())
+        {
+            Main.Controls.Add(frm);
+            frm.Location = new Point(34, 56);
 
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$B1");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B1");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$B1");
+            object expected = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected));
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$B2");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B2");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterParent), "$B2");
+            object expected1 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected1));
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$B3");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B3");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen), "$B3");
+            object expected2 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected2));
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$B4");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B4");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.Manual), "$B4");
+            object expected3 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected3));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$B5");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B5");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds), "$B5");
+            object expected4 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected4));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$B6");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B6");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$B6");
+            object expected5 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected5));
 
-            frm.Show ();
+            frm.Show();
         }
 
-        Main.Size = new Size (600, 600);
-        using (var frm = new Form ()) {
-            Main.Controls.Add (frm);
-            frm.Location = new Point (34, 56);
+        Main.Size = new Size(600, 600);
+        using (var frm = new Form())
+        {
+            Main.Controls.Add(frm);
+            frm.Location = new Point(34, 56);
 
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$C1");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C1");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$C1");
+            object expected = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected));
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$C2");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C2");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterParent), "$C2");
+            object expected1 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected1));
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$C3");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C3");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen), "$C3");
+            object expected2 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected2));
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$C4");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C4");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.Manual), "$C4");
+            object expected3 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected3));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$C5");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C5");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds), "$C5");
+            object expected4 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected4));
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = GetCreateParams (frm);
-            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$C6");
-            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C6");
+            cp = GetCreateParams(frm);
+            Assert.That((object?)frm.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation), "$C6");
+            object expected5 = new Point(34, 56).ToString();
+            Assert.That((object?)new Point(cp.X, cp.Y).ToString(), Is.EqualTo(expected5));
 
-            frm.Show ();
+            frm.Show();
         }
     }
-		
-    [Test]
-    public void UnparentForm ()
-    {
-        var f1 = new Form ();
-        f1.Show ();
 
-        var f2 = new Form ();
+    [Test]
+    public void UnparentForm()
+    {
+        var f1 = new Form();
+        f1.Show();
+
+        var f2 = new Form();
         f2.Parent = f1;
-        Assert.AreSame (f1, f2.Parent, "#1");
-        f2.Show ();
+        Assert.That((object?)f2.Parent, Is.SameAs(f1));
+        f2.Show();
         f2.Parent = null;
-        Assert.IsNull (f2.Parent, "#2");
+        Assert.IsNull(f2.Parent);
 
         f1.Close();
         f2.Close();
     }
 
     [Test] // bug #80791
-    public void ClientSizeTest ()
+    public void ClientSizeTest()
     {
-        var form = new Form ();
-        Assert.IsFalse (form.ClientSize == form.Size);
+        var form = new Form();
+        Assert.IsFalse(form.ClientSize == form.Size);
     }
 
     [Test] // bug #80574
-    [Category ("NotWorking")]
-    public void FormBorderStyleTest ()
+    [Category("NotWorking")]
+    public void FormBorderStyleTest()
     {
-        var form = new Form ();
+        var form = new Form();
         var boundsBeforeBorderStyleChange = form.Bounds;
         var clientRectangleBeforeBorderStyleChange = form.ClientRectangle;
         form.FormBorderStyle = FormBorderStyle.None;
-        Assert.AreEqual (form.Bounds, boundsBeforeBorderStyleChange, "#A1");
-        Assert.AreEqual (form.ClientRectangle, clientRectangleBeforeBorderStyleChange, "#A2");
+        Assert.That((object?)boundsBeforeBorderStyleChange, Is.EqualTo(form.Bounds));
+        Assert.That((object?)clientRectangleBeforeBorderStyleChange, Is.EqualTo(form.ClientRectangle));
 
         form.Visible = true;
         form.FormBorderStyle = FormBorderStyle.Sizable;
         boundsBeforeBorderStyleChange = form.Bounds;
         clientRectangleBeforeBorderStyleChange = form.ClientRectangle;
         form.FormBorderStyle = FormBorderStyle.None;
-        Assert.IsFalse (form.Bounds == boundsBeforeBorderStyleChange, "#B1");
-        Assert.AreEqual (form.ClientRectangle, clientRectangleBeforeBorderStyleChange, "#B2");
+        Assert.IsFalse(form.Bounds == boundsBeforeBorderStyleChange);
+        Assert.That((object?)clientRectangleBeforeBorderStyleChange, Is.EqualTo(form.ClientRectangle));
 
         form.Visible = false;
         form.FormBorderStyle = FormBorderStyle.Sizable;
         boundsBeforeBorderStyleChange = form.Bounds;
         clientRectangleBeforeBorderStyleChange = form.ClientRectangle;
         form.FormBorderStyle = FormBorderStyle.None;
-        Assert.IsFalse (form.Bounds == boundsBeforeBorderStyleChange, "#C1");
-        Assert.AreEqual (form.ClientRectangle, clientRectangleBeforeBorderStyleChange, "#C2");
+        Assert.IsFalse(form.Bounds == boundsBeforeBorderStyleChange);
+        Assert.That((object?)clientRectangleBeforeBorderStyleChange, Is.EqualTo(form.ClientRectangle));
     }
 
     [Test]
-    [Category ("NotWorking")]
-    public void FormCreateParamsStyleTest ()
+    [Category("NotWorking")]
+    public void FormCreateParamsStyleTest()
     {
         Form frm;
-			
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles) GetCreateParams (frm).Style), "#01-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles) GetCreateParams (frm).ExStyle), "#01-ExStyle");
+
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#01-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#01-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.AllowDrop = !frm.AllowDrop;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#02-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#02-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#02-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#02-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#03-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#03-ExStyle");
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#03-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED), "#03-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.Opacity = 0.50;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#04-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#04-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#04-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED), "#04-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#05-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#05-ExStyle");
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#05-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED), "#05-ExStyle");
         }
-			
-        using (frm = new Form ()) {
+
+        using (frm = new Form())
+        {
             frm.CausesValidation = !frm.CausesValidation;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#06-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#06-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#06-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#06-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#07-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#07-ExStyle");
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN), "#07-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#07-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.Enabled = true;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#08-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#08-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#08-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#08-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.FormBorderStyle = FormBorderStyle.Fixed3D;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#10-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#10-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN), "#10-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#10-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.FormBorderStyle = FormBorderStyle.FixedDialog;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#11-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#11-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN), "#11-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#11-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.FormBorderStyle = FormBorderStyle.FixedSingle;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#12-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#12-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN), "#12-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#12-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#13-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#13-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN), "#13-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#13-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.FormBorderStyle = FormBorderStyle.None;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#14-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#14-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_CLIPCHILDREN), "#14-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#14-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.FormBorderStyle = FormBorderStyle.Sizable;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#15-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#15-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#15-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#15-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#16-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#16-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#16-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#16-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#17-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#17-ExStyle");
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#17-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#17-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.Icon = null;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#18-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#18-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#18-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#18-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#19-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#19-ExStyle");
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#19-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#19-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#20-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#20-ExStyle");
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#20-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#20-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.MaximizeBox = !frm.MaximizeBox;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#21-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#21-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN), "#21-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#21-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.MinimizeBox = !frm.MinimizeBox;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#22-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#22-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN), "#22-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#22-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.ShowIcon = !frm.ShowIcon;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#23-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#23-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#23-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#23-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.ShowInTaskbar = !frm.ShowInTaskbar;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#24-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#24-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#24-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT), "#24-ExStyle");
         }
 
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.TabStop = !frm.TabStop;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#25-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#25-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#25-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#25-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_CHILD, ((WindowStyles)GetCreateParams (frm).Style), "#26-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#26-ExStyle");
+        using (frm = new Form())
+        {
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_CHILD), "#26-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#26-ExStyle");
         }
 
-        using (frm = new Form ()) {
+        using (frm = new Form())
+        {
             frm.Visible = !frm.Visible;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#27-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#27-ExStyle");
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN), "#27-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#27-ExStyle");
         }
 
-        using (frm = new Form ()) {
-            frm.Text = "";
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#28-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#28-ExStyle");
+        using (frm = new Form())
+        {
+            frm.Text = string.Empty;
+            Assert.That((object?)((WindowStyles)GetCreateParams(frm).Style), Is.EqualTo(WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN), "#28-Style");
+            Assert.That((object?)((WindowExStyles)GetCreateParams(frm).ExStyle), Is.EqualTo(WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW), "#28-ExStyle");
         }
     }
-		
+
     [Test]
-    public void FormPropertyTest ()
+    public void FormPropertyTest()
     {
-        var myform = new Form ();
+        var myform = new Form();
         myform.Visible = true;
         myform.Text = "NewForm";
         myform.Name = "FormTest";
-        Assert.AreEqual (DialogResult.None, myform.DialogResult, "#12");
-        Assert.AreEqual (FormBorderStyle.Sizable, myform.FormBorderStyle, "#13");
-        Assert.AreEqual ("System.Drawing.Icon", myform.Icon.GetType ().ToString (), "#15");
-        Assert.IsTrue (myform.MaximizeBox, "#19");
-        Assert.AreEqual (0, myform.MaximumSize.Height, "#20a");
-        Assert.AreEqual (0, myform.MaximumSize.Width, "#20b");
-        Assert.IsTrue (myform.MinimizeBox, "#25");
-        Assert.AreEqual (0, myform.MinimumSize.Height, "#26a");
-        Assert.AreEqual (0, myform.MinimumSize.Width, "#26b");
-        Assert.IsTrue (myform.MinimumSize.IsEmpty, "#26c");
-        Assert.AreEqual (1, myform.Opacity, "#28");
-        Assert.IsTrue (myform.ShowInTaskbar, "#31");
-        Assert.AreEqual (300, myform.Size.Height, "#32a");
-        Assert.AreEqual (300, myform.Size.Width, "#32b");
-        Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, myform.StartPosition, "#34");
-        Assert.AreEqual (FormWindowState.Normal, myform.WindowState, "#38");
-        Assert.AreEqual (ImeMode.NoControl, myform.ImeMode, "#39");
-        myform.Dispose ();
+        Assert.That((object?)myform.DialogResult, Is.EqualTo(DialogResult.None));
+        Assert.That((object?)myform.FormBorderStyle, Is.EqualTo(FormBorderStyle.Sizable));
+        Assert.That((object?)myform.Icon?.GetType().ToString(), Is.EqualTo("System.Drawing.Icon"));
+        Assert.IsTrue(myform.MaximizeBox);
+        Assert.That((object?)myform.MaximumSize.Height, Is.EqualTo(0), "#20a");
+        Assert.That((object?)myform.MaximumSize.Width, Is.EqualTo(0), "#20b");
+        Assert.IsTrue(myform.MinimizeBox);
+        Assert.That((object?)myform.MinimumSize.Height, Is.EqualTo(0), "#26a");
+        Assert.That((object?)myform.MinimumSize.Width, Is.EqualTo(0), "#26b");
+        Assert.IsTrue(myform.MinimumSize.IsEmpty, "#26c");
+        Assert.That((object?)myform.Opacity, Is.EqualTo(1));
+        Assert.IsTrue(myform.ShowInTaskbar);
+        Assert.That((object?)myform.Size.Height, Is.EqualTo(300), "#32a");
+        Assert.That((object?)myform.Size.Width, Is.EqualTo(300), "#32b");
+        Assert.That((object?)myform.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation));
+        Assert.That((object?)myform.WindowState, Is.EqualTo(FormWindowState.Normal));
+        Assert.That((object?)myform.ImeMode, Is.EqualTo(ImeMode.NoControl));
+        myform.Dispose();
     }
 
     [Test]
-    [Category ("NotWorking")]
-    public void ActivateTest ()
+    [Category("NotWorking")]
+    public void ActivateTest()
     {
-        var myform = new Form ();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         myform.Text = "NewForm";
         myform.Name = "FormTest";
-        myform.Activate ();
-        Assert.AreEqual (true, myform.Focus (), "#40");
-        myform.Dispose ();
+        myform.Activate();
+        Assert.That((object?)myform.Focus(), Is.EqualTo(true));
+        myform.Dispose();
     }
 
     [Test]
-    public void SetDialogResultOutOfRange ()
+    public void SetDialogResultOutOfRange()
     {
-        var myform = new Form ();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
-        try {
-            myform.DialogResult = (DialogResult) (-1);
-            Assert.Fail ("#48");
-        } catch (InvalidEnumArgumentException) {
-        }
+        Assert.Throws<InvalidEnumArgumentException>(() =>
+        {
+            myform.DialogResult = (DialogResult)(-1);
+        });
 
-        try {
-            myform.DialogResult = (DialogResult) ((int) DialogResult.No + 1);
-            Assert.Fail ("#49");
-        } catch (InvalidEnumArgumentException) {
-        }
-        myform.Dispose ();
+        Assert.Throws<InvalidEnumArgumentException>(() =>
+        {
+            myform.DialogResult = (DialogResult)((int)DialogResult.No + 1);
+        });
+        myform.Dispose();
     }
 
-    void myform_set_dialogresult (object? sender, EventArgs e)
+    private void myform_set_dialogresult(object? sender, EventArgs e)
     {
-        var f = (Form)sender;
+        var f = (Form)sender!;
 
         f.DialogResult = DialogResult.OK;
     }
 
-    void myform_close (object? sender, EventArgs e)
+    private void myform_close(object? sender, EventArgs e)
     {
-        var f = (Form)sender;
+        var f = (Form)sender!;
 
         f.Close();
     }
 
     [Test]
-    public void SetDialogResult ()
+    public void SetDialogResult()
     {
-        var myform = new Form ();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
 
         myform.DialogResult = DialogResult.Cancel;
 
-        Assert.IsTrue (myform.Visible, "A1");
-        Assert.IsFalse (myform.IsDisposed, "A2");
+        Assert.IsTrue(myform.Visible);
+        Assert.IsFalse(myform.IsDisposed);
 
-        myform.Close ();
+        myform.Close();
 
-        Assert.IsFalse (myform.Visible, "A3");
-        Assert.IsTrue (myform.IsDisposed, "A4");
+        Assert.IsFalse(myform.Visible);
+        Assert.IsTrue(myform.IsDisposed);
 
-        DialogResult result;
-
-        myform = new Form ();
+        myform = new Form();
         myform.ShowInTaskbar = false;
         myform.VisibleChanged += myform_set_dialogresult;
-        result = myform.ShowDialog ();
+        var result = myform.ShowDialog();
 
-        Assert.AreEqual (result, DialogResult.OK, "A5");
-        Assert.IsFalse (myform.Visible, "A6");
-        Assert.IsFalse (myform.IsDisposed, "A7");
-        myform.Dispose ();
-			
-        myform = new Form ();
+        Assert.That((object?)result, Is.EqualTo(DialogResult.OK));
+        Assert.IsFalse(myform.Visible);
+        Assert.IsFalse(myform.IsDisposed);
+        myform.Dispose();
+
+        myform = new Form();
         myform.ShowInTaskbar = false;
         myform.VisibleChanged += myform_close;
-        result = myform.ShowDialog ();
+        result = myform.ShowDialog();
 
-        Assert.AreEqual (result, DialogResult.Cancel, "A8");
-        Assert.IsFalse (myform.Visible, "A9");
-        Assert.IsFalse (myform.IsDisposed, "A10");
-			
-        myform.Dispose ();
+        Assert.That((object?)result, Is.EqualTo(DialogResult.Cancel));
+        Assert.IsFalse(myform.Visible);
+        Assert.IsFalse(myform.IsDisposed);
+
+        myform.Dispose();
     }
 
     [Test] // bug #80052
-    [Category ("NotWorking")]
-    public void Location ()
+    [Category("NotWorking")]
+    public void Location()
     {
         // 
         // CenterParent
         // 
 
-        var formA = new Form ();
+        var formA = new Form();
         formA.ShowInTaskbar = false;
         formA.StartPosition = FormStartPosition.CenterParent;
-        formA.Location = new Point (151, 251);
-        formA.Show ();
+        formA.Location = new Point(151, 251);
+        formA.Show();
 
-        Assert.AreEqual (FormStartPosition.CenterParent, formA.StartPosition, "#A1");
-        Assert.IsFalse (formA.Location.X == 151, "#A2");
-        Assert.IsFalse (formA.Location.Y == 251, "#A3");
+        Assert.That((object?)formA.StartPosition, Is.EqualTo(FormStartPosition.CenterParent));
+        Assert.IsFalse(formA.Location.X == 151);
+        Assert.IsFalse(formA.Location.Y == 251);
 
-        formA.Location = new Point (311, 221);
+        formA.Location = new Point(311, 221);
 
-        Assert.AreEqual (FormStartPosition.CenterParent, formA.StartPosition, "#A4");
-        Assert.AreEqual (311, formA.Location.X, "#A5");
-        Assert.AreEqual (221, formA.Location.Y, "#A6");
+        Assert.That((object?)formA.StartPosition, Is.EqualTo(FormStartPosition.CenterParent));
+        Assert.That((object?)formA.Location.X, Is.EqualTo(311));
+        Assert.That((object?)formA.Location.Y, Is.EqualTo(221));
 
-        formA.Dispose ();
+        formA.Dispose();
 
         // 
         // CenterScreen
         // 
 
-        var formB = new Form ();
+        var formB = new Form();
         formB.ShowInTaskbar = false;
         formB.StartPosition = FormStartPosition.CenterScreen;
-        formB.Location = new Point (151, 251);
-        formB.Show ();
+        formB.Location = new Point(151, 251);
+        formB.Show();
 
-        Assert.AreEqual (FormStartPosition.CenterScreen, formB.StartPosition, "#B1");
-        Assert.IsFalse (formB.Location.X == 151, "#B2");
-        Assert.IsFalse (formB.Location.Y == 251, "#B3");
+        Assert.That((object?)formB.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen));
+        Assert.IsFalse(formB.Location.X == 151);
+        Assert.IsFalse(formB.Location.Y == 251);
 
-        formB.Location = new Point (311, 221);
+        formB.Location = new Point(311, 221);
 
-        Assert.AreEqual (FormStartPosition.CenterScreen, formB.StartPosition, "#B4");
-        Assert.AreEqual (311, formB.Location.X, "#B5");
-        Assert.AreEqual (221, formB.Location.Y, "#B6");
+        Assert.That((object?)formB.StartPosition, Is.EqualTo(FormStartPosition.CenterScreen));
+        Assert.That((object?)formB.Location.X, Is.EqualTo(311));
+        Assert.That((object?)formB.Location.Y, Is.EqualTo(221));
 
-        formB.Dispose ();
+        formB.Dispose();
 
         // 
         // Manual
         // 
 
-        var formC = new Form ();
+        var formC = new Form();
         formC.ShowInTaskbar = false;
         formC.StartPosition = FormStartPosition.Manual;
-        formC.Location = new Point (151, 251);
-        formC.Show ();
+        formC.Location = new Point(151, 251);
+        formC.Show();
 
-        Assert.AreEqual (FormStartPosition.Manual, formC.StartPosition, "#C1");
-        Assert.AreEqual (151, formC.Location.X, "#C2");
-        Assert.AreEqual (251, formC.Location.Y, "#C3");
+        Assert.That((object?)formC.StartPosition, Is.EqualTo(FormStartPosition.Manual));
+        Assert.That((object?)formC.Location.X, Is.EqualTo(151));
+        Assert.That((object?)formC.Location.Y, Is.EqualTo(251));
 
-        formC.Location = new Point (311, 221);
+        formC.Location = new Point(311, 221);
 
-        Assert.AreEqual (FormStartPosition.Manual, formC.StartPosition, "#C4");
-        Assert.AreEqual (311, formC.Location.X, "#C5");
-        Assert.AreEqual (221, formC.Location.Y, "#C6");
+        Assert.That((object?)formC.StartPosition, Is.EqualTo(FormStartPosition.Manual));
+        Assert.That((object?)formC.Location.X, Is.EqualTo(311));
+        Assert.That((object?)formC.Location.Y, Is.EqualTo(221));
 
-        formC.Dispose ();
+        formC.Dispose();
 
         // 
         // WindowsDefaultBounds
         // 
 
-        var formD = new Form ();
+        var formD = new Form();
         formD.ShowInTaskbar = false;
         formD.StartPosition = FormStartPosition.WindowsDefaultBounds;
-        formD.Location = new Point (151, 251);
-        formD.Show ();
+        formD.Location = new Point(151, 251);
+        formD.Show();
 
-        Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, formD.StartPosition, "#D1");
-        Assert.IsFalse (formD.Location.X == 151, "#D2");
-        Assert.IsFalse (formD.Location.Y == 251, "#D3");
+        Assert.That((object?)formD.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds));
+        Assert.IsFalse(formD.Location.X == 151);
+        Assert.IsFalse(formD.Location.Y == 251);
 
-        formD.Location = new Point (311, 221);
+        formD.Location = new Point(311, 221);
 
-        Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, formD.StartPosition, "#D4");
-        Assert.AreEqual (311, formD.Location.X, "#D5");
-        Assert.AreEqual (221, formD.Location.Y, "#D6");
+        Assert.That((object?)formD.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultBounds));
+        Assert.That((object?)formD.Location.X, Is.EqualTo(311));
+        Assert.That((object?)formD.Location.Y, Is.EqualTo(221));
 
-        formD.Dispose ();
+        formD.Dispose();
 
         // 
         // WindowsDefaultLocation
         // 
 
-        var formE = new Form ();
+        var formE = new Form();
         formE.ShowInTaskbar = false;
-        formE.Location = new Point (151, 251);
-        formE.Show ();
+        formE.Location = new Point(151, 251);
+        formE.Show();
 
-        Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, formE.StartPosition, "#E1");
-        Assert.IsFalse (formE.Location.X == 151, "#E2");
-        Assert.IsFalse (formE.Location.Y == 251, "#E3");
+        Assert.That((object?)formE.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation));
+        Assert.IsFalse(formE.Location.X == 151);
+        Assert.IsFalse(formE.Location.Y == 251);
 
-        formE.Location = new Point (311, 221);
+        formE.Location = new Point(311, 221);
 
-        Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, formE.StartPosition, "#E4");
-        Assert.AreEqual (311, formE.Location.X, "#E5");
-        Assert.AreEqual (221, formE.Location.Y, "#E6");
+        Assert.That((object?)formE.StartPosition, Is.EqualTo(FormStartPosition.WindowsDefaultLocation));
+        Assert.That((object?)formE.Location.X, Is.EqualTo(311));
+        Assert.That((object?)formE.Location.Y, Is.EqualTo(221));
 
-        formE.Dispose ();
+        formE.Dispose();
     }
 
     [Test]
-    public void Opacity ()
+    public void Opacity()
     {
         Form frm;
-        using (frm = new Form ()) {
-            Assert.AreEqual (1.0f, frm.Opacity, "#01-opacity");
+        using (frm = new Form())
+        {
+            Assert.That((object?)frm.Opacity, Is.EqualTo(1.0f), "#01-opacity");
             frm.Opacity = 0.50;
-            Assert.AreEqual (0.50f, frm.Opacity, "#02-opacity");
+            Assert.That((object?)frm.Opacity, Is.EqualTo(0.50f), "#02-opacity");
             frm.Opacity = -0.1f;
-            Assert.AreEqual (0, frm.Opacity, "#03-opacity");
+            Assert.That((object?)frm.Opacity, Is.EqualTo(0), "#03-opacity");
             frm.Opacity = 1.1f;
-            Assert.AreEqual (1, frm.Opacity, "#04-opacity");
+            Assert.That((object?)frm.Opacity, Is.EqualTo(1), "#04-opacity");
         }
     }
 
     [Test]
-    public void AccessDisposedForm ()
+    public void AccessDisposedForm()
     {
         Assert.Throws<ObjectDisposedException>(() =>
         {
@@ -1282,53 +1601,57 @@ public class FormTest : TestHelper
         });
     }
 
-    int handle_destroyed_count;
-    void handle_destroyed (object? sender, EventArgs e)
+    private int handle_destroyed_count;
+
+    private void handle_destroyed(object? sender, EventArgs e)
     {
         handle_destroyed_count++;
     }
 
     [Test]
-    public void FormClose ()
+    public void FormClose()
     {
-        var myform = new Form ();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
 
-        Assert.IsFalse (myform.Visible, "A1");
-        Assert.IsFalse (myform.IsDisposed, "A2");
+        Assert.IsFalse(myform.Visible);
+        Assert.IsFalse(myform.IsDisposed);
 
-        myform.Close ();
+        myform.Close();
 
-        Assert.IsTrue (myform.IsDisposed, "A3");
+        Assert.IsTrue(myform.IsDisposed);
     }
 
     [Test]
-    public void FormClose2 ()
+    public void FormClose2()
     {
-        var f = new WMCloseWatcher ();
+        var f = new WMCloseWatcher();
         f.ShowInTaskbar = false;
 
         f.close_count = 0;
-        Assert.IsFalse (f.Visible, "A1");
-        f.Close ();
-        Assert.AreEqual (0, f.close_count, "A2");
-        Assert.IsTrue (f.IsDisposed, "A3");
+        Assert.IsFalse(f.Visible);
+        f.Close();
+        Assert.That((object?)f.close_count, Is.EqualTo(0));
+        Assert.IsTrue(f.IsDisposed);
     }
 
-    class WMCloseWatcher : Form {
+    private class WMCloseWatcher : Form
+    {
         public int close_count;
 
-        protected override void WndProc (ref Message msg) {
-            if (msg.Msg == 0x0010 /* WM_CLOSE */) {
-                close_count ++;
+        protected override void WndProc(ref Message msg)
+        {
+            if (msg.Msg == 0x0010 /* WM_CLOSE */)
+            {
+                close_count++;
             }
 
-            base.WndProc (ref msg);
+            base.WndProc(ref msg);
         }
     }
 
     [Test]
-    public void ShowWithOwnerIOE ()
+    public void ShowWithOwnerIOE()
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -1336,276 +1659,293 @@ public class FormTest : TestHelper
             f.Show(f);
         });
     }
-		
+
     [Test]	// Bug #79959, #80574, #80791
-    [Category ("NotWorking")]
-    public void BehaviorResizeOnBorderStyleChanged ()
+    [Category("NotWorking")]
+    public void BehaviorResizeOnBorderStyleChanged()
     {
         // Marked NotWorking because the ClientSize is dependent on the WM.
         // The values below match XP Luna to make sure our behavior is the same.
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
-        f.Show ();
+        f.Show();
 
-        Assert.AreEqual (true, f.IsHandleCreated, "A0");
+        Assert.That((object?)f.IsHandleCreated, Is.EqualTo(true));
 
-        Assert.AreEqual (new Size (300, 300), f.Size, "A1");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A2");
+        object expected = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected));
+        object expected1 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected1));
 
         f.FormBorderStyle = FormBorderStyle.Fixed3D;
-        Assert.AreEqual (new Size (302, 302), f.Size, "A3");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A4");
+        object expected2 = new Size(302, 302);
+        Assert.That((object?)f.Size, Is.EqualTo(expected2));
+        object expected3 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected3));
 
         f.FormBorderStyle = FormBorderStyle.FixedDialog;
-        Assert.AreEqual (new Size (298, 298), f.Size, "A5");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A6");
+        object expected4 = new Size(298, 298);
+        Assert.That((object?)f.Size, Is.EqualTo(expected4));
+        object expected5 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected5));
 
         f.FormBorderStyle = FormBorderStyle.FixedSingle;
-        Assert.AreEqual (new Size (298, 298), f.Size, "A7");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A8");
+        object expected6 = new Size(298, 298);
+        Assert.That((object?)f.Size, Is.EqualTo(expected6));
+        object expected7 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected7));
 
         f.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-        Assert.AreEqual (new Size (298, 290), f.Size, "A9");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A0");
+        object expected8 = new Size(298, 290);
+        Assert.That((object?)f.Size, Is.EqualTo(expected8));
+        object expected9 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected9));
 
         f.FormBorderStyle = FormBorderStyle.None;
-        Assert.AreEqual (new Size (292, 266), f.Size, "A11");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A12");
+        object expected10 = new Size(292, 266);
+        Assert.That((object?)f.Size, Is.EqualTo(expected10));
+        object expected11 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected11));
 
         f.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-        Assert.AreEqual (new Size (300, 292), f.Size, "A13");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A14");
+        object expected12 = new Size(300, 292);
+        Assert.That((object?)f.Size, Is.EqualTo(expected12));
+        object expected13 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected13));
 
         f.FormBorderStyle = FormBorderStyle.Sizable;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A15");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A16");
-			
-        f.Close ();
+        object expected14 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected14));
+        object expected15 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected15));
+
+        f.Close();
     }
 
     [Test]  // Bug #80574, #80791
-    [Category ("NotWorking")]
-    public void BehaviorResizeOnBorderStyleChangedNotVisible ()
+    [Category("NotWorking")]
+    public void BehaviorResizeOnBorderStyleChangedNotVisible()
     {
         // Marked NotWorking because the ClientSize is dependent on the WM.
         // The values below match XP Luna to make sure our behavior is the same.
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        Assert.AreEqual (false, f.IsHandleCreated, "A0");
-			
-        Assert.AreEqual (new Size (300, 300), f.Size, "A1");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A2");
+        Assert.That((object?)f.IsHandleCreated, Is.EqualTo(false));
+
+        object expected = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected));
+        object expected1 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected1));
 
         f.FormBorderStyle = FormBorderStyle.Fixed3D;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A3");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A4");
+        object expected2 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected2));
+        object expected3 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected3));
 
         f.FormBorderStyle = FormBorderStyle.FixedDialog;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A5");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A6");
+        object expected4 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected4));
+        object expected5 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected5));
 
         f.FormBorderStyle = FormBorderStyle.FixedSingle;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A7");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A8");
+        object expected6 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected6));
+        object expected7 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected7));
 
         f.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A9");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A0");
+        object expected8 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected8));
+        object expected9 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected9));
 
         f.FormBorderStyle = FormBorderStyle.None;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A11");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A12");
+        object expected10 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected10));
+        object expected11 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected11));
 
         f.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A13");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A14");
+        object expected12 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected12));
+        object expected13 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected13));
 
         f.FormBorderStyle = FormBorderStyle.Sizable;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A15");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A16");
+        object expected14 = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected14));
+        object expected15 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected15));
     }
 
     [Test]  // Bug #80574, #80791
-    [Category ("NotWorking")]
-    public void MoreBehaviorResizeOnBorderStyleChangedNotVisible ()
+    [Category("NotWorking")]
+    public void MoreBehaviorResizeOnBorderStyleChangedNotVisible()
     {
         // Marked NotWorking because the ClientSize is dependent on the WM.
         // The values below match XP Luna to make sure our behavior is the same.
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        f.Show ();
-        f.Hide ();
+        f.Show();
+        f.Hide();
 
-        Assert.AreEqual (true, f.IsHandleCreated, "A0");
+        Assert.That((object?)f.IsHandleCreated, Is.EqualTo(true));
 
         f.FormBorderStyle = FormBorderStyle.Sizable;
-        Assert.AreEqual (new Size (300, 300), f.Size, "A1");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A2");
+        object expected = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected));
+        object expected1 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected1));
         f.FormBorderStyle = FormBorderStyle.None;
-        Assert.AreEqual (new Size (292, 266), f.Size, "A3");
-        Assert.AreEqual (new Size (292, 266), f.ClientSize, "A4");
+        object expected2 = new Size(292, 266);
+        Assert.That((object?)f.Size, Is.EqualTo(expected2));
+        object expected3 = new Size(292, 266);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected3));
     }
 
     [Test]  // bug #438866
-    public void MinMaxSize ()
+    public void MinMaxSize()
     {
-        var f = new Form ();
-			
-        f.MinimumSize = new Size (200, 200);
-        f.MaximumSize = new Size (150, 150);
+        var f = new Form();
 
-        Assert.AreEqual (new Size (150, 150), f.MinimumSize, "A1");
-        Assert.AreEqual (new Size (150, 150), f.MaximumSize, "A2");
-			
-        f.MinimumSize = new Size (200, 200);
+        f.MinimumSize = new Size(200, 200);
+        f.MaximumSize = new Size(150, 150);
 
-        Assert.AreEqual (new Size (200, 200), f.MinimumSize, "A3");
-        Assert.AreEqual (new Size (200, 200), f.MaximumSize, "A4");
-			
-        f.Dispose ();
+        object expected = new Size(150, 150);
+        Assert.That((object?)f.MinimumSize, Is.EqualTo(expected));
+        object expected1 = new Size(150, 150);
+        Assert.That((object?)f.MaximumSize, Is.EqualTo(expected1));
+
+        f.MinimumSize = new Size(200, 200);
+
+        object expected2 = new Size(200, 200);
+        Assert.That((object?)f.MinimumSize, Is.EqualTo(expected2));
+        object expected3 = new Size(200, 200);
+        Assert.That((object?)f.MaximumSize, Is.EqualTo(expected3));
+
+        f.Dispose();
     }
 
     [Test]
-    public void MinSizeIssue ()
+    public void MinSizeIssue()
     {
-        var f = new Form ();
+        var f = new Form();
 
-        f.MinimumSize = new Size (100, 100);
+        f.MinimumSize = new Size(100, 100);
 
-        f.Show ();
+        f.Show();
 
-        Assert.AreEqual (new Size (300, 300), f.Size, "A1");
+        object expected = new Size(300, 300);
+        Assert.That((object?)f.Size, Is.EqualTo(expected));
 
-        f.Dispose ();
+        f.Dispose();
     }
-		
-    void tv_GotFocus (object? sender, EventArgs e)
+
+    private void tv_GotFocus(object? sender, EventArgs e)
     {
         //Console.WriteLine (Environment.StackTrace);
     }
 
     [Test]
-    public void Bug82470 ()
+    public void Bug82470()
     {
-        var f = new Form ();
+        var f = new Form();
         f.Load += Form_LoadAndHide;
-        f.Show ();
-			
-        Assert.AreEqual (true, f.Visible, "A1");
-			
-        f.Dispose ();
+        f.Show();
+
+        Assert.That((object?)f.Visible, Is.EqualTo(true));
+
+        f.Dispose();
     }
 
-    private void Form_LoadAndHide (object? sender, EventArgs e)
+    private void Form_LoadAndHide(object? sender, EventArgs e)
     {
-        ((Form)sender).Visible = false;
-    }
-
-    [Test]
-    public void Bug686486 ()
-    {
-        using Form f = new Bug686486Form ();
-        try
-        {
-            f.ShowDialog ();
-        }
-        catch (StackOverflowException)
-        {
-            Assert.Fail ("Setting DialogResult in FormClosing Event causes endless loop: StackOverflowException");
-        }
-    }
-
-    private class Bug686486Form : Form
-    {
-        public Bug686486Form ()
-        {
-            FormClosing += SetDialogResultOK;
-            Load += SetDialogResultOK;
-        }
-
-        private void SetDialogResultOK (object? sender, EventArgs e)
-        {
-            DialogResult = DialogResult.OK;
-        }
+        ((Form)sender!).Visible = false;
     }
 
     [Test]
-    public void AutoSizeGrowOnly ()
+    public void AutoSizeGrowOnly()
     {
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
         f.AutoSize = true;
 
-        var b = new Button ();
-        b.Size = new Size (200, 200);
-        b.Location = new Point (200, 200);
-        f.Controls.Add (b);
+        var b = new Button();
+        b.Size = new Size(200, 200);
+        b.Location = new Point(200, 200);
+        f.Controls.Add(b);
 
-        f.Show ();
+        f.Show();
 
-        Assert.AreEqual (new Size (403, 403), f.ClientSize, "A1");
-			
-        f.Controls.Remove (b);
-        Assert.AreEqual (new Size (403, 403), f.ClientSize, "A2");
-		
-        f.Dispose ();
+        object expected = new Size(403, 403);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected));
+
+        f.Controls.Remove(b);
+        object expected1 = new Size(403, 403);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected1));
+
+        f.Dispose();
     }
 
     [Test]
-    public void AutoSizeReset ()
+    public void AutoSizeReset()
     {
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        var b = new Button ();
-        b.Size = new Size (200, 200);
-        b.Location = new Point (200, 200);
-        f.Controls.Add (b);
+        var b = new Button();
+        b.Size = new Size(200, 200);
+        b.Location = new Point(200, 200);
+        f.Controls.Add(b);
 
-        f.Show ();
+        f.Show();
 
         var start_size = f.ClientSize;
 
         f.AutoSize = true;
-        Assert.AreEqual (new Size (403, 403), f.ClientSize, "A1");
+        object expected = new Size(403, 403);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected));
 
         f.AutoSize = false;
-        Assert.AreEqual (start_size, f.ClientSize, "A2");
-        f.Close ();
+        Assert.That((object?)f.ClientSize, Is.EqualTo(start_size));
+        f.Close();
     }
 
     [Test]
-    public void AutoSizeGrowAndShrink ()
+    public void AutoSizeGrowAndShrink()
     {
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
         f.AutoSize = true;
 
-        f.Show ();
+        f.Show();
 
         // Make sure form shrunk
-        Assert.IsTrue (f.ClientSize.Width < 150, "A1");
-        Assert.IsTrue (f.ClientSize.Height < 150, "A1-2");
+        Assert.IsTrue(f.ClientSize.Width < 150);
+        Assert.IsTrue(f.ClientSize.Height < 150, "A1-2");
 
-        var b = new Button ();
-        b.Size = new Size (200, 200);
-        b.Location = new Point (0, 0);
-        f.Controls.Add (b);
+        var b = new Button();
+        b.Size = new Size(200, 200);
+        b.Location = new Point(0, 0);
+        f.Controls.Add(b);
 
-        Assert.AreEqual (new Size (203, 203), f.ClientSize, "A2");
-        f.Dispose ();
+        object expected = new Size(203, 203);
+        Assert.That((object?)f.ClientSize, Is.EqualTo(expected));
+        f.Dispose();
     }
 
 
     [Test]
-    public void SettingIconToNull ()
+    public void SettingIconToNull()
     {
-        var form = new Form ();
-        Assert.IsNotNull (form.Icon, "1");
+        var form = new Form();
+        Assert.IsNotNull(form.Icon, "1");
         form.Icon = null;
-        Assert.IsNotNull (form.Icon, "2");
+        Assert.IsNotNull(form.Icon, "2");
     }
 
 }
@@ -1615,26 +1955,27 @@ public class TimeBombedForm : Form
     public Timer timer;
     public bool CloseOnPaint;
     public string Reason;
-    public TimeBombedForm ()
+    public TimeBombedForm()
     {
-        timer = new Timer ();
+        timer = new Timer();
         timer.Interval = 500;
         timer.Tick += timer_Tick;
-        timer.Start ();
+        timer.Start();
     }
 
-    void timer_Tick (object? sender, EventArgs e)
+    private void timer_Tick(object? sender, EventArgs e)
     {
         Reason = "Bombed";
-        Close ();
+        Close();
     }
 
-    protected override void OnPaint (PaintEventArgs pevent)
+    protected override void OnPaint(PaintEventArgs pevent)
     {
-        base.OnPaint (pevent);
-        if (CloseOnPaint) {
+        base.OnPaint(pevent);
+        if (CloseOnPaint)
+        {
             Reason = "OnPaint";
-            Close ();
+            Close();
         }
     }
 }

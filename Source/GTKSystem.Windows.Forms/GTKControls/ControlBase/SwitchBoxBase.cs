@@ -3,6 +3,7 @@
 public sealed class SwitchBoxBase : Gtk.Switch, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+
     public SwitchBoxBase()
     {
         Override = new GtkControlOverride(this);
@@ -10,6 +11,7 @@ public sealed class SwitchBoxBase : Gtk.Switch, IControlGtk
         Valign = Gtk.Align.Start;
         Halign = Gtk.Align.Start;
     }
+    
     protected override void OnShown()
     {
         Override.OnAddClass();

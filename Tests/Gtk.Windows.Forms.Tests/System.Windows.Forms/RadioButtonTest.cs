@@ -7,6 +7,7 @@
 // (C) 2005 Novell, Inc. (http://www.novell.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -20,12 +21,12 @@ public class RadioButtonTest : TestHelper
         var rButton1 = new RadioButton ();
 			
         // S
-        Assert.AreEqual (null, rButton1.Site, "#S1");	
+        Assert.That((object?)rButton1.Site, Is.EqualTo(null));	
 
         // T
         rButton1.Text = "New RadioButton";
-        Assert.AreEqual ("New RadioButton", rButton1.Text, "#T1");
-        Assert.IsFalse (rButton1.TabStop, "#T3");
+        Assert.That((object?)rButton1.Text, Is.EqualTo("New RadioButton"));
+        Assert.IsFalse (rButton1.TabStop);
     }
 
     [Test]
@@ -33,18 +34,18 @@ public class RadioButtonTest : TestHelper
     {
         var rb = new RadioButton ();
 
-        Assert.AreEqual (false, rb.TabStop, "#A1");
-        Assert.AreEqual (false, rb.Checked, "#A2");
+        Assert.That((object?)rb.TabStop, Is.EqualTo(false));
+        Assert.That((object?)rb.Checked, Is.EqualTo(false));
 
         rb.Checked = true;
 
-        Assert.AreEqual (true, rb.TabStop, "#B1");
-        Assert.AreEqual (true, rb.Checked, "#B2");
+        Assert.That((object?)rb.TabStop, Is.EqualTo(true));
+        Assert.That((object?)rb.Checked, Is.EqualTo(true));
 
         rb.Checked = false;
 
-        Assert.AreEqual (false, rb.TabStop, "#C1");
-        Assert.AreEqual (false, rb.Checked, "#C2");
+        Assert.That((object?)rb.TabStop, Is.EqualTo(false));
+        Assert.That((object?)rb.Checked, Is.EqualTo(false));
 
         // RadioButton is NOT checked, but since it is the only
         // RadioButton instance in Form, when it gets selected (Form.Show)
@@ -56,20 +57,21 @@ public class RadioButtonTest : TestHelper
 
         f.ActiveControl = rb;
 
-        Assert.AreEqual (true, event_received, "#D1");
-        Assert.AreEqual (true, rb.Checked, "#D2");
-        Assert.AreEqual (true, rb.TabStop, "#D3");
+        Assert.That((object?)event_received, Is.EqualTo(true));
+        Assert.That((object?)rb.Checked, Is.EqualTo(true));
+        Assert.That((object?)rb.TabStop, Is.EqualTo(true));
 
         f.Dispose ();
     }
 
-    bool event_received = false;
-    void rb_tabstop_changed (object? sender, EventArgs e)
+    private bool event_received;
+
+    private void rb_tabstop_changed (object? sender, EventArgs e)
     {
         event_received = true;
     }
 
-    void rb_checked_changed (object? sender, EventArgs e)
+    private void rb_checked_changed (object? sender, EventArgs e)
     {
         event_received = true;
     }
@@ -91,7 +93,7 @@ public class RadioButtonTest : TestHelper
     public void ToStringTest ()
     {
         var rButton1 = new RadioButton ();
-        Assert.AreEqual ("System.Windows.Forms.RadioButton, Checked: False" , rButton1.ToString (), "#9");
+        Assert.That((object?)rButton1.ToString (), Is.EqualTo("System.Windows.Forms.RadioButton, Checked: False"));
     }
 
     [Test]
@@ -109,15 +111,14 @@ public class RadioButtonTest : TestHelper
 			
         rb.Text = "Some text that is surely longer than 100 pixels.";
 
-        if (rb.Width == width)
-            Assert.Fail ("RadioButton did not autosize, actual: {0}", rb.Width);
+        Assert.False(rb.Width == width);
     }
 }
 	
 [TestFixture]
 public class RadioButtonEventTestClass : TestHelper
 {
-    static bool eventhandled = false;
+    private static bool eventhandled;
     public static void RadioButton_EventHandler (object? sender, EventArgs e)
     {
         eventhandled = true;
@@ -133,7 +134,7 @@ public class RadioButtonEventTestClass : TestHelper
         rButton1.Visible = true;
         myForm.Controls.Add (rButton1);
         eventhandled = false;
-        Assert.AreEqual (true, eventhandled, "#2");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         myForm.Dispose ();
     }
 	
@@ -150,7 +151,7 @@ public class RadioButtonEventTestClass : TestHelper
         eventhandled = false;
         rButton1.CheckedChanged += RadioButton_EventHandler;
         rButton1.Checked = true;
-        Assert.AreEqual (true, eventhandled, "#3");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         myForm.Dispose ();
     }
 }

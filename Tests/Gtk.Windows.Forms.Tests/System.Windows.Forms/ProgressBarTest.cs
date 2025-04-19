@@ -17,80 +17,81 @@ namespace GtkTests.System.Windows.Forms;
 public class ProgressBarTest : TestHelper
 {
     [Test]
-    public void ProgressBarPropertyTest ()
+    public void ProgressBarPropertyTest()
     {
-        var myProgressBar = new ProgressBar ();
-			
+        var myProgressBar = new ProgressBar();
+
         // A
-        Assert.AreEqual (false, myProgressBar.AllowDrop, "#A1");
-			
+        Assert.That((object?)myProgressBar.AllowDrop, Is.EqualTo(false));
+
         // B
-        Assert.AreEqual ("Control", myProgressBar.BackColor.Name, "#B1");
-        Assert.AreEqual (null, myProgressBar.BackgroundImage, "#B3");
-        var gif = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
-        myProgressBar.BackgroundImage = Image.FromFile (gif);
+        Assert.That((object?)myProgressBar.BackColor.Name, Is.EqualTo("Control"));
+        Assert.That((object?)myProgressBar.BackgroundImage, Is.EqualTo(null));
+        var gif = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        myProgressBar.BackgroundImage = Image.FromFile(gif);
         // comparing image objects fails on MS .Net so using Size property
-        Assert.AreEqual (Image.FromFile(gif, true).Size, myProgressBar.BackgroundImage.Size, "#B4");
-			
+        object expected = Image.FromFile(gif, true).Size;
+        Assert.That((object?)myProgressBar.BackgroundImage.Size, Is.EqualTo(expected));
+
         // F 
-        Assert.AreEqual (FontStyle.Regular, myProgressBar.Font.Style, "#F2");
-			
+        Assert.That((object?)myProgressBar.Font?.Style, Is.EqualTo(FontStyle.Regular));
+
         // M
-        Assert.AreEqual (100, myProgressBar.Maximum, "#M1");
-        Assert.AreEqual (0, myProgressBar.Minimum, "#M2");
-			
+        Assert.That((object?)myProgressBar.Maximum, Is.EqualTo(100));
+        Assert.That((object?)myProgressBar.Minimum, Is.EqualTo(0));
+
         // R
-        Assert.AreEqual (RightToLeft.No, myProgressBar.RightToLeft, "#R1");
-						
+        Assert.That((object?)myProgressBar.RightToLeft, Is.EqualTo(RightToLeft.No));
+
         // S
-        Assert.AreEqual (10, myProgressBar.Step, "#S1");
+        Assert.That((object?)myProgressBar.Step, Is.EqualTo(10));
 
         // T
-        Assert.AreEqual ("", myProgressBar.Text, "#T1");
+        Assert.That((object?)myProgressBar.Text, Is.EqualTo(string.Empty));
         myProgressBar.Text = "New ProgressBar";
-        Assert.AreEqual ("New ProgressBar", myProgressBar.Text, "#T2");
+        Assert.That((object?)myProgressBar.Text, Is.EqualTo("New ProgressBar"));
 
         // V
-        Assert.AreEqual (0, myProgressBar.Value, "#V1");
+        Assert.That((object?)myProgressBar.Value, Is.EqualTo(0));
     }
 
     [Test]
-    public void ForeColorTest ()
+    public void ForeColorTest()
     {
-        var progressBar = new ProgressBar ();
-        Assert.AreEqual (SystemColors.Highlight, progressBar.ForeColor, "#A1");
+        var progressBar = new ProgressBar();
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(SystemColors.Highlight));
         progressBar.ForeColor = Color.Red;
-        Assert.AreEqual (Color.Red, progressBar.ForeColor, "#A2");
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(Color.Red));
         progressBar.ForeColor = Color.White;
-        Assert.AreEqual (Color.White, progressBar.ForeColor, "#A3");
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(Color.White));
 
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (progressBar);
-        form.Show ();
+        form.Controls.Add(progressBar);
+        form.Show();
 
-        Assert.AreEqual (Color.White, progressBar.ForeColor, "#B1");
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(Color.White));
         progressBar.ForeColor = Color.Red;
-        Assert.AreEqual (Color.Red, progressBar.ForeColor, "#B2");
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(Color.Red));
         progressBar.ForeColor = Color.Red;
-        Assert.AreEqual (Color.Red, progressBar.ForeColor, "#B3");
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(Color.Red));
         progressBar.ForeColor = Color.Blue;
-        Assert.AreEqual (Color.Blue, progressBar.ForeColor, "#B4");
-			
-        form.Close ();
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(Color.Blue));
+
+        form.Close();
     }
 
     [Test]
-    public void ResetForeColor ()
+    public void ResetForeColor()
     {
-        var progressBar = new ProgressBar ();
+        var progressBar = new ProgressBar();
         progressBar.ForeColor = Color.Red;
-        progressBar.ResetForeColor ();
-        Assert.AreEqual (SystemColors.Highlight, progressBar.ForeColor);
+        progressBar.ResetForeColor();
+        Assert.That((object?)progressBar.ForeColor, Is.EqualTo(SystemColors.Highlight));
     }
 
     [Test]
-    public void ValueTest ()
+    public void ValueTest()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
@@ -103,183 +104,215 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void MinMax()
     {
-        Type expectedArgExType;
-        expectedArgExType = typeof (ArgumentOutOfRangeException);
+        var expectedArgExType = typeof(ArgumentOutOfRangeException);
         //
-        var c = new ProgressBar ();
-        Assert.AreEqual (0, c.Minimum, "default_min");
-        Assert.AreEqual (100, c.Maximum, "default_max");
-        Assert.AreEqual (0, c.Value, "default_value");
+        var c = new ProgressBar();
+        Assert.That((object?)c.Minimum, Is.EqualTo(0), "default_min");
+        Assert.That((object?)c.Maximum, Is.EqualTo(100), "default_max");
+        Assert.That((object?)c.Value, Is.EqualTo(0), "default_value");
         //----
-        try {
-            c.Minimum = -1;
-            Assert.Fail ("should have thrown -- Min-1");
-        } catch (ArgumentException ex) {
-            // MSDN says ArgumentException, but really its *subtype* ArgumentOutOfRangeException.
-            // Actually it changed in FX2.
-            Assert.AreEqual (expectedArgExType, ex.GetType (), "Typeof Min-1");
-            Assert.AreEqual ("Minimum", ex.ParamName, "ParamName Min-1"); // (culture insensitive).
-        }
-        try {
-            c.Maximum = -1;
-            Assert.Fail ("should have thrown -- Max-1");
-        } catch (ArgumentException ex) {
-            Assert.AreEqual (expectedArgExType, ex.GetType (), "Typeof Max-1");
-            Assert.AreEqual ("Maximum", ex.ParamName, "ParamName Max-1"); // (culture insensitive).
-        }
-        Assert.AreEqual (0, c.Minimum, "after Min/Max-1_min");
-        Assert.AreEqual (100, c.Maximum, "after Min/Max-1_max");
-        Assert.AreEqual (0, c.Value, "after Min/Max-1_value");
+        Assert.Throws<ArgumentException>(() =>
+        {
+            try
+            {
+                c.Minimum = -1;
+            }
+            catch (ArgumentException ex)
+            {
+                // MSDN says ArgumentException, but really its *subtype* ArgumentOutOfRangeException.
+                // Actually it changed in FX2.
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expectedArgExType), "Typeof Min-1");
+                Assert.That((object?)ex.ParamName, Is.EqualTo("Minimum"), "ParamName Min-1"); // (culture insensitive).
+                throw;
+            }
+        });
+        Assert.Throws<ArgumentException>(() =>
+        {
+            try
+            {
+                c.Maximum = -1;
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expectedArgExType), "Typeof Max-1");
+                Assert.That((object?)ex.ParamName, Is.EqualTo("Maximum"), "ParamName Max-1"); // (culture insensitive).
+                throw;
+            }
+        });
+        Assert.That((object?)c.Minimum, Is.EqualTo(0), "after Min/Max-1_min");
+        Assert.That((object?)c.Maximum, Is.EqualTo(100), "after Min/Max-1_max");
+        Assert.That((object?)c.Value, Is.EqualTo(0), "after Min/Max-1_value");
         //
         // What happens when Min/Max is set respectively above/below the current Value
         // and Max/Min values.
         c.Minimum = 200;
-        Assert.AreEqual (200, c.Minimum, "200L_min");
-        Assert.AreEqual (200, c.Maximum, "200L_max");
-        Assert.AreEqual (200, c.Value, "200L_value");
+        Assert.That((object?)c.Minimum, Is.EqualTo(200), "200L_min");
+        Assert.That((object?)c.Maximum, Is.EqualTo(200), "200L_max");
+        Assert.That((object?)c.Value, Is.EqualTo(200), "200L_value");
         //
         c.Minimum = 50;
-        Assert.AreEqual (50, c.Minimum, "50L_min");
-        Assert.AreEqual (200, c.Maximum, "50L_max");
-        Assert.AreEqual (200, c.Value, "50L_value");
+        Assert.That((object?)c.Minimum, Is.EqualTo(50), "50L_min");
+        Assert.That((object?)c.Maximum, Is.EqualTo(200), "50L_max");
+        Assert.That((object?)c.Value, Is.EqualTo(200), "50L_value");
         //
         c.Maximum = 30;
-        Assert.AreEqual (30, c.Minimum, "30T_min");
-        Assert.AreEqual (30, c.Maximum, "30T_max");
-        Assert.AreEqual (30, c.Value, "30T_value");
+        Assert.That((object?)c.Minimum, Is.EqualTo(30), "30T_min");
+        Assert.That((object?)c.Maximum, Is.EqualTo(30), "30T_max");
+        Assert.That((object?)c.Value, Is.EqualTo(30), "30T_value");
         //
         // What happens when Value is set outside the Min/Max ranges.
         c.Maximum = 50;
-        Assert.AreEqual (30, c.Minimum, "50T_min");
-        Assert.AreEqual (50, c.Maximum, "50T_max");
+        Assert.That((object?)c.Minimum, Is.EqualTo(30), "50T_min");
+        Assert.That((object?)c.Maximum, Is.EqualTo(50), "50T_max");
         c.Value = 45;
-        Assert.AreEqual (45, c.Value, "50T_value");
-        try {
-            c.Value = 29;
-            Assert.Fail ("should have thrown -- 29");
-        } catch (ArgumentException ex) {
-            Assert.AreEqual (expectedArgExType, ex.GetType (), "Typeof 29");
-            Assert.AreEqual ("Value", ex.ParamName, "ParamName 29");
-        }
-        Assert.AreEqual (45, c.Value, "after 29_value");
-        try {
-            c.Value = 51;
-            Assert.Fail ("should have thrown -- 51");
-        } catch (ArgumentException ex) {
-            Assert.AreEqual (expectedArgExType, ex.GetType (), "Typeof 51");
-            Assert.AreEqual ("Value", ex.ParamName, "ParamName 151");
-        }
-        Assert.AreEqual (45, c.Value, "after 51_value");
+        Assert.That((object?)c.Value, Is.EqualTo(45), "50T_value");
+        Assert.Throws<ArgumentException>(() =>
+        {
+            try
+            {
+                c.Value = 29;
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expectedArgExType), "Typeof 29");
+                Assert.That((object?)ex.ParamName, Is.EqualTo("Value"), "ParamName 29");
+                throw;
+            }
+        });
+        Assert.That((object?)c.Value, Is.EqualTo(45), "after 29_value");
+        Assert.Throws<ArgumentException>(() =>
+        {
+            try
+            {
+                c.Value = 51;
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expectedArgExType), "Typeof 51");
+                Assert.That((object?)ex.ParamName, Is.EqualTo("Value"), "ParamName 151");
+                throw;
+            }
+        });
+        Assert.That((object?)c.Value, Is.EqualTo(45), "after 51_value");
     }
 
     [Test]
-    public void PerformStepAndIncrement ()
+    public void PerformStepAndIncrement()
     {
-        var c = new ProgressBar ();
+        var c = new ProgressBar();
         //
         c.Value = 10;
         c.Step = 30;
-        Assert.AreEqual (10, c.Value, "StepAt30_Init");
-        c.PerformStep ();
-        Assert.AreEqual (40, c.Value, "StepAt30_1");
-        c.PerformStep ();
-        Assert.AreEqual (70, c.Value, "StepAt30_2");
+        Assert.That((object?)c.Value, Is.EqualTo(10), "StepAt30_Init");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(40), "StepAt30_1");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(70), "StepAt30_2");
         //
         c.Value = 0;
         c.Step = 20;
-        Assert.AreEqual (0, c.Value, "StepAt20_Init");
+        Assert.That((object?)c.Value, Is.EqualTo(0), "StepAt20_Init");
         //
-        c.PerformStep ();
-        Assert.AreEqual (20, c.Value, "StepAt20_1");
-        c.PerformStep ();
-        Assert.AreEqual (40, c.Value, "StepAt20_2");
-        c.PerformStep ();
-        Assert.AreEqual (60, c.Value, "StepAt20_3");
-        c.PerformStep ();
-        Assert.AreEqual (80, c.Value, "StepAt20_4");
-        c.PerformStep ();
-        Assert.AreEqual (100, c.Value, "StepAt20_5");
-        c.PerformStep ();
-        Assert.AreEqual (100, c.Value, "StepAt20_6x");
-        c.PerformStep ();
-        Assert.AreEqual (100, c.Value, "StepAt20_7x");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(20), "StepAt20_1");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(40), "StepAt20_2");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(60), "StepAt20_3");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(80), "StepAt20_4");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(100), "StepAt20_5");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(100), "StepAt20_6x");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(100), "StepAt20_7x");
         //
         c.Step = -20;
-        Assert.AreEqual (100, c.Value, "StepAt2Neg0_Init");
-        c.PerformStep ();
-        Assert.AreEqual (80, c.Value, "StepAtNeg20_1");
-        c.PerformStep ();
-        Assert.AreEqual (60, c.Value, "StepAtNeg20_2");
+        Assert.That((object?)c.Value, Is.EqualTo(100), "StepAt2Neg0_Init");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(80), "StepAtNeg20_1");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(60), "StepAtNeg20_2");
         //
         c.Step = -40;
-        Assert.AreEqual (60, c.Value, "StepAt2Neg40_Init");
-        c.PerformStep ();
-        Assert.AreEqual (20, c.Value, "StepAtNeg40_1");
-        c.PerformStep ();
-        Assert.AreEqual (0, c.Value, "StepAtNeg40_2");
-        c.PerformStep ();
-        Assert.AreEqual (0, c.Value, "StepAtNeg40_2");
+        Assert.That((object?)c.Value, Is.EqualTo(60), "StepAt2Neg40_Init");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(20), "StepAtNeg40_1");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(0), "StepAtNeg40_2");
+        c.PerformStep();
+        Assert.That((object?)c.Value, Is.EqualTo(0), "StepAtNeg40_2");
         //
-        c.Increment (30);
-        Assert.AreEqual (30, c.Value, "Increment30_1");
-        c.Increment (30);
-        Assert.AreEqual (60, c.Value, "Increment30_2");
-        c.Increment (30);
-        Assert.AreEqual (90, c.Value, "Increment30_3");
-        c.Increment (30);
-        Assert.AreEqual (100, c.Value, "Increment30_4x");
+        c.Increment(30);
+        Assert.That((object?)c.Value, Is.EqualTo(30), "Increment30_1");
+        c.Increment(30);
+        Assert.That((object?)c.Value, Is.EqualTo(60), "Increment30_2");
+        c.Increment(30);
+        Assert.That((object?)c.Value, Is.EqualTo(90), "Increment30_3");
+        c.Increment(30);
+        Assert.That((object?)c.Value, Is.EqualTo(100), "Increment30_4x");
     }
 
     [Test]
-    public void Styles ()
+    public void Styles()
     {
-        var c = new ProgressBar ();
+        var c = new ProgressBar();
         //--
-        Assert.AreEqual(ProgressBarStyle.Blocks, c.Style, "orig=blocks");
+        Assert.That((object?)c.Style, Is.EqualTo(ProgressBarStyle.Blocks), "orig=blocks");
         //--
         c.Style = ProgressBarStyle.Continuous;
         //--
         c.Style = ProgressBarStyle.Marquee;
         // Increment and PerformStep are documented to fail in Marquee style.
-        try {
-            c.Increment (5);
-            Assert.Fail ("should have thrown -- Increment");
-        } catch (InvalidOperationException) {
-        }
-        try {
-            c.PerformStep ();
-            Assert.Fail ("should have thrown -- PerformStep ");
-        } catch (InvalidOperationException) {
-        }
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            c.Increment(5);
+        });
+        Assert.Throws<InvalidOperationException>(() => c.PerformStep());
         // What about the other value-related properties?  No fail apparently!
         c.Value = 20;
         c.Minimum = 5;
         c.Maximum = 95;
         //--
         // Now undefined style values...
-        try {
-            c.Style = (ProgressBarStyle)4;
-            Assert.Fail("should have thrown -- bad style4");
-        } catch (global::System.ComponentModel.InvalidEnumArgumentException ex) {
-            //Console.WriteLine(ex.Message);
-            Assert.AreEqual(typeof(global::System.ComponentModel.InvalidEnumArgumentException), ex.GetType (), "Typeof bad style4");
-            Assert.AreEqual("value", ex.ParamName, "ParamName bad style 4");
-        }
-        try {
-            c.Style = (ProgressBarStyle)99;
-            Assert.Fail("should have thrown -- bad style99");
-        } catch (global::System.ComponentModel.InvalidEnumArgumentException ex) {
-            Assert.AreEqual (typeof(global::System.ComponentModel.InvalidEnumArgumentException), ex.GetType (), "Typeof bad style99");
-            Assert.AreEqual ("value", ex.ParamName, "ParamName bad style 99");
-        }
+        Assert.Throws<global::System.ComponentModel.InvalidEnumArgumentException>(() =>
+        {
+            try
+            {
+                c.Style = (ProgressBarStyle)4;
+            }
+            catch (global::System.ComponentModel.InvalidEnumArgumentException ex)
+            {
+                //Console.WriteLine(ex.Message);
+                object expected = typeof(global::System.ComponentModel.InvalidEnumArgumentException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected), "Typeof bad style4");
+                Assert.That((object?)ex.ParamName, Is.EqualTo("value"), "ParamName bad style 4");
+                throw;
+            }
+        });
+        Assert.Throws<global::System.ComponentModel.InvalidEnumArgumentException>(() =>
+        {
+            try
+            {
+                c.Style = (ProgressBarStyle)99;
+            }
+            catch (global::System.ComponentModel.InvalidEnumArgumentException ex)
+            {
+                object expected = typeof(global::System.ComponentModel.InvalidEnumArgumentException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected), "Typeof bad style99");
+                Assert.That((object?)ex.ParamName, Is.EqualTo("value"), "ParamName bad style 99");
+                throw;
+            }
+        });
     }
 
     [Test]
-    public void ToStringMethodTest () 
+    public void ToStringMethodTest()
     {
-        var myProgressBar = new ProgressBar ();
+        var myProgressBar = new ProgressBar();
         myProgressBar.Text = "New ProgressBar";
-        Assert.AreEqual ("System.Windows.Forms.ProgressBar, Minimum: 0, Maximum: 100, Value: 0", myProgressBar.ToString (), "#T3");
+        Assert.That((object?)myProgressBar.ToString(), Is.EqualTo("System.Windows.Forms.ProgressBar, Minimum: 0, Maximum: 100, Value: 0"));
     }
     // [MonoTODO("Add test for method Increment (Visual Test)")]
     // [MonoTODO("Add test for method PerformStep (Visual Test)")]

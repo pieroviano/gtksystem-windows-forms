@@ -13,9 +13,9 @@ namespace System.Windows.Forms;
 ///  context listens to the close event on the mainForm, then exits the
 ///  thread's message loop.
 /// </summary>
-public class ApplicationContext : IDisposable
+public partial class ApplicationContext : IDisposable
 {
-    private Form? _mainForm;
+private Form? _mainForm;
 
     /// <summary>
     ///  Creates a new ApplicationContext with no mainForm.
@@ -67,12 +67,6 @@ public class ApplicationContext : IDisposable
     [DefaultValue(null)]
     [TypeConverter(typeof(StringConverter))]
     public object? Tag { get; set; }
-
-    /// <summary>
-    ///  Is raised when the thread's message loop should be terminated.
-    ///  This is raised by calling ExitThread.
-    /// </summary>
-    public event EventHandler? ThreadExit;
 
     /// <summary>
     ///  Disposes the context. This should dispose the mainForm. This is

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace System.Windows.Forms;
 
 [DefaultProperty("Text")]
-public class ColumnHeader : Component, ICloneable
+public partial class ColumnHeader : Component, ICloneable
 {
     internal int _index = -1;
 
@@ -13,8 +13,6 @@ public class ColumnHeader : Component, ICloneable
     internal string? _name;
 
     internal int _width = 120;
-
-    public event EventHandler? DisplayIndexChanged;
 
     [Localizable(true)]
     public int DisplayIndex
@@ -62,11 +60,6 @@ public class ColumnHeader : Component, ICloneable
         }
     }
 
-    protected virtual void OnDisplayIndexChanged(EventArgs e)
-    {
-        DisplayIndexChanged?.Invoke(this, e);
-    }
-
     [Browsable(false)]
     public int Index
     {
@@ -80,11 +73,15 @@ public class ColumnHeader : Component, ICloneable
         get => imageIndex;
         set
         {
+            if (value >= 0)
+            {
+                imageIndex = value;
+            }
+
             if (value < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(ImageIndex), $@"{value}<0");
+                throw new ArgumentOutOfRangeException(nameof(ImageIndex), value, $"Value for {nameof(ImageIndex)} is not valid: {value}");
             }
-            imageIndex = value;
             imageKey = string.Empty;
         }
     }
@@ -165,15 +162,25 @@ public class ColumnHeader : Component, ICloneable
         {
             if (value < 0)
             {
-                value = _listView?.ClientRectangle.Width ?? 0 - _listView?.Columns.Where(i => i != this).Sum(col1 => col1.Width) ?? 0;
+                value = _listView?.ClientRectangle.Width ??
+                        0 - _listView?.Columns.Where(i => i != this).Sum(col1 => col1.Width) ?? 0;
             }
+
             width = value;
         }
     }
 
+    public Gtk.Button Button { get; set; } = null!;
+
     public ColumnHeader()
     {
+        Width = 60;
         Text = @"ColumnHeader";
+    }
+
+    public override string ToString()
+    {
+        return $"ColumnHeader: Text: {Text}";
     }
 
     public ColumnHeader(int imageIndex) : this()
@@ -188,6 +195,7 @@ public class ColumnHeader : Component, ICloneable
 
     public ColumnHeader(string text, int width)
     {
+        Width = 60;
         Text = text;
         Width = width;
     }

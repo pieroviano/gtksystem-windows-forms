@@ -11,6 +11,7 @@ internal static class ResXExtensions
 
         return value;
     }
+
     public static string OrThrowIfNull(this string? value)
     {
         if (value == null)
@@ -20,6 +21,7 @@ internal static class ResXExtensions
 
         return value;
     }
+
     public static ResXFileRef OrThrowIfNull(this ResXFileRef? value)
     {
         if (value == null)

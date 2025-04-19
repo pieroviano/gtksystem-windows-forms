@@ -2,24 +2,28 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
+
 using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
-public class DataGridViewColumnCollection : List<DataGridViewColumn>
+public partial class DataGridViewColumnCollection : List<DataGridViewColumn>
 {
-    public event CollectionChangeEventHandler? CollectionChanged;
     private readonly DataGridView? owner;
     private readonly Gtk.TreeView? GridView;
+
     public DataGridViewColumnCollection(DataGridView? dataGridView)
     {
         owner = dataGridView;
         GridView = dataGridView?.GridView;
     }
 
-    public virtual DataGridViewColumn this[string columnName] { get { return Find(m => m.Name == columnName); } }
+    public virtual DataGridViewColumn this[string columnName]
+    {
+        get { return Find(m => m.Name == columnName); }
+    }
 
     protected DataGridView? DataGridView => owner;
 
@@ -28,6 +32,7 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
         var column = new DataGridViewColumn() { Name = columnName, HeaderText = headerText };
         Add(column);
     }
+
     public new void Add(DataGridViewColumn column)
     {
         column.DataGridView = owner;
@@ -45,22 +50,27 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
             var style = "";
             if (_cellStyle.BackColor.Name != "0")
             {
-                var backcolor = $"rgba({_cellStyle.BackColor.R},{_cellStyle.BackColor.G},{_cellStyle.BackColor.B},{_cellStyle.BackColor.A})";
+                var backcolor =
+                    $"rgba({_cellStyle.BackColor.R},{_cellStyle.BackColor.G},{_cellStyle.BackColor.B},{_cellStyle.BackColor.A})";
                 style += $".columnheaderbackcolor{{background-color:{backcolor};}} ";
                 header.StyleContext.AddClass("columnheaderbackcolor");
             }
+
             if (_cellStyle.ForeColor.Name != "0")
             {
-                var forecolor = $"rgba({_cellStyle.ForeColor.R},{_cellStyle.ForeColor.G},{_cellStyle.ForeColor.B},{_cellStyle.ForeColor.A})";
+                var forecolor =
+                    $"rgba({_cellStyle.ForeColor.R},{_cellStyle.ForeColor.G},{_cellStyle.ForeColor.B},{_cellStyle.ForeColor.A})";
                 style += $".columnheaderforecolor{{color:{forecolor};}} ";
                 header.StyleContext.AddClass("columnheaderforecolor");
             }
+
             if (style.Length > 9)
             {
                 var css = new Gtk.CssProvider();
                 css.LoadFromData(style);
                 header.StyleContext.AddProvider(css, 800);
             }
+
             switch (_cellStyle.Alignment)
             {
                 case DataGridViewContentAlignment.TopLeft:
@@ -88,13 +98,15 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
         }
 
         base.Add(column);
-        if (owner?.self.IsRealized??false)
+        if (owner?.self.IsRealized ?? false)
         {
             Invalidate();
         }
+
         GridView?.AppendColumn(column);
         OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
     }
+
     public new void AddRange(IEnumerable<DataGridViewColumn> columns)
     {
         foreach (var column in columns)
@@ -102,6 +114,7 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
             Add(column);
         }
     }
+
     public new bool Remove(DataGridViewColumn column)
     {
         if (owner != null)
@@ -109,14 +122,16 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
             owner.GridView?.RemoveColumn(column);
         }
 
-        var ir= base.Remove(column);
+        var ir = base.Remove(column);
         OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, column));
         return ir;
     }
+
     public new void RemoveAt(int index)
     {
         Remove(this[index]);
     }
+
     public new void Clear()
     {
         base.Clear();
@@ -128,6 +143,7 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
 
         OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, owner));
     }
+
     public void Invalidate()
     {
         if (Count > owner?.Store.NColumns)
@@ -172,6 +188,7 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
             }
         }
     }
+
     public int GetColumnCount(DataGridViewElementStates includeFilter)
     {
         return FindAll(m => m.State == includeFilter).Count;
@@ -180,7 +197,7 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
     public int GetColumnsWidth(DataGridViewElementStates includeFilter)
     {
         var co = Find(m => m.State == includeFilter);
-        return co?.Width ?? owner?.RowHeadersWidth??0;
+        return co?.Width ?? owner?.RowHeadersWidth ?? 0;
     }
 
     public DataGridViewColumn GetFirstColumn(DataGridViewElementStates includeFilter)
@@ -188,24 +205,23 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
         return Find(m => m.State == includeFilter);
     }
 
-    public DataGridViewColumn GetFirstColumn(DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
+    public DataGridViewColumn GetFirstColumn(DataGridViewElementStates includeFilter,
+        DataGridViewElementStates excludeFilter)
     {
         return Find(m => m.State == includeFilter && m.State == excludeFilter);
     }
 
-    public DataGridViewColumn GetLastColumn(DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
+    public DataGridViewColumn GetLastColumn(DataGridViewElementStates includeFilter,
+        DataGridViewElementStates excludeFilter)
     {
         return FindLast(m => m.State == includeFilter && m.State == excludeFilter);
     }
 
-    public DataGridViewColumn? GetNextColumn(DataGridViewColumn dataGridViewColumnStart, DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
+    public DataGridViewColumn? GetNextColumn(DataGridViewColumn dataGridViewColumnStart,
+        DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
     {
-        var ix = FindIndex(m => m.Name == dataGridViewColumnStart.Name && m.State == includeFilter && m.State == excludeFilter);
+        var ix = FindIndex(m =>
+            m.Name == dataGridViewColumnStart.Name && m.State == includeFilter && m.State == excludeFilter);
         return ix < Count ? base[ix] : null;
-    }
-    protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
-    {
-        if (CollectionChanged != null)
-            CollectionChanged(owner, e);
     }
 }

@@ -5,7 +5,7 @@ namespace System.Windows.Forms;
 
 /// <summary>Manages a list of <see cref="T:System.Windows.Forms.Binding" /> objects.</summary>
 /// <filterpriority>2</filterpriority>
-public class CurrencyManager : BindingManagerBase
+public partial class CurrencyManager : BindingManagerBase
 {
     private object? _dataSource;
 
@@ -25,14 +25,6 @@ public class CurrencyManager : BindingManagerBase
     private bool _inChangeRecordState;
 
     private bool _suspendPushDataInCurrentChanged;
-
-    private ItemChangedEventHandler? _itemChanged;
-
-    private ListChangedEventHandler? _listChanged;
-
-    private readonly ItemChangedEventArgs _resetEvent = new(-1);
-
-    private EventHandler? _metaDataChanged;
 
     /// <summary>Specifies the data type of the list.</summary>
     protected Type? FinalType;
@@ -618,66 +610,6 @@ public class CurrencyManager : BindingManagerBase
         }
     }
 
-    protected virtual void OnCurrencyChanged(EventArgs e)
-    {
-        OnCurrentChangedHandler?.Invoke(this, e);
-    }
-
-    /// <param name="e">The <see cref="T:System.EventArgs" /> that contains the event data.</param>
-    protected internal override void OnCurrentItemChanged(EventArgs e)
-    {
-        OnCurrentItemChangedHandler?.Invoke(this, e);
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.CurrencyManager.ItemChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.Windows.Forms.ItemChangedEventArgs" /> that contains the event data. </param>
-    protected virtual void OnItemChanged(ItemChangedEventArgs e)
-    {
-        var flag = false;
-        if ((e.Index == ListPosition || e.Index == -1 && Position < Count) && !_inChangeRecordState)
-        {
-            flag = CurrencyManager_PushData();
-        }
-        try
-        {
-            _itemChanged?.Invoke(this, e);
-        }
-        catch (Exception exception)
-        {
-            OnDataError(exception);
-        }
-        if (flag)
-        {
-            OnPositionChanged(EventArgs.Empty);
-        }
-    }
-
-    private void OnListChanged(ListChangedEventArgs e)
-    {
-        _listChanged?.Invoke(this, e);
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.CurrencyManager.MetaDataChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
-    protected internal void OnMetaDataChanged(EventArgs e)
-    {
-        _metaDataChanged?.Invoke(this, e);
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.PositionChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
-    protected virtual void OnPositionChanged(EventArgs e)
-    {
-        try
-        {
-            OnPositionChangedHandler?.Invoke(this, e);
-        }
-        catch (Exception exception)
-        {
-            OnDataError(exception);
-        }
-    }
-
     /// <summary>Forces a repopulation of the data-bound list.</summary>
     /// <filterpriority>1</filterpriority>
     public void Refresh()
@@ -891,27 +823,4 @@ public class CurrencyManager : BindingManagerBase
         }
     }
 
-    /// <summary>Occurs when the current item has been altered.</summary>
-    /// <filterpriority>1</filterpriority>
-    public event ItemChangedEventHandler? ItemChanged
-    {
-        add => _itemChanged += value;
-        remove => _itemChanged -= value;
-    }
-
-    /// <summary>Occurs when the list changes or an item in the list changes.</summary>
-    /// <filterpriority>1</filterpriority>
-    public event ListChangedEventHandler? ListChanged
-    {
-        add => _listChanged += value;
-        remove => _listChanged -= value;
-    }
-
-    /// <summary>Occurs when the metadata of the <see cref="P:System.Windows.Forms.CurrencyManager.List" /> has changed.</summary>
-    /// <filterpriority>1</filterpriority>
-    public event EventHandler? MetaDataChanged
-    {
-        add => _metaDataChanged += value;
-        remove => _metaDataChanged -= value;
-    }
 }

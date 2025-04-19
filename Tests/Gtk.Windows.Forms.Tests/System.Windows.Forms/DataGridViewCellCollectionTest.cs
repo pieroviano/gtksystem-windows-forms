@@ -22,6 +22,7 @@
 // 
 // Copyright (c) 2007 Gert Driesen
 
+using GtkTests.Helpers;
 using System.Data;
 using System.Windows.Forms;
 
@@ -33,273 +34,339 @@ public class DataGridViewCellCollectionTest : TestHelper
     private DataGridView _dataGridView;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         _dataGridView.Dispose();
     }
 
     [SetUp]
-    protected override void SetUp () {
-        var dt = new DataTable ();
-        dt.Columns.Add ("Date", typeof (DateTime));
-        dt.Columns.Add ("Registered", typeof (bool));
-        dt.Columns.Add ("Event", typeof (string));
+    protected override void SetUp()
+    {
+        var dt = new DataTable();
+        dt.Columns.Add("Date", typeof(DateTime));
+        dt.Columns.Add("Registered", typeof(bool));
+        dt.Columns.Add("Event", typeof(string));
 
-        var row = dt.NewRow ();
-        row ["Date"] = new DateTime (2007, 2, 3);
-        row ["Event"] = "one";
-        row ["Registered"] = false;
-        dt.Rows.Add (row);
+        var row = dt.NewRow();
+        row["Date"] = new DateTime(2007, 2, 3);
+        row["Event"] = "one";
+        row["Registered"] = false;
+        dt.Rows.Add(row);
 
-        row = dt.NewRow ();
-        row ["Date"] = new DateTime (2008, 3, 4);
-        row ["Event"] = "two";
-        row ["Registered"] = true;
-        dt.Rows.Add (row);
+        row = dt.NewRow();
+        row["Date"] = new DateTime(2008, 3, 4);
+        row["Event"] = "two";
+        row["Registered"] = true;
+        dt.Rows.Add(row);
 
-        _dataGridView = new DataGridView ();
+        _dataGridView = new DataGridView();
         _dataGridView.DataSource = dt;
-        base.SetUp ();
+        base.SetUp();
     }
 
     [Test]
-    [Category ("NotWorking")]
-    public void Indexer_ColumnName ()
+    [Category("NotWorking")]
+    public void Indexer_ColumnName()
     {
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (_dataGridView);
-        form.Show ();
+        form.Controls.Add(_dataGridView);
+        form.Show();
 
-        var cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows[0]!.Cells;
 
-        var dateCell = cells ["Date"];
-        Assert.IsNotNull (dateCell, "#A1");
-        Assert.IsNotNull (dateCell.OwningColumn, "#A2");
-        Assert.AreEqual ("Date", dateCell.OwningColumn.Name, "#A3");
-        Assert.IsNotNull (dateCell.Value, "#A4");
-        Assert.AreEqual (new DateTime (2007, 2, 3), dateCell.Value, "#A5");
+        var dateCell = cells["Date"];
+        Assert.IsNotNull(dateCell);
+        Assert.IsNotNull(dateCell.OwningColumn);
+        Assert.That((object?)dateCell.OwningColumn.Name, Is.EqualTo("Date"));
+        Assert.IsNotNull(dateCell.Value);
+        object expected = new DateTime(2007, 2, 3);
+        Assert.That(dateCell.Value, Is.EqualTo(expected));
 
-        var eventCell = cells ["eVeNT"];
-        Assert.IsNotNull (eventCell, "#B1");
-        Assert.IsNotNull (eventCell.OwningColumn, "#B2");
-        Assert.AreEqual ("Event", eventCell.OwningColumn.Name, "#B3");
-        Assert.IsNotNull (eventCell.Value, "#B4");
-        Assert.AreEqual ("one", eventCell.Value, "#B5");
+        var eventCell = cells["eVeNT"];
+        Assert.IsNotNull(eventCell);
+        Assert.IsNotNull(eventCell.OwningColumn);
+        Assert.That((object?)eventCell.OwningColumn.Name, Is.EqualTo("Event"));
+        Assert.IsNotNull(eventCell.Value);
+        Assert.That(eventCell.Value, Is.EqualTo("one"));
 
-        var registeredCell = cells ["Registered"];
-        Assert.IsNotNull (registeredCell, "#C1");
-        Assert.IsNotNull (registeredCell.OwningColumn, "#C2");
-        Assert.AreEqual ("Registered", registeredCell.OwningColumn.Name, "#C3");
-        Assert.IsNotNull (registeredCell.Value, "#C4");
-        Assert.AreEqual (false, registeredCell.Value, "#C5");
+        var registeredCell = cells["Registered"];
+        Assert.IsNotNull(registeredCell);
+        Assert.IsNotNull(registeredCell.OwningColumn);
+        Assert.That((object?)registeredCell.OwningColumn.Name, Is.EqualTo("Registered"));
+        Assert.IsNotNull(registeredCell.Value);
+        Assert.That(registeredCell.Value, Is.EqualTo(false));
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    public void Indexer_ColumnName_NotFound ()
+    public void Indexer_ColumnName_NotFound()
     {
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (_dataGridView);
-        form.Show ();
+        form.Controls.Add(_dataGridView);
+        form.Show();
 
-        var cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows[0]!.Cells;
 
-        try {
-            var cell = cells ["DoesNotExist"];
-            Assert.Fail ("#A1: " + cell);
-        } catch (ArgumentException ex) {
-            // Column named DoesNotExist cannot be found
-            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#A2");
-            Assert.IsNull (ex.InnerException, "#A3");
-            Assert.IsNotNull (ex.Message, "#A4");
-            Assert.IsTrue (ex.Message.IndexOf ("DoesNotExist") != -1, "#A5");
-            Assert.IsNotNull (ex.ParamName, "#A6");
-            Assert.AreEqual ("columnName", ex.ParamName, "#A7");
-        }
+        Assert.Throws<ArgumentException>(() =>
+        {
+            try
+            {
+                var cell = cells["DoesNotExist"];
+            }
+            catch (ArgumentException ex)
+            {
+                // Column named DoesNotExist cannot be found
+                object expected = typeof(ArgumentException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsTrue(ex.Message.IndexOf("DoesNotExist", StringComparison.Ordinal) != -1);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("columnName"));
+                throw;
+            }
+        });
 
-        try {
-            var cell = cells [string.Empty];
-            Assert.Fail ("#B1: " + cell);
-        } catch (ArgumentException ex) {
-            // Column named DoesNotExist cannot be found
-            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#B2");
-            Assert.IsNull (ex.InnerException, "#B3");
-            Assert.IsNotNull (ex.Message, "#B4");
-            Assert.IsTrue (ex.Message.IndexOf ("  ") != -1, "#B5");
-            Assert.IsNotNull (ex.ParamName, "#B6");
-            Assert.AreEqual ("columnName", ex.ParamName, "#B7");
-        }
+        Assert.Throws<ArgumentException>(() =>
+        {
+            try
+            {
+                var cell = cells[string.Empty];
+            }
+            catch (ArgumentException ex)
+            {
+                // Column named DoesNotExist cannot be found
+                object expected = typeof(ArgumentException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsTrue(ex.Message.IndexOf("  ", StringComparison.Ordinal) != -1);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("columnName"));
+                throw;
+            }
+        });
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    public void Indexer_ColumnName_Null ()
+    public void Indexer_ColumnName_Null()
     {
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (_dataGridView);
-        form.Show ();
+        form.Controls.Add(_dataGridView);
+        form.Show();
 
-        var cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows[0]!.Cells;
 
-        try {
-            var cell = cells [(string) null];
-            Assert.Fail ("#A1: " + cell);
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#A2");
-            Assert.IsNull (ex.InnerException, "#A3");
-            Assert.IsNotNull (ex.Message, "#A4");
-            Assert.IsNotNull (ex.ParamName, "#A5");
-            Assert.AreEqual ("columnName", ex.ParamName, "#A6");
-        }
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            try
+            {
+                var cell = cells[null!];
+            }
+            catch (ArgumentNullException ex)
+            {
+                object expected = typeof(ArgumentNullException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("columnName"));
+                throw;
+            }
+        });
 
-        try {
-            cells [(string) null] = cells [0];
-            Assert.Fail ("#B1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#B2");
-            Assert.IsNull (ex.InnerException, "#B3");
-            Assert.IsNotNull (ex.Message, "#B4");
-            Assert.IsNotNull (ex.ParamName, "#B5");
-            Assert.AreEqual ("columnName", ex.ParamName, "#B6");
-        }
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            try
+            {
+                cells[null!] = cells[0];
+            }
+            catch (ArgumentNullException ex)
+            {
+                object expected = typeof(ArgumentNullException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("columnName"));
+                throw;
+            }
+        });
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    [Category ("NotWorking")]
-    public void Indexer_Index ()
+    [Category("NotWorking")]
+    public void Indexer_Index()
     {
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (_dataGridView);
-        form.Show ();
+        form.Controls.Add(_dataGridView);
+        form.Show();
 
-        var cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows[0]!.Cells;
 
-        var dateCell = cells [0];
-        Assert.IsNotNull (dateCell, "#A1");
-        Assert.IsNotNull (dateCell.OwningColumn, "#A2");
-        Assert.AreEqual ("Date", dateCell.OwningColumn.Name, "#A3");
-        Assert.IsNotNull (dateCell.Value, "#A4");
-        Assert.AreEqual (new DateTime (2007, 2, 3), dateCell.Value, "#A5");
+        var dateCell = cells[0];
+        Assert.IsNotNull(dateCell);
+        Assert.IsNotNull(dateCell.OwningColumn);
+        Assert.That((object?)dateCell.OwningColumn.Name, Is.EqualTo("Date"));
+        Assert.IsNotNull(dateCell.Value);
+        object expected = new DateTime(2007, 2, 3);
+        Assert.That(dateCell.Value, Is.EqualTo(expected));
 
-        var eventCell = cells [2];
-        Assert.IsNotNull (eventCell, "#B1");
-        Assert.IsNotNull (eventCell.OwningColumn, "#B2");
-        Assert.AreEqual ("Event", eventCell.OwningColumn.Name, "#B3");
-        Assert.IsNotNull (eventCell.Value, "#B4");
-        Assert.AreEqual ("one", eventCell.Value, "#B5");
+        var eventCell = cells[2];
+        Assert.IsNotNull(eventCell);
+        Assert.IsNotNull(eventCell.OwningColumn);
+        Assert.That((object?)eventCell.OwningColumn.Name, Is.EqualTo("Event"));
+        Assert.IsNotNull(eventCell.Value);
+        Assert.That(eventCell.Value, Is.EqualTo("one"));
 
-        var registeredCell = cells [1];
-        Assert.IsNotNull (registeredCell, "#C1");
-        Assert.IsNotNull (registeredCell.OwningColumn, "#C2");
-        Assert.AreEqual ("Registered", registeredCell.OwningColumn.Name, "#C3");
-        Assert.IsNotNull (registeredCell.Value, "#C4");
-        Assert.AreEqual (false, registeredCell.Value, "#C5");
+        var registeredCell = cells[1];
+        Assert.IsNotNull(registeredCell);
+        Assert.IsNotNull(registeredCell.OwningColumn);
+        Assert.That((object?)registeredCell.OwningColumn.Name, Is.EqualTo("Registered"));
+        Assert.IsNotNull(registeredCell.Value);
+        Assert.That(registeredCell.Value, Is.EqualTo(false));
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    public void Indexer_Index_Negative ()
+    public void Indexer_Index_Negative()
     {
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (_dataGridView);
-        form.Show ();
+        form.Controls.Add(_dataGridView);
+        form.Show();
 
-        var cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows[0]!.Cells;
 
-        try {
-            var cell = cells [-1];
-            Assert.Fail ("#A1:" + cell);
-        } catch (ArgumentOutOfRangeException ex) {
-            // Index was out of range. Must be non-negative
-            // and less than the size of the collection
-            Assert.AreEqual (typeof (ArgumentOutOfRangeException), ex.GetType (), "#A2");
-            Assert.IsNull (ex.InnerException, "#A3");
-            Assert.IsNotNull (ex.Message, "#A4");
-            Assert.IsNotNull (ex.ParamName, "#A5");
-            Assert.AreEqual ("index", ex.ParamName, "#A6");
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            try
+            {
+                var cell = cells[-1];
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // Index was out of range. Must be non-negative
+                // and less than the size of the collection
+                object expected = typeof(ArgumentOutOfRangeException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("index"));
+                throw;
+            }
+        });
 
-        try {
-            cells [-1] = new MockDataGridViewCell ();
-            Assert.Fail ("#B1");
-        } catch (ArgumentOutOfRangeException ex) {
-            // Index was out of range. Must be non-negative
-            // and less than the size of the collection
-            Assert.AreEqual (typeof (ArgumentOutOfRangeException), ex.GetType (), "#B2");
-            Assert.IsNull (ex.InnerException, "#B3");
-            Assert.IsNotNull (ex.Message, "#B4");
-            Assert.IsNotNull (ex.ParamName, "#B5");
-            Assert.AreEqual ("index", ex.ParamName, "#B6");
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            try
+            {
+                cells[-1] = new MockDataGridViewCell();
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // Index was out of range. Must be non-negative
+                // and less than the size of the collection
+                object expected = typeof(ArgumentOutOfRangeException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("index"));
+                throw;
+            }
+        });
 
         form.Close();
     }
 
     [Test]
-    public void Indexer_Index_Overflow ()
+    public void Indexer_Index_Overflow()
     {
-        var row = new DataGridViewRow ();
+        var row = new DataGridViewRow();
         var cells = row.Cells;
-        try {
-            var cell = cells [0];
-            Assert.Fail ("#1:" + cell);
-        } catch (ArgumentOutOfRangeException ex) {
-            // Index was out of range. Must be non-negative
-            // and less than the size of the collection
-            Assert.AreEqual (typeof (ArgumentOutOfRangeException), ex.GetType (), "#2");
-            Assert.IsNull (ex.InnerException, "#3");
-            Assert.IsNotNull (ex.Message, "#4");
-            Assert.IsNotNull (ex.ParamName, "#5");
-            Assert.AreEqual ("index", ex.ParamName, "#6");
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            try
+            {
+                var cell = cells[0];
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // Index was out of range. Must be non-negative
+                // and less than the size of the collection
+                object expected = typeof(ArgumentOutOfRangeException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("index"));
+                throw;
+            }
+        });
     }
 
     [Test]
-    public void Indexer_Value_Null ()
+    public void Indexer_Value_Null()
     {
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (_dataGridView);
-        form.Show ();
+        form.Controls.Add(_dataGridView);
+        form.Show();
 
-        var cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows[0]!.Cells;
 
-        try {
-            cells ["Date"] = null;
-            Assert.Fail ("#A1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#A2");
-            Assert.IsNull (ex.InnerException, "#A3");
-            Assert.IsNotNull (ex.Message, "#A4");
-            Assert.IsNotNull (ex.ParamName, "#A5");
-            Assert.AreEqual ("value", ex.ParamName, "#A6");
-        }
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            try
+            {
+                cells["Date"] = null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                object expected = typeof(ArgumentNullException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("value"));
+                throw;
+            }
+        });
 
-        try {
-            cells [0] = null;
-            Assert.Fail ("#B1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#B2");
-            Assert.IsNull (ex.InnerException, "#B3");
-            Assert.IsNotNull (ex.Message, "#B4");
-            Assert.IsNotNull (ex.ParamName, "#B5");
-            Assert.AreEqual ("value", ex.ParamName, "#B6");
-        }
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            try
+            {
+                cells[0] = null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                object expected = typeof(ArgumentNullException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("value"));
+                throw;
+            }
+        });
 
-        form.Dispose ();
+        form.Dispose();
     }
 
-    class MockDataGridViewCell : DataGridViewCell
+    private class MockDataGridViewCell : DataGridViewCell
     {
     }
 }

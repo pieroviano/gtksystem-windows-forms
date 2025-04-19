@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 
-namespace System.Windows.Forms.Design;
+namespace System.Windows.Forms;
 
 public abstract class PropertyTab : IExtenderProvider
 {

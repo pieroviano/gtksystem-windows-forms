@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
 
-[Designer("System.Windows.Forms.Design.ScrollableControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-public class ScrollableControl : Control
+using Size = Drawing.Size;
+using Rectangle = Drawing.Rectangle;
+using Point = Drawing.Point;
+
+[Designer(
+    "System.Windows.Forms.Design.ScrollableControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+public partial class ScrollableControl : Control
 {
 
     protected const int scrollStateAutoScrolling = 1;
@@ -65,11 +69,5 @@ public class ScrollableControl : Control
                 scrollbase.HScroll = value;
             }
         }
-    }
-
-    public virtual event ScrollEventHandler? Scroll
-    {
-        add { if (scrollbase != null) { scrollbase.Scroll += value; } }
-        remove { if (scrollbase != null) { scrollbase.Scroll -= value; } }
     }
 }

@@ -5,6 +5,7 @@ namespace System.Windows.Forms;
 public sealed class ButtonBase: Gtk.Button, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+
     public ButtonBase() : base(new Gtk.Label { Wrap = true, SingleLineMode = false, LineWrap = true, LineWrapMode = Pango.WrapMode.WordChar })
     {
         Override = new GtkFormsControlOverride(this);
@@ -12,11 +13,13 @@ public sealed class ButtonBase: Gtk.Button, IControlGtk
         Valign = Gtk.Align.Start;
         Halign = Gtk.Align.Start;
     }
+
     protected override void OnShown()
     {
         Override.OnAddClass();
         base.OnShown();
     }
+    
     protected override bool OnDrawn(Context? cr)
     {
         var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);

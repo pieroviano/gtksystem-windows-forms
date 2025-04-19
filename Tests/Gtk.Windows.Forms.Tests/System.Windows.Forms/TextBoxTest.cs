@@ -14,13 +14,13 @@ namespace GtkTests.System.Windows.Forms;
 [TestFixture]
 public class TextBoxTest : TestHelper
 {
-    TextBox textBox;
-    int _changed;
-    int _invalidated;
-    int _paint;
+    private TextBox textBox;
+    private int _changed;
+    private int _invalidated;
+    private int _paint;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         textBox.Dispose();
     }
@@ -39,29 +39,30 @@ public class TextBoxTest : TestHelper
     public void TextBoxBasePropertyTest ()
     {
         textBox.Multiline = true;
-        Assert.AreEqual (true, textBox.AutoSize, "#2");
-        Assert.AreEqual (null, textBox.BackgroundImage, "#4a");
+        Assert.That((object?)textBox.AutoSize, Is.EqualTo(true));
+        Assert.That((object?)textBox.BackgroundImage, Is.EqualTo(null), "#4a");
         var gif = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
         textBox.BackgroundImage = Image.FromFile (gif);
         // comparing image objects fails on MS .Net so using Size property
-        Assert.AreEqual (Image.FromFile(gif, true).Size, textBox.BackgroundImage.Size, "#4b");
+        object expected = Image.FromFile(gif, true).Size;
+        Assert.That((object?)textBox.BackgroundImage.Size, Is.EqualTo(expected), "#4b");
 			
-        Assert.AreEqual (BorderStyle.Fixed3D, textBox.BorderStyle, "#5");
-        Assert.AreEqual (0, textBox.Lines.Length, "#9");
-        Assert.AreEqual (true, textBox.Multiline, "#12a");
-        Assert.AreEqual (true, textBox.Multiline, "#12b");
-        Assert.AreEqual (true, textBox.Multiline, "#12c");
-        Assert.AreEqual (false, textBox.ReadOnly, "#14");
+        Assert.That((object?)textBox.BorderStyle, Is.EqualTo(BorderStyle.Fixed3D));
+        Assert.That((object?)textBox.Lines.Length, Is.EqualTo(0));
+        Assert.That((object?)textBox.Multiline, Is.EqualTo(true), "#12a");
+        Assert.That((object?)textBox.Multiline, Is.EqualTo(true), "#12b");
+        Assert.That((object?)textBox.Multiline, Is.EqualTo(true), "#12c");
+        Assert.That((object?)textBox.ReadOnly, Is.EqualTo(false));
         textBox.Text = "sample TextBox";
-        Assert.AreEqual ("sample TextBox", textBox.Text, "#18");
+        Assert.That((object?)textBox.Text, Is.EqualTo("sample TextBox"));
     }
 
     [Test]
     public void TextBoxPropertyTest ()
     {
-        Assert.AreEqual ('\0', textBox.PasswordChar, "#23");
+        Assert.That((object?)textBox.PasswordChar, Is.EqualTo('\0'));
         textBox.PasswordChar = '*';
-        Assert.AreEqual ('*', textBox.PasswordChar, "#23b");
+        Assert.That((object?)textBox.PasswordChar, Is.EqualTo('*'), "#23b");
     }
 
     [Test]
@@ -77,7 +78,7 @@ public class TextBoxTest : TestHelper
         f.Controls.Add (textBox);
         f.Controls.Add (textBox2);
         textBox2.AppendText (textBox.Text);
-        Assert.AreEqual ("TextBox1", textBox2.Text, "#27");
+        Assert.That((object?)textBox2.Text, Is.EqualTo("TextBox1"));
         f.Dispose ();
     }
 
@@ -87,10 +88,10 @@ public class TextBoxTest : TestHelper
         var textBox2 = new TextBox ();
         textBox2.AppendText ("hi");
         textBox2.AppendText ("ho");
-        Assert.AreEqual ("hiho", textBox2.Text, "#1");
-        Assert.IsNotNull (textBox2.Lines, "#2");
-        Assert.AreEqual (1, textBox2.Lines.Length, "#3");
-        Assert.AreEqual ("hiho", textBox2.Lines [0], "#4");
+        Assert.That((object?)textBox2.Text, Is.EqualTo("hiho"));
+        Assert.IsNotNull (textBox2.Lines);
+        Assert.That((object?)textBox2.Lines.Length, Is.EqualTo(1));
+        Assert.That((object?)textBox2.Lines [0], Is.EqualTo("hiho"));
     }
 
     [Test]
@@ -100,26 +101,30 @@ public class TextBoxTest : TestHelper
         textBox.Text = "ha";
         textBox.AppendText ("hi\r\n\r\n");
         textBox.AppendText ("ho\r\n");
-        Assert.AreEqual ("hahi\r\n\r\nho\r\n", textBox.Text, "#A1");
-        Assert.IsNotNull (textBox.Lines, "#A2");
-        Assert.AreEqual (4, textBox.Lines.Length, "#A3");
-        Assert.AreEqual ("hahi", textBox.Lines [0], "#A4");
-        Assert.AreEqual (string.Empty, textBox.Lines [1], "#A5");
-        Assert.AreEqual ("ho", textBox.Lines [2], "#A6");
-        Assert.AreEqual (string.Empty, textBox.Lines [3], "#A7");
+        Assert.That((object?)textBox.Text, Is.EqualTo("hahi\r\n\r\nho\r\n"));
+        Assert.IsNotNull (textBox.Lines);
+        Assert.That((object?)textBox.Lines.Length, Is.EqualTo(4));
+        Assert.That((object?)textBox.Lines [0], Is.EqualTo("hahi"));
+        object expected = string.Empty;
+        Assert.That((object?)textBox.Lines [1], Is.EqualTo(expected));
+        Assert.That((object?)textBox.Lines [2], Is.EqualTo("ho"));
+        object expected1 = string.Empty;
+        Assert.That((object?)textBox.Lines [3], Is.EqualTo(expected1));
 
         textBox.Multiline = true;
 
         textBox.Text = "ha";
         textBox.AppendText ("hi\r\n\r\n");
         textBox.AppendText ("ho\r\n");
-        Assert.AreEqual ("hahi\r\n\r\nho\r\n", textBox.Text, "#B1");
-        Assert.IsNotNull (textBox.Lines, "#B2");
-        Assert.AreEqual (4, textBox.Lines.Length, "#B3");
-        Assert.AreEqual ("hahi", textBox.Lines [0], "#B4");
-        Assert.AreEqual (string.Empty, textBox.Lines [1], "#B5");
-        Assert.AreEqual ("ho", textBox.Lines [2], "#B6");
-        Assert.AreEqual (string.Empty, textBox.Lines [3], "#B7");
+        Assert.That((object?)textBox.Text, Is.EqualTo("hahi\r\n\r\nho\r\n"));
+        Assert.IsNotNull (textBox.Lines);
+        Assert.That((object?)textBox.Lines.Length, Is.EqualTo(4));
+        Assert.That((object?)textBox.Lines [0], Is.EqualTo("hahi"));
+        object expected2 = string.Empty;
+        Assert.That((object?)textBox.Lines [1], Is.EqualTo(expected2));
+        Assert.That((object?)textBox.Lines [2], Is.EqualTo("ho"));
+        object expected3 = string.Empty;
+        Assert.That((object?)textBox.Lines [3], Is.EqualTo(expected3));
     }
 
     [Test]
@@ -130,38 +135,42 @@ public class TextBoxTest : TestHelper
         textBox.Text = "ha";
         textBox.AppendText ("hi\n\n");
         textBox.AppendText ("ho\n");
-        Assert.AreEqual ("hahi\n\nho\n", textBox.Text, "#A1");
-        Assert.IsNotNull (textBox.Lines, "#A2");
-        Assert.AreEqual (4, textBox.Lines.Length, "#A3");
-        Assert.AreEqual ("hahi", textBox.Lines [0], "#A4");
-        Assert.AreEqual (string.Empty, textBox.Lines [1], "#A5");
-        Assert.AreEqual ("ho", textBox.Lines [2], "#A6");
-        Assert.AreEqual (string.Empty, textBox.Lines [3], "#A7");
+        Assert.That((object?)textBox.Text, Is.EqualTo("hahi\n\nho\n"));
+        Assert.IsNotNull (textBox.Lines);
+        Assert.That((object?)textBox.Lines.Length, Is.EqualTo(4));
+        Assert.That((object?)textBox.Lines [0], Is.EqualTo("hahi"));
+        object expected = string.Empty;
+        Assert.That((object?)textBox.Lines [1], Is.EqualTo(expected));
+        Assert.That((object?)textBox.Lines [2], Is.EqualTo("ho"));
+        object expected1 = string.Empty;
+        Assert.That((object?)textBox.Lines [3], Is.EqualTo(expected1));
 
         textBox.Multiline = true;
 
         textBox.Text = "ha";
         textBox.AppendText ("hi\n\n");
         textBox.AppendText ("ho\n");
-        Assert.AreEqual ("hahi\n\nho\n", textBox.Text, "#B1");
-        Assert.IsNotNull (textBox.Lines, "#B2");
-        Assert.AreEqual (4, textBox.Lines.Length, "#B3");
-        Assert.AreEqual ("hahi", textBox.Lines [0], "#B4");
-        Assert.AreEqual (string.Empty, textBox.Lines [1], "#B5");
-        Assert.AreEqual ("ho", textBox.Lines [2], "#B6");
-        Assert.AreEqual (string.Empty, textBox.Lines [3], "#B7");
+        Assert.That((object?)textBox.Text, Is.EqualTo("hahi\n\nho\n"));
+        Assert.IsNotNull (textBox.Lines);
+        Assert.That((object?)textBox.Lines.Length, Is.EqualTo(4));
+        Assert.That((object?)textBox.Lines [0], Is.EqualTo("hahi"));
+        object expected2 = string.Empty;
+        Assert.That((object?)textBox.Lines [1], Is.EqualTo(expected2));
+        Assert.That((object?)textBox.Lines [2], Is.EqualTo("ho"));
+        object expected3 = string.Empty;
+        Assert.That((object?)textBox.Lines [3], Is.EqualTo(expected3));
     }
 
     [Test]
     public void BackColorTest ()
     {
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#A1");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Window));
         textBox.BackColor = Color.Red;
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#A2");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
         textBox.BackColor = Color.White;
-        Assert.AreEqual (Color.White, textBox.BackColor, "#A3");
-        Assert.AreEqual (0, _invalidated, "#A4");
-        Assert.AreEqual (0, _paint, "#A5");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.White));
+        Assert.That((object?)_invalidated, Is.EqualTo(0));
+        Assert.That((object?)_paint, Is.EqualTo(0));
 
         var form = new Form ();
         form.ShowInTaskbar = false;
@@ -171,25 +180,25 @@ public class TextBoxTest : TestHelper
         _invalidated = 0;
         _paint = 0;
 			
-        Assert.AreEqual (Color.White, textBox.BackColor, "#B1");
-        Assert.AreEqual (0, _invalidated, "#B2");
-        Assert.AreEqual (0, _paint, "#B3");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.White));
+        Assert.That((object?)_invalidated, Is.EqualTo(0));
+        Assert.That((object?)_paint, Is.EqualTo(0));
         textBox.BackColor = Color.Red;
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#B4");
-        Assert.AreEqual (1, _invalidated, "#B5");
-        Assert.AreEqual (0, _paint, "#B6");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)_invalidated, Is.EqualTo(1));
+        Assert.That((object?)_paint, Is.EqualTo(0));
         textBox.BackColor = Color.Red;
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#B7");
-        Assert.AreEqual (1, _invalidated, "#B8");
-        Assert.AreEqual (0, _paint, "#B9");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)_invalidated, Is.EqualTo(1));
+        Assert.That((object?)_paint, Is.EqualTo(0));
         textBox.BackColor = Color.Blue;
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#B10");
-        Assert.AreEqual (2, _invalidated, "#B11");
-        Assert.AreEqual (0, _paint, "#B12");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)_invalidated, Is.EqualTo(2));
+        Assert.That((object?)_paint, Is.EqualTo(0));
         textBox.BackColor = Color.Empty;
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#B13");
-        Assert.AreEqual (3, _invalidated, "#B14");
-        Assert.AreEqual (0, _paint, "#B15");
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Window));
+        Assert.That((object?)_invalidated, Is.EqualTo(3));
+        Assert.That((object?)_paint, Is.EqualTo(0));
 			
         form.Close ();
     }
@@ -199,18 +208,18 @@ public class TextBoxTest : TestHelper
     public void BorderStyle_None ()
     {
         textBox.BorderStyle = BorderStyle.None;
-        Assert.AreEqual (20, textBox.Height, "#1");
+        Assert.That((object?)textBox.Height, Is.EqualTo(20));
         textBox.CreateControl ();
-        Assert.AreEqual (13, textBox.Height, "#2");
+        Assert.That((object?)textBox.Height, Is.EqualTo(13));
     }
 
     [Test]
     public void ClearTest ()
     {
         textBox.Text = "TextBox1";
-        Assert.AreEqual ("TextBox1", textBox.Text, "#28a" );
+        Assert.That((object?)textBox.Text, Is.EqualTo("TextBox1"), "#28a");
         textBox.Clear ();
-        Assert.AreEqual ("", textBox.Text, "#28b");
+        Assert.That((object?)textBox.Text, Is.EqualTo(string.Empty), "#28b");
     }
 
     [Test] // bug #80620
@@ -218,40 +227,40 @@ public class TextBoxTest : TestHelper
     public void ClientRectangle_Borders ()
     {
         textBox.CreateControl ();
-        Assert.AreEqual (textBox.ClientRectangle, new TextBox ().ClientRectangle);
+        Assert.That((object?)new TextBox ().ClientRectangle, Is.EqualTo(textBox.ClientRectangle));
     }
 
     [Test]		
     public void ForeColorTest ()
     {
-        Assert.AreEqual (SystemColors.WindowText, textBox.ForeColor, "#A1");
+        Assert.That((object?)textBox.ForeColor, Is.EqualTo(SystemColors.WindowText));
         textBox.ForeColor = Color.Red;
-        Assert.AreEqual (Color.Red, textBox.ForeColor, "#A2");
+        Assert.That((object?)textBox.ForeColor, Is.EqualTo(Color.Red));
         textBox.ForeColor = Color.White;
-        Assert.AreEqual (Color.White, textBox.ForeColor, "#A3");
-        Assert.AreEqual (0, _invalidated, "#A4");
-        Assert.AreEqual (0, _paint, "#A5");
+        Assert.That((object?)textBox.ForeColor, Is.EqualTo(Color.White));
+        Assert.That((object?)_invalidated, Is.EqualTo(0));
+        Assert.That((object?)_paint, Is.EqualTo(0));
 
         var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
 
-        Assert.AreEqual (Color.White, textBox.ForeColor, "#B1");
-        Assert.AreEqual (0, _invalidated, "#B2");
-        Assert.AreEqual (0, _paint, "#B3");
+        Assert.That((object?)textBox.ForeColor, Is.EqualTo(Color.White));
+        Assert.That((object?)_invalidated, Is.EqualTo(0));
+        Assert.That((object?)_paint, Is.EqualTo(0));
         textBox.ForeColor = Color.Red;
-        Assert.AreEqual (Color.Red, textBox.ForeColor, "#B4");
-        Assert.AreEqual (1, _invalidated, "#B5");
-        Assert.AreEqual (0, _paint, "#B6");
+        Assert.That((object?)textBox.ForeColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)_invalidated, Is.EqualTo(1));
+        Assert.That((object?)_paint, Is.EqualTo(0));
         textBox.ForeColor = Color.Red;
-        Assert.AreEqual (Color.Red, textBox.ForeColor, "#B7");
-        Assert.AreEqual (1, _invalidated, "#B8");
-        Assert.AreEqual (0, _paint, "#B9");
+        Assert.That((object?)textBox.ForeColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)_invalidated, Is.EqualTo(1));
+        Assert.That((object?)_paint, Is.EqualTo(0));
         textBox.ForeColor = Color.Blue;
-        Assert.AreEqual (Color.Blue, textBox.ForeColor, "#B10");
-        Assert.AreEqual (2, _invalidated, "#B11");
-        Assert.AreEqual (0, _paint, "#B12");
+        Assert.That((object?)textBox.ForeColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)_invalidated, Is.EqualTo(2));
+        Assert.That((object?)_paint, Is.EqualTo(0));
 
         form.Close ();
     }
@@ -260,44 +269,44 @@ public class TextBoxTest : TestHelper
     public void ReadOnly_BackColor_NotSet ()
     {
         textBox.ReadOnly = true;
-        Assert.IsTrue (textBox.ReadOnly, "#A1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#A2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Control));
 
         var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
 
-        Assert.IsTrue (textBox.ReadOnly, "#B1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#B2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Control));
 
         textBox.ResetBackColor ();
-        Assert.IsTrue (textBox.ReadOnly, "#C1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#C2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Control));
 
         textBox.ReadOnly = false;
-        Assert.IsFalse (textBox.ReadOnly, "#D1");
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#D2");
+        Assert.IsFalse (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Window));
 
         textBox.ReadOnly = true;
-        Assert.IsTrue (textBox.ReadOnly, "#E1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#E2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Control));
 
         textBox.BackColor = Color.Red;
-        Assert.IsTrue (textBox.ReadOnly, "#F1");
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#F2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
 
         textBox.ReadOnly = false;
-        Assert.IsFalse (textBox.ReadOnly, "#G1");
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#G2");
+        Assert.IsFalse (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
 
         textBox.ReadOnly = true;
-        Assert.IsTrue (textBox.ReadOnly, "#H1");
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#H2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
 
         textBox.ResetBackColor ();
-        Assert.IsTrue (textBox.ReadOnly, "#I1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#I2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Control));
 
         form.Close ();
     }
@@ -307,61 +316,61 @@ public class TextBoxTest : TestHelper
     {
         textBox.BackColor = Color.Blue;
         textBox.ReadOnly = true;
-        Assert.IsTrue (textBox.ReadOnly, "#A1");
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#A2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
 
         var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
 
-        Assert.IsTrue (textBox.ReadOnly, "#B1");
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#B2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
 
         textBox.ReadOnly = false;
-        Assert.IsFalse (textBox.ReadOnly, "#C1");
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#C2");
+        Assert.IsFalse (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
 
         textBox.ReadOnly = true;
-        Assert.IsTrue (textBox.ReadOnly, "#D1");
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#D2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
 
         textBox.BackColor = Color.Red;
-        Assert.IsTrue (textBox.ReadOnly, "#E1");
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#E2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
 
         textBox.ReadOnly = false;
-        Assert.IsFalse (textBox.ReadOnly, "#F1");
-        Assert.AreEqual (Color.Red, textBox.BackColor, "#F2");
+        Assert.IsFalse (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Red));
 
         textBox.ReadOnly = true;
         textBox.ResetBackColor ();
-        Assert.IsTrue (textBox.ReadOnly, "#G1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#G2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Control));
 
         form.Dispose ();
 
         textBox = new TextBox ();
         textBox.ReadOnly = true;
         textBox.BackColor = Color.Blue;
-        Assert.IsTrue (textBox.ReadOnly, "#H1");
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#H2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
 
         form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
 
-        Assert.IsTrue (textBox.ReadOnly, "#I1");
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#I2");
+        Assert.IsTrue (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
 
         textBox.ReadOnly = false;
-        Assert.IsFalse (textBox.ReadOnly, "#J1");
-        Assert.AreEqual (Color.Blue, textBox.BackColor, "#J2");
+        Assert.IsFalse (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(Color.Blue));
 
         textBox.ResetBackColor ();
-        Assert.IsFalse (textBox.ReadOnly, "#K1");
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#K2");
+        Assert.IsFalse (textBox.ReadOnly);
+        Assert.That((object?)textBox.BackColor, Is.EqualTo(SystemColors.Window));
 			
         form.Close ();
     }
@@ -369,7 +378,7 @@ public class TextBoxTest : TestHelper
     [Test]
     public void ToStringTest ()
     {
-        Assert.AreEqual ("System.Windows.Forms.TextBox, Text: ", textBox.ToString(), "#35");
+        Assert.That((object?)textBox.ToString(), Is.EqualTo("System.Windows.Forms.TextBox, Text: "));
     }
 
     [Test] // bug #79851
@@ -387,7 +396,7 @@ public class TextBoxTest : TestHelper
         form.ShowInTaskbar = false;
         form.Show ();
 
-        Assert.AreEqual (text, textBox.Text);
+        Assert.That((object?)textBox.Text, Is.EqualTo(text));
 			
         form.Close ();
     }
@@ -405,7 +414,7 @@ public class TextBoxTest : TestHelper
         form.ShowInTaskbar = false;
         form.Show ();
 
-        Assert.AreEqual (text, textBox.Text, "#1");
+        Assert.That((object?)textBox.Text, Is.EqualTo(text));
 
         text = "line1\n\nline2\nline3\r\nline4\rline5\r\n\nline6\n\n\nline7";
 
@@ -414,7 +423,7 @@ public class TextBoxTest : TestHelper
         form.Visible = false;
         form.Show ();
 
-        Assert.AreEqual (text, textBox.Text, "#2");
+        Assert.That((object?)textBox.Text, Is.EqualTo(text));
 			
         form.Close ();
     }
@@ -432,14 +441,14 @@ public class TextBoxTest : TestHelper
         f.Controls.Add (_textBox);
 			
         f.Show ();
-        Assert.AreEqual (100, _textBox.Height, "A1");
+        Assert.That((object?)_textBox.Height, Is.EqualTo(100));
 			
         // Font dependent, but should be less than 30.
         _textBox.Multiline = false;
-        Assert.IsTrue (_textBox.Height < 30, "A2");
+        Assert.IsTrue (_textBox.Height < 30);
 
         _textBox.Multiline = true;
-        Assert.AreEqual (100, _textBox.Height, "A3");
+        Assert.That((object?)_textBox.Height, Is.EqualTo(100));
 			
         f.Close ();
         f.Dispose ();
@@ -474,30 +483,29 @@ public class TextBoxTest : TestHelper
         f.Dispose ();
     }
 
+    private bool modified_changed_fired;
 
-    bool modified_changed_fired;
-
-    void TextBox_ModifiedChanged (object? sender, EventArgs e)
+    private void TextBox_ModifiedChanged (object? sender, EventArgs e)
     {
         modified_changed_fired = true;
     }
 
-    void TextBox_TextChanged (object? sender, EventArgs e)
+    private void TextBox_TextChanged (object? sender, EventArgs e)
     {
         _changed++;
     }
 
-    void TextBox_Invalidated (object? sender, InvalidateEventArgs e)
+    private void TextBox_Invalidated (object? sender, InvalidateEventArgs e)
     {
         _invalidated++;
     }
 
-    void TextBox_Paint (object? sender, PaintEventArgs e)
+    private void TextBox_Paint (object? sender, PaintEventArgs e)
     {
         _paint++;
     }
 
-    void Reset ()
+    private void Reset ()
     {
         _changed = 0;
         _invalidated = 0;

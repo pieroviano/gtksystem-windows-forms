@@ -5,7 +5,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
+
+using GtkColor = System.Drawing.Color;
+using GtkSize = System.Drawing.Size;
+using GtkPoint = System.Drawing.Point;
 
 namespace System.Windows.Forms;
 
@@ -15,13 +18,10 @@ namespace System.Windows.Forms;
 ///  Toolbar. You can add either bitmaps or Icons to the ImageList, and the
 ///  other controls will be able to use the Images as they desire.
 /// </summary>
-[ToolboxItemFilter("System")]
-[DefaultProperty(nameof(Images))]
-[TypeConverter(typeof(ImageListConverter))]
-public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
+public partial class ImageList : Component//, IHandle<HIMAGELIST>
 {
-    private static readonly Color fakeTransparencyColor = Color.FromArgb(0x0d, 0x0b, 0x0c);
-    private static readonly Size defaultImageSize = new(16, 16);
+    private static readonly GtkColor fakeTransparencyColor = GtkColor.FromArgb(0x0d, 0x0b, 0x0c);
+    private static readonly GtkSize defaultImageSize = new(16, 16);
 
 #pragma warning disable CS0169 // Field is never used
     private static int maxImageWidth;
@@ -29,20 +29,18 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     private static bool isScalingInitialized;
 #pragma warning restore CS0169 // Field is never used
 
-    private ImageList.NativeImageList? _nativeImageList;
+    private NativeImageList? _nativeImageList;
 
     private ColorDepth _colorDepth = ColorDepth.Depth32Bit;
-    private Size _imageSize = defaultImageSize;
+    private GtkSize _imageSize = defaultImageSize;
 
-    private ImageList.ImageCollection? _imageCollection;
+    private ImageCollection? _imageCollection;
 
     // The usual handle virtualization problem, with a new twist: image
     // lists are lossy. At runtime, we delay handle creation as long as possible, and store
     // away the original images until handle creation (and hope no one disposes of the images!). At design time, we keep the originals around indefinitely.
     // This variable will become null when the original images are lost.
     private List<Original>? _originals = [];
-    private EventHandler? _recreateHandler;
-    private EventHandler? _changeHandler;
 
     /// <summary>
     ///  Creates a new ImageList Control with a default image size of 16x16 pixels
@@ -85,9 +83,9 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     public bool HandleCreated => !(_nativeImageList is null);
 
-    public System.Windows.Forms.ImageList.ImageCollection Images => _imageCollection ??= new ImageList.ImageCollection(this);
+    public ImageCollection Images => _imageCollection ??= new ImageCollection(this);
 
-    public Size ImageSize
+    public GtkSize ImageSize
     {
         get => _imageSize;
         set
@@ -95,7 +93,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
             if (_imageSize.Width != value.Width || _imageSize.Height != value.Height)
             {
-                _imageSize = new Size(value.Width, value.Height);
+                _imageSize = new GtkSize(value.Width, value.Height);
             }
         }
     }
@@ -132,7 +130,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
         // string direc = Path.GetDirectoryName(Application.ExecutablePath);
         var path1 = $"./Resources";
         var value = ImageStream;
-        if (value.ResourceInfo is { BaseName: not null })
+        if (value?.ResourceInfo is { BaseName: not null })
         {
             // Load image data here
             var dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
@@ -165,21 +163,9 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     public object? Tag { get; set; }
 
-    public Color TransparentColor { get; set; } = Color.Transparent;
+    public GtkColor TransparentColor { get; set; } = GtkColor.Transparent;
 
     private bool UseTransparentColor => TransparentColor.A > 0;
-
-    public event EventHandler? RecreateHandle
-    {
-        add => _recreateHandler += value;
-        remove => _recreateHandler -= value;
-    }
-
-    internal event EventHandler? ChangeHandle
-    {
-        add => _changeHandler += value;
-        remove => _changeHandler -= value;
-    }
 
     private Bitmap CreateBitmap(Original original, out bool ownsBitmap)
     {
@@ -260,7 +246,7 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     ///  Draw the image indicated by the given index on the given Graphics
     ///  at the given location.
     /// </summary>
-    public void Draw(Graphics g, Point pt, int index) => Draw(g, pt.X, pt.Y, index);
+    public void Draw(Graphics g, GtkPoint pt, int index) => Draw(g, pt.X, pt.Y, index);
 
     /// <summary>
     ///  Draw the image indicated by the given index on the given Graphics
@@ -301,11 +287,11 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     private static unsafe void CopyBitmapData(BitmapData sourceData, BitmapData targetData)
     {
-        Debug.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == 32);
-        Debug.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == Image.GetPixelFormatSize(targetData.PixelFormat));
-        Debug.Assert(targetData.Width == sourceData.Width);
-        Debug.Assert(targetData.Height == sourceData.Height);
-        Debug.Assert(targetData.Stride == targetData.Width * 4);
+        Trace.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == 32);
+        Trace.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == Image.GetPixelFormatSize(targetData.PixelFormat));
+        Trace.Assert(targetData.Width == sourceData.Width);
+        Trace.Assert(targetData.Height == sourceData.Height);
+        Trace.Assert(targetData.Stride == targetData.Width * 4);
 
         // do the actual copy
         var offsetSrc = 0;
@@ -350,11 +336,20 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     /// </summary>
     // NOTE: forces handle creation, so doesn't return things from the original list
 
-    public Bitmap? GetBitmap(int index)
+    public Bitmap GetBitmap(int index)
     {
         try
         {
-            return _originals?[index]._image as Bitmap;
+            if (_originals != null)
+            {
+                var bitmap = _originals[index]._image as Bitmap;
+                if (bitmap != null)
+                {
+                    return bitmap;
+                }
+            }
+
+            throw new InvalidOperationException($"Unable to get the bitmap with index {index}");
         }
         catch (IndexOutOfRangeException ex)
         {
@@ -364,20 +359,13 @@ public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
 
     public Bitmap GetBitmap(string? name)
     {
-        var index = _imageCollection.IndexOfKey(name);
+        var index = _imageCollection?.IndexOfKey(name) ?? -1;
         if (index == -1)
         {
             throw new FileNotFoundException($"\"{name}\" is not loaded. Please save the relevant pictures to the Resources directory.", name);
         }
         return GetBitmap(index);
     }
-    /// <summary>
-    ///  Called when the Handle property changes.
-    /// </summary>
-    private void OnRecreateHandle(EventArgs e) => _recreateHandler?.Invoke(this, e);
-
-    private void OnChangeHandle(EventArgs e) => _changeHandler?.Invoke(this, e);
-
     /// <summary>
     ///  Returns a string representation for this control.
     /// </summary>

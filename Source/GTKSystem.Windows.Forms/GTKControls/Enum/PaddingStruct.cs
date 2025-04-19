@@ -1,284 +1,205 @@
-﻿using System.ComponentModel;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace System.Windows.Forms;
 
-/// <summary>
-///     Represents padding or margin information associated with a user interface (UI)
-///     element.
-/// </summary>
-public struct Padding
+[Serializable] // This type is participating in resx serialization scenarios.
+[Runtime.CompilerServices.TypeForwardedFrom("System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
+public struct Padding : IEquatable<Padding>
 {
-    /// <summary>
-    ///     Provides a System.Windows.Forms.Padding object with no padding.
-    /// </summary>
-    public static Padding Empty => default;
+    private bool _all;      // Do NOT rename (binary serialization).
+    private int _top;       // Do NOT rename (binary serialization).
+    private int _left;      // Do NOT rename (binary serialization).
+    private int _right;     // Do NOT rename (binary serialization).
+    private int _bottom;    // Do NOT rename (binary serialization).
 
-    /// <summary>
-    ///     Initializes a new instance of the System.Windows.Forms.Padding class using the
-    ///     supplied padding size for all edges.
-    /// </summary>
-    /// <param name="all">
-    ///     The number of pixels to be used for padding for all edges.
-    /// </param>
+#pragma warning disable IDE1006 // Naming Styles: Shipped API
+    public static readonly Padding Empty = new(0);
+#pragma warning restore IDE1006
+
     public Padding(int all)
     {
-        Left = all;
-        Top = all;
-        Right = all;
-        Bottom = all;
-        All = all;
-        Size = new Size(0, 0);
+        _all = true;
+        _top = _left = _right = _bottom = all;
+        Debug_SanityCheck();
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the System.Windows.Forms.Padding class using a
-    ///     separate padding size for each edge.
-    /// </summary>
-    /// <param name="left">
-    ///     The padding size, in pixels, for the left edge.
-    ///</param>
-    /// <param name="top">
-    ///     The padding size, in pixels, for the top edge.
-    ///</param>
-    /// <param name="right">
-    ///     The padding size, in pixels, for the right edge.
-    ///</param>
-    /// <param name="bottom">
-    ///     The padding size, in pixels, for the bottom edge.
-    /// </param>
     public Padding(int left, int top, int right, int bottom)
     {
-        Left = left;
-        Top = top;
-        Right = right;
-        Bottom = bottom;
-
-        All = left;
-        Size = new Size(right - left, bottom - top);
+        _top = top;
+        _left = left;
+        _right = right;
+        _bottom = bottom;
+        _all = _top == _left && _top == _right && _top == _bottom;
+        Debug_SanityCheck();
     }
 
-    /// <summary>
-    ///     Gets the combined padding for the right and left edges.
-    /// </summary>
-    /// <returns>
-    ///     Gets the sum, in pixels, of the System.Windows.Forms.Padding.Left and System.Windows.Forms.Padding.Right
-    ///     padding values.
-    /// </returns>
+    [RefreshProperties(RefreshProperties.All)]
+    public int All
+    {
+        readonly get => _all ? _top : -1;
+        set
+        {
+            if (!_all || _top != value)
+            {
+                _all = true;
+                _top = _left = _right = _bottom = value;
+            }
+
+            Debug_SanityCheck();
+        }
+    }
+
+    [RefreshProperties(RefreshProperties.All)]
+    public int Bottom
+    {
+        readonly get => _all ? _top : _bottom;
+        set
+        {
+            if (_all || _bottom != value)
+            {
+                _all = false;
+                _bottom = value;
+            }
+
+            Debug_SanityCheck();
+        }
+    }
+
+    [RefreshProperties(RefreshProperties.All)]
+    public int Left
+    {
+        readonly get => _all ? _top : _left;
+        set
+        {
+            if (_all || _left != value)
+            {
+                _all = false;
+                _left = value;
+            }
+
+            Debug_SanityCheck();
+        }
+    }
+
+    [RefreshProperties(RefreshProperties.All)]
+    public int Right
+    {
+        readonly get => _all ? _top : _right;
+        set
+        {
+            if (_all || _right != value)
+            {
+                _all = false;
+                _right = value;
+            }
+
+            Debug_SanityCheck();
+        }
+    }
+
+    [RefreshProperties(RefreshProperties.All)]
+    public int Top
+    {
+        readonly get => _top;
+        set
+        {
+            if (_all || _top != value)
+            {
+                _all = false;
+                _top = value;
+            }
+
+            Debug_SanityCheck();
+        }
+    }
+
     [Browsable(false)]
-    public int Horizontal
-    {
-        get { return Right - Left; }
-    }
+    public readonly int Horizontal => Left + Right;
 
-    /// <summary>
-    ///     Gets or sets the padding value for the top edge.
-    /// </summary>
-    /// <returns>
-    ///     The padding, in pixels, for the top edge.
-    /// </returns>
-    [RefreshProperties(RefreshProperties.All)]
-    public int Top { get; set; }
-
-    /// <summary>
-    ///     Gets or sets the padding value for the right edge.
-    /// </summary>
-    /// <returns>
-    ///     The padding, in pixels, for the right edge.
-    /// </returns>
-    [RefreshProperties(RefreshProperties.All)]
-    public int Right { get; set; }
-
-    /// <summary>
-    ///     Gets or sets the padding value for the left edge.
-    /// </summary>
-    /// <returns>
-    ///     The padding, in pixels, for the left edge.
-    /// </returns>
-    [RefreshProperties(RefreshProperties.All)]
-    public int Left { get; set; }
-
-    /// <summary>
-    ///     Gets or sets the padding value for the bottom edge.
-    /// </summary>
-    /// <returns>
-    ///     The padding, in pixels, for the bottom edge.
-    /// </returns>
-    [RefreshProperties(RefreshProperties.All)]
-    public int Bottom { get; set; }
-
-    /// <summary>
-    ///     Gets or sets the padding value for all the edges.
-    /// </summary>
-    /// <returns>
-    ///     The padding, in pixels, for all edges if the same; otherwise, -1.
-    /// </returns>
-    [RefreshProperties(RefreshProperties.All)]
-    public int All { get; set; }
-
-    /// <summary>
-    ///     Gets the padding information in the form of a System.Drawing.Size.
-    /// </summary>
-    /// <returns>
-    ///     A System.Drawing.Size containing the padding information.
-    /// </returns>
     [Browsable(false)]
-    public Size Size { get; }
+    public readonly int Vertical => Top + Bottom;
 
-    /// <summary>
-    ///     Gets the combined padding for the top and bottom edges.
-    /// </summary>
-    /// <returns>
-    ///     Gets the sum, in pixels, of the System.Windows.Forms.Padding.Top and System.Windows.Forms.Padding.Bottom
-    ///     padding values.
-    /// </returns>
     [Browsable(false)]
-    public int Vertical
-    {
-        get { return Bottom - Top; }
-    }
+    public readonly Size Size => new(Horizontal, Vertical);
+
+    public static Padding Add(Padding p1, Padding p2) => p1 + p2;
+
+    public static Padding Subtract(Padding p1, Padding p2) => p1 - p2;
+
+#pragma warning disable CA1725 // Parameter names should match base declaration. Shipped API.
+    public override readonly bool Equals(object? other) => other is Padding otherPadding && Equals(otherPadding);
+#pragma warning restore CA1725
+
+    public readonly bool Equals(Padding other) =>
+        Left == other.Left
+            && Top == other.Top
+            && Right == other.Right
+            && Bottom == other.Bottom;
 
     /// <summary>
-    ///     Computes the sum of the two specified System.Windows.Forms.Padding values.
+    ///  Performs vector addition of two <see cref="Padding"/> objects.
     /// </summary>
-    /// <param name="p1">
-    ///     A System.Windows.Forms.Padding.
-    /// </param>
-    /// <param name="p2">
-    ///     A System.Windows.Forms.Padding.
-    /// </param>
-    /// <returns>
-    ///     A System.Windows.Forms.Padding that contains the sum of the two specified System.Windows.Forms.Padding
-    ///     values.
-    /// </returns>
-    public static Padding Add(Padding p1, Padding p2)
-    {
-        return new Padding(p1.Left + p2.Left, p1.Top + p2.Top, p1.Right + p2.Right, p1.Bottom + p2.Bottom);
-    }
+    public static Padding operator +(Padding p1, Padding p2) =>
+        new(p1.Left + p2.Left, p1.Top + p2.Top, p1.Right + p2.Right, p1.Bottom + p2.Bottom);
 
     /// <summary>
-    ///     Subtracts one specified System.Windows.Forms.Padding value from another.
+    ///  Contracts a <see cref="Drawing.Size"/> by another <see cref="Drawing.Size"/>.
     /// </summary>
-    /// <param name="p1">
-    ///     A System.Windows.Forms.Padding.
-    /// </param>
-    /// <param name="p2">
-    ///     A System.Windows.Forms.Padding.
-    /// </param>
-    /// <returns>
-    ///     A System.Windows.Forms.Padding that contains the result of the subtraction of
-    ///     one specified System.Windows.Forms.Padding value from another.
-    /// </returns>
-    public static Padding Subtract(Padding p1, Padding p2)
-    {
-        return new Padding(p1.Left - p2.Left, p1.Top - p2.Top, p1.Right - p2.Right, p1.Bottom - p2.Bottom);
-    }
+    public static Padding operator -(Padding p1, Padding p2) =>
+        new(p1.Left - p2.Left, p1.Top - p2.Top, p1.Right - p2.Right, p1.Bottom - p2.Bottom);
 
     /// <summary>
-    ///     Determines whether the value of the specified object is equivalent to the current
-    ///     System.Windows.Forms.Padding.
+    ///  Tests whether two <see cref="Padding"/> objects are identical.
     /// </summary>
-    /// <param name="other">
-    ///     The object to compare to the current System.Windows.Forms.Padding.
-    /// </param>
-    /// <returns>
-    ///     true if the System.Windows.Forms.Padding objects are equivalent; otherwise, false.
-    /// </returns>
-    public override bool Equals(object? other)
-    {
-        return false;
-    }
+    public static bool operator ==(Padding p1, Padding p2) =>
+        p1.Left == p2.Left && p1.Top == p2.Top && p1.Right == p2.Right && p1.Bottom == p2.Bottom;
 
     /// <summary>
-    ///     Generates a hash code for the current System.Windows.Forms.Padding.
+    ///  Tests whether two <see cref="Padding"/> objects are different.
     /// </summary>
-    /// <returns>
-    ///     A 32-bit signed integer hash code.
-    /// </returns>
-    public override int GetHashCode()
+    public static bool operator !=(Padding p1, Padding p2) => !(p1 == p2);
+
+    public override readonly int GetHashCode() => HashCode.Combine(Left, Top, Right, Bottom);
+
+    public override readonly string ToString() => $"{{Left={Left},Top={Top},Right={Right},Bottom={Bottom}}}";
+
+    private void ResetAll() => All = 0;
+
+    private void ResetBottom() => Bottom = 0;
+
+    private void ResetLeft() => Left = 0;
+
+    private void ResetRight() => Right = 0;
+
+    private void ResetTop() => Top = 0;
+
+    internal void Scale(float dx, float dy)
     {
-        return Left.GetHashCode() + Top.GetHashCode() + Right.GetHashCode() + Bottom.GetHashCode();
+        _top = (int)(_top * dy);
+        _left = (int)(_left * dx);
+        _right = (int)(_right * dx);
+        _bottom = (int)(_bottom * dy);
     }
 
-    /// <summary>
-    ///     Returns a string that represents the current System.Windows.Forms.Padding.
-    /// </summary>
-    /// <returns>
-    ///     A System.String that represents the current System.Windows.Forms.Padding.
-    /// </returns>
-    public override string ToString()
-    {
-        return GetType().Name;
-    }
+    internal readonly bool ShouldSerializeAll() => _all;
 
-    /// <summary>
-    ///     Performs vector addition on the two specified System.Windows.Forms.Padding objects,
-    ///     resulting in a new System.Windows.Forms.Padding.
-    /// </summary>
-    /// <param name="p1">
-    ///     The first System.Windows.Forms.Padding to add.
-    /// </param>
-    /// <param name="p2">
-    ///     The second System.Windows.Forms.Padding to add.
-    /// </param>
-    /// <returns>
-    ///     A new System.Windows.Forms.Padding that results from adding p1 and p2.
-    /// </returns>
-    public static Padding operator +(Padding p1, Padding p2)
+    [Conditional("DEBUG")]
+    private readonly void Debug_SanityCheck()
     {
-        return new Padding(p1.Left + p2.Left, p1.Top + p2.Top, p1.Right + p2.Right, p1.Bottom + p2.Bottom);
-    }
-
-    /// <summary>
-    ///     Performs vector subtraction on the two specified System.Windows.Forms.Padding
-    ///     objects, resulting in a new System.Windows.Forms.Padding.
-    /// </summary>
-    /// <param name="p1">
-    ///     The System.Windows.Forms.Padding to subtract from (the minuend).
-    /// </param>
-    /// <param name="p2">
-    ///     The System.Windows.Forms.Padding to subtract from (the subtrahend).
-    /// </param>
-    /// <returns>
-    ///     The System.Windows.Forms.Padding result of subtracting p2 from p1.
-    /// </returns>
-    public static Padding operator -(Padding p1, Padding p2)
-    {
-        return new Padding(p1.Left - p2.Left, p1.Top - p2.Top, p1.Right - p2.Right, p1.Bottom - p2.Bottom);
-    }
-
-    /// <summary>
-    ///     Tests whether two specified System.Windows.Forms.Padding objects are equivalent.
-    /// </summary>
-    /// <param name="p1">
-    ///     A System.Windows.Forms.Padding to test.
-    /// </param>
-    /// <param name="p2">
-    ///     A System.Windows.Forms.Padding to test.
-    /// </param>
-    /// <returns>
-    ///     true if the two System.Windows.Forms.Padding objects are equal; otherwise, false.
-    /// </returns>
-    public static bool operator ==(Padding p1, Padding p2)
-    {
-        return p1.Left == p2.Left && p1.Top == p2.Top && p1.Right == p2.Right && p1.Bottom == p2.Bottom;
-    }
-
-    /// <summary>
-    ///     Tests whether two specified System.Windows.Forms.Padding objects are not equivalent.
-    /// </summary>
-    /// <param name="p1">
-    ///     A System.Windows.Forms.Padding to test.
-    /// </param>
-    /// <param name="p2">
-    ///     A System.Windows.Forms.Padding to test.
-    /// </param>
-    /// <returns>
-    ///     true if the two System.Windows.Forms.Padding objects are different; otherwise,
-    ///     false.
-    /// </returns>
-    public static bool operator !=(Padding p1, Padding p2)
-    {
-        return p1.Left != p2.Left || p1.Top != p2.Top || p1.Right != p2.Right || p1.Bottom != p2.Bottom;
+        if (_all)
+        {
+            Debug.Assert(ShouldSerializeAll(), "_all is true, but ShouldSerializeAll() is false.");
+            Debug.Assert(All == Left && Left == Top && Top == Right && Right == Bottom, "_all is true, but All/Left/Top/Right/Bottom inconsistent.");
+        }
+        else
+        {
+            Debug.Assert(All == -1, "_all is false, but All != -1.");
+            Debug.Assert(!ShouldSerializeAll(), "ShouldSerializeAll() should not be true when all flag is not set.");
+        }
     }
 }

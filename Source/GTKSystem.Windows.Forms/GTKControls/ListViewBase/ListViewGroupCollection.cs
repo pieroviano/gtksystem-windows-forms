@@ -5,7 +5,7 @@ namespace System.Windows.Forms;
 [ListBindable(false)]
 public class ListViewGroupCollection : List<ListViewGroup>
 {
-    readonly ListView _listView;
+    private readonly ListView _listView;
     public ListViewGroup this[string key]
     {
         get
@@ -58,8 +58,6 @@ public class ListViewGroupCollection : List<ListViewGroup>
     {
         if (Exists(m => m.Name == group?.Name))
         {
-            //Console.WriteLine("新增Group.Name重复");
-            // throw new ArgumentException("Group.Name重复");
             return;
         }
 

@@ -3,6 +3,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Size = Size;
+
 [DefaultProperty("Value")]
 public class ToolStripProgressBar : WidgetToolStrip<Gtk.MenuItem>
 {
@@ -28,11 +30,12 @@ public class ToolStripProgressBar : WidgetToolStrip<Gtk.MenuItem>
     public ProgressBar ProgressBar => new() { Value = Value, Maximum = Maximum, Minimum = Minimum, Step = Step };
 
     public int MarqueeAnimationSpeed { get; set; } = 100;
+    
     public int Maximum { get; set; } = 100;
+    
     public int Minimum { get; set; } = 0;
 
-    [DefaultValue(10)]
-    public int Step { get; set; }
+    [DefaultValue(10)] public int Step { get; set; } = 10;
     public ProgressBarStyle Style { get; set; }
     public int Value
     {
@@ -51,12 +54,12 @@ public class ToolStripProgressBar : WidgetToolStrip<Gtk.MenuItem>
     }
     public void Increment(int value)
     {
-
+        Value++;
     }
 
     public void PerformStep()
     {
-			
+        Value += Step;
     }
 
 }

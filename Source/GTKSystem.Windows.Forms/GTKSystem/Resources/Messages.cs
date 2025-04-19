@@ -2,8 +2,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GtkSystem.Resources.Extensions;
 
-//using System.Resources;
-
 namespace System.Resources;
 
 internal static class Messages

@@ -3,11 +3,14 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
-public sealed class GroupBoxBase : Frame, IControlGtk, IScrollableBoxBase
+public partial class GroupBoxBase : Frame, IControlGtk, IScrollableBoxBase
 {
     public IGtkControlOverride Override { get; set; }
+
     public bool AutoScroll { get; set; }
+    
     public bool HScroll { get; set; } = false;
+    
     public bool VScroll { get; set; } = false;
 
     public GroupBoxBase()
@@ -19,18 +22,17 @@ public sealed class GroupBoxBase : Frame, IControlGtk, IScrollableBoxBase
         Halign = Align.Start;
     }
 
-    public event ScrollEventHandler? Scroll;
-
-    protected override void OnShown()
-    {
-        Override.OnAddClass();
-        base.OnShown();
-    }
     protected override bool OnDrawn(Context? cr)
     {
         var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
         Override.OnPaint(cr, rec);
         return base.OnDrawn(cr);
+    }
+
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
     }
 
     public void AddClass(string cssClass)
@@ -44,5 +46,10 @@ public sealed class GroupBoxBase : Frame, IControlGtk, IScrollableBoxBase
         child.Halign = align;
         child.Expand = expand;
         Add(child);
+    }
+
+    void IScrollableBoxBase.OnScroll(ScrollEventArgs e)
+    {
+        OnScroll(e);
     }
 }

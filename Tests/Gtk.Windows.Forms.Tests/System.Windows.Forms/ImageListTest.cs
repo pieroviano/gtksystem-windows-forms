@@ -19,166 +19,166 @@ namespace GtkTests.System.Windows.Forms;
 public class ImageListTest : TestHelper
 {
     [Test]
-    public void ImageListPropertyTest ()
+    public void ImageListPropertyTest()
     {
-        var myimagelist = new ImageList ();
+        var myimagelist = new ImageList();
 
         // C
-        Assert.AreEqual (ColorDepth.Depth8Bit, myimagelist.ColorDepth, "#C1");
+        Assert.That((object?)myimagelist.ColorDepth, Is.EqualTo(ColorDepth.Depth8Bit));
         myimagelist.ColorDepth = ColorDepth.Depth32Bit;
-        Assert.AreEqual (ColorDepth.Depth32Bit, myimagelist.ColorDepth, "#C2");
-        Assert.AreEqual (0, myimagelist.Images.Count, "#C3");
+        Assert.That((object?)myimagelist.ColorDepth, Is.EqualTo(ColorDepth.Depth32Bit));
+        Assert.That((object?)myimagelist.Images.Count, Is.EqualTo(0));
         // H
-        Assert.AreEqual (false, myimagelist.HandleCreated, "#H1");
-        myimagelist.Handle.ToInt32 ();
-        Assert.AreEqual (true, myimagelist.HandleCreated, "#H2");
-        Assert.AreEqual ("System.IntPtr", myimagelist.Handle.GetType ().FullName, "#H3");
-		
+        Assert.That((object?)myimagelist.HandleCreated, Is.EqualTo(false));
+        myimagelist.Handle.ToInt32();
+        Assert.That((object?)myimagelist.HandleCreated, Is.EqualTo(true));
+        Assert.That((object?)myimagelist.Handle.GetType().FullName, Is.EqualTo("System.IntPtr"));
+
         // I
-        var myImage =	Image.FromFile(TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
-        myimagelist.Images.Add (myImage);
-        Assert.AreEqual (1, myimagelist.Images.Count, "#I1");
-        Assert.AreEqual (16, myimagelist.ImageSize.Height, "#I2");
-        Assert.AreEqual (16, myimagelist.ImageSize.Width, "#I3");
+        var myImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
+        myimagelist.Images.Add(myImage);
+        Assert.That((object?)myimagelist.Images.Count, Is.EqualTo(1));
+        Assert.That((object?)myimagelist.ImageSize.Height, Is.EqualTo(16));
+        Assert.That((object?)myimagelist.ImageSize.Width, Is.EqualTo(16));
         // [MonoTODO ("Add test for ImageStream")]
         // [MonoTODO ("Test for Draw Method (visual test)")]
-						
+
         // T
-        Assert.AreEqual (Color.Transparent, myimagelist.TransparentColor, "#T1");
+        Assert.That((object?)myimagelist.TransparentColor, Is.EqualTo(Color.Transparent));
     }
-		
+
     [Test]
-    public void ImageListComponentModelTest ()
+    public void ImageListComponentModelTest()
     {
-        var colordepth_prop = TypeDescriptor.GetProperties (typeof (ImageList))["ColorDepth"];
-        var imagesize_prop = TypeDescriptor.GetProperties (typeof (ImageList))["ImageSize"];
-        var transparentcolor_prop = TypeDescriptor.GetProperties (typeof (ImageList))["TransparentColor"];
+        var colordepth_prop = TypeDescriptor.GetProperties(typeof(ImageList))["ColorDepth"];
+        var imagesize_prop = TypeDescriptor.GetProperties(typeof(ImageList))["ImageSize"];
+        var transparentcolor_prop = TypeDescriptor.GetProperties(typeof(ImageList))["TransparentColor"];
 
         // create a blank ImageList
-        var il = new ImageList ();
+        var il = new ImageList();
 
         // test its defaults
-        Assert.IsTrue (colordepth_prop.ShouldSerializeValue (il), "1");
-        Assert.IsTrue (colordepth_prop.CanResetValue (il), "2");
-        Assert.IsTrue (imagesize_prop.ShouldSerializeValue (il), "3");
-        Assert.IsTrue (imagesize_prop.CanResetValue (il), "4");
-        Assert.IsTrue (transparentcolor_prop.ShouldSerializeValue (il), "5");
-        Assert.IsTrue (transparentcolor_prop.CanResetValue (il), "6");
+        Assert.IsTrue(colordepth_prop!.ShouldSerializeValue(il), "1");
+        Assert.IsTrue(colordepth_prop.CanResetValue(il), "2");
+        Assert.IsTrue(imagesize_prop!.ShouldSerializeValue(il), "3");
+        Assert.IsTrue(imagesize_prop.CanResetValue(il), "4");
+        Assert.IsTrue(transparentcolor_prop!.ShouldSerializeValue(il), "5");
+        Assert.IsTrue(transparentcolor_prop.CanResetValue(il), "6");
 
         // test what happens when we set the transparent color to LightGray
         il.TransparentColor = Color.LightGray;
-        Assert.IsFalse (transparentcolor_prop.ShouldSerializeValue (il), "7");
-        Assert.IsFalse (transparentcolor_prop.CanResetValue (il), "8");
+        Assert.IsFalse(transparentcolor_prop.ShouldSerializeValue(il), "7");
+        Assert.IsFalse(transparentcolor_prop.CanResetValue(il), "8");
 
         // test what happens when we set the depth to something other than the default
         il.ColorDepth = ColorDepth.Depth16Bit;
-        Assert.IsTrue (colordepth_prop.ShouldSerializeValue (il), "9");
-        Assert.IsTrue (colordepth_prop.CanResetValue (il), "10");
+        Assert.IsTrue(colordepth_prop.ShouldSerializeValue(il), "9");
+        Assert.IsTrue(colordepth_prop.CanResetValue(il), "10");
         // same test for ImageSize
-        il.ImageSize = new Size (32, 32);
-        Assert.IsTrue (imagesize_prop.ShouldSerializeValue (il), "11");
-        Assert.IsTrue (imagesize_prop.CanResetValue (il), "12");
+        il.ImageSize = new Size(32, 32);
+        Assert.IsTrue(imagesize_prop.ShouldSerializeValue(il), "11");
+        Assert.IsTrue(imagesize_prop.CanResetValue(il), "12");
 
         // create an ImageList containing an image
-        il = new ImageList ();
-        il.Images.Add (Image.FromFile (TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif")));
+        il = new ImageList();
+        il.Images.Add(Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif")));
 
-        Assert.IsFalse (colordepth_prop.ShouldSerializeValue (il), "13");
-        Assert.IsFalse (colordepth_prop.CanResetValue (il), "14");
-        Assert.IsFalse (imagesize_prop.ShouldSerializeValue (il), "15");
-        Assert.IsFalse (imagesize_prop.CanResetValue (il), "16");
-        Assert.IsTrue (transparentcolor_prop.ShouldSerializeValue (il), "17");
-        Assert.IsTrue (transparentcolor_prop.CanResetValue (il), "18");
+        Assert.IsFalse(colordepth_prop.ShouldSerializeValue(il), "13");
+        Assert.IsFalse(colordepth_prop.CanResetValue(il), "14");
+        Assert.IsFalse(imagesize_prop.ShouldSerializeValue(il), "15");
+        Assert.IsFalse(imagesize_prop.CanResetValue(il), "16");
+        Assert.IsTrue(transparentcolor_prop.ShouldSerializeValue(il), "17");
+        Assert.IsTrue(transparentcolor_prop.CanResetValue(il), "18");
 
         // test what happens when we set the transparent color to LightGray
         il.TransparentColor = Color.LightGray;
-        Assert.IsFalse (transparentcolor_prop.ShouldSerializeValue (il), "19");
-        Assert.IsFalse (transparentcolor_prop.CanResetValue (il), "20");
+        Assert.IsFalse(transparentcolor_prop.ShouldSerializeValue(il), "19");
+        Assert.IsFalse(transparentcolor_prop.CanResetValue(il), "20");
 
         // test what happens when we set the depth to something other than the default
         il.ColorDepth = ColorDepth.Depth16Bit;
-        Assert.IsFalse (colordepth_prop.ShouldSerializeValue (il), "21");
-        Assert.IsFalse (colordepth_prop.CanResetValue (il), "22");
+        Assert.IsFalse(colordepth_prop.ShouldSerializeValue(il), "21");
+        Assert.IsFalse(colordepth_prop.CanResetValue(il), "22");
 
         // same test for ImageSize
-        il.ImageSize = new Size (32, 32);
-        Assert.IsFalse (imagesize_prop.ShouldSerializeValue (il), "23");
-        Assert.IsFalse (imagesize_prop.CanResetValue (il), "24");
+        il.ImageSize = new Size(32, 32);
+        Assert.IsFalse(imagesize_prop.ShouldSerializeValue(il), "23");
+        Assert.IsFalse(imagesize_prop.CanResetValue(il), "24");
     }
 
     [Test]
-    public void ToStringMethodTest () 
+    public void ToStringMethodTest()
     {
-        var myimagelist = new ImageList ();
-        Assert.AreEqual ("System.Windows.Forms.ImageList Images.Count: 0, ImageSize: {Width=16, Height=16}",
-            myimagelist.ToString (), "#T3");
+        var myimagelist = new ImageList();
+        Assert.That((object?)myimagelist.ToString(), Is.EqualTo("System.Windows.Forms.ImageList Images.Count: 0, ImageSize: {Width=16, Height=16}"));
     }
 
     [Test] // bug #409169
-    public void ICollection_CopyTo ()
+    public void ICollection_CopyTo()
     {
-        var imgList = new ImageList ();
+        var imgList = new ImageList();
         var coll = imgList.Images;
 
-        var gif = Image.FromFile (TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
-        coll.Add (gif);
-        var bmp = new Bitmap (10, 10);
-        coll.Add (bmp);
+        var gif = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
+        coll.Add(gif);
+        var bmp = new Bitmap(10, 10);
+        coll.Add(bmp);
 
         const int dstOffset = 5;
-        object [] dst = new object [dstOffset + coll.Count + 1];
-        ((ICollection) coll).CopyTo (dst, dstOffset);
+        object[] dst = new object[dstOffset + coll.Count + 1];
+        ((ICollection)coll).CopyTo(dst, dstOffset);
 
-        Assert.IsNull (dst [0], "#1");
-        Assert.IsNull (dst [1], "#2");
-        Assert.IsNull (dst [2], "#3");
-        Assert.IsNull (dst [3], "#4");
-        Assert.IsNull (dst [4], "#5");
-        Assert.IsNotNull (dst [5], "#6a");
-        Assert.IsFalse (ReferenceEquals (gif, dst [5]), "#6b");
-        Assert.AreEqual (typeof (Bitmap), dst [5].GetType (), "#6c");
-        Assert.IsNotNull (dst [6], "#7a");
-        Assert.IsFalse (ReferenceEquals (bmp, dst [6]), "#7b");
-        Assert.AreEqual (typeof (Bitmap), dst [6].GetType (), "#7c");
-        Assert.IsNull (dst [7], "#8");
+        Assert.IsNull(dst[0]);
+        Assert.IsNull(dst[1]);
+        Assert.IsNull(dst[2]);
+        Assert.IsNull(dst[3]);
+        Assert.IsNull(dst[4]);
+        Assert.IsNotNull(dst[5], "#6a");
+        Assert.IsFalse(ReferenceEquals(gif, dst[5]), "#6b");
+        object expected = typeof(Bitmap);
+        Assert.That((object?)dst[5].GetType(), Is.EqualTo(expected), "#6c");
+        Assert.IsNotNull(dst[6], "#7a");
+        Assert.IsFalse(ReferenceEquals(bmp, dst[6]), "#7b");
+        object expected1 = typeof(Bitmap);
+        Assert.That((object?)dst[6].GetType(), Is.EqualTo(expected1), "#7c");
+        Assert.IsNull(dst[7]);
 
-        ((Image) dst [5]).Dispose ();
-        ((Image) dst [6]).Dispose ();
+        ((Image)dst[5]).Dispose();
+        ((Image)dst[6]).Dispose();
 
-        coll [0].RotateFlip (RotateFlipType.Rotate90FlipY);
-        coll [1].RotateFlip (RotateFlipType.Rotate90FlipY);
+        coll[0]!.RotateFlip(RotateFlipType.Rotate90FlipY);
+        coll[1]!.RotateFlip(RotateFlipType.Rotate90FlipY);
     }
 
     [TestFixture]
     public class ImageListRecreateHandleEventClass : TestHelper
     {
-        static bool eventhandled = false;
-        public static void RecreateHandle_EventHandler (object? sender, EventArgs e)
+        private static bool eventhandled;
+        public static void RecreateHandle_EventHandler(object? sender, EventArgs e)
         {
             eventhandled = true;
         }
 
         [Test]
-        public void RecreateHandleEvenTest ()
+        public void RecreateHandleEvenTest()
         {
-            var myform = new Form ();
+            var myform = new Form();
             myform.ShowInTaskbar = false;
-            Graphics mygraphics = null;
-            var myimagelist = new ImageList ();
-            var myImage =	Image.FromFile(TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
-            myimagelist.Images.Add (myImage);
+            var myimagelist = new ImageList();
+            var myImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
+            myimagelist.Images.Add(myImage);
             myimagelist.ColorDepth = ColorDepth.Depth8Bit;
-            myimagelist.ImageSize = new Size (50,50);
+            myimagelist.ImageSize = new Size(50, 50);
             myimagelist.RecreateHandle += RecreateHandle_EventHandler;
-            mygraphics = Graphics.FromHwnd(myform.Handle);
+            var mygraphics = Graphics.FromHwnd(myform.Handle);
             myimagelist.Draw(mygraphics, new Point(5, 5), 0);
-            myimagelist.ImageSize = new Size (100,100);
-            Assert.AreEqual (true, eventhandled, "#1");
+            myimagelist.ImageSize = new Size(100, 100);
+            Assert.That((object?)eventhandled, Is.EqualTo(true));
             eventhandled = false;
-            myimagelist.Images.Add (myImage);
+            myimagelist.Images.Add(myImage);
             myimagelist.ColorDepth = ColorDepth.Depth32Bit;
-            Assert.AreEqual (true, eventhandled, "#2");
-            myform.Dispose ();
+            Assert.That((object?)eventhandled, Is.EqualTo(true));
+            myform.Dispose();
         }
     }
 }

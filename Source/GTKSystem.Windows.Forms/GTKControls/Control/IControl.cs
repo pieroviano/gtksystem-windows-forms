@@ -3,7 +3,13 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
-public interface IControl
+using Color = Color;
+using Size = Size;
+using SizeF = SizeF;
+using Rectangle = Rectangle;
+using Point = Point;
+
+public interface IControl: ITextControl
 {
     // The widget contains methods to log out
     IWidget? Widget { get; }
@@ -71,8 +77,6 @@ public interface IControl
     int TabIndex { get; set; }
     bool TabStop { get; set; }
     object? Tag { get; set; }
-    string Text { get; set; }
-    int Top { get; set; }
     Control? TopLevelControl { get; }
     bool UseWaitCursor { get; set; }
     bool Visible { get; set; }
@@ -85,7 +89,7 @@ public interface IControl
     event EventHandler? BackgroundImageLayoutChanged;
     event EventHandler? BindingContextChanged;
     event EventHandler? CausesValidationChanged;
-    event UiCuesEventHandler? ChangeUiCues;
+    event UiCuesEventHandler? ChangeUICues;
     event EventHandler? Click;
     event EventHandler? ClientSizeChanged;
     event EventHandler? ContextMenuStripChanged;

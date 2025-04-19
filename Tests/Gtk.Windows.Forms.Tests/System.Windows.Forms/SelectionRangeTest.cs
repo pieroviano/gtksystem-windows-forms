@@ -25,6 +25,7 @@
 // Authors:
 //   	Andy Hume  <andyhume32@yahoo.co.uk>
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -37,12 +38,12 @@ public class SelectionRangeTest : TestHelper
     public void DefaultConstructor ()
     {
         var sr = new SelectionRange ();
-        Assert.AreEqual (DateTime.MinValue, sr.Start, "Start");
+        Assert.That((object?)sr.Start, Is.EqualTo(DateTime.MinValue), "Start");
         // "9999-12-31 00:00:00", note not 23:59:59.
-        Assert.AreEqual (DateTime.MaxValue.Date, sr.End, "End");
+        Assert.That((object?)sr.End, Is.EqualTo(DateTime.MaxValue.Date), "End");
 
-        Assert.AreEqual (DateTimeKind.Unspecified, sr.Start.Kind, "Start Kind");
-        Assert.AreEqual (DateTimeKind.Unspecified, sr.End.Kind, "End Kind");
+        Assert.That((object?)sr.Start.Kind, Is.EqualTo(DateTimeKind.Unspecified), "Start Kind");
+        Assert.That((object?)sr.End.Kind, Is.EqualTo(DateTimeKind.Unspecified), "End Kind");
     }
 
     [Test]
@@ -50,24 +51,28 @@ public class SelectionRangeTest : TestHelper
     {
         var sr = new SelectionRange ();
         // "9999-12-31 00:00:00", note not 23:59:59.
-        Assert.AreEqual (string.Format ("SelectionRange: Start: {0}, End: {1}", new DateTime (1, 1, 1).ToString (), new DateTime (9999, 12, 31).ToString ()),
-            sr.ToString (), "ToString");
+        object expected = $"SelectionRange: Start: {new DateTime(1, 1, 1).ToString()}, End: {new DateTime(9999, 12, 31).ToString()}";
+        Assert.That((object?)sr.ToString (), Is.EqualTo(expected), "ToString");
     }
 
     [Test]
     public void TwoDatesConstructor ()
     {
         var sr = new SelectionRange (new DateTime (2001, 1, 11), new DateTime (2008, 2, 17));
-        Assert.AreEqual (new DateTime (2001, 1, 11), sr.Start, "Start");
-        Assert.AreEqual (new DateTime (2008, 2, 17), sr.End, "End");
+        object expected = new DateTime (2001, 1, 11);
+        Assert.That((object?)sr.Start, Is.EqualTo(expected), "Start");
+        object expected1 = new DateTime (2008, 2, 17);
+        Assert.That((object?)sr.End, Is.EqualTo(expected1), "End");
     }
 
     [Test]
     public void TwoDatesConstructor_Backwards () // start > end
     {
         var sr = new SelectionRange (new DateTime (2008, 2, 17), new DateTime (2001, 1, 11));
-        Assert.AreEqual (new DateTime (2001, 1, 11), sr.Start, "Start");
-        Assert.AreEqual (new DateTime (2008, 2, 17), sr.End, "End");
+        object expected = new DateTime (2001, 1, 11);
+        Assert.That((object?)sr.Start, Is.EqualTo(expected), "Start");
+        object expected1 = new DateTime (2008, 2, 17);
+        Assert.That((object?)sr.End, Is.EqualTo(expected1), "End");
     }
 
     [Test]
@@ -75,8 +80,10 @@ public class SelectionRangeTest : TestHelper
     {
         // Apparenly any time value is stripped, found while testing PropertyGrid.
         var sr = new SelectionRange (new DateTime (2001, 1, 11, 13, 14, 15), new DateTime (2008, 2, 17));
-        Assert.AreEqual (new DateTime (2001, 1, 11), sr.Start, "Start");
-        Assert.AreEqual (new DateTime (2008, 2, 17), sr.End, "End");
+        object expected = new DateTime (2001, 1, 11);
+        Assert.That((object?)sr.Start, Is.EqualTo(expected), "Start");
+        object expected1 = new DateTime (2008, 2, 17);
+        Assert.That((object?)sr.End, Is.EqualTo(expected1), "End");
     }
 
     [Test]
@@ -84,10 +91,12 @@ public class SelectionRangeTest : TestHelper
     {
         // Apparenly any time value is stripped, found while testing PropertyGrid.
         var sr = new SelectionRange (new DateTime (2001, 1, 11), new DateTime (2008, 2, 17, 1, 2, 3));
-        Assert.AreEqual (new DateTime (2001, 1, 11), sr.Start, "Start");
-        Assert.AreEqual (new DateTime (2008, 2, 17), sr.End, "End");
-        Assert.AreEqual (DateTimeKind.Unspecified, sr.Start.Kind, "Start Kind");
-        Assert.AreEqual (DateTimeKind.Unspecified, sr.End.Kind, "End Kind");
+        object expected = new DateTime (2001, 1, 11);
+        Assert.That((object?)sr.Start, Is.EqualTo(expected), "Start");
+        object expected1 = new DateTime (2008, 2, 17);
+        Assert.That((object?)sr.End, Is.EqualTo(expected1), "End");
+        Assert.That((object?)sr.Start.Kind, Is.EqualTo(DateTimeKind.Unspecified), "Start Kind");
+        Assert.That((object?)sr.End.Kind, Is.EqualTo(DateTimeKind.Unspecified), "End Kind");
     }
 
     [Test]
@@ -95,11 +104,13 @@ public class SelectionRangeTest : TestHelper
     {
         // Apparenly any time value is stripped, found while testing PropertyGrid.
         var sr = new SelectionRange (new DateTime (2001, 1, 11, 13, 14, 15, DateTimeKind.Local), new DateTime (2008, 2, 17));
-        Assert.AreEqual (new DateTime (2001, 1, 11), sr.Start, "Start");
-        Assert.AreEqual (new DateTime (2008, 2, 17), sr.End, "End");
+        object expected = new DateTime (2001, 1, 11);
+        Assert.That((object?)sr.Start, Is.EqualTo(expected), "Start");
+        object expected1 = new DateTime (2008, 2, 17);
+        Assert.That((object?)sr.End, Is.EqualTo(expected1), "End");
         //
-        Assert.AreEqual (DateTimeKind.Local, sr.Start.Kind, "Start Kind");
-        Assert.AreEqual (DateTimeKind.Unspecified, sr.End.Kind, "End Kind");
+        Assert.That((object?)sr.Start.Kind, Is.EqualTo(DateTimeKind.Local), "Start Kind");
+        Assert.That((object?)sr.End.Kind, Is.EqualTo(DateTimeKind.Unspecified), "End Kind");
     }
 
     [Test]
@@ -107,11 +118,13 @@ public class SelectionRangeTest : TestHelper
     {
         // Apparenly any time value is stripped, found while testing PropertyGrid.
         var sr = new SelectionRange (new DateTime (2001, 1, 11), new DateTime (2008, 2, 17, 1, 2, 3, DateTimeKind.Utc));
-        Assert.AreEqual (new DateTime (2001, 1, 11), sr.Start, "Start");
-        Assert.AreEqual (new DateTime (2008, 2, 17), sr.End, "End");
+        object expected = new DateTime (2001, 1, 11);
+        Assert.That((object?)sr.Start, Is.EqualTo(expected), "Start");
+        object expected1 = new DateTime (2008, 2, 17);
+        Assert.That((object?)sr.End, Is.EqualTo(expected1), "End");
         //
-        Assert.AreEqual (DateTimeKind.Unspecified, sr.Start.Kind, "Start Kind");
-        Assert.AreEqual (DateTimeKind.Utc, sr.End.Kind, "End Kind");
+        Assert.That((object?)sr.Start.Kind, Is.EqualTo(DateTimeKind.Unspecified), "Start Kind");
+        Assert.That((object?)sr.End.Kind, Is.EqualTo(DateTimeKind.Utc), "End Kind");
     }
 
     [Test]
@@ -121,11 +134,13 @@ public class SelectionRangeTest : TestHelper
         var sr = new SelectionRange (
             new DateTime (2001, 1, 11, 1, 2, 3, DateTimeKind.Utc),
             new DateTime (2008, 2, 17, 1, 2, 3, DateTimeKind.Local));
-        Assert.AreEqual (new DateTime (2001, 1, 11), sr.Start, "Start");
-        Assert.AreEqual (new DateTime (2008, 2, 17), sr.End, "End");
+        object expected = new DateTime (2001, 1, 11);
+        Assert.That((object?)sr.Start, Is.EqualTo(expected), "Start");
+        object expected1 = new DateTime (2008, 2, 17);
+        Assert.That((object?)sr.End, Is.EqualTo(expected1), "End");
         //
-        Assert.AreEqual (DateTimeKind.Utc, sr.Start.Kind, "Start Kind");
-        Assert.AreEqual (DateTimeKind.Local, sr.End.Kind, "End Kind");
+        Assert.That((object?)sr.Start.Kind, Is.EqualTo(DateTimeKind.Utc), "Start Kind");
+        Assert.That((object?)sr.End.Kind, Is.EqualTo(DateTimeKind.Local), "End Kind");
     }
 
 }

@@ -8,7 +8,9 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
-public sealed partial class ImageList
+using GtkColor = System.Drawing.Color;
+
+public partial class ImageList
 {
 
     public sealed partial class ImageCollection : IList
@@ -197,7 +199,7 @@ public sealed partial class ImageList
         ///  to generate the mask. The number of images to add is inferred from
         ///  the width of the given image.
         /// </summary>
-        public int Add(Image value, Color transparentColor)
+        public int Add(Image value, GtkColor transparentColor)
         {
             //ArgumentNullException.ThrowIfNull(value);
 

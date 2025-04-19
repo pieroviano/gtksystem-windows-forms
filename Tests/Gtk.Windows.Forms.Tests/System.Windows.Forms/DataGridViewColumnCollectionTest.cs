@@ -23,6 +23,7 @@
 //	Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -44,44 +45,42 @@ public class DataGridViewColumnCollectionTest : TestHelper
     [Test]
     public void Add ()
     {
-        DataGridViewColumnCollection c;
-			
-        c = (new DataGridView ()).Columns;
+        var c = (new DataGridView ()).Columns;
         c.Add ("A", "B");
 			
         var col = c [0];
 			
-        Assert.AreEqual ("DataGridViewTextBoxColumn { Name=A, Index=0 }", col.ToString (), "T3");
-        Assert.AreEqual ("DataGridViewTextBoxColumn", col.GetType ().Name, "G2");
+        Assert.That((object?)col.ToString (), Is.EqualTo("DataGridViewTextBoxColumn { Name=A, Index=0 }"), "T3");
+        Assert.That((object?)col.GetType ().Name, Is.EqualTo("DataGridViewTextBoxColumn"), "G2");
 			
-        Assert.AreEqual (DataGridViewAutoSizeColumnMode.NotSet, col.AutoSizeMode, "#A col.AutoSizeMode");
+        Assert.That((object?)col.AutoSizeMode, Is.EqualTo(DataGridViewAutoSizeColumnMode.NotSet), "#A col.AutoSizeMode");
         Assert.IsNotNull (col.CellTemplate, "#A col.CellTemplate");
         Assert.IsNotNull (col.CellType, "#A col.CellType");
         Assert.IsNull (col.ContextMenuStrip, "#A col.ContextMenuStrip");
         Assert.IsNotNull (col.DataGridView, "#A col.DataGridView");
-        Assert.AreEqual (@"", col.DataPropertyName, "#A col.DataPropertyName");
+        Assert.That((object?)col.DataPropertyName, Is.EqualTo(string.Empty), "#A col.DataPropertyName");
         Assert.IsNotNull (col.DefaultCellStyle, "#A col.DefaultCellStyle");
-        Assert.AreEqual (0, col.DisplayIndex, "#A col.DisplayIndex");
-        Assert.AreEqual (0, col.DividerWidth, "#A col.DividerWidth");
-        Assert.AreEqual (100, col.FillWeight, "#A col.FillWeight");
-        Assert.AreEqual (false, col.Frozen, "#A col.Frozen");
+        Assert.That((object?)col.DisplayIndex, Is.EqualTo(0), "#A col.DisplayIndex");
+        Assert.That((object?)col.DividerWidth, Is.EqualTo(0), "#A col.DividerWidth");
+        Assert.That((object?)col.FillWeight, Is.EqualTo(100), "#A col.FillWeight");
+        Assert.That((object?)col.Frozen, Is.EqualTo(false), "#A col.Frozen");
         Assert.IsNotNull (col.HeaderCell, "#A col.HeaderCell");
-        Assert.AreEqual (@"B", col.HeaderText, "#A col.HeaderText");
-        Assert.AreEqual (0, col.Index, "#A col.Index");
-        Assert.AreEqual (DataGridViewAutoSizeColumnMode.None, col.InheritedAutoSizeMode, "#A col.InheritedAutoSizeMode");
+        Assert.That((object?)col.HeaderText, Is.EqualTo(@"B"), "#A col.HeaderText");
+        Assert.That((object?)col.Index, Is.EqualTo(0), "#A col.Index");
+        Assert.That((object?)col.InheritedAutoSizeMode, Is.EqualTo(DataGridViewAutoSizeColumnMode.None), "#A col.InheritedAutoSizeMode");
         Assert.IsNotNull (col.InheritedStyle, "#A col.InheritedStyle");
-        Assert.AreEqual (false, col.IsDataBound, "#A col.IsDataBound");
-        Assert.AreEqual (5, col.MinimumWidth, "#A col.MinimumWidth");
-        Assert.AreEqual (@"A", col.Name, "#A col.Name");
-        Assert.AreEqual (false, col.ReadOnly, "#A col.ReadOnly");
-        Assert.AreEqual (DataGridViewTriState.True, col.Resizable, "#A col.Resizable");
+        Assert.That((object?)col.IsDataBound, Is.EqualTo(false), "#A col.IsDataBound");
+        Assert.That((object?)col.MinimumWidth, Is.EqualTo(5), "#A col.MinimumWidth");
+        Assert.That((object?)col.Name, Is.EqualTo(@"A"), "#A col.Name");
+        Assert.That((object?)col.ReadOnly, Is.EqualTo(false), "#A col.ReadOnly");
+        Assert.That((object?)col.Resizable, Is.EqualTo(DataGridViewTriState.True), "#A col.Resizable");
         Assert.IsNull (col.Site, "#A col.Site");
-        Assert.AreEqual (DataGridViewColumnSortMode.Automatic, col.SortMode, "#A col.SortMode");
-        Assert.AreEqual (DataGridViewElementStates.Visible, col.State, "#A col.State");
-        Assert.AreEqual (@"", col.ToolTipText, "#A col.ToolTipText");
+        Assert.That((object?)col.SortMode, Is.EqualTo(DataGridViewColumnSortMode.Automatic), "#A col.SortMode");
+        Assert.That((object?)col.State, Is.EqualTo(DataGridViewElementStates.Visible), "#A col.State");
+        Assert.That((object?)col.ToolTipText, Is.EqualTo(string.Empty), "#A col.ToolTipText");
         Assert.IsNull (col.ValueType, "#A col.ValueType");
-        Assert.AreEqual (true, col.Visible, "#A col.Visible");
-        Assert.AreEqual (100, col.Width, "#A col.Width");
+        Assert.That((object?)col.Visible, Is.EqualTo(true), "#A col.Visible");
+        Assert.That((object?)col.Width, Is.EqualTo(100), "#A col.Width");
 			
     }
 
@@ -95,40 +94,40 @@ public class DataGridViewColumnCollectionTest : TestHelper
         f.Show ();
 
         dgv.Columns.Add ("A1", "A1");
-        Assert.AreEqual (0, dgv.Columns[0].Index, "#1");
-        Assert.AreEqual (0, dgv.Columns[0].DisplayIndex, "#2");
-        Assert.AreEqual ("A1", dgv.Columns[0].Name, "#3");
+        Assert.That((object?)dgv.Columns[0].Index, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].DisplayIndex, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].Name, Is.EqualTo("A1"));
 
 
         dgv.Columns.Add ("A2", "A2");
-        Assert.AreEqual (0, dgv.Columns[0].Index, "#10");
-        Assert.AreEqual (0, dgv.Columns[0].DisplayIndex, "#11");
-        Assert.AreEqual ("A1", dgv.Columns[0].Name, "#12");
-        Assert.AreEqual (1, dgv.Columns[1].Index, "#13");
-        Assert.AreEqual (1, dgv.Columns[1].DisplayIndex, "#14");
-        Assert.AreEqual ("A2", dgv.Columns[1].Name, "#15");
+        Assert.That((object?)dgv.Columns[0].Index, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].DisplayIndex, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].Name, Is.EqualTo("A1"));
+        Assert.That((object?)dgv.Columns[1].Index, Is.EqualTo(1));
+        Assert.That((object?)dgv.Columns[1].DisplayIndex, Is.EqualTo(1));
+        Assert.That((object?)dgv.Columns[1].Name, Is.EqualTo("A2"));
 
         dgv.Columns.Insert (0, new DataGridViewTextBoxColumn ());
-        Assert.AreEqual (0, dgv.Columns[0].Index, "#20");
-        Assert.AreEqual (0, dgv.Columns[0].DisplayIndex, "#21");
-        Assert.AreEqual ("", dgv.Columns[0].Name, "#22");
+        Assert.That((object?)dgv.Columns[0].Index, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].DisplayIndex, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].Name, Is.EqualTo(string.Empty));
 
-        Assert.AreEqual (1, dgv.Columns[1].Index, "#23");
-        Assert.AreEqual (1, dgv.Columns[1].DisplayIndex, "#24");
-        Assert.AreEqual ("A1", dgv.Columns[1].Name, "#25");
-        Assert.AreEqual (2, dgv.Columns[2].Index, "#26");
-        Assert.AreEqual (2, dgv.Columns[2].DisplayIndex, "#27");
-        Assert.AreEqual ("A2", dgv.Columns[2].Name, "#28");
+        Assert.That((object?)dgv.Columns[1].Index, Is.EqualTo(1));
+        Assert.That((object?)dgv.Columns[1].DisplayIndex, Is.EqualTo(1));
+        Assert.That((object?)dgv.Columns[1].Name, Is.EqualTo("A1"));
+        Assert.That((object?)dgv.Columns[2].Index, Is.EqualTo(2));
+        Assert.That((object?)dgv.Columns[2].DisplayIndex, Is.EqualTo(2));
+        Assert.That((object?)dgv.Columns[2].Name, Is.EqualTo("A2"));
 
         dgv.Columns.RemoveAt (1);
-        Assert.AreEqual (0, dgv.Columns[0].Index, "A7");
-        Assert.AreEqual (0, dgv.Columns[0].DisplayIndex, "B7");
-        Assert.AreEqual (1, dgv.Columns[1].Index, "A8");
-        Assert.AreEqual (1, dgv.Columns[1].DisplayIndex, "B8");
+        Assert.That((object?)dgv.Columns[0].Index, Is.EqualTo(0), "A7");
+        Assert.That((object?)dgv.Columns[0].DisplayIndex, Is.EqualTo(0), "B7");
+        Assert.That((object?)dgv.Columns[1].Index, Is.EqualTo(1), "A8");
+        Assert.That((object?)dgv.Columns[1].DisplayIndex, Is.EqualTo(1), "B8");
 
         dgv.Columns.RemoveAt (0);
-        Assert.AreEqual (0, dgv.Columns[0].Index, "A9");
-        Assert.AreEqual (0, dgv.Columns[0].DisplayIndex, "B9");
+        Assert.That((object?)dgv.Columns[0].Index, Is.EqualTo(0), "A9");
+        Assert.That((object?)dgv.Columns[0].DisplayIndex, Is.EqualTo(0), "B9");
 
         f.Close ();
         f.Dispose ();

@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -13,12 +13,13 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class GroupBox : ContainerControl
 {
-    public readonly GroupBoxBase self = new();
+    public readonly GroupBoxBase self;
     public override object GtkControl => self;
     private readonly Overlay? contaner = new();
-    private readonly ControlCollection _controls = null!;
+    private readonly ControlCollection _controls;
     public GroupBox()
     {
+        self = new GroupBoxBase();
         _controls = new ControlCollection(this, contaner);
         _controls.Offset.Offset(0, -20);
         if (contaner != null)
@@ -31,9 +32,16 @@ public class GroupBox : ContainerControl
             self.Child = contaner;
         }
     }
-    public override string Text { get => self.Label;
-        set => self.Label = value;
+    public override string Text
+    {
+        get => self.Label;
+        set
+        {
+            self.Label = value;
+            base.Text = value ?? string.Empty;
+        }
     }
+
     public override ControlCollection Controls => _controls;
     public override Padding Padding
     {
@@ -63,5 +71,4 @@ public class GroupBox : ContainerControl
     {
         created = true;
     }
-
 }

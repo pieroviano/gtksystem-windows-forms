@@ -27,14 +27,14 @@ public class PictureBoxTest : TestHelper
         myForm.Controls.Add(myPicBox);
 
         // B 
-        Assert.AreEqual(BorderStyle.None, myPicBox.BorderStyle, "#B1");
+        Assert.That((object?)myPicBox.BorderStyle, Is.EqualTo(BorderStyle.None));
         myPicBox.BorderStyle = BorderStyle.Fixed3D;
-        Assert.AreEqual(BorderStyle.Fixed3D, myPicBox.BorderStyle, "#B2");
+        Assert.That((object?)myPicBox.BorderStyle, Is.EqualTo(BorderStyle.Fixed3D));
 
         // P 
-        Assert.AreEqual(PictureBoxSizeMode.Normal, myPicBox.SizeMode, "#P1");
+        Assert.That((object?)myPicBox.SizeMode, Is.EqualTo(PictureBoxSizeMode.Normal));
         myPicBox.SizeMode = PictureBoxSizeMode.AutoSize;
-        Assert.AreEqual(PictureBoxSizeMode.AutoSize, myPicBox.SizeMode, "#P2");
+        Assert.That((object?)myPicBox.SizeMode, Is.EqualTo(PictureBoxSizeMode.AutoSize));
 
         myForm.Dispose();
     }
@@ -53,8 +53,9 @@ public class PictureBoxTest : TestHelper
         pb.ImageLocation = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
         Application.DoEvents();
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#B1");
-        Assert.AreSame(pb.InitialImage, pb.Image, "#B2");
+        object expected = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected));
+        Assert.That((object?)pb.Image, Is.SameAs(pb.InitialImage));
 
         using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
@@ -62,52 +63,56 @@ public class PictureBoxTest : TestHelper
         }
         Application.DoEvents();
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#C1");
-        Assert.IsNotNull(pb.Image, "#C2");
-        Assert.AreEqual(60, pb.Image.Height, "#C3");
-        Assert.AreEqual(150, pb.Image.Width, "#C4");
+        object expected1 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected1));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         pb.ImageLocation = null;
         Application.DoEvents();
 
-        Assert.IsNull(pb.ImageLocation, "#D1");
-        Assert.IsNull(pb.Image, "#D2");
+        Assert.IsNull(pb.ImageLocation);
+        Assert.IsNull(pb.Image);
 
         pb.ImageLocation = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
         Application.DoEvents();
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#E1");
-        Assert.IsNull(pb.Image, "#E2");
+        object expected2 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected2));
+        Assert.IsNull(pb.Image);
 
         pb.Load();
         Application.DoEvents();
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#F1");
-        Assert.IsNotNull(pb.Image, "#F2");
-        Assert.AreEqual(60, pb.Image.Height, "#F3");
-        Assert.AreEqual(150, pb.Image.Width, "#F4");
+        object expected3 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected3));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         pb.ImageLocation = null;
         Application.DoEvents();
 
-        Assert.IsNull(pb.ImageLocation, "#G1");
-        Assert.IsNull(pb.Image, "#G2");
+        Assert.IsNull(pb.ImageLocation);
+        Assert.IsNull(pb.Image);
 
         pb.ImageLocation = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
         pb.Load();
         pb.ImageLocation = "XYZ.gif";
         Application.DoEvents();
 
-        Assert.AreEqual("XYZ.gif", pb.ImageLocation, "#H1");
-        Assert.IsNotNull(pb.Image, "#H2");
-        Assert.AreEqual(60, pb.Image.Height, "#H3");
-        Assert.AreEqual(150, pb.Image.Width, "#H4");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo("XYZ.gif"));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         pb.ImageLocation = string.Empty;
         Application.DoEvents();
 
-        Assert.AreEqual(string.Empty, pb.ImageLocation, "#I1");
-        Assert.IsNull(pb.Image, "#I2");
+        object expected4 = string.Empty;
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected4));
+        Assert.IsNull(pb.Image);
 
         using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
@@ -115,24 +120,26 @@ public class PictureBoxTest : TestHelper
         }
         Application.DoEvents();
 
-        Assert.AreEqual(string.Empty, pb.ImageLocation, "#J1");
-        Assert.IsNotNull(pb.Image, "#J2");
-        Assert.AreEqual(96, pb.Image.Height, "#J3");
-        Assert.AreEqual(96, pb.Image.Width, "#J4");
+        object expected5 = string.Empty;
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected5));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(96));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(96));
 
         pb.Load(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
         Application.DoEvents();
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#K1");
-        Assert.IsNotNull(pb.Image, "#K2");
-        Assert.AreEqual(60, pb.Image.Height, "#K3");
-        Assert.AreEqual(150, pb.Image.Width, "#K4");
+        object expected6 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected6));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         pb.ImageLocation = null;
         Application.DoEvents();
 
-        Assert.IsNull(pb.ImageLocation, "#L1");
-        Assert.IsNull(pb.Image, "#L2");
+        Assert.IsNull(pb.ImageLocation);
+        Assert.IsNull(pb.Image);
 
         f.Dispose();
     }
@@ -149,92 +156,103 @@ public class PictureBoxTest : TestHelper
 
         pb.ImageLocation = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#B1");
-        Assert.IsNotNull(pb.Image, "#B2");
-        Assert.AreEqual(60, pb.Image.Height, "#B3");
-        Assert.AreEqual(150, pb.Image.Width, "#B4");
+        object expected = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
             pb.Image = Image.FromStream(s);
         }
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#C1");
-        Assert.IsNotNull(pb.Image, "#C2");
-        Assert.AreEqual(96, pb.Image.Height, "#C3");
-        Assert.AreEqual(96, pb.Image.Width, "#C4");
+        object expected1 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected1));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(96));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(96));
 
         pb.ImageLocation = null;
 
-        Assert.IsNull(pb.ImageLocation, "#D1");
-        Assert.IsNotNull(pb.Image, "#D2");
-        Assert.AreEqual(96, pb.Image.Height, "#D3");
-        Assert.AreEqual(96, pb.Image.Width, "#D4");
+        Assert.IsNull(pb.ImageLocation);
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(96));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(96));
 
         pb.ImageLocation = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#E1");
-        Assert.IsNotNull(pb.Image, "#E2");
-        Assert.AreEqual(60, pb.Image.Height, "#E3");
-        Assert.AreEqual(150, pb.Image.Width, "#E4");
+        object expected2 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected2));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         pb.Load();
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#F1");
-        Assert.IsNotNull(pb.Image, "#F2");
-        Assert.AreEqual(60, pb.Image.Height, "#F3");
-        Assert.AreEqual(150, pb.Image.Width, "#F4");
+        object expected3 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected3));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         pb.ImageLocation = null;
 
-        Assert.IsNull(pb.ImageLocation, "#G1");
-        Assert.IsNull(pb.Image, "#G2");
+        Assert.IsNull(pb.ImageLocation);
+        Assert.IsNull(pb.Image);
 
         using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
             pb.Image = Image.FromStream(s);
         }
 
-        Assert.IsNull(pb.ImageLocation, "#H1");
-        Assert.IsNotNull(pb.Image, "#H2");
-        Assert.AreEqual(96, pb.Image.Height, "#H3");
-        Assert.AreEqual(96, pb.Image.Width, "#H4");
+        Assert.IsNull(pb.ImageLocation);
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(96));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(96));
 
         pb.Load(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#I1");
-        Assert.IsNotNull(pb.Image, "#I2");
-        Assert.AreEqual(60, pb.Image.Height, "#I3");
-        Assert.AreEqual(150, pb.Image.Width, "#I4");
+        object expected4 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected4));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         pb.ImageLocation = string.Empty;
 
-        Assert.AreEqual(string.Empty, pb.ImageLocation, "#J1");
-        Assert.IsNull(pb.Image, "#J2");
+        object expected5 = string.Empty;
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected5));
+        Assert.IsNull(pb.Image);
 
         pb.ImageLocation = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
 
-        Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#K1");
-        Assert.IsNotNull(pb.Image, "#K2");
-        Assert.AreEqual(60, pb.Image.Height, "#K3");
-        Assert.AreEqual(150, pb.Image.Width, "#K4");
+        object expected6 = TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo(expected6));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
-        try
+        Assert.Throws<FileNotFoundException>(() =>
         {
-            pb.ImageLocation = "XYZ.gif";
-            Assert.Fail("#L1");
-        }
-        catch (FileNotFoundException ex)
-        {
-            Assert.AreEqual(typeof(FileNotFoundException), ex.GetType(), "#L2");
-            Assert.IsNull(ex.InnerException, "#L3");
-            Assert.IsNotNull(ex.Message, "#L4");
-        }
+            try
+            {
+                pb.ImageLocation = "XYZ.gif";
+            }
+            catch (FileNotFoundException ex)
+            {
+                object expected7 = typeof(FileNotFoundException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected7));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
 
-        Assert.AreEqual("XYZ.gif", pb.ImageLocation, "#M1");
-        Assert.IsNotNull(pb.Image, "#M2");
-        Assert.AreEqual(60, pb.Image.Height, "#M3");
-        Assert.AreEqual(150, pb.Image.Width, "#M4");
+        Assert.That((object?)pb.ImageLocation, Is.EqualTo("XYZ.gif"));
+        Assert.IsNotNull(pb.Image);
+        Assert.That((object?)pb.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)pb.Image.Width, Is.EqualTo(150));
 
         f.Dispose();
     }
@@ -244,16 +262,16 @@ public class PictureBoxTest : TestHelper
     {
         var myPicBox = new PictureBox();
         // I 
-        Assert.IsNull(myPicBox.Image, "#1");
+        Assert.IsNull(myPicBox.Image);
         var myImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
         myPicBox.Image = myImage;
-        Assert.AreSame(myImage, myPicBox.Image, "#2");
-        Assert.AreEqual(60, myPicBox.Image.Height, "#3");
-        Assert.AreEqual(150, myPicBox.Image.Width, "#4");
+        Assert.That((object?)myPicBox.Image, Is.SameAs(myImage));
+        Assert.That((object?)myPicBox.Image.Height, Is.EqualTo(60));
+        Assert.That((object?)myPicBox.Image.Width, Is.EqualTo(150));
         myPicBox.Image = null;
-        Assert.IsNull(myPicBox.Image, "#5");
+        Assert.IsNull(myPicBox.Image);
         myPicBox.Image = null;
-        Assert.IsNull(myPicBox.Image, "#6");
+        Assert.IsNull(myPicBox.Image);
     }
 
     [Test] // Load ()
@@ -262,18 +280,22 @@ public class PictureBoxTest : TestHelper
         var pb = new PictureBox();
         pb.ImageLocation = string.Empty;
 
-        try
+        Assert.Throws<InvalidOperationException>(() =>
         {
-            pb.Load();
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                pb.Load();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test] // Load ()
@@ -282,18 +304,22 @@ public class PictureBoxTest : TestHelper
         var pb = new PictureBox();
         pb.ImageLocation = null;
 
-        try
+        Assert.Throws<InvalidOperationException>(() =>
         {
-            pb.Load();
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                pb.Load();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test] // Load (String)
@@ -301,18 +327,22 @@ public class PictureBoxTest : TestHelper
     {
         var pb = new PictureBox();
 
-        try
+        Assert.Throws<InvalidOperationException>(() =>
         {
-            pb.Load(string.Empty);
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                pb.Load(string.Empty);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test] // Load (String)
@@ -320,103 +350,123 @@ public class PictureBoxTest : TestHelper
     {
         var pb = new PictureBox();
 
-        try
+        Assert.Throws<InvalidOperationException>(() =>
         {
-            pb.Load((string)null);
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                pb.Load(null);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test] // LoadAsync ()
-    public void LoadAsync1_ImageLocation_Empty()
+    public async Task LoadAsync1_ImageLocation_Empty()
     {
         var pb = new PictureBox();
         pb.ImageLocation = string.Empty;
 
-        try
+        Assert.ThrowsAsync<InvalidOperationException>(async () =>
         {
-            pb.LoadAsync();
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                await pb.LoadAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test] // LoadAsync ()
-    public void LoadAsync1_ImageLocation_Null()
+    public async Task LoadAsync1_ImageLocation_Null()
     {
         var pb = new PictureBox();
         pb.ImageLocation = null;
 
-        try
+        Assert.ThrowsAsync<InvalidOperationException>(async () =>
         {
-            pb.LoadAsync();
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                await pb.LoadAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test] // LoadAsync (String)
-    public void LoadASync2_Url_Empty()
+    public async Task LoadASync2_Url_Empty()
     {
         var pb = new PictureBox();
 
-        try
+        Assert.ThrowsAsync<InvalidOperationException>(async () =>
         {
-            pb.LoadAsync(string.Empty);
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                await pb.LoadAsync(string.Empty);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test] // LoadAsync (String)
-    public void LoadAsync2_Url_Null()
+    public async Task LoadAsync2_Url_Null()
     {
         var pb = new PictureBox();
 
-        try
+        Assert.ThrowsAsync<InvalidOperationException>(async () =>
         {
-            pb.LoadAsync((string)null);
-            Assert.Fail("#1");
-        }
-        catch (InvalidOperationException ex)
-        {
-            // ImageLocation must be set
-            Assert.AreEqual(typeof(InvalidOperationException), ex.GetType(), "#2");
-            Assert.IsNull(ex.InnerException, "#3");
-            Assert.IsNotNull(ex.Message, "#4");
-        }
+            try
+            {
+                await pb.LoadAsync(null);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ImageLocation must be set
+                object expected = typeof(InvalidOperationException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                throw;
+            }
+        });
     }
 
     [Test]
     public void ToStringMethodTest()
     {
         var myPicBox = new PictureBox();
-        Assert.AreEqual("System.Windows.Forms.PictureBox, SizeMode: Normal", myPicBox.ToString(), "#T1");
+        Assert.That((object?)myPicBox.ToString(), Is.EqualTo("System.Windows.Forms.PictureBox, SizeMode: Normal"));
     }
 
     [Test]
@@ -424,11 +474,11 @@ public class PictureBoxTest : TestHelper
     {
         var pb = new PictureBox();
 
-        Assert.IsNotNull(pb.ErrorImage, "A1");
+        Assert.IsNotNull(pb.ErrorImage);
 
-        Assert.AreEqual(false, pb.AutoSize, "A3");
+        Assert.That((object?)pb.AutoSize, Is.EqualTo(false));
         pb.SizeMode = PictureBoxSizeMode.AutoSize;
-        Assert.AreEqual(true, pb.AutoSize, "A4");
+        Assert.That((object?)pb.AutoSize, Is.EqualTo(true));
 
     }
 }

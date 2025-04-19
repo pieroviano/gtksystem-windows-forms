@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using GLib;
@@ -14,19 +14,20 @@ using Timeout = GLib.Timeout;
 
 namespace System.Windows.Forms;
 
+using Rectangle = Drawing.Rectangle;
+using Point = Drawing.Point;
+
+
 [DesignerCategory("Component")]
 [DefaultEvent("SelectedIndexChanged")]
 [DefaultProperty("Items")]
 [DefaultBindingProperty("SelectedValue")]
 public partial class ListBox : ListControl
 {
-    public readonly ListBoxBase self = new();
+    public readonly ListBoxBase self;
     public override object GtkControl => self;
 
-    public override IControlGtk Self
-    {
-        get => self;
-    }
+    public override IControlGtk Self => self;
 
     protected override void SetStyle(Widget widget)
     {
@@ -39,6 +40,7 @@ public partial class ListBox : ListControl
 
     public ListBox()
     {
+        self = new ListBoxBase();
         self.ListBox.Halign = Align.Fill;
         self.ListBox.Valign = Align.Fill;
         self.ListBox.Hexpand = true;
@@ -59,9 +61,9 @@ public partial class ListBox : ListControl
     {
         if (self.ListBox.IsVisible)
         {
-            ((EventHandler)events["SelectedIndexChanged"])?.Invoke(this, e);
-            ((EventHandler)events["SelectedValueChanged"])?.Invoke(this, e);
-            ((EventHandler)events["SelectedItemChanged"])?.Invoke(this, e);
+            ((EventHandler?)events["SelectedIndexChanged"])?.Invoke(this, e);
+            ((EventHandler?)events["SelectedValueChanged"])?.Invoke(this, e);
+            ((EventHandler?)events["SelectedItemChanged"])?.Invoke(this, e);
         }
     }
 
@@ -393,6 +395,7 @@ public partial class ListBox : ListControl
                         self.ListBox.SelectRow(box);
                 }
             }
+            base.Text = value ?? string.Empty;
         }
     }
 
@@ -468,7 +471,7 @@ public partial class ListBox : ListControl
         throw new NotImplementedException();
     }
 
-    public Drawing.Rectangle GetItemRectangle(int index)
+    public Rectangle GetItemRectangle(int index)
     {
         throw new NotImplementedException();
     }
@@ -478,7 +481,7 @@ public partial class ListBox : ListControl
         return self.ListBox.GetRowAtIndex(index).IsSelected;
     }
 
-    public int IndexFromPoint(Drawing.Point p)
+    public int IndexFromPoint(Point p)
     {
         throw new NotImplementedException();
     }

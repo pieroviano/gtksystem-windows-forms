@@ -6,6 +6,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Rectangle = Rectangle;
+
 /// <summary>
 ///  This is the overrided PaintEventArgs for painting the cell of the table
 ///  It contains additional information indicating the row/column of the cell

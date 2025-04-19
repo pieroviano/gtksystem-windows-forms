@@ -3,6 +3,11 @@ using Cairo;
 
 namespace System.Drawing.Drawing2D;
 
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = System.Drawing.RectangleF;
+using Point = System.Drawing.Point;
+using PointF = System.Drawing.PointF;
+
 /// <summary>Represents a series of connected lines and curves. This class cannot be inherited.</summary>
 public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
 {
@@ -46,7 +51,8 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
         private set;
     }
     public List<PointF> sizePoints = [];
-    private void AddPathPoints(params PointF[] points) {
+    private void AddPathPoints(params PointF[] points)
+    {
         foreach (var p in points)
             sizePoints.Add(p);
     }
@@ -158,7 +164,7 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     public GraphicsPath(PointF[]? pts, byte[]? types, FillMode fillMode)
     {
         PathPoints = pts;
-        PointCount = pts?.Length??0;
+        PointCount = pts?.Length ?? 0;
         PathTypes = types;
         FillMode = fillMode;
         PathData = new PathData { Points = pts, Types = types };
@@ -482,7 +488,7 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="connect">A Boolean value that specifies whether the first figure in the added path is part of the last figure in this path. A value of <see langword="true" /> specifies that (if possible) the first figure in the added path is part of the last figure in this path. A value of <see langword="false" /> specifies that the first figure in the added path is separate from the last figure in this path.</param>
     public void AddPath(GraphicsPath addingPath, bool connect)
     {
-        list.Add(new PathMode { Path = addingPath, Connect= connect });
+        list.Add(new PathMode { Path = addingPath, Connect = connect });
     }
 
     /// <summary>Adds the outline of a pie shape to this path.</summary>
@@ -491,7 +497,7 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="sweepAngle">The angle between <paramref name="startAngle" /> and the end of the pie section, measured in degrees clockwise from <paramref name="startAngle" />.</param>
     public void AddPie(Rectangle rect, float startAngle, float sweepAngle)
     {
-        AddPathPoints(new PointF(rect.Left, rect.Top),new PointF(rect.Right, rect.Bottom));
+        AddPathPoints(new PointF(rect.Left, rect.Top), new PointF(rect.Right, rect.Bottom));
         list.Add(new PieMode { Rect = new RectangleF(rect.X, rect.Y, rect.Width, rect.Height), StartAngle = startAngle, SweepAngle = sweepAngle });
     }
 
@@ -557,7 +563,7 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="rects">An array of <see cref="T:System.Drawing.RectangleF" /> structures that represents the rectangles to add.</param>
     public void AddRectangles(RectangleF[] rects)
     {
-        foreach(var rect in rects)
+        foreach (var rect in rects)
             AddPathPoints(new PointF(rect.Left, rect.Top), new PointF(rect.Right, rect.Bottom));
 
         list.Add(new RectanglesMode { Rects = rects });
@@ -569,7 +575,7 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     {
         foreach (RectangleF rect in rects)
             AddPathPoints(new PointF(rect.Left, rect.Top), new PointF(rect.Right, rect.Bottom));
-        list.Add(new RectanglesMode { Rects = Array.ConvertAll(rects,r=>new RectangleF(r.X, r.Y, r.Width, r.Height)) });
+        list.Add(new RectanglesMode { Rects = Array.ConvertAll(rects, r => new RectangleF(r.X, r.Y, r.Width, r.Height)) });
     }
 
     /// <summary>Adds a text string to this path.</summary>
@@ -581,8 +587,8 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="format">A <see cref="T:System.Drawing.StringFormat" /> that specifies text formatting information, such as line spacing and alignment.</param>
     public void AddString(string s, FontFamily family, int style, float emSize, Point origin, StringFormat format)
     {
-        AddPathPoints(new PointF(0, 0), new PointF(emSize * s?.Length??0, emSize));
-        list.Add(new StringMode { Text = s, Family = family, Style = style, EmSize = emSize, LayoutRect = new RectangleF(origin.X, origin.Y, 0, 0), Format = format });
+        AddPathPoints(new PointF(0, 0), new PointF(emSize * s?.Length ?? 0, emSize));
+        list.Add(new StringMode { Text = s ?? string.Empty, Family = family, Style = style, EmSize = emSize, LayoutRect = new RectangleF(origin.X, origin.Y, 0, 0), Format = format });
     }
 
     /// <summary>Adds a text string to this path.</summary>
@@ -629,12 +635,12 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     {
     }
 
-		/// <summary>Creates an exact copy of this path.</summary>
-		/// <returns>The <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> this method creates, cast as an object.</returns>
-		public object Clone()
-		{
-            return null;
-        }
+    /// <summary>Creates an exact copy of this path.</summary>
+    /// <returns>The <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> this method creates, cast as an object.</returns>
+    public object Clone()
+    {
+        throw new NotImplementedException();
+    }
 
     /// <summary>Starts a new figure without closing the current figure. All subsequent points added to the path are added to this new figure.</summary>
     public void StartFigure()
@@ -962,9 +968,9 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     /// <param name="flatness">A value that specifies the flatness for curves.</param>
     public void Widen(Pen? pen, Matrix? matrix, float flatness)
     {
-        Pen= pen;
-        Matrix= matrix;
-        Flatness= flatness;
+        Pen = pen;
+        Matrix = matrix;
+        Flatness = flatness;
     }
     internal PointF[]? DestPoints { get; set; }
     internal RectangleF SrcRect { get; set; }

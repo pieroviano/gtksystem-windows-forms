@@ -7,6 +7,8 @@ namespace GTKWinFormsApp;
 
 public partial class CommonDialogsForm : Form
 {
+    internal event EventHandler<CommonDialogEventArgs>? DialogOnShown;
+
     public CommonDialogsForm()
     {
         InitializeComponent();
@@ -23,13 +25,13 @@ public partial class CommonDialogsForm : Form
         treeNode5.ImageKey = "img11.jpg";
         treeNode5.Name = Resources.CommonDialogsForm_CommonDialogsForm_Node_5;
         treeNode5.Text = Resources.CommonDialogsForm_CommonDialogsForm_Node_5;
-        treeView1.Nodes.AddRange(new TreeNode[] { treeNode4, treeNode5 });
+        treeView1.Nodes!.AddRange([treeNode4, treeNode5]);
         button1.Text = Resources.CommonDialogsForm_CommonDialogsForm_0;
         button9.Text = Resources.CommonDialogsForm_CommonDialogsForm_1;
         button8.Text = Resources.TestDataForm_TestDataForm_Load_2B;
         button7.Text = Resources.CommonDialogsForm_CommonDialogsForm_3;
-        button6.Text = Resources.CommonDialogsForm_CommonDialogsForm_4;
-        button3.Text = Resources.CommonDialogsForm_CommonDialogsForm_5;
+        buttonSaveFile.Text = Resources.CommonDialogsForm_CommonDialogsForm_4;
+        buttonOpenFile.Text = Resources.CommonDialogsForm_CommonDialogsForm_5;
         label1.Text = Resources.CommonDialogsForm_CommonDialogsForm_6;
 
         hScrollBar1.ValueChanged += hScrollBar1_ValueChanged;
@@ -37,8 +39,8 @@ public partial class CommonDialogsForm : Form
         button9.Click += ButtonMessageBox_Click;
         button8.Click += ButtonColorDialog_Click;
         button7.Click += ButtonFolderBrowser_Click;
-        button6.Click += ButtonSaveFile_Click;
-        button3.Click += ButtonOpenFile_Click;
+        buttonSaveFile.Click += ButtonSaveFile_Click;
+        buttonOpenFile.Click += ButtonOpenFile_Click;
         Shown += Form4_Shown;
         button4.Click += Button4_Click;
         button1.Click += Button_Click;
@@ -58,15 +60,18 @@ public partial class CommonDialogsForm : Form
         splitContainer1.Panel1.Controls.Add(button);
     }
 
-    Point panel1Location = new();
     private void Form4_Shown(object? sender, EventArgs e)
     {
 
     }
 
-    private void ButtonOpenFile_Click(object? sender, EventArgs e)
+    internal void ButtonOpenFile_Click(object? sender, EventArgs e)
     {
         var ofd = new OpenFileDialog();
+        ofd.DialogOnShown += (_, ev) =>
+        {
+            DialogOnShown?.Invoke(this, ev);
+        };
         ofd.Filter = "jpg|*.jpg|png|*.png";
         ofd.Multiselect = true;
         ofd.Title = Resources.CommonDialogsForm_button3_Click_Test_Open_File;
@@ -89,9 +94,13 @@ public partial class CommonDialogsForm : Form
         }
     }
 
-    private void ButtonSaveFile_Click(object? sender, EventArgs e)
+    internal void ButtonSaveFile_Click(object? sender, EventArgs e)
     {
         var ofd = new SaveFileDialog();
+        ofd.DialogOnShown += (_, ev) =>
+        {
+            DialogOnShown?.Invoke(this, ev);
+        };
         ofd.Filter = "jpg|*.jpg|png|*.png";
         ofd.Title = Resources.CommonDialogsForm_button6_Click_Test_Save_File;
 
@@ -107,18 +116,26 @@ public partial class CommonDialogsForm : Form
         }
     }
 
-    private void ButtonFolderBrowser_Click(object? sender, EventArgs e)
+    internal void ButtonFolderBrowser_Click(object? sender, EventArgs e)
     {
         var ofd = new FolderBrowserDialog();
+        ofd.DialogOnShown += (_, ev) =>
+        {
+            DialogOnShown?.Invoke(this, ev);
+        };
         ofd.Description = Resources.CommonDialogsForm_button7_Click_Browse_Folder_Description;
         var dialogResult = ofd.ShowDialog();
         Console.WriteLine(@"dialogResult:" + dialogResult.ToString());
         Console.WriteLine(@"SelectedPath:" + ofd.SelectedPath);
     }
 
-    private void ButtonColorDialog_Click(object? sender, EventArgs e)
+    internal void ButtonColorDialog_Click(object? sender, EventArgs e)
     {
         var colorDialog = new ColorDialog();
+        colorDialog.DialogOnShown += (_, ev) =>
+        {
+            DialogOnShown?.Invoke(this, ev);
+        };
         colorDialog.ShowDialog();
 
         //FontDialog fontDialog = new FontDialog();

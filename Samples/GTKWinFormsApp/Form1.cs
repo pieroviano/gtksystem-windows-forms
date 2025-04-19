@@ -56,48 +56,48 @@ public partial class TestDataForm : Form
     private void TestDataForm_Load(object? sender, EventArgs e)
     {
 
-        treeView1.Nodes.Clear();
+        treeView1.Nodes?.Clear();
         treeView1.CheckBoxes = true;
 
         var testdata1Json = Resources.testdata1Json;
-        using (var reader = new FileStream(testdata1Json, FileMode.Open, FileAccess.Read))
+        using var reader = new FileStream(testdata1Json, FileMode.Open, FileAccess.Read);
+        var dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
+        var json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
+        IEnumerable<TreeNode> childs = GetChild(null!, json!);
+        treeView1.Nodes!.AddRange(childs);
+        foreach (var child in treeView1.Nodes)
+            child.Expand();
+        var treeView1SelectedNode = treeView1.Nodes[0].Nodes[2];
+        if (treeView1SelectedNode.Nodes.Count >= 3)
         {
-            var dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
-            List<TestDataMode> json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
-            IEnumerable<TreeNode> childs = GetChild(null, json);
-            treeView1.Nodes.AddRange(childs.ToArray());
-            foreach (var child in treeView1.Nodes)
-                child.Expand();
-            var treeView1SelectedNode = treeView1.Nodes[0].Nodes[2];
-            if (treeView1SelectedNode.Nodes.Count >= 3)
-            {
-                treeView1SelectedNode.Nodes[3].Checked = true;
-            }
-            treeView1.SelectedNode = treeView1SelectedNode;
-            var tabPage = new TabPage();
-            tabPage.Location = new Point(4, 29);
-            tabPage.Margin = new Padding(4);
-            tabPage.Name = "tabPage3";
-            tabPage.Padding = new Padding(4);
-            tabPage.Size = new Size(1179, 426);
-            tabPage.TabIndex = 1;
-            tabPage.Text = "test";
-            tabPage.UseVisualStyleBackColor = true;
-
-            tabControl1.Controls.Add(tabPage);
+            treeView1SelectedNode.Nodes[3].Checked = true;
         }
+        treeView1.SelectedNode = treeView1SelectedNode;
+        var tabPage = new TabPage()
+        {
+            Location = new Point(4, 29),
+            Margin = new Padding(4),
+            Name = "tabPage3",
+            Padding = new Padding(4),
+            Size = new Size(1179, 426),
+            TabIndex = 1,
+            Text = "test",
+            UseVisualStyleBackColor = true
+        };
+
+        tabControl1.Controls.Add(tabPage);
     }
 
-    private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
+    private static List<TreeNode> GetChild(string? treeID, IEnumerable<TestDataMode> data)
     {
-        List<TreeNode> children = new();
+        List<TreeNode> children = [];
         var list = data.Where(w => w.parent == treeID);
         foreach (var d in list)
         {
-            var node = new TreeNode(d.name) { Name = d.treeID };
+            var node = new TreeNode(d.name!) { Name = d.treeID };
             IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
-            if (childs.Count() > 0)
-                node.Nodes.AddRange(childs.ToArray());
+            if (childs.Any())
+                node.Nodes.AddRange(childs);
             children.Add(node);
         }
         return children;
@@ -105,12 +105,12 @@ public partial class TestDataForm : Form
     public class TestDataMode
     {
         public string? name { get; set; }
-        public string treeID { get; set; }
-        public string parent { get; set; }
-        public string treeName { get; set; }
+        public string? treeID { get; set; }
+        public string? parent { get; set; }
+        public string? treeName { get; set; }
     }
 
-    TestEntity b = new();
+    private TestEntity b = new();
     private void button1_Click(object? sender, EventArgs e)
     {
         Console.WriteLine(treeView1.SelectedNode?.Text);
@@ -121,7 +121,7 @@ public partial class TestDataForm : Form
             return;
         }
         //1、Dataset list data source
-        List<TestEntity> data = new();
+        List<TestEntity> data = [];
         var createdate = DateTime.Now;
         data.Add(new TestEntity()
         {
@@ -193,25 +193,31 @@ public partial class TestDataForm : Form
     public class TestEntity
     {
         public int ID { get; set; }
-        public string title;
-        public string Title { get { return title; } set { title = value; } }
-        public string Info { get; set; }
+        public string? title;
+        public string Title
+        {
+            get => title??string.Empty;
+            set => title = value ?? string.Empty;
+        }
+        public string? Info { get; set; }
         public bool State { get; set; }
         public DateTime CreateDate { get; set; }
-        public string Operate { get; set; }
-        public string PIC1 { get; set; }
-        public Image PIC { get; set; }
+        public string? Operate { get; set; }
+        public string? PIC1 { get; set; }
+        public Image? PIC { get; set; }
     }
 
 
     private void button2_Click(object? sender, EventArgs e)
     {
-        var column = new DataGridViewTextBoxColumn();
-        column.HeaderText = "test1";
-        column.MinimumWidth = 6;
-        column.Name = "test1";
-        column.Width = 225;
-        column.DataPropertyName = "test1";
+        var column = new DataGridViewTextBoxColumn
+        {
+            HeaderText = "test1",
+            MinimumWidth = 6,
+            Name = "test1",
+            Width = 225,
+            DataPropertyName = "test1"
+        };
 
         dataGridView1.Columns.Add(column);
 
@@ -249,7 +255,7 @@ public partial class TestDataForm : Form
     private void toolStripMenuItem1_Click(object? sender, EventArgs e)
     {
         var menu = sender as ToolStripItem;
-        Console.WriteLine(menu.Text);
+        Console.WriteLine(menu!.Text);
     }
 
     private void textBox1_Validating(object? sender, CancelEventArgs e)
@@ -309,8 +315,8 @@ public partial class TestDataForm : Form
 
     private void comboBox1_SelectedValueChanged(object? sender, EventArgs e)
     {
-        var i = comboBox1.SelectedIndex;
-        var o = comboBox1.SelectedItem;
+        _ = comboBox1.SelectedIndex;
+        _ = comboBox1.SelectedItem;
         Console.WriteLine("comboBox1_SelectedValueChanged");
     }
 
@@ -338,8 +344,8 @@ public partial class TestDataForm : Form
         if (e.RowIndex > -1)
         //    if (dataGridView1.Rows.Count > 0 && dataGridView1.Rows[e.RowIndex].Cells.Count>0)
         {
-            var cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            Console.WriteLine($"{cell.Value},{cell.Selected}");
+            var cell = dataGridView1.Rows[e.RowIndex]!.Cells[e.ColumnIndex];
+            Console.WriteLine($"{cell?.Value},{cell?.Selected}");
         }
         //foreach (DataGridViewRow row in dataGridView1.Rows)
         //{
@@ -363,7 +369,7 @@ public partial class TestDataForm : Form
         //7
         Console.WriteLine("dataGridView1_CellValidated");
 
-        Console.WriteLine(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+        Console.WriteLine(dataGridView1.Rows[e.RowIndex]?.Cells[e.ColumnIndex]?.Value);
     }
 
     private void dataGridView1_CellValidating(object? sender, DataGridViewCellValidatingEventArgs e)
@@ -406,7 +412,7 @@ public partial class TestDataForm : Form
 
     private void treeView1_AfterSelect(object? sender, TreeViewEventArgs e)
     {
-        Console.WriteLine("treeView1_AfterSelect：" + treeView1.SelectedNode.FullPath);
+        Console.WriteLine("treeView1_AfterSelect：" + treeView1.SelectedNode?.FullPath);
         Console.WriteLine("treeView1_AfterSelect：" + e.Node?.Text);
     }
 
@@ -452,7 +458,7 @@ public partial class TestDataForm : Form
 
     private void checkedListBox1_ItemCheck(object? sender, ItemCheckEventArgs e)
     {
-        (sender as CheckBox).Text = "1234";
+        (sender as CheckBox)!.Text = "1234";
         checkedListBox1.Items[0] = DateTime.Now.ToString();
         Console.WriteLine($"checkedListBox1_ItemCheck，{sender}: newvalue:{e.NewValue}-oldvalue:{e.CurrentValue}");
         if (e.Index == 2)
@@ -468,7 +474,7 @@ public partial class TestDataForm : Form
     private void pictureBox2_Paint(object? sender, PaintEventArgs e)
     {
         var g = e.Graphics;
-        g.Clear(Color.White);
+        g!.Clear(Color.White);
 
         if (GTKWinFormsApp.Properties.Resources.timg6 != null)
         {
@@ -497,7 +503,7 @@ public partial class TestDataForm : Form
             //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
             //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new PointF(x, y), Rps[i]);
 
-            g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new(x, y), Rps[i] });
+            g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), [Rps[i], rps[i], new(x, y), Rps[i]]);
         }
 
         g.DrawString(Resources.TestDataForm_pictureBox2_Paint_This_is_the_Paint_Graphics_sample_effect, new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
@@ -506,7 +512,7 @@ public partial class TestDataForm : Form
 
         g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new(50, 60), new(100, 80), new(75, 100) });
         g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new(75, 100), new(100, 120), new(120, 100) });
-        g.DrawRectangle(new Pen((Color)Color.Red), new Rectangle(10, 10, 20, 20));
+        g.DrawRectangle(new Pen(Color.Red), new Rectangle(10, 10, 20, 20));
     }
 
     private void button6_Click(object? sender, EventArgs e)
@@ -535,7 +541,7 @@ public partial class TestDataForm : Form
 
     private void tabControl1_DrawItem(object? sender, DrawItemEventArgs e)
     {
-        var rect = tabControl1.GetTabRect(e.Index);
+        _ = tabControl1.GetTabRect(e.Index);
         //e.Graphics.FillRectangle(new SolidBrush(Color.Gray), new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
         e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
         var font = new Font(FontFamily.GenericSansSerif, 12);

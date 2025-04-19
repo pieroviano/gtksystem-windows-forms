@@ -14,16 +14,18 @@ public partial class ListViewForm : Form
         InitializeComponent();
         var listViewGroup1 = new ListViewGroup(Resources.ListViewForm_ListViewForm_Group_Header_Title, HorizontalAlignment.Left);
         var listViewGroup2 = new ListViewGroup(Resources.ListViewForm_ListViewForm_ListViewGroup2, HorizontalAlignment.Left);
-        var listViewItem1 = new ListViewItem(new string[]
-        {
+        var listViewItem1 = new ListViewItem([
             Resources.ListViewForm_ListViewForm_ListViewItem_is_a_ContentControl_and_can_only_contain_a_single_child_element__However__this_child_element_can_be_any_visual_element_
-        }, 0, Color.Blue, Color.FromArgb(255, 192, 255), null);
+        ], 0, Color.Blue, Color.FromArgb(255, 192, 255), null);
         var listViewItem2 = new ListViewItem(Resources.ListViewForm_ListViewForm_ListView_is_derived_from_ListBox__Typically__the_items_of_this_control_are_members_of_a_data_collection_and_are_represented_as_ListViewItem_objects_, 0);
         var listViewItem3 = new ListViewItem(Resources.ListViewForm_ListViewForm_A, 0);
-        var listViewItem4 = new ListViewItem(new string[] { Resources.ListViewForm_ListViewForm_ListView_Grouping, Resources.ListViewForm_ListViewForm_listView1_Groups_Add__, Resources.ListViewForm_ListViewForm__432321 }, 0);
-        var listViewItem5 = new ListViewItem(new string[] { Resources.ListViewForm_ListViewForm_ListView_Defines_View_Modes, Resources.ViewSmallIcon, Resources.ListViewForm_ListViewForm_View_LargeIcon, Resources.ListViewForm_ListViewForm_View_Details, Resources.ListViewForm_ListViewForm_View_List }, 1);
+        var listViewItem4 = new ListViewItem([Resources.ListViewForm_ListViewForm_ListView_Grouping, Resources.ListViewForm_ListViewForm_listView1_Groups_Add__, Resources.ListViewForm_ListViewForm__432321
+        ], 0);
+        var listViewItem5 = new ListViewItem([Resources.ListViewForm_ListViewForm_ListView_Defines_View_Modes, Resources.ViewSmallIcon, Resources.ListViewForm_ListViewForm_View_LargeIcon, Resources.ListViewForm_ListViewForm_View_Details, Resources.ListViewForm_ListViewForm_View_List
+        ], 1);
         var listViewItem6 = new ListViewItem(Resources.ListViewForm_ListViewForm_What_is_ListView_, 0);
-        var listViewItem7 = new ListViewItem(new string[] { Resources.ListViewForm_ListViewForm_Bind_Data_to_ListView, Resources.ListViewForm_ListViewForm_listView1_Items_Add___ }, 0);
+        var listViewItem7 = new ListViewItem([Resources.ListViewForm_ListViewForm_Bind_Data_to_ListView, Resources.ListViewForm_ListViewForm_listView1_Items_Add___
+        ], 0);
         listViewGroup1.Footer = Resources.ListViewForm_ListViewForm_Group_Footer_Title;
         listViewGroup1.Header = Resources.ListViewForm_ListViewForm_Group_Header_Title;
         listViewGroup1.Name = Resources.ListViewForm_ListViewForm_listViewGroup1;
@@ -32,7 +34,7 @@ public partial class ListViewForm : Form
         listViewGroup2.Name = Resources.ListViewForm_ListViewForm_ListViewGroup2;
         listViewGroup2.Subtitle = Resources.ListViewForm_ListViewForm_group2;
         listView1.Groups.Clear();
-        listView1.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2 });
+        listView1.Groups.AddRange([listViewGroup1, listViewGroup2]);
 
         listViewItem1.Group = listViewGroup1;
         listViewItem1.StateImageIndex = 0;
@@ -48,20 +50,21 @@ public partial class ListViewForm : Form
         listViewItem7.Group = listViewGroup2;
         listViewItem7.StateImageIndex = 0;
         listView1.Items.Clear();
-        listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7 });
+        listView1.Items.AddRange([listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7
+        ]);
         columnHeader1.Text = Resources.ListViewForm_ListViewForm_Group_1;
         columnHeader2.Text = Resources.ListViewForm_ListViewForm_Group_2fffffffffffffffffffffffffffffff;
         columnHeader3.Text = Resources.ListViewForm_ListViewForm_Group_3;
 
         listBox1.Items.Clear();
-        listBox1.Items.AddRange(new object[] {
-                Resources.ListViewForm_ListViewForm__0_Exception_Warning_0_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419125153303________2024_5_30_4_58_32,
+        listBox1.Items.AddRange([
+            Resources.ListViewForm_ListViewForm__0_Exception_Warning_0_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419125153303________2024_5_30_4_58_32,
                 Resources.ListViewForm_ListViewForm__1_Exception_Warning_1_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419135198480________2024_5_30_4_58_33,
                 Resources.ListViewForm_ListViewForm__2_Exception_Warning_2_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419155233741________2024_5_30_4_58_35,
                 Resources.ListViewForm_ListViewForm__3_Exception_Warning_3_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419495254800________2024_5_30_4_59_09,
                 Resources.ListViewForm_ListViewForm__4_Exception_Warning_4_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419505198651________2024_5_30_4_59_10,
                 Resources.ListViewForm_ListViewForm__5_Exception_Warning_5_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419565218661________2024_5_30_4_59_16
-            });
+        ]);
         label1.Text = Resources.label1Text;
         label2.Text = Resources.ListViewForm_ListViewForm___Monitoring_Scroll_Event_Log;
         // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
@@ -93,14 +96,14 @@ public partial class ListViewForm : Form
 
     private void ListView1_MouseDown(object? sender, MouseEventArgs e)
     {
-        ListViewItem? item = listView1.GetItemAt(e.X, e.Y);
+        var item = listView1.GetItemAt(e.X, e.Y);
         if (item != null)
         {
             Console.WriteLine(item.Text);
         }
     }
 
-    int i = 4;
+    private int i = 4;
     private void Timer1_Tick(object? sender, System.EventArgs e)
     {
         i++;
@@ -121,7 +124,7 @@ public partial class ListViewForm : Form
     }
     private void listView1_ItemCheck(object? sender, ItemCheckEventArgs e)
     {
-        MessageBox.Show($"ItemCheck:{e.NewValue.ToString()},{e.CurrentValue.ToString()}");
+        MessageBox.Show($"ItemCheck:{e.NewValue},{e.CurrentValue}");
     }
 
     private void listView1_ItemChecked(object? sender, ItemCheckedEventArgs e)
@@ -163,11 +166,13 @@ public partial class ListViewForm : Form
         listView1.Items.Add(new ListViewItem(Resources.ListViewForm_button1_Click_2_Add_data_to_a_specified_group)
         { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
-        var m = new ListViewItem(Resources.ListViewForm_button1_Click_3_This_is_a_method_to_add_multi_column_data, 0);
-        m.Checked = true;
-        m.Selected = true;
-        m.ForeColor = Color.Green;
-        m.BackColor = Color.Yellow;
+        var m = new ListViewItem(Resources.ListViewForm_button1_Click_3_This_is_a_method_to_add_multi_column_data, 0)
+            {
+                Checked = true,
+                Selected = true,
+                ForeColor = Color.Green,
+                BackColor = Color.Yellow
+            };
         m.SubItems.Add(new ListViewItem.ListViewSubItem(m, Resources.ListViewForm_button1_Click_4_Sub_column_data_1, Color.HotPink, Color.Gray,
             new Font(FontFamily.GenericSansSerif, 16)));
         m.SubItems.Add(new ListViewItem.ListViewSubItem(m, Resources.ListViewForm_button1_Click_5_Sub_column_data_2));

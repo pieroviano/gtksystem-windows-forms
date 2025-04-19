@@ -5,6 +5,7 @@ namespace System.Windows.Forms;
 public sealed class TextBoxBase : Gtk.Entry, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+
     public TextBoxBase()
     {
         Override = new GtkFormsControlOverride(this);
@@ -12,10 +13,12 @@ public sealed class TextBoxBase : Gtk.Entry, IControlGtk
         Halign = Gtk.Align.Start;
         Valign = Gtk.Align.Start;
     }
+    
     public void AddClass(string cssClass)
     {
         Override.AddClass(cssClass);
     }
+    
     protected override void OnShown()
     {
         Override.OnAddClass();

@@ -2,21 +2,23 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
-
-using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Size = Drawing.Size;
+using Point = Drawing.Point;
+
 public class TabPage : ContainerControl
 {
-    public readonly TabPageBase self = new();
+    public readonly TabPageBase self;
     public override object GtkControl => self;
     internal Gtk.Label _tabLabel = new();
     private readonly ControlCollection _controls;
     public TabPage()
     {
+        self = new TabPageBase();
         _controls = new ControlCollection(this, self.content);
         Dock = DockStyle.Fill;
     }
@@ -38,9 +40,16 @@ public class TabPage : ContainerControl
         get => DockStyle.Fill;
         set => base.Dock = DockStyle.Fill;
     }
-    public override string Text { get => _tabLabel.Text;
-        set => _tabLabel.Text = value;
+    public override string Text
+    {
+        get => _tabLabel.Text;
+        set
+        {
+            _tabLabel.Text = value;
+            base.Text = value ?? string.Empty;
+        }
     }
+
     public Gtk.Label TabLabel => _tabLabel;
 
     public new ControlCollection Controls => _controls;
@@ -63,6 +72,7 @@ public class TabPage : ContainerControl
             }
         }
     }
+
     private Size _size;
     public override Size Size { get => _size; set => _size = value;
     }

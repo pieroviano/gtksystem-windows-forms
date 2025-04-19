@@ -7,6 +7,7 @@
 // (C) 2006 Novell, Inc. (http://www.novell.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -18,9 +19,9 @@ public class MessageTest : TestHelper
     public void ToStringTest ()
     {
         var msg = Message.Create (new IntPtr (123), 2, new IntPtr (234), new IntPtr (345));
-        Assert.AreEqual ("msg=0x2 (WM_DESTROY) hwnd=0x7b wparam=0xea lparam=0x159 result=0x0", msg.ToString ());
+        Assert.That((object?)msg.ToString (), Is.EqualTo("msg=0x2 (WM_DESTROY) hwnd=0x7b wparam=0xea lparam=0x159 result=0x0"));
         msg.Result = new IntPtr (2);
-        Assert.AreEqual ("msg=0x2 (WM_DESTROY) hwnd=0x7b wparam=0xea lparam=0x159 result=0x2", msg.ToString ());
+        Assert.That((object?)msg.ToString (), Is.EqualTo("msg=0x2 (WM_DESTROY) hwnd=0x7b wparam=0xea lparam=0x159 result=0x2"));
     }
 
     [Test]
@@ -37,10 +38,10 @@ public class MessageTest : TestHelper
         var msg5 = Message.Create (new IntPtr (1), 2, new IntPtr (3), new IntPtr (4));
         msg5.Result = new IntPtr (1);
 
-        Assert.IsFalse (msg1 == msg2, "A1");
-        Assert.IsFalse (msg1 == msg3, "A2");
-        Assert.IsFalse (msg1 == msg4, "A3");
-        Assert.IsTrue (msg1 == msg5, "A4");
+        Assert.IsFalse (msg1 == msg2);
+        Assert.IsFalse (msg1 == msg3);
+        Assert.IsFalse (msg1 == msg4);
+        Assert.IsTrue (msg1 == msg5);
     }
 
     [Test]
@@ -57,9 +58,9 @@ public class MessageTest : TestHelper
         var msg5 = Message.Create (new IntPtr (1), 2, new IntPtr (3), new IntPtr (4));
         msg5.Result = new IntPtr (1);
 
-        Assert.IsTrue (msg1 != msg2, "A1");
-        Assert.IsTrue (msg1 != msg3, "A2");
-        Assert.IsTrue (msg1 != msg4, "A3");
-        Assert.IsFalse (msg1 != msg5, "A4");
+        Assert.IsTrue (msg1 != msg2);
+        Assert.IsTrue (msg1 != msg3);
+        Assert.IsTrue (msg1 != msg4);
+        Assert.IsFalse (msg1 != msg5);
     }
 }

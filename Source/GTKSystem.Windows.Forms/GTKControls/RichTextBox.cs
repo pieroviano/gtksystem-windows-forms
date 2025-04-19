@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -13,7 +13,7 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class RichTextBox : ScrollableControl
 {
-    public readonly RichTextBoxBase self = new();
+    public readonly RichTextBoxBase self;
     public override object GtkControl => self;
 
     protected override void SetStyle(Widget widget)
@@ -24,6 +24,7 @@ public class RichTextBox : ScrollableControl
 
     public RichTextBox()
     {
+        self = new RichTextBoxBase();
         self.TextView.Buffer.Changed += Buffer_Changed;
         BorderStyle = BorderStyle.Fixed3D;
     }
@@ -76,7 +77,11 @@ public class RichTextBox : ScrollableControl
     public override string Text
     {
         get => self.TextView.Buffer.Text;
-        set => self.TextView.Buffer.Text = value;
+        set
+        {
+            self.TextView.Buffer.Text = value;
+            base.Text = value ?? string.Empty;
+        }
     }
 
     public virtual bool ReadOnly

@@ -36,32 +36,32 @@ public class DummyITRS : ITypeResolutionService
 {
     public Assembly GetAssembly(AssemblyName name, bool throwOnError)
     {
-        return null;
+        return null!;
     }
 
     public Assembly GetAssembly(AssemblyName name)
     {
-        return null;
+        return null!;
     }
 
     public string GetPathOfAssembly(AssemblyName name)
     {
-        return null;
+        return null!;
     }
 
     public Type GetType(string name, bool throwOnError, bool ignoreCase)
     {
-        return null;
+        return null!;
     }
 
     public Type GetType(string name, bool throwOnError)
     {
-        return null;
+        return null!;
     }
 
     public Type GetType(string name)
     {
-        return null;
+        return null!;
     }
 
     public void ReferenceAssembly(AssemblyName name)
@@ -89,17 +89,17 @@ public class ReturnSerializableSubClassITRS : ITypeResolutionService
 
     public Type GetType(string name, bool throwOnError, bool ignoreCase)
     {
-        return typeof(serializableSubClass);
+        return typeof(SerializableSubClass);
     }
 
     public Type GetType(string name, bool throwOnError)
     {
-        return typeof(serializableSubClass);
+        return typeof(SerializableSubClass);
     }
 
     public Type GetType(string name)
     {
-        return typeof(serializableSubClass);
+        return typeof(SerializableSubClass);
     }
 
     public void ReferenceAssembly(AssemblyName name)

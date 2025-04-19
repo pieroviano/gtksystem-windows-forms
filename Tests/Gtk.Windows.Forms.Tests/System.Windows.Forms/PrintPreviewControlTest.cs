@@ -31,7 +31,7 @@ public class PrintPreviewControlTest
     [Test]
     public void StartPage ()
     {
-        if (PrinterSettings.InstalledPrinters.Count == 0)
+        if (PrinterSettings.InstalledPrinters?.Count == 0)
             Assert.Ignore ("The test depends on printer being available.");
 
         using var f = new Form ();
@@ -39,11 +39,11 @@ public class PrintPreviewControlTest
         f.Controls.Add (p);
         f.Show ();
 
-        Assert.AreEqual (0, p.StartPage);
-        Assert.AreEqual (1, p.Rows);
-        Assert.AreEqual (1, p.Columns);
+        Assert.That((object?)p.StartPage, Is.EqualTo(0));
+        Assert.That((object?)p.Rows, Is.EqualTo(1));
+        Assert.That((object?)p.Columns, Is.EqualTo(1));
         p.StartPage = 4;
-        Assert.AreEqual (4, p.StartPage);
+        Assert.That((object?)p.StartPage, Is.EqualTo(4));
 
         var document = new PrintDocument ();
         var page_number = 0;
@@ -53,11 +53,11 @@ public class PrintPreviewControlTest
 
         p.Document = document;
         p.Refresh ();
-        Assert.AreEqual (0, p.StartPage);
+        Assert.That((object?)p.StartPage, Is.EqualTo(0));
 				
         page_count = 8;
         p.InvalidatePreview ();
         p.Refresh ();
-        Assert.AreEqual (4, p.StartPage);
+        Assert.That((object?)p.StartPage, Is.EqualTo(4));
     }
 }

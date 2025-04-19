@@ -26,6 +26,7 @@
 //	Jonathan Pobst (monkey@jpobst.com)
 //
 
+using GtkTests.Helpers;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -39,10 +40,10 @@ public class MenuStripTest : TestHelper
     {
         var ms = new MenuStrip ();
 
-        Assert.AreEqual (false, ms.CanSelect, "A0");
-        Assert.AreEqual (ToolStripLayoutStyle.HorizontalStackWithOverflow, ms.LayoutStyle, "A6");
+        Assert.That((object?)ms.CanSelect, Is.EqualTo(false));
+        Assert.That((object?)ms.LayoutStyle, Is.EqualTo(ToolStripLayoutStyle.HorizontalStackWithOverflow));
 			
-        Assert.AreEqual ("System.Windows.Forms.MenuStrip+MenuStripAccessibleObject", ms.AccessibilityObject.GetType ().ToString (), "A7");
+        Assert.That((object?)ms.AccessibilityObject?.GetType ().ToString (), Is.EqualTo("System.Windows.Forms.MenuStrip+MenuStripAccessibleObject"));
     }
 
     [Test]
@@ -50,8 +51,10 @@ public class MenuStripTest : TestHelper
     {
         var epp = new ExposeProtectedProperties ();
 
-        Assert.AreEqual (new Padding (6, 2, 0, 2), epp.DefaultPadding, "C2");
-        Assert.AreEqual (new Size (200, 24), epp.DefaultSize, "C4");
+        object expected = new Padding (6, 2, 0, 2);
+        Assert.That((object?)epp.DefaultPadding, Is.EqualTo(expected));
+        object expected1 = new Size (200, 24);
+        Assert.That((object?)epp.DefaultSize, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -60,7 +63,7 @@ public class MenuStripTest : TestHelper
         var ts = new StatusStrip ();
 
         ts.ShowItemToolTips = true;
-        Assert.AreEqual (true, ts.ShowItemToolTips, "B1");
+        Assert.That((object?)ts.ShowItemToolTips, Is.EqualTo(true));
     }
 		
     [Test]
@@ -69,13 +72,12 @@ public class MenuStripTest : TestHelper
         var ts = new StatusStrip ();
 
         ts.Stretch = false;
-        Assert.AreEqual (false, ts.Stretch, "B1");
+        Assert.That((object?)ts.Stretch, Is.EqualTo(false));
     }
 
     private class ExposeProtectedProperties : MenuStrip
     {
-        public new Padding DefaultPadding { get { return base.DefaultPadding; } }
-        public new Size DefaultSize { get { return base.DefaultSize; } }
-
+        public new Padding DefaultPadding => base.DefaultPadding;
+        public new Size DefaultSize => base.DefaultSize;
     }
 }

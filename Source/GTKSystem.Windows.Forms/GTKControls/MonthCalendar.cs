@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.ComponentModel;
@@ -10,12 +10,13 @@ using System.ComponentModel;
 namespace System.Windows.Forms;
 
 [DesignerCategory("Component")]
-public class MonthCalendar : Control
+public partial class MonthCalendar : Control
 {
-    public readonly MonthCalendarBase self = new();
+    public readonly MonthCalendarBase self;
     public override object GtkControl => self;
     public MonthCalendar()
     {
+        self = new MonthCalendarBase();
         self.DaySelected += MonthCalendar_DaySelected;
     }
 
@@ -26,16 +27,6 @@ public class MonthCalendar : Control
 
         if (DateSelected != null && self.IsVisible)
             OnDateSelected(new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
-    }
-
-    protected virtual void OnDateSelected(DateRangeEventArgs e)
-    {
-        DateSelected?.Invoke(this, e);
-    }
-
-    protected virtual void OnDateChanged(DateRangeEventArgs e)
-    {
-        DateChanged?.Invoke(this, e);
     }
 
     public Day FirstDayOfWeek
@@ -60,8 +51,4 @@ public class MonthCalendar : Control
         set => self.Date = value;
     }
     public bool ShowWeekNumbers { get; set; }
-    public event DateRangeEventHandler? DateChanged;
-
-    public event DateRangeEventHandler? DateSelected;
-
 }

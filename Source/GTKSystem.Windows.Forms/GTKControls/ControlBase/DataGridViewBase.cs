@@ -1,13 +1,16 @@
 ﻿namespace System.Windows.Forms;
 
+using Color = Drawing.Color;
+
 public sealed class DataGridViewBase : ScrollableBoxBase
 {
     internal Gtk.TreeView GridView = new();
+
     public DataGridViewBase()
     {
         Override = new GtkFormsControlOverride(this);
         Override.AddClass("DataGridView");
-        Override.BackColor = Drawing.Color.White;
+        Override.BackColor = Color.White;
         BorderWidth = 0;
         ShadowType = Gtk.ShadowType.Out;
         if (GridView == null)

@@ -10,7 +10,7 @@ public class DataGridViewRowErrorTextNeededEventArgs : EventArgs
 {
     internal DataGridViewRowErrorTextNeededEventArgs(int rowIndex, string errorText)
     {
-        Debug.Assert(rowIndex >= -1);
+        Trace.Assert(rowIndex >= -1);
         RowIndex = rowIndex;
         ErrorText = errorText;
     }

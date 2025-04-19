@@ -5,13 +5,14 @@
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Resources.Estensions;
 using System.Xml;
+
+using GtkPoint = System.Drawing.Point;
 
 namespace System.Resources;
 
@@ -231,7 +232,7 @@ public sealed class ResXDataNode : ISerializable
         const int lineWrap = 80;
         const string crlf = "\r\n";
         const string prefix = "        ";
-        var raw= string.Empty;
+        var raw = string.Empty;
         if (data != null)
         {
             raw = Convert.ToBase64String(data);
@@ -448,7 +449,7 @@ public sealed class ResXDataNode : ISerializable
                     else
                     {
                         var newMessage = string.Format("SR.TypeLoadException,{0},{1},{2}", typeName, dataNodeInfo?.readerPosition.Y, dataNodeInfo?.readerPosition.X);
-                        var xml = new XmlException(newMessage, null, dataNodeInfo?.readerPosition.Y??0, dataNodeInfo?.readerPosition.X??0);
+                        var xml = new XmlException(newMessage, null, dataNodeInfo?.readerPosition.Y ?? 0, dataNodeInfo?.readerPosition.X ?? 0);
                         var newTle = new TypeLoadException(newMessage, xml);
 
                         throw newTle;
@@ -466,7 +467,7 @@ public sealed class ResXDataNode : ISerializable
                     result = null;
                 }
                 else if (type == typeof(byte[]) ||
-                         ((typeName??string.Empty).Contains("System.Byte[]") && ((typeName ?? string.Empty).Contains("mscorlib") || (typeName ?? string.Empty).Contains("System.Private.CoreLib"))))
+                         ((typeName ?? string.Empty).Contains("System.Byte[]") && ((typeName ?? string.Empty).Contains("mscorlib") || (typeName ?? string.Empty).Contains("System.Private.CoreLib"))))
                 {
                     // Handle byte[]'s, which are stored as base-64 encoded strings.
                     // We can't hard-code byte[] type name due to version number
@@ -486,7 +487,7 @@ public sealed class ResXDataNode : ISerializable
                         catch (NotSupportedException nse)
                         {
                             var newMessage = string.Format("SR.NotSupported,{0},{1},{2},{3}", typeName, dataNodeInfo?.readerPosition.Y, dataNodeInfo?.readerPosition.X, nse.Message);
-                            var xml = new XmlException(newMessage, nse, dataNodeInfo?.readerPosition.Y ?? 0, dataNodeInfo?.readerPosition.X??0);
+                            var xml = new XmlException(newMessage, nse, dataNodeInfo?.readerPosition.Y ?? 0, dataNodeInfo?.readerPosition.X ?? 0);
                             var newNse = new NotSupportedException(newMessage, xml);
                             throw newNse;
                         }
@@ -500,7 +501,7 @@ public sealed class ResXDataNode : ISerializable
             else
             {
                 var newMessage = string.Format("SR.TypeLoadException,{0},{1},{2}", typeName, dataNodeInfo?.readerPosition.Y, dataNodeInfo?.readerPosition.X);
-                var xml = new XmlException(newMessage, null, dataNodeInfo?.readerPosition.Y??0, dataNodeInfo?.readerPosition.X??0);
+                var xml = new XmlException(newMessage, null, dataNodeInfo?.readerPosition.Y ?? 0, dataNodeInfo?.readerPosition.X ?? 0);
                 var newTle = new TypeLoadException(newMessage, xml);
 
                 throw newTle;
@@ -509,7 +510,7 @@ public sealed class ResXDataNode : ISerializable
         else
         {
             // if mimeTypeName and typeName are not filled in, the value must be a string
-            Debug.Assert(_value is string, "Resource entries with no Type or MimeType must be encoded as strings");
+            Trace.Assert(_value is string, "Resource entries with no Type or MimeType must be encoded as strings");
         }
 
         return result;
@@ -548,7 +549,18 @@ public sealed class ResXDataNode : ISerializable
                 FillDataNodeInfoFromObject(_nodeInfo, _value);
             }
         }
-
+        else
+        {
+            var indexOf = _nodeInfo.valueData?.IndexOf(';')??-1;
+            if (indexOf >= 0)
+            {
+                var substring = _nodeInfo.valueData?.Substring(0, indexOf);
+                if (_nodeInfo.typeName?.StartsWith(typeof(ResXFileRef).FullName!) ?? false && !File.Exists(substring))
+                {
+                    throw new ArgumentException();
+                }
+            }
+        }
         return _nodeInfo;
     }
 
@@ -556,9 +568,9 @@ public sealed class ResXDataNode : ISerializable
     ///  Might return the position in the resx file of the current node, if known
     ///  otherwise, will return Point(0,0) since point is a struct
     /// </summary>
-    public Point GetNodePosition()
+    public GtkPoint GetNodePosition()
     {
-        return _nodeInfo?.readerPosition ?? new Point();
+        return _nodeInfo?.readerPosition ?? new GtkPoint();
     }
 
     /// <summary>
@@ -712,7 +724,7 @@ public sealed class ResXDataNode : ISerializable
 
     private static byte[] FromBase64WrappedString(string? text)
     {
-        if ((text?.IndexOfAny(specialChars)??-1) != -1)
+        if ((text?.IndexOfAny(specialChars) ?? -1) != -1)
         {
             var sb = new StringBuilder(text!.Length);
             foreach (var ch in text)
@@ -732,7 +744,7 @@ public sealed class ResXDataNode : ISerializable
             return Convert.FromBase64String(sb.ToString());
         }
 
-        return Convert.FromBase64String(text??string.Empty);
+        return Convert.FromBase64String(text ?? string.Empty);
     }
 
     private static Type? ResolveType(string? typeName, ITypeResolutionService? typeResolver)
@@ -745,10 +757,10 @@ public sealed class ResXDataNode : ISerializable
             // we will strip out the partial names and keep the rest of the
             // strong-name information to try again.
 
-            resolvedType = typeResolver.GetType(typeName??string.Empty, false);
+            resolvedType = typeResolver.GetType(typeName ?? string.Empty, false);
             if (resolvedType is null)
             {
-                var typeParts = (typeName??string.Empty).Split(',');
+                var typeParts = (typeName ?? string.Empty).Split(',');
 
                 // Break up the type name from the rest of the assembly strong name.
                 if (typeParts is { Length: >= 2 })

@@ -5,7 +5,9 @@ namespace System.Windows.Forms;
 public sealed class TableLayoutPanelBase : Grid, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+
     public Grid grid = new();
+    
     public TableLayoutPanelBase()
     {
         Override = new GtkControlOverride(this);
@@ -36,6 +38,7 @@ public sealed class TableLayoutPanelBase : Grid, IControlGtk
         Override.OnAddClass();
         base.OnShown();
     }
+    
     protected override bool OnDrawn(Cairo.Context cr)
     {
         var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);

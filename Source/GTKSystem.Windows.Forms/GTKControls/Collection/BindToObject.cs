@@ -8,7 +8,7 @@ internal class BindToObject
 
     private readonly BindingMemberInfo _dataMember;
 
-    private readonly object _dataSource;
+    private readonly object? _dataSource;
 
     private BindingManagerBase? _bindingManager;
 
@@ -43,7 +43,7 @@ internal class BindToObject
 
     internal string DataErrorText => _errorText;
 
-    internal object DataSource => _dataSource;
+    internal object? DataSource => _dataSource;
 
     internal PropertyDescriptor? FieldInfo => _fieldInfo;
 
@@ -71,7 +71,7 @@ internal class BindToObject
         }
     }
 
-    internal BindToObject(Binding owner, object dataSource, string? dataMember)
+    internal BindToObject(Binding owner, object? dataSource, string? dataMember)
     {
         _owner = owner;
         _dataSource = dataSource;

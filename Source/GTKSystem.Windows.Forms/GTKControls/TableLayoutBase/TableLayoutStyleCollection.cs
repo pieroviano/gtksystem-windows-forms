@@ -10,9 +10,9 @@ public abstract class TableLayoutStyleCollection : ArrayList
         private set;
     }
 
-    public new TableLayoutStyle this[int index]
+    public new TableLayoutStyle? this[int index]
     {
-        get => (TableLayoutStyle)base[index];
+        get => (TableLayoutStyle?)base[index];
         set => base[index] = value;
     }
     internal TableLayoutStyleCollection(IArrangedElement? owner)

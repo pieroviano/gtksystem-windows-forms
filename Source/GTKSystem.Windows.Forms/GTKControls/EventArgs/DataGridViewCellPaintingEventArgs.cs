@@ -8,6 +8,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Rectangle = Rectangle;
+
 public class DataGridViewCellPaintingEventArgs : HandledEventArgs
 {
     private readonly DataGridView? _dataGridView;
@@ -48,7 +50,7 @@ public class DataGridViewCellPaintingEventArgs : HandledEventArgs
 
     internal DataGridViewCellPaintingEventArgs(DataGridView dataGridView)
     {
-        Debug.Assert(dataGridView != null);
+        Trace.Assert(dataGridView != null);
         _dataGridView = dataGridView;
     }
 
@@ -166,7 +168,7 @@ public class DataGridViewCellPaintingEventArgs : HandledEventArgs
         DataGridViewAdvancedBorderStyle? advancedBorderStyle,
         DataGridViewPaintParts paintParts)
     {
-        Debug.Assert(graphics != null);
+        Trace.Assert(graphics != null);
 
         Graphics = graphics;
         ClipBounds = clipBounds;

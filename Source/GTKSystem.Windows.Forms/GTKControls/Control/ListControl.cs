@@ -4,7 +4,7 @@ using System.Globalization;
 namespace System.Windows.Forms;
 
 [LookupBindingProperties("DataSource", "DisplayMember", "ValueMember", "SelectedValue")]
-public abstract class ListControl : ScrollableControl
+public abstract partial class ListControl : ScrollableControl
 {
     protected EventHandlerList events = new();
     [DefaultValue(null)]
@@ -62,72 +62,8 @@ public abstract class ListControl : ScrollableControl
         get; set;
     }
 
-    public event EventHandler? DataSourceChanged
-    {
-        add => events.AddHandler("DataSourceChanged", value);
-        remove => events.RemoveHandler("DataSourceChanged", value);
-    }
-
-    public event EventHandler? DisplayMemberChanged;
-
-    public event ListControlConvertEventHandler? Format;
-
-    [Browsable(false)]
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public event EventHandler? FormatInfoChanged;
-
-    public event EventHandler? FormatStringChanged;
-
-    public event EventHandler? FormattingEnabledChanged;
-
-    public event EventHandler? ValueMemberChanged;
-    public event EventHandler? SelectedItemChanged
-    {
-        add => events.AddHandler("SelectedItemChanged", value);
-        remove => events.RemoveHandler("SelectedItemChanged", value);
-    }
-    public event EventHandler? SelectedValueChanged
-    {
-        add => events.AddHandler("SelectedValueChanged", value);
-        remove => events.RemoveHandler("SelectedValueChanged", value);
-    }
-    public event EventHandler? SelectedIndexChanged
-    {
-        add => events.AddHandler("SelectedIndexChanged", value);
-        remove => events.RemoveHandler("SelectedIndexChanged", value);
-    }
     public virtual string? GetItemText(object? item)
     {
         return item?.ToString();
-    }
-
-    protected virtual void OnDisplayMemberChanged(EventArgs e)
-    {
-        DisplayMemberChanged?.Invoke(this, e);
-    }
-
-    protected virtual void OnFormat(ListControlConvertEventArgs e)
-    {
-        Format?.Invoke(this, e);
-    }
-
-    protected virtual void OnFormatInfoChanged(EventArgs e)
-    {
-        FormatInfoChanged?.Invoke(this, e);
-    }
-
-    protected virtual void OnFormatStringChanged(EventArgs e)
-    {
-        FormatStringChanged?.Invoke(this, e);
-    }
-
-    protected virtual void OnFormattingEnabledChanged(EventArgs e)
-    {
-        FormattingEnabledChanged?.Invoke(this, e);
-    }
-
-    protected virtual void OnValueMemberChanged(EventArgs e)
-    {
-        ValueMemberChanged?.Invoke(this, e);
     }
 }

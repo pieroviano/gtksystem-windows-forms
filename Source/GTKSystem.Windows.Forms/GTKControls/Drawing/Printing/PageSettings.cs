@@ -3,6 +3,9 @@
 
 namespace System.Drawing.Printing;
 
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = System.Drawing.RectangleF;
+
 public class PageSettings : ICloneable
 {
     private PrinterSettings? _printerSettings;

@@ -6,7 +6,11 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
-public interface IControlBase
+using Color = Color;
+using Size = Size;
+using Point = Point;
+
+public interface IControlBase: ITextControl
 {
     string AccessibleDefaultActionDescription { get; set; }
     string AccessibleDescription { get; set; }
@@ -30,7 +34,6 @@ public interface IControlBase
     Padding Margin { get; set; }
     Size Size { get; set; }
     string Name { get; set; }
-    string Text { get; set; }
     Padding Padding { get; set; }
 
     int TabIndex { get; set; }

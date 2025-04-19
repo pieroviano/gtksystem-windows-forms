@@ -43,12 +43,12 @@ public class CustomLineCap : MarshalByRefObject, ICloneable, IDisposable
     {
     }
 
-		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" />.</summary>
-		/// <returns>The <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> this method creates, cast as an object.</returns>
-		public object Clone()
-		{
-            return null;
-        }
+    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" />.</summary>
+    /// <returns>The <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> this method creates, cast as an object.</returns>
+    public object Clone()
+    {
+        throw new NotImplementedException();
+    }
 
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> object.</summary>
     public void Dispose()

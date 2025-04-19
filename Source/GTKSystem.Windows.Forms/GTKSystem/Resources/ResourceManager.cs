@@ -1,31 +1,16 @@
-﻿#if NETSTANDARD
-extern alias sdc;
-#else
-extern alias sd;
-#endif
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
-using System.Resources;
-using System.Resources.Extensions;
-using System.Security.AccessControl;
 using System.Windows.Forms;
 using System.Xml;
 
 namespace System.Resources;
-
-#if NETSTANDARD
-using SdcBitmap = sdc::System.Drawing.Image;
-using SdcIcon = sdc::System.Drawing.Icon;
-using SdcImageFormat = sdc::System.Drawing.Imaging.ImageFormat;
-#else
+extern alias sd;
 using SdcBitmap = sd::System.Drawing.Image;
 using SdcIcon = sd::System.Drawing.Icon;
 using SdcImageFormat = sd::System.Drawing.Imaging.ImageFormat;
-#endif
 
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class GtkResourceManager : ResourceManager
@@ -33,7 +18,7 @@ public class GtkResourceManager : ResourceManager
     internal const string resFileExtension = ".resources";
     private readonly string? _baseName;
     public ResourceInfo? getResourceInfo = new();
-    private readonly Assembly? _assemblyWithResources = null!;
+    private readonly Assembly? _assemblyWithResources;
 
     private Type? _resourceSource;
 
@@ -88,14 +73,14 @@ public class GtkResourceManager : ResourceManager
 
     }
 
-    private byte[] ReadResourceFile(string name)
+    private byte[]? ReadResourceFile(string name)
     {
         byte[]? result = null;
         try
         {
-            //string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
-            //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
-            var filepath = $"./{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
+            //string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//The linux path must be used '/'
+            //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//The linux path must be used '/'
+            var filepath = $"./{Path.GetExtension(_baseName)!.TrimStart('.')}.resx"; //The linux path must be used '/'
             if (File.Exists(filepath))
             {
                 try
@@ -104,7 +89,7 @@ public class GtkResourceManager : ResourceManager
                     var xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
                     doc.Load(filepath);
                     var docElem = doc.DocumentElement;
-                    var nodes = docElem.SelectNodes("data");
+                    var nodes = docElem?.SelectNodes("data");
                     //<data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
                     //<value> </value>
                     //</data>
@@ -157,7 +142,8 @@ public class GtkResourceManager : ResourceManager
                     using var disposable = enumerator as IDisposable;
                     while (enumerator.MoveNext())
                     {
-                        if (enumerator.Key?.ToString() == name)
+                        var key = enumerator.Key?.ToString();
+                        if (key == name)
                         {
                             try
                             {
@@ -239,8 +225,17 @@ public class GtkResourceManager : ResourceManager
 
             var fileName = name;
             var filebytes = ReadResourceFile(name);
+            if (obj is byte[] bytes)
+            {
+                return bytes;
+            }
+
             var _formName = Path.GetExtension(BaseName).TrimStart('.');
             var path = $"./Resources/{_formName}";
+            if (!string.IsNullOrEmpty(culture?.Name))
+            {
+                path = $"./Resources/{culture?.Name}/{_formName}";
+            }
             var searchPattern = $"{fileName}.*";
             if (!Directory.Exists(path))
             {
@@ -256,7 +251,7 @@ public class GtkResourceManager : ResourceManager
                         b.Save(filename, SdcImageFormat.Png);
                     }
                 }
-                if (obj is SdcIcon i)
+                else if (obj is SdcIcon i)
                 {
                     var combine = Path.Combine(path, Path.ChangeExtension(searchPattern, ".ico"));
                     if (!File.Exists(combine))
@@ -296,34 +291,15 @@ public class GtkResourceManager : ResourceManager
                     return new Drawing.Bitmap(0, 0);
                 }
 
-                return new Drawing.Bitmap(filebytes ?? []) { FileName = fileName };
+                return new Drawing.Bitmap(filebytes) { FileName = fileName };
             }
 
-            return obj;
             return obj;
         }
 
         return null;
     }
 
-    //public  UnmanagedMemoryStream GetStream(string name)
-    //{
-    //    return GetStream(name);
-    //}
-    //public UnmanagedMemoryStream GetStream(string name, CultureInfo culture)
-    //{
-    //    byte[] data = ReadResourceFile(name);
-    //    if (data == null)
-    //        return null;
-    //    else
-    //    {
-    //        using (MemoryStream ms = new MemoryStream(data))
-    //        {
-    //            BinaryReader br = new BinaryReader(ms);
-    //            return br.BaseStream as UnmanagedMemoryStream;
-    //        }
-    //    }
-    //}
     public override string? GetString(string name)
     {
         return GetString(name, null);

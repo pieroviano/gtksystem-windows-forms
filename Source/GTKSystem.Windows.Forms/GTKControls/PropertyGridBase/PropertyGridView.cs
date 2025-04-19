@@ -2,20 +2,20 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
 using Cairo;
 using Gdk;
 using GLib;
 using Gtk;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
 
-namespace System.Windows.Forms.PropertyGridInternal;
+namespace System.Windows.Forms;
 
-internal sealed class PropertyGridView 
+internal sealed partial class PropertyGridView 
 {
     public Gtk.TreeView tree = new();
     public TreeStore store = new(typeof(GridEntry));
@@ -269,12 +269,11 @@ internal sealed class PropertyGridView
             return store.AppendValues(value);
         return store.AppendValues(parent.Value, value);
     }
-    public event PropertyValueChangedEventHandler? PropertyValueChanged;
-    public event SelectedGridItemChangedEventHandler? SelectedGridItemChanged;
+
     public class CellRendererExpander : CellRendererToggle
     {
-        readonly Pixbuf gonextpixbuf = new(typeof(CellRendererExpander).Assembly, "System.Windows.Forms.Resources.System.go-next-symbolic.png");
-        readonly Pixbuf godownixbuf = new(typeof(CellRendererExpander).Assembly, "System.Windows.Forms.Resources.System.go-down-symbolic.png");
+        private readonly Pixbuf gonextpixbuf = new(typeof(CellRendererExpander).Assembly, "System.Windows.Forms.Resources.System.go-next-symbolic.png");
+        private readonly Pixbuf godownixbuf = new(typeof(CellRendererExpander).Assembly, "System.Windows.Forms.Resources.System.go-down-symbolic.png");
         public CellRendererExpander(PropertyGridView owner)
         {
 
@@ -319,8 +318,8 @@ internal sealed class PropertyGridView
     }
     public class CellRendererProperty : CellRendererCombo
     {
-        readonly PropertyGridView owner;
-        readonly ListStore model = new(typeof(string));
+        private readonly PropertyGridView owner;
+        private readonly ListStore model = new(typeof(string));
         public CellRendererProperty(PropertyGridView owner)
         {
             this.owner = owner;

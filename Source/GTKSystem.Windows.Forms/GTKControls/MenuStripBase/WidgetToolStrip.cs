@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.ComponentModel;
@@ -14,6 +14,9 @@ using Image = System.Drawing.Image;
 using Region = System.Drawing.Region;
 
 namespace System.Windows.Forms;
+
+using Color = Color;
+using Size = Size;
 
 public class WidgetToolStrip<T> : ToolStripItem
 {
@@ -27,7 +30,7 @@ public class WidgetToolStrip<T> : ToolStripItem
     // internal Gtk.ProgressBar progressBar = new Gtk.ProgressBar();
     internal LevelBar progressBar = new();
     internal Viewport flagBox = new();
-    readonly CssProvider provider = new();
+    private readonly CssProvider provider = new();
     public string? StripType { get; set; }
     public WidgetToolStrip() : this(null, "", null, null, "", [])
     {
@@ -47,71 +50,74 @@ public class WidgetToolStrip<T> : ToolStripItem
     protected WidgetToolStrip(string? stripType, string? text, Image? image, EventHandler? onClick, string? name, params object[] args) : base(text, image, onClick, name)
     {
         UniqueKey = Guid.NewGuid().ToString().ToLower();
-        MenuItem = (MenuItem)Activator.CreateInstance(typeof(T), args);
-        MenuItem.StyleContext.AddProvider(provider, 900);
-        if (stripType == "ToolStripSeparator")
+        MenuItem = (MenuItem?)Activator.CreateInstance(typeof(T), args);
+        if (MenuItem != null)
         {
-            Created = true;
-        }
-        else
-        {
-            StripType = stripType;
-            MenuItem.Realized += ToolStripItem_Realized;
-            MenuItem.Activated += MenuItem_Activated;
-            MenuItem.ButtonReleaseEvent += MenuItem_ButtonReleaseEvent;
-            MenuItem.Valign = Align.Center;
-            MenuItem.Halign = Align.Fill;
-            MenuItem.Vexpand = false;
-            MenuItem.Hexpand = true;
-            itemBox.Valign = Align.Center;
-            itemBox.Halign = Align.Start;
-            flagBox.BorderWidth = 0;
-            flagBox.ShadowType = ShadowType.None;
-            flagBox.Hexpand = false;
-            flagBox.Vexpand = false;
-            if (stripType == "ToolStripDropDownItem")
+            MenuItem.StyleContext.AddProvider(provider, 900);
+            if (stripType == "ToolStripSeparator")
             {
-                button.Image = Gtk.Image.NewFromIconName("pan-down", IconSize.Button);
-                button.ImagePosition = PositionType.Right;
-                button.Relief = ReliefStyle.None;
-                button.AlwaysShowImage = true;
-                button.Halign = Align.Start;
-                button.Valign = Align.Center;
-                button.Hexpand = false;
-                button.Vexpand = false;
-                itemBox.PackStart(flagBox, false, false, 0);
-                itemBox.PackStart(button, false, false, 0);
-                MenuItem.Add(itemBox);
-            }
-            else if (stripType == "ToolStripTextBox")
-            {
-                entry.HasFrame = false;
-                entry.MaxWidthChars = 1;
-                entry.WidthChars = 0;
-                entry.Valign = Align.Fill;
-                entry.Halign = Align.Fill;
-                entry.IsFocus = true;
-                MenuItem.Add(entry);
-            }
-            else if (stripType == "ToolStripComboBox")
-            {
-                MenuItem.Add(comboBox);
-            }
-            else if (stripType == "ToolStripProgressBar")
-            {
-                progressBar.Halign = Align.Fill;
-                progressBar.Valign = Align.Fill;
-                progressBar.Visible = true;
-                MenuItem.Add(progressBar);
+                Created = true;
             }
             else
             {
-                itemBox.PackStart(flagBox, false, false, 0);
-                itemBox.PackStart(label, false, false, 0);
-                MenuItem.Add(itemBox);
+                StripType = stripType;
+                MenuItem.Realized += ToolStripItem_Realized;
+                MenuItem.Activated += MenuItem_Activated;
+                MenuItem.ButtonReleaseEvent += MenuItem_ButtonReleaseEvent;
+                MenuItem.Valign = Align.Center;
+                MenuItem.Halign = Align.Fill;
+                MenuItem.Vexpand = false;
+                MenuItem.Hexpand = true;
+                itemBox.Valign = Align.Center;
+                itemBox.Halign = Align.Start;
+                flagBox.BorderWidth = 0;
+                flagBox.ShadowType = ShadowType.None;
+                flagBox.Hexpand = false;
+                flagBox.Vexpand = false;
+                if (stripType == "ToolStripDropDownItem")
+                {
+                    button.Image = Gtk.Image.NewFromIconName("pan-down", IconSize.Button);
+                    button.ImagePosition = PositionType.Right;
+                    button.Relief = ReliefStyle.None;
+                    button.AlwaysShowImage = true;
+                    button.Halign = Align.Start;
+                    button.Valign = Align.Center;
+                    button.Hexpand = false;
+                    button.Vexpand = false;
+                    itemBox.PackStart(flagBox, false, false, 0);
+                    itemBox.PackStart(button, false, false, 0);
+                    MenuItem.Add(itemBox);
+                }
+                else if (stripType == "ToolStripTextBox")
+                {
+                    entry.HasFrame = false;
+                    entry.MaxWidthChars = 1;
+                    entry.WidthChars = 0;
+                    entry.Valign = Align.Fill;
+                    entry.Halign = Align.Fill;
+                    entry.IsFocus = true;
+                    MenuItem.Add(entry);
+                }
+                else if (stripType == "ToolStripComboBox")
+                {
+                    MenuItem.Add(comboBox);
+                }
+                else if (stripType == "ToolStripProgressBar")
+                {
+                    progressBar.Halign = Align.Fill;
+                    progressBar.Valign = Align.Fill;
+                    progressBar.Visible = true;
+                    MenuItem.Add(progressBar);
+                }
+                else
+                {
+                    itemBox.PackStart(flagBox, false, false, 0);
+                    itemBox.PackStart(label, false, false, 0);
+                    MenuItem.Add(itemBox);
+                }
             }
-
         }
+
         Created = true;
 
     }
@@ -121,16 +127,6 @@ public class WidgetToolStrip<T> : ToolStripItem
         OnDropDownItemClicked(new ToolStripItemClickedEventArgs(this));
 
         OnClick(args);
-    }
-
-    protected virtual void OnClick(EventArgs e)
-    {
-        Click?.Invoke(this, e);
-    }
-
-    protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs e)
-    {
-        DropDownItemClicked?.Invoke(this, e);
     }
 
     private void MenuItem_Activated(object? sender, EventArgs e)
@@ -251,11 +247,6 @@ public class WidgetToolStrip<T> : ToolStripItem
         OnCheckedChanged(e);
     }
 
-    protected virtual void OnCheckedChanged(EventArgs e)
-    {
-        CheckedChanged?.Invoke(this, e);
-    }
-
     internal void UpdateStyle()
     {
         if (Widget is { IsMapped: true })
@@ -353,7 +344,7 @@ public class WidgetToolStrip<T> : ToolStripItem
 
             return label.Text;
         }
-        set { label.Text = value; button.Label = value; }
+        set { label.Text = value??string.Empty; button.Label = value??string.Empty; }
     }
     public override Color ImageTransparentColor { get; set; }
     public override ToolStripItemDisplayStyle DisplayStyle { get; set; }
@@ -489,8 +480,4 @@ public class WidgetToolStrip<T> : ToolStripItem
         }
     }
 
-    public override event EventHandler? Click;
-    public override event EventHandler? CheckedChanged;
-    public override event EventHandler? CheckStateChanged;
-    public override event ToolStripItemClickedEventHandler? DropDownItemClicked;
 }

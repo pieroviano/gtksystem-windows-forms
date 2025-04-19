@@ -57,13 +57,13 @@ public static class DataGridViewCommon
     {
         var dgv = new DataGridView ();
         for (var c = 0; c < 10; c++) {
-            var A = (((char) ((int) 'A') + c)).ToString ();
+            var A = (('A' + c)).ToString ();
             dgv.Columns.Add (A, A);
         }
         for (var r = 0; r < 10; r++) {
-            List<object> cells = new();
+            List<object> cells = [];
             for (var c = 0; c < 10; c++) {
-                cells.Add (string.Format ("Cell {0}{1}", dgv.Columns [c].Name, r));
+                cells.Add ($"Cell {dgv.Columns[c].Name}{r}");
             }
             dgv.Rows.Add (cells);
         }

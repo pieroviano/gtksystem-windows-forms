@@ -25,40 +25,37 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Resources;
-using System.ComponentModel.Design;
 using System.Reflection;
-using System.Runtime.Serialization;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class ResXDataNodeSerializedGetValueTests : ResourcesTestHelper {
+public class ResXDataNodeSerializedGetValueTests : ResourcesTestHelper
+{
     [Test]
-    public void ITRSNotTouchedWhenNodeCreatedNew ()
+    public void ITRSNotTouchedWhenNodeCreatedNew()
     {
         // check supplied params to GetValue are not touched
         // for an instance created manually
-        var node = GetNodeEmdeddedSerializable ();
+        var node = GetNodeEmdeddedSerializable();
 
         //would raise exception if param used
-        var obj = node.GetValue (new ExceptionalITRS ());
-        Assert.True(typeof(serializable) == obj.GetType(), "#A1");
+        var obj = node.GetValue(new ExceptionalITRS());
+        Assert.True(typeof(Serializable) == obj?.GetType());
     }
-		
+
     [Test]
-    public void InvalidMimeTypeFromReaderReturnsNull ()
+    public void InvalidMimeTypeFromReaderReturnsNull()
     {
-        var node = GetNodeFromResXReader (serializedResXInvalidMimeType);
-        Assert.IsNotNull (node, "#A1");
-        var val = node.GetValue ((AssemblyName []) null);
-        Assert.IsNull (val, "#A2");
+        var node = GetNodeFromResXReader(serializedResXInvalidMimeType);
+        Assert.IsNotNull(node);
+        var val = node.GetValue((AssemblyName[]?)null);
+        Assert.IsNull(val);
     }
 
-
-    static readonly string serializedResXInvalidMimeType =
+    private static readonly string serializedResXInvalidMimeType =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   

@@ -23,6 +23,7 @@
 //	Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -30,66 +31,66 @@ namespace GtkTests.System.Windows.Forms;
 [TestFixture]
 public class DataGridViewRowCollectionTest : TestHelper
 {
-    private DataGridView CreateAndFill ()
+    private DataGridView CreateAndFill()
     {
-        var dgv = DataGridViewCommon.CreateAndFill ();
-        var row = new DataGridViewRow ();
-        row.Cells.Add (new DataGridViewComboBoxCell ());
-        row.Cells.Add (new DataGridViewComboBoxCell ());
-        dgv.Rows.Add (row);
+        var dgv = DataGridViewCommon.CreateAndFill();
+        var row = new DataGridViewRow();
+        row.Cells.Add(new DataGridViewComboBoxCell());
+        row.Cells.Add(new DataGridViewComboBoxCell());
+        dgv.Rows.Add(row);
         return dgv;
     }
 
     [Test]
-    public void ToStringTest ()
+    public void ToStringTest()
     {
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewRowCollection", new DataGridViewRowCollection (null).ToString (), "A");
+        Assert.That((object?)new DataGridViewRowCollection(null).ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewRowCollection"), "A");
 
-        using var dgv = CreateAndFill ();
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewRowCollection", dgv.Rows.ToString (), "B");
+        using var dgv = CreateAndFill();
+        Assert.That((object?)dgv.Rows.ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewRowCollection"), "B");
     }
-		
+
     [Test]
-    public void CtorTest ()
+    public void CtorTest()
     {
-        DataGridViewRowCollection rc;
-			
-        rc = new DataGridViewRowCollection (null);
-        Assert.AreEqual (0, rc.Count, "#01");
+        var rc = new DataGridViewRowCollection(null);
+        Assert.That((object?)rc.Count, Is.EqualTo(0));
 
-        using var dgv = new DataGridView ();
-        rc = new DataGridViewRowCollection (dgv);
-        Assert.AreEqual (0, rc.Count, "#02");
-        Assert.IsTrue (rc != dgv.Rows, "#03");
+        using var dgv = new DataGridView();
+        rc = new DataGridViewRowCollection(dgv);
+        Assert.That((object?)rc.Count, Is.EqualTo(0));
+        Assert.IsTrue(rc != dgv.Rows);
     }
-		
+
     [Test]
-    [Category ("NotWorking")]	// Don't currently support shared rows
-    public void AddTest ()
+    [Category("NotWorking")]	// Don't currently support shared rows
+    public void AddTest()
     {
         DataGridViewRow row;
         DataGridViewCell cell;
-			
-        using (var dgv = new DataGridView ()) {
-            dgv.Columns.Add ("a", "A");
-            row = new DataGridViewRow ();
-            dgv.Rows.Add (row);
-            Assert.AreEqual (-1, row.Index, "#01");
+
+        using (var dgv = new DataGridView())
+        {
+            dgv.Columns.Add("a", "A");
+            row = new DataGridViewRow();
+            dgv.Rows.Add(row);
+            Assert.That((object?)row.Index, Is.EqualTo(-1));
         }
 
-        using (var dgv = new DataGridView ()) {
-            dgv.Columns.Add ("a", "A");
-            row = new DataGridViewRow ();
-            cell = new DataGridViewTextBoxCell ();
+        using (var dgv = new DataGridView())
+        {
+            dgv.Columns.Add("a", "A");
+            row = new DataGridViewRow();
+            cell = new DataGridViewTextBoxCell();
             cell.Value = "abc";
-            row.Cells.Add (cell);
-            dgv.Rows.Add (row);
-            Assert.AreEqual (0, row.Index, "#02");
+            row.Cells.Add(cell);
+            dgv.Rows.Add(row);
+            Assert.That((object?)row.Index, Is.EqualTo(0));
         }
     }
 
     [Test]
-    public void RemoveAtNewRowException ()
+    public void RemoveAtNewRowException()
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -100,31 +101,31 @@ public class DataGridViewRowCollectionTest : TestHelper
     }
 
     [Test]
-    public void RemoveNewRowException ()
+    public void RemoveNewRowException()
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
             var dgv = new DataGridView();
             dgv.Columns.Add("A", "A");
-            dgv.Rows.Remove(dgv.Rows[0]);
+            dgv.Rows.Remove(dgv.Rows[0]!);
         });
     }
 
     [Test]  // bug #448005
-    public void ClearRows ()
+    public void ClearRows()
     {
-        var dgv = new DataGridView ();
-        dgv.Columns.Add ("A", "A");
-        dgv.Columns.Add ("A2", "A2");
+        var dgv = new DataGridView();
+        dgv.Columns.Add("A", "A");
+        dgv.Columns.Add("A2", "A2");
 
-        dgv.Rows.Add (1, 2);
-        dgv.Rows.Add (1, 2);
-        dgv.Rows.Add (1, 2);
-        dgv.Rows.Add (1, 2);
-        dgv.Rows.Add (1, 2);
+        dgv.Rows.Add(1, 2);
+        dgv.Rows.Add(1, 2);
+        dgv.Rows.Add(1, 2);
+        dgv.Rows.Add(1, 2);
+        dgv.Rows.Add(1, 2);
 
-        dgv.Rows.Clear ();
+        dgv.Rows.Clear();
 
-        Assert.AreEqual (1, dgv.Rows.Count, "A1");
+        Assert.That((object?)dgv.Rows.Count, Is.EqualTo(1), "A1");
     }
 }

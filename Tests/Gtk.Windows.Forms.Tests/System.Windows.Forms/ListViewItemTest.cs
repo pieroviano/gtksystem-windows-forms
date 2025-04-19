@@ -26,6 +26,7 @@
 
 using System.Windows.Forms;
 using System.Drawing;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -33,83 +34,90 @@ namespace GtkTests.System.Windows.Forms;
 public class ListViewItemTest : TestHelper
 {
     [Test]
-    public void ListViewItemConstructors ()
+    public void ListViewItemConstructors()
     {
-        var fnt = new Font ("Arial", 12);
-        var item1 = new ListViewItem ("Hello folks");
-        Assert.AreEqual ("Hello folks", item1.Text, "Constructor#1");
+        var fnt = new Font("Arial", 12);
+        var item1 = new ListViewItem("Hello folks");
+        Assert.That((object?)item1.Text, Is.EqualTo("Hello folks"), "Constructor#1");
 
-        var item2 = new ListViewItem (new string [] {"Element1", "Element2"},
+        var item2 = new ListViewItem(["Element1", "Element2"],
             -1, Color.Blue, Color.Red, fnt);
 
-        Assert.AreEqual (item2.ForeColor, Color.Blue, "Constructor#2");
-        Assert.AreEqual (item2.BackColor, Color.Red, "Constructor#3");
+        Assert.That((object?)Color.Blue, Is.EqualTo(item2.ForeColor), "Constructor#2");
+        Assert.That((object?)Color.Red, Is.EqualTo(item2.BackColor), "Constructor#3");
 
-        Assert.AreEqual (2, item2.SubItems.Count,"Constructor#4");
-        Assert.AreEqual (Color.Blue, item2.SubItems[0].ForeColor,"Constructor#5");
-        Assert.AreEqual (Color.Red, item2.SubItems[0].BackColor, "Constructor#6");
-        Assert.AreEqual (fnt, item2.SubItems[0].Font, "Constructor#7");
-        Assert.AreEqual ("Element1", item2.SubItems[0].Text, "Constructor#8");
-        Assert.AreEqual ("Element2", item2.SubItems[1].Text, "Constructor#12");
+        Assert.That((object?)item2.SubItems.Count, Is.EqualTo(2), "Constructor#4");
+        Assert.That((object?)item2.SubItems[0].ForeColor, Is.EqualTo(Color.Blue), "Constructor#5");
+        Assert.That((object?)item2.SubItems[0].BackColor, Is.EqualTo(Color.Red), "Constructor#6");
+        Assert.That((object?)item2.SubItems[0].Font, Is.EqualTo(fnt), "Constructor#7");
+        Assert.That((object?)item2.SubItems[0].Text, Is.EqualTo("Element1"), "Constructor#8");
+        Assert.That((object?)item2.SubItems[1].Text, Is.EqualTo("Element2"), "Constructor#12");
 
-        var item3 = new ListViewItem ((string)null);
-        Assert.AreEqual (String.Empty, item3.Text, "Constructor#13");
+        var item3 = new ListViewItem((string?)null);
+        object expected = string.Empty;
+        Assert.That((object?)item3.Text, Is.EqualTo(expected), "Constructor#13");
 
-        var item4 = new ListViewItem ((string)null, -99);
-        Assert.AreEqual (String.Empty, item4.Text, "Constructor#14");
-        Assert.AreEqual (-99, item4.ImageIndex, "Constructor#15");
+        var item4 = new ListViewItem((string?)null, -99);
+        object expected1 = string.Empty;
+        Assert.That((object?)item4.Text, Is.EqualTo(expected1), "Constructor#14");
+        Assert.That((object?)item4.ImageIndex, Is.EqualTo(-99), "Constructor#15");
 
-        var item5 = new ListViewItem (new string [2]);
-        Assert.AreEqual (2, item5.SubItems.Count, "Constructor#16");
-        Assert.IsNotNull (item5.SubItems [0], "Constructor#17");
-        Assert.IsNotNull (item5.SubItems [1], "Constructor#18");
+        var item5 = new ListViewItem(new string[2]);
+        Assert.That((object?)item5.SubItems.Count, Is.EqualTo(2), "Constructor#16");
+        Assert.IsNotNull(item5.SubItems[0], "Constructor#17");
+        Assert.IsNotNull(item5.SubItems[1], "Constructor#18");
 
-        var item6 = new ListViewItem (new string [2], -1, Color.Blue, Color.Red,
+        var item6 = new ListViewItem(new string[2], -1, Color.Blue, Color.Red,
             fnt);
-        Assert.AreEqual (2, item6.SubItems.Count, "Constructor#19");
-        Assert.IsNotNull (item6.SubItems [0], "Constructor#20");
-        Assert.IsNotNull (item6.SubItems [1], "Constructor#21");
-        Assert.AreEqual (Color.Blue, item6.ForeColor, "Constructor#22");
-        Assert.AreEqual (Color.Blue, item6.SubItems [0].ForeColor, "Constructor#23");
-        Assert.AreEqual (Color.Red, item6.BackColor, "Constructor#24");
-        Assert.AreEqual (Color.Red, item6.SubItems [0].BackColor, "Constructor#25");
-        Assert.AreEqual (fnt, item6.Font, "Constructor#26");
-        Assert.AreEqual (fnt, item6.SubItems [0].Font, "Constructor#27");
+        Assert.That((object?)item6.SubItems.Count, Is.EqualTo(2), "Constructor#19");
+        Assert.IsNotNull(item6.SubItems[0], "Constructor#20");
+        Assert.IsNotNull(item6.SubItems[1], "Constructor#21");
+        Assert.That((object?)item6.ForeColor, Is.EqualTo(Color.Blue), "Constructor#22");
+        Assert.That((object?)item6.SubItems[0].ForeColor, Is.EqualTo(Color.Blue), "Constructor#23");
+        Assert.That((object?)item6.BackColor, Is.EqualTo(Color.Red), "Constructor#24");
+        Assert.That((object?)item6.SubItems[0].BackColor, Is.EqualTo(Color.Red), "Constructor#25");
+        Assert.That((object?)item6.Font, Is.EqualTo(fnt), "Constructor#26");
+        Assert.That((object?)item6.SubItems[0].Font, Is.EqualTo(fnt), "Constructor#27");
     }
 
     [Test]
-    public void Constructor2_Text_Null ()
+    public void Constructor2_Text_Null()
     {
-        var item = new ListViewItem ((string) null);
-        Assert.AreEqual (-1, item.ImageIndex, "#1");
-        Assert.AreEqual (1, item.SubItems.Count, "#2");
-        Assert.IsNotNull (item.SubItems [0].Text, "#3");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#4");
+        var item = new ListViewItem((string?)null);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
     }
 
     [Test]
-    public void Constructor3_Items_Empty ()
+    public void Constructor3_Items_Empty()
     {
-        var item = new ListViewItem (new string [3]);
-        Assert.AreEqual (-1, item.ImageIndex, "#1");
-        Assert.AreEqual (3, item.SubItems.Count, "#2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#3");
-        Assert.AreEqual (string.Empty, item.SubItems [1].Text, "#4");
-        Assert.AreEqual (string.Empty, item.SubItems [2].Text, "#5");
+        var item = new ListViewItem(new string[3]);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(3));
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
+        object expected1 = string.Empty;
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo(expected1));
+        object expected2 = string.Empty;
+        Assert.That((object?)item.SubItems[2].Text, Is.EqualTo(expected2));
     }
 
     [Test]
-    public void Constructor3_Items_Null ()
+    public void Constructor3_Items_Null()
     {
-        var item = new ListViewItem ((string []) null);
-        Assert.AreEqual (-1, item.ImageIndex, "#1");
-        Assert.AreEqual (1, item.SubItems.Count, "#2");
-        Assert.IsNotNull (item.SubItems [0].Text, "#3");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#4");
+        var item = new ListViewItem((string[]?)null);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
     }
 
     [Test]
-    public void Constructor4_SubItems_Empty ()
+    public void Constructor4_SubItems_Empty()
     {
         Assert.Throws<NullReferenceException>(() =>
         {
@@ -118,114 +126,124 @@ public class ListViewItemTest : TestHelper
     }
 
     [Test]
-    public void Constructor4_SubItems_Null ()
+    public void Constructor4_SubItems_Null()
     {
         Assert.Throws<NullReferenceException>(() =>
         {
-            new ListViewItem((ListViewItem.ListViewSubItem[])null, 3);
+            new ListViewItem((ListViewItem.ListViewSubItem[])null!, 3);
         });
     }
 
     [Test]
-    public void Constructor5_Text_Null ()
+    public void Constructor5_Text_Null()
     {
-        var item = new ListViewItem ((string) null, 2);
-        Assert.AreEqual (2, item.ImageIndex, "#1");
-        Assert.AreEqual (1, item.SubItems.Count, "#2");
-        Assert.IsNotNull (item.SubItems [0].Text, "#3");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#4");
+        var item = new ListViewItem((string?)null, 2);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(2));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
     }
 
     [Test]
-    public void Constructor6_Items_Empty ()
+    public void Constructor6_Items_Empty()
     {
-        var item = new ListViewItem (new string [3], 5);
-        Assert.AreEqual (5, item.ImageIndex, "#1");
-        Assert.AreEqual (3, item.SubItems.Count, "#2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#3");
-        Assert.AreEqual (string.Empty, item.SubItems [1].Text, "#4");
-        Assert.AreEqual (string.Empty, item.SubItems [2].Text, "#5");
+        var item = new ListViewItem(new string[3], 5);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(5));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(3));
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
+        object expected1 = string.Empty;
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo(expected1));
+        object expected2 = string.Empty;
+        Assert.That((object?)item.SubItems[2].Text, Is.EqualTo(expected2));
     }
 
     [Test]
-    public void Constructor6_Items_Null ()
+    public void Constructor6_Items_Null()
     {
-        var item = new ListViewItem ((string []) null, 3);
-        Assert.AreEqual (3, item.ImageIndex, "#1");
-        Assert.AreEqual (1, item.SubItems.Count, "#2");
-        Assert.IsNotNull (item.SubItems [0].Text, "#3");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#4");
+        var item = new ListViewItem((string[]?)null, 3);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(3));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
     }
 
     [Test]
-    public void Constructor7_Items_Empty ()
+    public void Constructor7_Items_Empty()
     {
-        var font = new Font (FontFamily.GenericSansSerif, 6);
+        var font = new Font(FontFamily.GenericSansSerif, 6);
 
-        var item = new ListViewItem (new string [2], 3, Color.Red,
+        var item = new ListViewItem(new string[2], 3, Color.Red,
             Color.Blue, font);
-        Assert.AreEqual (Color.Blue, item.BackColor, "#1");
-        Assert.AreEqual (Color.Red, item.ForeColor, "#2");
-        Assert.AreSame (font, item.Font, "#3");
-        Assert.AreEqual (3, item.ImageIndex, "#4");
-        Assert.AreEqual (2, item.SubItems.Count, "#5");
-        Assert.IsNotNull (item.SubItems [0].Text, "#6");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#7");
-        Assert.IsNotNull (item.SubItems [1].Text, "#8");
-        Assert.AreEqual (string.Empty, item.SubItems [1].Text, "#9");
+        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)item.Font, Is.SameAs(font));
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(3));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(2));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
+        Assert.IsNotNull(item.SubItems[1].Text);
+        object expected1 = string.Empty;
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo(expected1));
     }
 
     [Test]
-    public void Constructor7_Items_Null ()
+    public void Constructor7_Items_Null()
     {
-        var font = new Font (FontFamily.GenericSansSerif, 6);
+        var font = new Font(FontFamily.GenericSansSerif, 6);
 
-        var item = new ListViewItem ((string []) null, 3, Color.Red,
+        var item = new ListViewItem(null, 3, Color.Red,
             Color.Blue, font);
-        Assert.AreEqual (Color.Blue, item.BackColor, "#1");
-        Assert.AreEqual (Color.Red, item.ForeColor, "#2");
-        Assert.AreSame (font, item.Font, "#3");
-        Assert.AreEqual (3, item.ImageIndex, "#4");
-        Assert.AreEqual (1, item.SubItems.Count, "#5");
-        Assert.IsNotNull (item.SubItems [0].Text, "#6");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#7");
+        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)item.Font, Is.SameAs(font));
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(3));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
     }
 
     [Test]
-    public void Constructor9_Text_Null ()
+    public void Constructor9_Text_Null()
     {
-        var item = new ListViewItem ((string) null, "key");
-        Assert.AreEqual (-1, item.ImageIndex, "#1");
-        Assert.IsNotNull (item.ImageKey, "#2");
-        Assert.AreEqual ("key", item.ImageKey, "#3");
-        Assert.AreEqual (1, item.SubItems.Count, "#4");
-        Assert.IsNotNull (item.SubItems [0].Text, "#5");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#6");
+        var item = new ListViewItem((string?)null, "key");
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1));
+        Assert.IsNotNull(item.ImageKey);
+        Assert.That((object?)item.ImageKey, Is.EqualTo("key"));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
     }
 
     [Test]
-    public void Constructor9_ImageKey_Null ()
+    public void Constructor9_ImageKey_Null()
     {
-        var item = new ListViewItem ("name", (string) null);
-        Assert.AreEqual (-1, item.ImageIndex, "#1");
-        Assert.IsNotNull (item.ImageKey, "#2");
-        Assert.AreEqual (string.Empty, item.ImageKey, "#3");
-        Assert.AreEqual (1, item.SubItems.Count, "#4");
-        Assert.IsNotNull (item.SubItems [0].Text, "#5");
-        Assert.AreEqual ("name", item.SubItems [0].Text, "#6");
+        var item = new ListViewItem("name", (string?)null);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1));
+        Assert.IsNotNull(item.ImageKey);
+        object expected = string.Empty;
+        Assert.That((object?)item.ImageKey, Is.EqualTo(expected));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo("name"));
     }
 
     [Test]
-    public void Constructor10_SubItems_Null ()
+    public void Constructor10_SubItems_Null()
     {
         Assert.Throws<NullReferenceException>(() =>
         {
-            new ListViewItem((ListViewItem.ListViewSubItem[])null, "key");
+            new ListViewItem((ListViewItem.ListViewSubItem[])null!, "key");
         });
     }
 
     [Test]
-    public void Constructor10_SubItems_Empty ()
+    public void Constructor10_SubItems_Empty()
     {
         Assert.Throws<NullReferenceException>(() =>
         {
@@ -234,410 +252,434 @@ public class ListViewItemTest : TestHelper
     }
 
     [Test]
-    public void Constructor10_ImageKey_Null ()
+    public void Constructor10_ImageKey_Null()
     {
-        var subItemA = new ListViewItem.ListViewSubItem ();
-        subItemA.Text = "A";
-        var subItemB = new ListViewItem.ListViewSubItem ();
-        subItemB.Text = "B";
+        var subItemA = new ListViewItem.ListViewSubItem
+        {
+            Text = "A"
+        };
+        var subItemB = new ListViewItem.ListViewSubItem
+        {
+            Text = "B"
+        };
 
-        var item = new ListViewItem (new ListViewItem.ListViewSubItem [] {
-            subItemA, subItemB }, (string) null);
-        Assert.AreEqual (-1, item.ImageIndex, "#1");
-        Assert.IsNotNull (item.ImageKey, "#2");
-        Assert.AreEqual (string.Empty, item.ImageKey, "#3");
-        Assert.AreEqual (2, item.SubItems.Count, "#4");
-        Assert.IsNotNull (item.SubItems [0].Text, "#5");
-        Assert.AreEqual ("A", item.SubItems [0].Text, "#6");
-        Assert.IsNotNull (item.SubItems [1].Text, "#7");
-        Assert.AreEqual ("B", item.SubItems [1].Text, "#8");
+        var item = new ListViewItem([
+            subItemA, subItemB
+        ], null);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1));
+        Assert.IsNotNull(item.ImageKey);
+        object expected = string.Empty;
+        Assert.That((object?)item.ImageKey, Is.EqualTo(expected));
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(2));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo("A"));
+        Assert.IsNotNull(item.SubItems[1].Text);
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo("B"));
     }
 
     [Test]
-    public void Constructor_Groups ()
+    public void Constructor_Groups()
     {
-        var itemA = new ListViewItem ((ListViewGroup) null);
-        Assert.AreEqual (null, itemA.Group, "#A1");
+        var itemA = new ListViewItem((ListViewGroup?)null);
+        Assert.That((object?)itemA.Group, Is.EqualTo(null));
 
-        var group = new ListViewGroup ("Group A");
-        group.Items.Add (itemA);
+        var group = new ListViewGroup("Group A");
+        group.Items.Add(itemA);
 
-        var itemB = new ListViewItem ("B", group);
-        Assert.AreEqual (group, itemB.Group, "#B1");
-        Assert.AreEqual (2, group.Items.Count, "#B2");
-        Assert.AreEqual (itemB, group.Items [1], "#B3");
+        var itemB = new ListViewItem("B", group);
+        Assert.That((object?)itemB.Group, Is.EqualTo(group));
+        Assert.That((object?)group.Items.Count, Is.EqualTo(2));
+        Assert.That((object?)group.Items[1], Is.EqualTo(itemB));
     }
 
     [Test]
-    public void ListViewItemDefaultValues ()
+    public void ListViewItemDefaultValues()
     {
-        var item = new ListViewItem ();
+        var item = new ListViewItem();
 
-        Assert.IsFalse (item.Focused, "DefaultValues#3");
-        Assert.IsFalse (item.Checked, "DefaultValues#4");
-        Assert.AreEqual (string.Empty, item.Text, "DefaultValues#5");
-        Assert.IsTrue (item.UseItemStyleForSubItems, "DefaultValues#6");
-        Assert.AreEqual (-1, item.ImageIndex, "DefaultValues#7");
-        Assert.AreEqual (String.Empty, item.Name, "DefaultValues#8");
-        Assert.AreEqual(String.Empty, item.ImageKey, "DefaultValues#9");
-        Assert.AreEqual (String.Empty, item.ToolTipText, "DefaultValues#10");
-        Assert.AreEqual (0, item.IndentCount, "DefaultValues#11");
+        Assert.IsFalse(item.Focused, "DefaultValues#3");
+        Assert.IsFalse(item.Checked, "DefaultValues#4");
+        object expected = string.Empty;
+        Assert.That((object?)item.Text, Is.EqualTo(expected), "DefaultValues#5");
+        Assert.IsTrue(item.UseItemStyleForSubItems, "DefaultValues#6");
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1), "DefaultValues#7");
+        object expected1 = string.Empty;
+        Assert.That((object?)item.Name, Is.EqualTo(expected1), "DefaultValues#8");
+        object expected2 = string.Empty;
+        Assert.That((object?)item.ImageKey, Is.EqualTo(expected2), "DefaultValues#9");
+        object expected3 = string.Empty;
+        Assert.That((object?)item.ToolTipText, Is.EqualTo(expected3), "DefaultValues#10");
+        Assert.That((object?)item.IndentCount, Is.EqualTo(0), "DefaultValues#11");
     }
 
     [Test]
-    public void ListViewItemBackColor ()
+    public void ListViewItemBackColor()
     {
-        var item = new ListViewItem ();
+        var item = new ListViewItem();
 
-        var lv = new ListView ();
-        lv.Items.Add (item);
+        var lv = new ListView();
+        lv.Items.Add(item);
         lv.BackColor = Color.Orange;
-        Assert.AreEqual (lv.BackColor, item.BackColor, "BackColor#1");
-        Assert.AreEqual (lv.BackColor, item.SubItems [0].BackColor, "BackColor#2");
+        Assert.That((object?)item.BackColor, Is.EqualTo(lv.BackColor), "BackColor#1");
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(lv.BackColor), "BackColor#2");
 
         item.BackColor = Color.Navy;
-        Assert.AreEqual (Color.Navy, item.BackColor, "BackColor#3");
-        Assert.AreEqual (Color.Navy, item.SubItems [0].BackColor, "BackColor#4");
+        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Navy), "BackColor#3");
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(Color.Navy), "BackColor#4");
 
-        item.SubItems [0].BackColor = Color.Green;
-        Assert.AreEqual (Color.Green, item.BackColor, "BackColor#5");
-        Assert.AreEqual (Color.Green, item.SubItems [0].BackColor, "BackColor#6");
+        item.SubItems[0].BackColor = Color.Green;
+        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Green), "BackColor#5");
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(Color.Green), "BackColor#6");
     }
 
     [Test]
-    public void ListViewItemForeColor ()
+    public void ListViewItemForeColor()
     {
-        var item = new ListViewItem ();
+        var item = new ListViewItem();
 
-        var lv = new ListView ();
-        lv.Items.Add (item);
+        var lv = new ListView();
+        lv.Items.Add(item);
         lv.ForeColor = Color.Orange;
-        Assert.AreEqual (lv.ForeColor, item.ForeColor, "ForeColor#1");
-        Assert.AreEqual (lv.ForeColor, item.SubItems [0].ForeColor, "ForeColor#2");
+        Assert.That((object?)item.ForeColor, Is.EqualTo(lv.ForeColor), "ForeColor#1");
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(lv.ForeColor), "ForeColor#2");
 
         item.ForeColor = Color.Navy;
-        Assert.AreEqual (Color.Navy, item.ForeColor, "ForeColor#3");
-        Assert.AreEqual (Color.Navy, item.SubItems [0].ForeColor, "ForeColor#4");
+        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Navy), "ForeColor#3");
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(Color.Navy), "ForeColor#4");
 
-        item.SubItems [0].ForeColor = Color.Green;
-        Assert.AreEqual (Color.Green, item.ForeColor, "ForeColor#5");
-        Assert.AreEqual (Color.Green, item.SubItems [0].ForeColor, "ForeColor#6");
+        item.SubItems[0].ForeColor = Color.Green;
+        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Green), "ForeColor#5");
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(Color.Green), "ForeColor#6");
     }
 
     [Test]
-    public void ListViewItemFocused ()
+    public void ListViewItemFocused()
     {
-        var lv = new ListView ();
-        var item1 = lv.Items.Add ("A");
-        var item2 = lv.Items.Add ("B");
-        var item3 = lv.Items.Add ("C");
+        var lv = new ListView();
+        var item1 = lv.Items.Add("A");
+        var item2 = lv.Items.Add("B");
+        var item3 = lv.Items.Add("C");
 
         // Need to show form
-        var form = new Form ();
+        var form = new Form();
         lv.Parent = form;
-        form.Show ();
+        form.Show();
 
         item1.Focused = true;
-        Assert.IsTrue (item1.Focused, "#A1");
-        Assert.IsFalse (item2.Focused, "#A2");
-        Assert.IsFalse (item3.Focused, "#A3");
+        Assert.IsTrue(item1.Focused);
+        Assert.IsFalse(item2.Focused);
+        Assert.IsFalse(item3.Focused);
 
         item2.Focused = true;
-        Assert.IsFalse (item1.Focused, "#B1");
-        Assert.IsTrue (item2.Focused, "#B2");
-        Assert.IsFalse (item3.Focused, "#B3");
+        Assert.IsFalse(item1.Focused);
+        Assert.IsTrue(item2.Focused);
+        Assert.IsFalse(item3.Focused);
 
         item3.Focused = true;
-        Assert.IsFalse (item1.Focused, "#C1");
-        Assert.IsFalse (item2.Focused, "#C2");
-        Assert.IsTrue (item3.Focused, "#C3");
+        Assert.IsFalse(item1.Focused);
+        Assert.IsFalse(item2.Focused);
+        Assert.IsTrue(item3.Focused);
 
         item3.Focused = false;
-        Assert.IsFalse (item1.Focused, "#D1");
-        Assert.IsFalse (item2.Focused, "#D2");
-        Assert.IsFalse (item3.Focused, "#D3");
+        Assert.IsFalse(item1.Focused);
+        Assert.IsFalse(item2.Focused);
+        Assert.IsFalse(item3.Focused);
 
         // Test Focused for Items without owner
-        var item4 = new ListViewItem ();
-        Assert.IsFalse (item4.Focused);
+        var item4 = new ListViewItem();
+        Assert.IsFalse(item4.Focused);
         item4.Focused = true;
 
-        Assert.IsFalse (item4.Focused, "#E1");
+        Assert.IsFalse(item4.Focused);
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    public void ListViewItemIndent ()
+    public void ListViewItemIndent()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            var item = new ListViewItem();
-            item.IndentCount = -1;
+            var item = new ListViewItem
+            {
+                IndentCount = -1
+            };
         });
     }
 
     [Test]
-    public void ListViewItemPosition ()
+    public void ListViewItemPosition()
     {
-        var itemA = new ListViewItem ();
-        var itemB = new ListViewItem ();
-        var initial_pos = new Point (-1, -1);
+        var itemA = new ListViewItem();
+        var itemB = new ListViewItem();
+        var initial_pos = new Point(-1, -1);
 
-        Assert.AreEqual (itemA.Position, initial_pos, "#A1");
-        Assert.AreEqual (itemB.Position, initial_pos, "#A2");
+        Assert.That((object?)initial_pos, Is.EqualTo(itemA.Position));
+        Assert.That((object?)initial_pos, Is.EqualTo(itemB.Position));
 
-        var lvw = new ListView ();
-        lvw.Items.AddRange (new ListViewItem [] { itemA, itemB });
+        var lvw = new ListView();
+        lvw.Items.AddRange([itemA, itemB]);
 
-        Assert.AreEqual (itemA.Position, initial_pos, "#B1");
-        Assert.AreEqual (itemB.Position, initial_pos, "#B2");
+        Assert.That((object?)initial_pos, Is.EqualTo(itemA.Position));
+        Assert.That((object?)initial_pos, Is.EqualTo(itemB.Position));
 
         // Create handle for lvw
-        lvw.CreateControl ();
+        lvw.CreateControl();
 
         var itemA_pos = itemA.Position;
         var itemB_pos = itemB.Position;
 
-        Assert.IsTrue (itemA_pos != initial_pos, "#C1");
-        Assert.IsTrue (itemB_pos != initial_pos, "#C2");
+        Assert.IsTrue(itemA_pos != initial_pos);
+        Assert.IsTrue(itemB_pos != initial_pos);
 
         // Now remove
-        lvw.Items.Clear ();
+        lvw.Items.Clear();
 
-        Assert.AreEqual (itemA_pos, itemA.Position, "#D1");
-        Assert.AreEqual (itemB_pos, itemB.Position, "#D2");
+        Assert.That((object?)itemA.Position, Is.EqualTo(itemA_pos));
+        Assert.That((object?)itemB.Position, Is.EqualTo(itemB_pos));
 
         // Add in reverse order
-        lvw.Items.AddRange (new ListViewItem [] { itemB, itemA });
+        lvw.Items.AddRange([itemB, itemA]);
 
-        Assert.IsTrue (itemA_pos != itemA.Position, "#E1");
-        Assert.IsTrue (itemB_pos != itemB.Position, "#E2");
+        Assert.IsTrue(itemA_pos != itemA.Position);
+        Assert.IsTrue(itemB_pos != itemB.Position);
 
         // Remove from ListView
-        lvw.Items.Clear ();
-        Assert.IsTrue (initial_pos != itemA.Position, "#F1");
-        Assert.IsTrue (initial_pos != itemB.Position, "#F2");
+        lvw.Items.Clear();
+        Assert.IsTrue(initial_pos != itemA.Position);
+        Assert.IsTrue(initial_pos != itemB.Position);
 
         //
         // Now add them in other view (no effect)
         //
-        lvw.Items.AddRange (new ListViewItem [] { itemA, itemB });
-        lvw.Columns.Add ("Column A");
+        lvw.Items.AddRange([itemA, itemB]);
+        lvw.Columns.Add("Column A");
         lvw.View = View.Details;
 
         itemB_pos = itemB.Position;
-        Assert.IsTrue (Point.Empty != itemB_pos, "#G1");
-        Assert.IsTrue (initial_pos != itemB_pos, "#G2");
+        Assert.IsTrue(Point.Empty != itemB_pos);
+        Assert.IsTrue(initial_pos != itemB_pos);
 
         itemB.Position = Point.Empty;
-        Assert.AreEqual (itemB_pos, itemB.Position, "#H1");
+        Assert.That((object?)itemB.Position, Is.EqualTo(itemB_pos));
     }
 
     [Test] // bug #330415 and #331643
-    public void RemoveFocusedItem ()
+    public void RemoveFocusedItem()
     {
-        var lv = new ListView ();
-        var itemA = lv.Items.Add ("ItemA");
-        var itemB = lv.Items.Add ("ItemB");
-        var itemC = lv.Items.Add ("ItemC");
-        var itemD = lv.Items.Add ("ItemD");
+        var lv = new ListView();
+        var itemA = lv.Items.Add("ItemA");
+        var itemB = lv.Items.Add("ItemB");
+        var itemC = lv.Items.Add("ItemC");
+        var itemD = lv.Items.Add("ItemD");
 
-        var form = new Form ();
+        var form = new Form();
         form.ShowInTaskbar = false;
-        form.Controls.Add (lv);
-        form.Show ();
+        form.Controls.Add(lv);
+        form.Show();
 
         // Calling Form.Show () doesn't fire
         // GotFocus event on child controls (asynch messages),
         // thus we can't get the first item focused,
         // but we DO when calling Application.Run ()
 
-        //Assert.IsTrue (itemA.Focused, "#A1");
-        Assert.IsFalse (itemB.Focused, "#A2");
-        Assert.IsFalse (itemC.Focused, "#A3");
-        Assert.IsFalse (itemD.Focused, "#A4");
+        //Assert.IsTrue (itemA.Focused);
+        Assert.IsFalse(itemB.Focused);
+        Assert.IsFalse(itemC.Focused);
+        Assert.IsFalse(itemD.Focused);
 
         itemB.Focused = true;
 
-        Assert.IsFalse (itemA.Focused, "#B1");
-        Assert.IsTrue (itemB.Focused, "#B2");
-        Assert.IsFalse (itemC.Focused, "#B3");
-        Assert.IsFalse (itemD.Focused, "#B4");
+        Assert.IsFalse(itemA.Focused);
+        Assert.IsTrue(itemB.Focused);
+        Assert.IsFalse(itemC.Focused);
+        Assert.IsFalse(itemD.Focused);
 
-        lv.Items.Remove (itemB);
+        lv.Items.Remove(itemB);
 
-        Assert.IsFalse (itemA.Focused, "#C1");
-        Assert.IsFalse (itemB.Focused, "#C2");
-        Assert.IsTrue (itemC.Focused, "#C3");
-        Assert.IsFalse (itemD.Focused, "#C4");
+        Assert.IsFalse(itemA.Focused);
+        Assert.IsFalse(itemB.Focused);
+        Assert.IsTrue(itemC.Focused);
+        Assert.IsFalse(itemD.Focused);
 
         itemD.Focused = true;
 
-        Assert.IsFalse (itemA.Focused, "#D1");
-        Assert.IsFalse (itemB.Focused, "#D2");
-        Assert.IsFalse (itemC.Focused, "#D3");
-        Assert.IsTrue (itemD.Focused, "#D4");
+        Assert.IsFalse(itemA.Focused);
+        Assert.IsFalse(itemB.Focused);
+        Assert.IsFalse(itemC.Focused);
+        Assert.IsTrue(itemD.Focused);
 
-        lv.Items.Remove (itemD);
+        lv.Items.Remove(itemD);
 
-        Assert.IsFalse (itemA.Focused, "#E1");
-        Assert.IsFalse (itemB.Focused, "#E2");
-        Assert.IsTrue (itemC.Focused, "#E3");
-        Assert.IsFalse (itemD.Focused, "#E4");
+        Assert.IsFalse(itemA.Focused);
+        Assert.IsFalse(itemB.Focused);
+        Assert.IsTrue(itemC.Focused);
+        Assert.IsFalse(itemD.Focused);
 
-        lv.Items.Remove (itemC);
+        lv.Items.Remove(itemC);
 
-        Assert.IsTrue (itemA.Focused, "#F1");
-        Assert.IsFalse (itemB.Focused, "#F2");
-        Assert.IsFalse (itemC.Focused, "#F3");
-        Assert.IsFalse (itemD.Focused, "#F4");
+        Assert.IsTrue(itemA.Focused);
+        Assert.IsFalse(itemB.Focused);
+        Assert.IsFalse(itemC.Focused);
+        Assert.IsFalse(itemD.Focused);
 
-        lv.Items.Remove (itemA);
+        lv.Items.Remove(itemA);
 
-        Assert.IsFalse (itemA.Focused, "#G1");
-        Assert.IsFalse (itemB.Focused, "#G2");
-        Assert.IsFalse (itemC.Focused, "#G3");
-        Assert.IsFalse (itemD.Focused, "#G4");
+        Assert.IsFalse(itemA.Focused);
+        Assert.IsFalse(itemB.Focused);
+        Assert.IsFalse(itemC.Focused);
+        Assert.IsFalse(itemD.Focused);
 
-        var itemE = lv.Items.Add ("ItemE");
+        var itemE = lv.Items.Add("ItemE");
 
-        Assert.IsFalse (itemA.Focused, "#H1");
-        Assert.IsFalse (itemB.Focused, "#H2");
-        Assert.IsFalse (itemC.Focused, "#H3");
-        Assert.IsFalse (itemD.Focused, "#H4");
-        Assert.IsFalse (itemE.Focused, "#H5");
+        Assert.IsFalse(itemA.Focused);
+        Assert.IsFalse(itemB.Focused);
+        Assert.IsFalse(itemC.Focused);
+        Assert.IsFalse(itemD.Focused);
+        Assert.IsFalse(itemE.Focused);
 
-        form.Dispose ();
+        form.Dispose();
     }
-	
+
     [Test]
-    public void ListViewItemGroup ()
+    public void ListViewItemGroup()
     {
-        var lvg1 = new ListViewGroup ();
-        var lvg2 = new ListViewGroup ();
-        var lvi = new ListViewItem ();
-		
-        lvg1.Items.Add (lvi);
-		
-        Assert.AreEqual (1, lvg1.Items.Count, "#A1");
-        Assert.AreEqual (lvg1, lvi.Group, "#A2");
+        var lvg1 = new ListViewGroup();
+        var lvg2 = new ListViewGroup();
+        var lvi = new ListViewItem();
+
+        lvg1.Items.Add(lvi);
+
+        Assert.That((object?)lvg1.Items.Count, Is.EqualTo(1));
+        Assert.That((object?)lvi.Group, Is.EqualTo(lvg1));
         lvi.Group = lvg2;
-		
-        Assert.AreEqual (0, lvg1.Items.Count, "#B1");
-        Assert.AreEqual (1, lvg2.Items.Count, "#B2");
-        Assert.AreEqual (lvg2, lvi.Group, "#B3");
+
+        Assert.That((object?)lvg1.Items.Count, Is.EqualTo(0));
+        Assert.That((object?)lvg2.Items.Count, Is.EqualTo(1));
+        Assert.That((object?)lvi.Group, Is.EqualTo(lvg2));
     }
 
     [Test]
-    public void ListViewItemUseItemStyleForSubItems ()
+    public void ListViewItemUseItemStyleForSubItems()
     {
-        var item = new ListViewItem ();
-        Assert.AreEqual (1, item.SubItems.Count);
+        var item = new ListViewItem();
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
 
         // UseitemStyleForSubItems works at draw level
         item.UseItemStyleForSubItems = true;
 
-        var subitem0 = item.SubItems [0];
+        var subitem0 = item.SubItems[0];
         var subitem0_back_color = subitem0.BackColor = Color.Black;
         var subitem0_fore_color = subitem0.ForeColor = Color.White;
 
-        Assert.AreEqual (subitem0_back_color, item.SubItems [0].BackColor, "UseItemStyleForSubItems#1");
-        Assert.AreEqual (subitem0_fore_color, item.SubItems [0].ForeColor, "UseItemStyleForSubItems#2");
-        Assert.AreEqual (item.BackColor, item.SubItems [0].BackColor, "UseItemStyleForSubItems#3");
-        Assert.AreEqual (item.ForeColor, item.SubItems [0].ForeColor, "UseItemStyleForSubItems#4");
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(subitem0_back_color), "UseItemStyleForSubItems#1");
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(subitem0_fore_color), "UseItemStyleForSubItems#2");
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(item.BackColor), "UseItemStyleForSubItems#3");
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(item.ForeColor), "UseItemStyleForSubItems#4");
 
-        var subitem1 = item.SubItems.Add ("SubItem");
+        var subitem1 = item.SubItems.Add("SubItem");
         var subitem1_back_color = subitem1.BackColor = Color.Blue;
         var subitem1_fore_color = subitem1.ForeColor = Color.Gray;
 
-        Assert.AreEqual (subitem1_back_color, subitem1.BackColor, "UseItemStyleForSubItem#5");
-        Assert.AreEqual (subitem1_fore_color, subitem1.ForeColor, "UseItemStyleForSubItem#6");
+        Assert.That((object?)subitem1.BackColor, Is.EqualTo(subitem1_back_color), "UseItemStyleForSubItem#5");
+        Assert.That((object?)subitem1.ForeColor, Is.EqualTo(subitem1_fore_color), "UseItemStyleForSubItem#6");
     }
 
     [Test]
-    public void ListViewItemTestClone ()
+    public void ListViewItemTestClone()
     {
-        var f = new Form ();
-        var lv = new ListView ();
+        var f = new Form();
+        var lv = new ListView();
         lv.Parent = f;
 
-        var item1 = lv.Items.Add ("Hello");
+        var item1 = lv.Items.Add("Hello");
         item1.ForeColor = Color.Blue;
         item1.BackColor = Color.Red;
-        item1.Font = new Font ("Arial", 14);
-        item1.SubItems.Add ("Element2");
+        item1.Font = new Font("Arial", 14);
+        item1.SubItems.Add("Element2");
         item1.ToolTipText = item1.Text;
 
-        f.Show ();
+        f.Show();
 
-        var item2 =  (ListViewItem) item1.Clone ();
-        Assert.AreEqual (Color.Blue, item2.ForeColor, "#1");
-        Assert.AreEqual (Color.Red, item2.BackColor, "#2");
-        Assert.AreEqual ("Hello", item2.Text, "#3");
-        Assert.AreEqual (item1.Font, item2.Font, "#4");
-        Assert.AreEqual (2, item2.SubItems.Count, "#5");
-        Assert.AreEqual ("Hello", item2.SubItems [0].Text, "#6");
-        Assert.AreEqual ("Element2", item2.SubItems[1].Text, "#7");
-        Assert.AreEqual (item1.ToolTipText, item2.ToolTipText, "#8");
+        var item2 = (ListViewItem)item1.Clone();
+        Assert.That((object?)item2.ForeColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)item2.BackColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)item2.Text, Is.EqualTo("Hello"));
+        Assert.That((object?)item2.Font, Is.EqualTo(item1.Font));
+        Assert.That((object?)item2.SubItems.Count, Is.EqualTo(2));
+        Assert.That((object?)item2.SubItems[0].Text, Is.EqualTo("Hello"));
+        Assert.That((object?)item2.SubItems[1].Text, Is.EqualTo("Element2"));
+        Assert.That((object?)item2.ToolTipText, Is.EqualTo(item1.ToolTipText));
         // Focused is not copied
         // These tests shoule be re-enabled when #333693
-        /*Assert.IsTrue (item1.Focused, "#9");
-        Assert.IsFalse (item2.Focused, "#10");*/
+        /*Assert.IsTrue (item1.Focused);
+        Assert.IsFalse (item2.Focused);*/
 
-        f.Dispose ();
+        f.Dispose();
     }
 
     [Test]
     public void ListViewItemTestImageIndex()
     {
-        var item1 = new ListViewItem();
+        var item1 = new ListViewItem
+        {
+            ImageKey = "Key1",
+            ImageIndex = 0
+        };
 
-        item1.ImageKey = "Key1";
-        item1.ImageIndex = 0;
-        Assert.AreEqual(String.Empty, item1.ImageKey, "ImageIndex#1");
+        object expected = string.Empty;
+        Assert.That((object?)item1.ImageKey, Is.EqualTo(expected), "ImageIndex#1");
 
         item1.ImageIndex = 0;
         item1.ImageKey = "Key1";
-        Assert.AreEqual (-1, item1.ImageIndex, "ImageIndex#2");
+        Assert.That((object?)item1.ImageIndex, Is.EqualTo(-1), "ImageIndex#2");
 
         item1.ImageKey = "Key1";
         item1.ImageIndex = -1;
-        Assert.AreEqual (String.Empty, item1.ImageKey, "ImageIndex#3");
+        object expected1 = string.Empty;
+        Assert.That((object?)item1.ImageKey, Is.EqualTo(expected1), "ImageIndex#3");
 
         item1.ImageIndex = 0;
-        item1.ImageKey = String.Empty;
-        Assert.AreEqual (-1, item1.ImageIndex, "ImageIndex#4");
+        item1.ImageKey = string.Empty;
+        Assert.That((object?)item1.ImageIndex, Is.EqualTo(-1), "ImageIndex#4");
     }
 
     [Test]
-    public void ListViewItemToolTipText ()
+    public void ListViewItemToolTipText()
     {
-        var item1 = new ListViewItem();
-        item1.ToolTipText = null;
-        Assert.AreEqual (String.Empty, item1.ToolTipText, "ToolTipText#1");
+        var item1 = new ListViewItem
+        {
+            ToolTipText = null
+        };
+        object expected = string.Empty;
+        Assert.That((object?)item1.ToolTipText, Is.EqualTo(expected), "ToolTipText#1");
     }
 
     [TestCase(CheckState.Checked, CheckState.Unchecked, CheckState.Unchecked)]
     [TestCase(CheckState.Checked, CheckState.Unchecked, CheckState.Checked)]
     [TestCase(CheckState.Unchecked, CheckState.Checked, CheckState.Unchecked)]
-    public void ListViewItemCheckEventChangesValue (CheckState currentValue, CheckState newValue, CheckState overrideNewValue)
+    public void ListViewItemCheckEventChangesValue(CheckState currentValue, CheckState newValue, CheckState overrideNewValue)
     {
-        var lv = new ListView ();
-        var item1 = lv.Items.Add ("Item 1");
+        var lv = new ListView();
+        var item1 = lv.Items.Add("Item 1");
         item1.Checked = currentValue == CheckState.Checked;
 
-        ItemCheckEventHandler? checkEventHandler = (object? _, ItemCheckEventArgs args) => {
-            Assert.AreEqual (currentValue, args.CurrentValue, "#1");
-            Assert.AreEqual (newValue, args.NewValue, "#2");
+        ItemCheckEventHandler checkEventHandler = (object? _, ItemCheckEventArgs args) =>
+        {
+            Assert.That((object?)args.CurrentValue, Is.EqualTo(currentValue));
+            Assert.That((object?)args.NewValue, Is.EqualTo(newValue));
             args.NewValue = overrideNewValue;
         };
 
         lv.ItemCheck += checkEventHandler;
-        try {
+        try
+        {
             item1.Checked = newValue == CheckState.Checked;
-            Assert.AreEqual (overrideNewValue == CheckState.Checked, item1.Checked, "#3");
-        } finally {
+            object? expected = overrideNewValue == CheckState.Checked;
+            Assert.That((object?)item1.Checked, Is.EqualTo(expected));
+        }
+        finally
+        {
             lv.ItemCheck -= checkEventHandler;
         }
     }
@@ -647,104 +689,120 @@ public class ListViewItemTest : TestHelper
 public class ListViewSubItemTest : TestHelper
 {
     [Test] // ctor ()
-    public void Constructor1 ()
+    public void Constructor1()
     {
-        var subItem = new ListViewItem.ListViewSubItem ();
-        Assert.AreEqual (string.Empty, subItem.Text, "#1");
-        Assert.AreEqual (SystemColors.Window, subItem.BackColor, "#2");
-        Assert.AreEqual (SystemColors.WindowText, subItem.ForeColor, "#3");
+        var subItem = new ListViewItem.ListViewSubItem();
+        object expected = string.Empty;
+        Assert.That((object?)subItem.Text, Is.EqualTo(expected));
+        Assert.That((object?)subItem.BackColor, Is.EqualTo(SystemColors.Window));
+        Assert.That((object?)subItem.ForeColor, Is.EqualTo(SystemColors.WindowText));
     }
 
     [Test] // ctor (ListViewItem, String)
-    public void Constructor2 ()
+    public void Constructor2()
     {
-        ListViewItem.ListViewSubItem subItem;
-        var item = new ListViewItem ();
-			
-        subItem = new ListViewItem.ListViewSubItem (null, null);
-        Assert.IsNotNull (subItem.Font, "#A1");
-        Assert.AreEqual (string.Empty, subItem.Name, "#A2");
-        Assert.IsNull (subItem.Tag, "#A3");
-        Assert.AreEqual (String.Empty, subItem.Text, "#A4");
+        var item = new ListViewItem();
 
-        subItem = new ListViewItem.ListViewSubItem (item, "SubItem2");
-        Assert.IsNotNull (subItem.Font, "#B1");
-        Assert.AreEqual (string.Empty, subItem.Name, "#B2");
-        Assert.IsNull (subItem.Tag, "#B3");
-        Assert.AreEqual ("SubItem2", subItem.Text, "#B4");
+        var subItem = new ListViewItem.ListViewSubItem(null, null);
+        Assert.IsNotNull(subItem.Font);
+        object expected = string.Empty;
+        Assert.That((object?)subItem.Name, Is.EqualTo(expected));
+        Assert.IsNull(subItem.Tag);
+        object expected1 = string.Empty;
+        Assert.That((object?)subItem.Text, Is.EqualTo(expected1));
+
+        subItem = new ListViewItem.ListViewSubItem(item, "SubItem2");
+        Assert.IsNotNull(subItem.Font);
+        object expected2 = string.Empty;
+        Assert.That((object?)subItem.Name, Is.EqualTo(expected2));
+        Assert.IsNull(subItem.Tag);
+        Assert.That((object?)subItem.Text, Is.EqualTo("SubItem2"));
     }
 
     [Test] // ctor (ListViewItem, String, Color, Color, Font)
-    public void Constructor3 ()
+    public void Constructor3()
     {
-        ListViewItem.ListViewSubItem subItem;
-        var font = new Font ("Arial", 12);
-        var item = new ListViewItem ();
+        var font = new Font("Arial", 12);
+        var item = new ListViewItem();
 
-        subItem = new ListViewItem.ListViewSubItem (null, null,
+        var subItem = new ListViewItem.ListViewSubItem(null, null,
             Color.Blue, Color.Red, null);
-        Assert.AreEqual (Color.Red, subItem.BackColor, "#A1");
-        Assert.IsNotNull (subItem.Font, "#A2");
-        Assert.AreEqual (Color.Blue, subItem.ForeColor, "#A3");
-        Assert.AreEqual (string.Empty, subItem.Name, "#A4");
-        Assert.IsNull (subItem.Tag, "#A5");
-        Assert.AreEqual (string.Empty, subItem.Text, "#A6");
+        Assert.That((object?)subItem.BackColor, Is.EqualTo(Color.Red));
+        Assert.IsNotNull(subItem.Font);
+        Assert.That((object?)subItem.ForeColor, Is.EqualTo(Color.Blue));
+        object expected = string.Empty;
+        Assert.That((object?)subItem.Name, Is.EqualTo(expected));
+        Assert.IsNull(subItem.Tag);
+        object expected1 = string.Empty;
+        Assert.That((object?)subItem.Text, Is.EqualTo(expected1));
 
-        subItem = new ListViewItem.ListViewSubItem (item, "SubItem3",
+        subItem = new ListViewItem.ListViewSubItem(item, "SubItem3",
             Color.Blue, Color.Green, font);
-        Assert.AreEqual (Color.Green, subItem.BackColor, "#B1");
-        Assert.AreSame (font, subItem.Font, "#B2");
-        Assert.AreEqual (Color.Blue, subItem.ForeColor, "#B3");
-        Assert.AreEqual (string.Empty, subItem.Name, "#B4");
-        Assert.IsNull (subItem.Tag, "#B5");
-        Assert.AreEqual ("SubItem3", subItem.Text, "#B6");
+        Assert.That((object?)subItem.BackColor, Is.EqualTo(Color.Green));
+        Assert.That((object?)subItem.Font, Is.SameAs(font));
+        Assert.That((object?)subItem.ForeColor, Is.EqualTo(Color.Blue));
+        object expected2 = string.Empty;
+        Assert.That((object?)subItem.Name, Is.EqualTo(expected2));
+        Assert.IsNull(subItem.Tag);
+        Assert.That((object?)subItem.Text, Is.EqualTo("SubItem3"));
     }
 
     [Test]
-    public void Name ()
+    public void Name()
     {
-        var subItem = new ListViewItem.ListViewSubItem ();
-        subItem.Name = "foo";
-        Assert.AreEqual ("foo", subItem.Name, "#1");
-        subItem.Name = null;
-        Assert.AreEqual (string.Empty, subItem.Name, "#2");
+        var subItem = new ListViewItem.ListViewSubItem
+        {
+            Name = "foo"
+        };
+        Assert.That((object?)subItem.Name, Is.EqualTo("foo"));
+        subItem.Name = null!;
+        object expected = string.Empty;
+        Assert.That((object?)subItem.Name, Is.EqualTo(expected));
         subItem.Name = "bar";
-        Assert.AreEqual ("bar", subItem.Name, "#3");
+        Assert.That((object?)subItem.Name, Is.EqualTo("bar"));
         subItem.Name = string.Empty;
-        Assert.AreEqual (string.Empty, subItem.Name, "#4");
+        object expected1 = string.Empty;
+        Assert.That((object?)subItem.Name, Is.EqualTo(expected1));
         subItem.Name = " \t ";
-        Assert.AreEqual (" \t ", subItem.Name, "#5");
+        Assert.That((object?)subItem.Name, Is.EqualTo(" \t "));
     }
 
     [Test]
-    public void Tag ()
+    public void Tag()
     {
-        var subItem = new ListViewItem.ListViewSubItem ();
-        subItem.Tag = "foo";
-        Assert.AreEqual ("foo", subItem.Tag, "#1");
+        var subItem = new ListViewItem.ListViewSubItem
+        {
+            Tag = "foo"
+        };
+        Assert.That(subItem.Tag, Is.EqualTo("foo"));
         subItem.Tag = null;
-        Assert.IsNull (subItem.Tag, "#2");
+        Assert.IsNull(subItem.Tag);
         subItem.Tag = 5;
-        Assert.AreEqual (5, subItem.Tag, "#3");
+        Assert.That(subItem.Tag, Is.EqualTo(5));
     }
 
     [Test]
-    public void Text ()
+    public void Text()
     {
-        var subItem = new ListViewItem.ListViewSubItem ();
-        subItem.Text = "foo";
-        Assert.AreEqual ("foo", subItem.Text, "#1");
-        subItem.Text = null;
-        Assert.AreEqual (string.Empty, subItem.Text, "#2");
+        var subItem = new ListViewItem.ListViewSubItem
+        {
+            Text = "foo"
+        };
+        Assert.That((object?)subItem.Text, Is.EqualTo("foo"));
+        subItem.Text = null!;
+        object expected = string.Empty;
+        Assert.That((object?)subItem.Text, Is.EqualTo(expected));
         subItem.Text = "bar";
-        Assert.AreEqual ("bar", subItem.Text, "#3");
+        Assert.That((object?)subItem.Text, Is.EqualTo("bar"));
         subItem.Text = string.Empty;
-        Assert.AreEqual (string.Empty, subItem.Text, "#4");
+        object expected1 = string.Empty;
+        Assert.That((object?)subItem.Text, Is.EqualTo(expected1));
         subItem.Text = " \t ";
-        Assert.AreEqual (" \t ", subItem.Text, "#5");
+        Assert.That((object?)subItem.Text, Is.EqualTo(" \t "));
     }
 
-    static byte [] _serializedV11_MS = {
+    private static byte[] _serializedV11_MS =
+    [
         0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0c, 0x02, 0x00, 0x00, 0x00,
         0x5a, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x57, 0x69, 0x6e,
@@ -826,9 +884,11 @@ public class ListViewSubItemTest : TestHelper
         0x77, 0x69, 0x6e, 0x67, 0x2e, 0x47, 0x72, 0x61, 0x70, 0x68, 0x69,
         0x63, 0x73, 0x55, 0x6e, 0x69, 0x74, 0x01, 0x00, 0x00, 0x00, 0x07,
         0x76, 0x61, 0x6c, 0x75, 0x65, 0x5f, 0x5f, 0x00, 0x08, 0x05, 0x00,
-        0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0b };
+        0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0b
+    ];
 
-    static byte [] _serializedV20_MS = {
+    private static byte[] _serializedV20_MS =
+    [
         0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0c, 0x02, 0x00, 0x00, 0x00,
         0x57, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x57, 0x69, 0x6e,
@@ -913,9 +973,11 @@ public class ListViewSubItemTest : TestHelper
         0x47, 0x72, 0x61, 0x70, 0x68, 0x69, 0x63, 0x73, 0x55, 0x6e, 0x69,
         0x74, 0x01, 0x00, 0x00, 0x00, 0x07, 0x76, 0x61, 0x6c, 0x75, 0x65,
         0x5f, 0x5f, 0x00, 0x08, 0x07, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
-        0x00, 0x0b };
+        0x00, 0x0b
+    ];
 
-    static byte [] _serializedV11_Mono = {
+    private static byte[] _serializedV11_Mono =
+    [
         0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0c, 0x02, 0x00, 0x00, 0x00,
         0x5a, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x57, 0x69, 0x6e,
@@ -999,315 +1061,353 @@ public class ListViewSubItemTest : TestHelper
         0x69, 0x6e, 0x67, 0x2e, 0x47, 0x72, 0x61, 0x70, 0x68, 0x69, 0x63,
         0x73, 0x55, 0x6e, 0x69, 0x74, 0x01, 0x00, 0x00, 0x00, 0x07, 0x76,
         0x61, 0x6c, 0x75, 0x65, 0x5f, 0x5f, 0x00, 0x08, 0x05, 0x00, 0x00,
-        0x00, 0x03, 0x00, 0x00, 0x00, 0x0b };
+        0x00, 0x03, 0x00, 0x00, 0x00, 0x0b
+    ];
 
-    static byte [] _serializedV20_Mono = {
-        0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00, 
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0c, 0x02, 0x00, 0x00, 0x00, 
-        0x57, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x57, 0x69, 0x6e, 
-        0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46, 0x6f, 0x72, 0x6d, 0x73, 0x2c, 
-        0x20, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3d, 0x32, 0x2e, 
-        0x30, 0x2e, 0x30, 0x2e, 0x30, 0x2c, 0x20, 0x43, 0x75, 0x6c, 0x74, 
-        0x75, 0x72, 0x65, 0x3d, 0x6e, 0x65, 0x75, 0x74, 0x72, 0x61, 0x6c, 
-        0x2c, 0x20, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 
-        0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x3d, 0x62, 0x37, 0x37, 0x61, 0x35, 
-        0x63, 0x35, 0x36, 0x31, 0x39, 0x33, 0x34, 0x65, 0x30, 0x38, 0x39, 
-        0x05, 0x01, 0x00, 0x00, 0x00, 0x31, 0x53, 0x79, 0x73, 0x74, 0x65, 
-        0x6d, 0x2e, 0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46, 
-        0x6f, 0x72, 0x6d, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x69, 
-        0x65, 0x77, 0x49, 0x74, 0x65, 0x6d, 0x2b, 0x4c, 0x69, 0x73, 0x74, 
-        0x56, 0x69, 0x65, 0x77, 0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 
-        0x04, 0x00, 0x00, 0x00, 0x04, 0x74, 0x65, 0x78, 0x74, 0x04, 0x6e, 
-        0x61, 0x6d, 0x65, 0x08, 0x75, 0x73, 0x65, 0x72, 0x44, 0x61, 0x74, 
-        0x61, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x01, 0x01, 0x02, 0x04, 
-        0x3e, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x57, 0x69, 0x6e, 
-        0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46, 0x6f, 0x72, 0x6d, 0x73, 0x2e, 
-        0x4c, 0x69, 0x73, 0x74, 0x56, 0x69, 0x65, 0x77, 0x49, 0x74, 0x65, 
-        0x6d, 0x2b, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x69, 0x65, 0x77, 0x53, 
-        0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 0x2b, 0x53, 0x75, 0x62, 0x49, 
-        0x74, 0x65, 0x6d, 0x53, 0x74, 0x79, 0x6c, 0x65, 0x02, 0x00, 0x00, 
-        0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x03, 0x00, 0x00, 0x00, 0x0b, 
-        0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 0x54, 0x65, 0x78, 0x74, 
-        0x06, 0x04, 0x00, 0x00, 0x00, 0x03, 0x66, 0x6f, 0x6f, 0x06, 0x05, 
-        0x00, 0x00, 0x00, 0x03, 0x62, 0x61, 0x72, 0x09, 0x06, 0x00, 0x00, 
-        0x00, 0x0c, 0x07, 0x00, 0x00, 0x00, 0x51, 0x53, 0x79, 0x73, 0x74, 
-        0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2c, 
-        0x20, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3d, 0x32, 0x2e, 
-        0x30, 0x2e, 0x30, 0x2e, 0x30, 0x2c, 0x20, 0x43, 0x75, 0x6c, 0x74, 
-        0x75, 0x72, 0x65, 0x3d, 0x6e, 0x65, 0x75, 0x74, 0x72, 0x61, 0x6c, 
-        0x2c, 0x20, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 
-        0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x3d, 0x62, 0x30, 0x33, 0x66, 0x35, 
-        0x66, 0x37, 0x66, 0x31, 0x31, 0x64, 0x35, 0x30, 0x61, 0x33, 0x61, 
-        0x05, 0x06, 0x00, 0x00, 0x00, 0x3e, 0x53, 0x79, 0x73, 0x74, 0x65, 
-        0x6d, 0x2e, 0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46, 
-        0x6f, 0x72, 0x6d, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x69, 
-        0x65, 0x77, 0x49, 0x74, 0x65, 0x6d, 0x2b, 0x4c, 0x69, 0x73, 0x74, 
-        0x56, 0x69, 0x65, 0x77, 0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 
-        0x2b, 0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 0x53, 0x74, 0x79, 
-        0x6c, 0x65, 0x03, 0x00, 0x00, 0x00, 0x09, 0x62, 0x61, 0x63, 0x6b, 
-        0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x09, 0x66, 0x6f, 0x72, 0x65, 0x43, 
-        0x6f, 0x6c, 0x6f, 0x72, 0x04, 0x66, 0x6f, 0x6e, 0x74, 0x04, 0x04, 
-        0x04, 0x14, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 
-        0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 
-        0x07, 0x00, 0x00, 0x00, 0x14, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 
-        0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x43, 0x6f, 
-        0x6c, 0x6f, 0x72, 0x07, 0x00, 0x00, 0x00, 0x13, 0x53, 0x79, 0x73, 
-        0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 
-        0x2e, 0x46, 0x6f, 0x6e, 0x74, 0x07, 0x00, 0x00, 0x00, 0x02, 0x00, 
-        0x00, 0x00, 0x05, 0x08, 0x00, 0x00, 0x00, 0x14, 0x53, 0x79, 0x73, 
-        0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 
-        0x2e, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x04, 0x00, 0x00, 0x00, 0x05, 
-        0x76, 0x61, 0x6c, 0x75, 0x65, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 
-        0x0a, 0x6b, 0x6e, 0x6f, 0x77, 0x6e, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 
-        0x04, 0x6e, 0x61, 0x6d, 0x65, 0x00, 0x00, 0x00, 0x01, 0x09, 0x07, 
-        0x07, 0x07, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0xff, 0x00, 0x00, 
-        0x00, 0x00, 0x07, 0x00, 0x4f, 0x00, 0x06, 0x09, 0x00, 0x00, 0x00, 
-        0x05, 0x47, 0x72, 0x65, 0x65, 0x6e, 0x01, 0x0a, 0x00, 0x00, 0x00, 
-        0x08, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 
-        0x00, 0x07, 0x00, 0xa6, 0x00, 0x06, 0x0b, 0x00, 0x00, 0x00, 0x06, 
-        0x59, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x09, 0x0c, 0x00, 0x00, 0x00, 
-        0x05, 0x0c, 0x00, 0x00, 0x00, 0x13, 0x53, 0x79, 0x73, 0x74, 0x65, 
-        0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x46, 
-        0x6f, 0x6e, 0x74, 0x04, 0x00, 0x00, 0x00, 0x04, 0x4e, 0x61, 0x6d, 
-        0x65, 0x04, 0x53, 0x69, 0x7a, 0x65, 0x05, 0x53, 0x74, 0x79, 0x6c, 
-        0x65, 0x04, 0x55, 0x6e, 0x69, 0x74, 0x01, 0x00, 0x04, 0x04, 0x0b, 
-        0x18, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 
-        0x77, 0x69, 0x6e, 0x67, 0x2e, 0x46, 0x6f, 0x6e, 0x74, 0x53, 0x74, 
-        0x79, 0x6c, 0x65, 0x07, 0x00, 0x00, 0x00, 0x1b, 0x53, 0x79, 0x73, 
-        0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 
-        0x2e, 0x47, 0x72, 0x61, 0x70, 0x68, 0x69, 0x63, 0x73, 0x55, 0x6e, 
-        0x69, 0x74, 0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x06, 
-        0x0d, 0x00, 0x00, 0x00, 0x05, 0x41, 0x72, 0x69, 0x61, 0x6c, 0x00, 
-        0x00, 0x40, 0x41, 0x05, 0x0e, 0x00, 0x00, 0x00, 0x18, 0x53, 0x79, 
-        0x73, 0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 
-        0x67, 0x2e, 0x46, 0x6f, 0x6e, 0x74, 0x53, 0x74, 0x79, 0x6c, 0x65, 
-        0x01, 0x00, 0x00, 0x00, 0x07, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x5f, 
-        0x5f, 0x00, 0x08, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-        0x05, 0x0f, 0x00, 0x00, 0x00, 0x1b, 0x53, 0x79, 0x73, 0x74, 0x65, 
-        0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x47, 
-        0x72, 0x61, 0x70, 0x68, 0x69, 0x63, 0x73, 0x55, 0x6e, 0x69, 0x74, 
-        0x01, 0x00, 0x00, 0x00, 0x07, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x5f, 
-        0x5f, 0x00, 0x08, 0x07, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 
-        0x0b };
+    private static byte[] _serializedV20_Mono =
+    [
+        0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0c, 0x02, 0x00, 0x00, 0x00,
+        0x57, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x57, 0x69, 0x6e,
+        0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46, 0x6f, 0x72, 0x6d, 0x73, 0x2c,
+        0x20, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3d, 0x32, 0x2e,
+        0x30, 0x2e, 0x30, 0x2e, 0x30, 0x2c, 0x20, 0x43, 0x75, 0x6c, 0x74,
+        0x75, 0x72, 0x65, 0x3d, 0x6e, 0x65, 0x75, 0x74, 0x72, 0x61, 0x6c,
+        0x2c, 0x20, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79,
+        0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x3d, 0x62, 0x37, 0x37, 0x61, 0x35,
+        0x63, 0x35, 0x36, 0x31, 0x39, 0x33, 0x34, 0x65, 0x30, 0x38, 0x39,
+        0x05, 0x01, 0x00, 0x00, 0x00, 0x31, 0x53, 0x79, 0x73, 0x74, 0x65,
+        0x6d, 0x2e, 0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46,
+        0x6f, 0x72, 0x6d, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x69,
+        0x65, 0x77, 0x49, 0x74, 0x65, 0x6d, 0x2b, 0x4c, 0x69, 0x73, 0x74,
+        0x56, 0x69, 0x65, 0x77, 0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d,
+        0x04, 0x00, 0x00, 0x00, 0x04, 0x74, 0x65, 0x78, 0x74, 0x04, 0x6e,
+        0x61, 0x6d, 0x65, 0x08, 0x75, 0x73, 0x65, 0x72, 0x44, 0x61, 0x74,
+        0x61, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x01, 0x01, 0x02, 0x04,
+        0x3e, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x57, 0x69, 0x6e,
+        0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46, 0x6f, 0x72, 0x6d, 0x73, 0x2e,
+        0x4c, 0x69, 0x73, 0x74, 0x56, 0x69, 0x65, 0x77, 0x49, 0x74, 0x65,
+        0x6d, 0x2b, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x69, 0x65, 0x77, 0x53,
+        0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 0x2b, 0x53, 0x75, 0x62, 0x49,
+        0x74, 0x65, 0x6d, 0x53, 0x74, 0x79, 0x6c, 0x65, 0x02, 0x00, 0x00,
+        0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x03, 0x00, 0x00, 0x00, 0x0b,
+        0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 0x54, 0x65, 0x78, 0x74,
+        0x06, 0x04, 0x00, 0x00, 0x00, 0x03, 0x66, 0x6f, 0x6f, 0x06, 0x05,
+        0x00, 0x00, 0x00, 0x03, 0x62, 0x61, 0x72, 0x09, 0x06, 0x00, 0x00,
+        0x00, 0x0c, 0x07, 0x00, 0x00, 0x00, 0x51, 0x53, 0x79, 0x73, 0x74,
+        0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2c,
+        0x20, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3d, 0x32, 0x2e,
+        0x30, 0x2e, 0x30, 0x2e, 0x30, 0x2c, 0x20, 0x43, 0x75, 0x6c, 0x74,
+        0x75, 0x72, 0x65, 0x3d, 0x6e, 0x65, 0x75, 0x74, 0x72, 0x61, 0x6c,
+        0x2c, 0x20, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79,
+        0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x3d, 0x62, 0x30, 0x33, 0x66, 0x35,
+        0x66, 0x37, 0x66, 0x31, 0x31, 0x64, 0x35, 0x30, 0x61, 0x33, 0x61,
+        0x05, 0x06, 0x00, 0x00, 0x00, 0x3e, 0x53, 0x79, 0x73, 0x74, 0x65,
+        0x6d, 0x2e, 0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x73, 0x2e, 0x46,
+        0x6f, 0x72, 0x6d, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x69,
+        0x65, 0x77, 0x49, 0x74, 0x65, 0x6d, 0x2b, 0x4c, 0x69, 0x73, 0x74,
+        0x56, 0x69, 0x65, 0x77, 0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d,
+        0x2b, 0x53, 0x75, 0x62, 0x49, 0x74, 0x65, 0x6d, 0x53, 0x74, 0x79,
+        0x6c, 0x65, 0x03, 0x00, 0x00, 0x00, 0x09, 0x62, 0x61, 0x63, 0x6b,
+        0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x09, 0x66, 0x6f, 0x72, 0x65, 0x43,
+        0x6f, 0x6c, 0x6f, 0x72, 0x04, 0x66, 0x6f, 0x6e, 0x74, 0x04, 0x04,
+        0x04, 0x14, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72,
+        0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x43, 0x6f, 0x6c, 0x6f, 0x72,
+        0x07, 0x00, 0x00, 0x00, 0x14, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d,
+        0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x43, 0x6f,
+        0x6c, 0x6f, 0x72, 0x07, 0x00, 0x00, 0x00, 0x13, 0x53, 0x79, 0x73,
+        0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67,
+        0x2e, 0x46, 0x6f, 0x6e, 0x74, 0x07, 0x00, 0x00, 0x00, 0x02, 0x00,
+        0x00, 0x00, 0x05, 0x08, 0x00, 0x00, 0x00, 0x14, 0x53, 0x79, 0x73,
+        0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67,
+        0x2e, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x04, 0x00, 0x00, 0x00, 0x05,
+        0x76, 0x61, 0x6c, 0x75, 0x65, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65,
+        0x0a, 0x6b, 0x6e, 0x6f, 0x77, 0x6e, 0x43, 0x6f, 0x6c, 0x6f, 0x72,
+        0x04, 0x6e, 0x61, 0x6d, 0x65, 0x00, 0x00, 0x00, 0x01, 0x09, 0x07,
+        0x07, 0x07, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0xff, 0x00, 0x00,
+        0x00, 0x00, 0x07, 0x00, 0x4f, 0x00, 0x06, 0x09, 0x00, 0x00, 0x00,
+        0x05, 0x47, 0x72, 0x65, 0x65, 0x6e, 0x01, 0x0a, 0x00, 0x00, 0x00,
+        0x08, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00,
+        0x00, 0x07, 0x00, 0xa6, 0x00, 0x06, 0x0b, 0x00, 0x00, 0x00, 0x06,
+        0x59, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x09, 0x0c, 0x00, 0x00, 0x00,
+        0x05, 0x0c, 0x00, 0x00, 0x00, 0x13, 0x53, 0x79, 0x73, 0x74, 0x65,
+        0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x46,
+        0x6f, 0x6e, 0x74, 0x04, 0x00, 0x00, 0x00, 0x04, 0x4e, 0x61, 0x6d,
+        0x65, 0x04, 0x53, 0x69, 0x7a, 0x65, 0x05, 0x53, 0x74, 0x79, 0x6c,
+        0x65, 0x04, 0x55, 0x6e, 0x69, 0x74, 0x01, 0x00, 0x04, 0x04, 0x0b,
+        0x18, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61,
+        0x77, 0x69, 0x6e, 0x67, 0x2e, 0x46, 0x6f, 0x6e, 0x74, 0x53, 0x74,
+        0x79, 0x6c, 0x65, 0x07, 0x00, 0x00, 0x00, 0x1b, 0x53, 0x79, 0x73,
+        0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67,
+        0x2e, 0x47, 0x72, 0x61, 0x70, 0x68, 0x69, 0x63, 0x73, 0x55, 0x6e,
+        0x69, 0x74, 0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x06,
+        0x0d, 0x00, 0x00, 0x00, 0x05, 0x41, 0x72, 0x69, 0x61, 0x6c, 0x00,
+        0x00, 0x40, 0x41, 0x05, 0x0e, 0x00, 0x00, 0x00, 0x18, 0x53, 0x79,
+        0x73, 0x74, 0x65, 0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e,
+        0x67, 0x2e, 0x46, 0x6f, 0x6e, 0x74, 0x53, 0x74, 0x79, 0x6c, 0x65,
+        0x01, 0x00, 0x00, 0x00, 0x07, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x5f,
+        0x5f, 0x00, 0x08, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x05, 0x0f, 0x00, 0x00, 0x00, 0x1b, 0x53, 0x79, 0x73, 0x74, 0x65,
+        0x6d, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x69, 0x6e, 0x67, 0x2e, 0x47,
+        0x72, 0x61, 0x70, 0x68, 0x69, 0x63, 0x73, 0x55, 0x6e, 0x69, 0x74,
+        0x01, 0x00, 0x00, 0x00, 0x07, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x5f,
+        0x5f, 0x00, 0x08, 0x07, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x0b
+    ];
 }
 
 [TestFixture]
 public class ListViewSubItemCollectionTest : TestHelper
 {
     [Test]
-    public void Ctor ()
+    public void Ctor()
     {
-        var item = new ListViewItem ();
-        item.Text = "MAIN";
+        var item = new ListViewItem
+        {
+            Text = "MAIN"
+        };
 
-        ListViewItem.ListViewSubItemCollection sub_items;
-        sub_items = new ListViewItem.ListViewSubItemCollection (item);
+        var sub_items = new ListViewItem.ListViewSubItemCollection(item);
 
-        Assert.AreEqual (1, sub_items.Count, "#A1");
-        Assert.AreEqual ("MAIN", sub_items [0].Text, "#A2");
+        Assert.That((object?)sub_items.Count, Is.EqualTo(1));
+        Assert.That((object?)sub_items[0].Text, Is.EqualTo("MAIN"));
 
-        sub_items.Add ("A");
+        sub_items.Add("A");
 
-        Assert.AreEqual (2, sub_items.Count, "#B1");
-        Assert.AreEqual ("A", sub_items [1].Text, "#B2");
+        Assert.That((object?)sub_items.Count, Is.EqualTo(2));
+        Assert.That((object?)sub_items[1].Text, Is.EqualTo("A"));
     }
 
     [Test]
-    public void AddRange1 ()
+    public void AddRange1()
     {
-        var item = new ListViewItem ();
-        var subItemA = item.SubItems.Add ("A");
+        var item = new ListViewItem();
+        var subItemA = item.SubItems.Add("A");
 
-        Assert.AreEqual (2, item.SubItems.Count, "#A1");
-        Assert.IsNotNull (item.SubItems [0], "#A2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#A3");
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(2));
+        Assert.IsNotNull(item.SubItems[0]);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
 
-        var subItemB = new ListViewItem.ListViewSubItem ();
-        subItemB.Text = "B";
-        var subItemC = new ListViewItem.ListViewSubItem ();
+        var subItemB = new ListViewItem.ListViewSubItem
+        {
+            Text = "B"
+        };
+        var subItemC = new ListViewItem.ListViewSubItem();
         subItemB.Text = "C";
 
-        item.SubItems.AddRange (new ListViewItem.ListViewSubItem [] {
-            subItemB, null, subItemC });
-        Assert.AreEqual (4, item.SubItems.Count, "#B1");
-        Assert.IsNotNull (item.SubItems [0], "#B2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#B3");
-        Assert.IsNotNull (item.SubItems [1], "#B3");
-        Assert.AreSame (subItemA, item.SubItems [1], "#B4");
-        Assert.IsNotNull (item.SubItems [2], "#B5");
-        Assert.AreSame (subItemB, item.SubItems [2], "#B6");
-        Assert.IsNotNull (item.SubItems [3], "#B7");
-        Assert.AreSame (subItemC, item.SubItems [3], "#B8");
+        item.SubItems.AddRange([
+            subItemB, null!, subItemC
+        ]);
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(4));
+        Assert.IsNotNull(item.SubItems[0]);
+        object expected1 = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected1));
+        Assert.IsNotNull(item.SubItems[1]);
+        Assert.That((object?)item.SubItems[1], Is.SameAs(subItemA));
+        Assert.IsNotNull(item.SubItems[2]);
+        Assert.That((object?)item.SubItems[2], Is.SameAs(subItemB));
+        Assert.IsNotNull(item.SubItems[3]);
+        Assert.That((object?)item.SubItems[3], Is.SameAs(subItemC));
     }
 
     [Test]
-    public void AddRange1_Null ()
+    public void AddRange1_Null()
     {
-        var item = new ListViewItem ();
-        try {
-            item.SubItems.AddRange ((ListViewItem.ListViewSubItem []) null);
-            Assert.Fail ("#1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#2");
-            Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNotNull (ex.ParamName, "#4");
-            Assert.AreEqual ("items", ex.ParamName, "#5");
-            Assert.IsNull (ex.InnerException, "#6");
-        }
+        var item = new ListViewItem();
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            try
+            {
+                item.SubItems.AddRange((ListViewItem.ListViewSubItem[])null!);
+            }
+            catch (ArgumentNullException ex)
+            {
+                object expected = typeof(ArgumentNullException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("items"));
+                Assert.IsNull(ex.InnerException);
+                throw;
+            }
+        });
     }
 
     [Test]
-    public void AddRange2 ()
-    {
-        var subItemAText = "A";
-        var subItemBText = "B";
-        var subItemCText = "B";
-
-        var item = new ListViewItem ();
-        item.SubItems.Add (subItemAText);
-
-        Assert.AreEqual (2, item.SubItems.Count, "#A1");
-        Assert.IsNotNull (item.SubItems [0], "#A2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#A3");
-        Assert.IsNotNull (item.SubItems [1], "#A4");
-        Assert.AreEqual (subItemAText, item.SubItems [1].Text, "#A5");
-
-        item.SubItems.AddRange (new string [] { subItemBText, null, subItemCText });
-        Assert.AreEqual (4, item.SubItems.Count, "#B1");
-        Assert.IsNotNull (item.SubItems [0], "#B2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#B3");
-        Assert.IsNotNull (item.SubItems [1], "#B4");
-        Assert.AreSame (subItemAText, item.SubItems [1].Text, "#B5");
-        Assert.IsNotNull (item.SubItems [2], "#B6");
-        Assert.AreSame (subItemBText, item.SubItems [2].Text, "#B7");
-        Assert.IsNotNull (item.SubItems [3], "#B8");
-        Assert.AreSame (subItemCText, item.SubItems [3].Text, "#B9");
-    }
-
-    [Test]
-    public void AddRange2_Null ()
-    {
-        var item = new ListViewItem ();
-        try {
-            item.SubItems.AddRange ((string []) null);
-            Assert.Fail ("#1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#2");
-            Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNotNull (ex.ParamName, "#4");
-            Assert.AreEqual ("items", ex.ParamName, "#5");
-            Assert.IsNull (ex.InnerException, "#6");
-        }
-    }
-
-    [Test]
-    public void AddRange3 ()
+    public void AddRange2()
     {
         var subItemAText = "A";
         var subItemBText = "B";
         var subItemCText = "B";
-        var font = new Font ("Arial", 14);
 
-        var item = new ListViewItem ();
-        item.SubItems.Add (subItemAText);
+        var item = new ListViewItem();
+        item.SubItems.Add(subItemAText);
 
-        Assert.AreEqual (2, item.SubItems.Count, "#A1");
-        Assert.IsNotNull (item.SubItems [0], "#A2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#A3");
-        Assert.IsNotNull (item.SubItems [1], "#A4");
-        Assert.AreEqual (subItemAText, item.SubItems [1].Text, "#A5");
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(2));
+        Assert.IsNotNull(item.SubItems[0]);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
+        Assert.IsNotNull(item.SubItems[1]);
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo(subItemAText));
 
-        item.SubItems.AddRange (new string [] { subItemBText, null, subItemCText },
+        item.SubItems.AddRange([subItemBText, null!, subItemCText]);
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(4));
+        Assert.IsNotNull(item.SubItems[0]);
+        object expected1 = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected1));
+        Assert.IsNotNull(item.SubItems[1]);
+        Assert.That((object?)item.SubItems[1].Text, Is.SameAs(subItemAText));
+        Assert.IsNotNull(item.SubItems[2]);
+        Assert.That((object?)item.SubItems[2].Text, Is.SameAs(subItemBText));
+        Assert.IsNotNull(item.SubItems[3]);
+        Assert.That((object?)item.SubItems[3].Text, Is.SameAs(subItemCText));
+    }
+
+    [Test]
+    public void AddRange2_Null()
+    {
+        var item = new ListViewItem();
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            try
+            {
+                item.SubItems.AddRange((string[])null!);
+            }
+            catch (ArgumentNullException ex)
+            {
+                object expected = typeof(ArgumentNullException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("items"));
+                Assert.IsNull(ex.InnerException);
+                throw;
+            }
+        });
+    }
+
+    [Test]
+    public void AddRange3()
+    {
+        var subItemAText = "A";
+        var subItemBText = "B";
+        var subItemCText = "B";
+        var font = new Font("Arial", 14);
+
+        var item = new ListViewItem();
+        item.SubItems.Add(subItemAText);
+
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(2));
+        Assert.IsNotNull(item.SubItems[0]);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
+        Assert.IsNotNull(item.SubItems[1]);
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo(subItemAText));
+
+        item.SubItems.AddRange([subItemBText, null!, subItemCText],
             Color.Blue, Color.Red, font);
-        Assert.AreEqual (4, item.SubItems.Count, "#B1");
-        Assert.IsNotNull (item.SubItems [0], "#B2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#B3");
-        Assert.IsNotNull (item.SubItems [1], "#C1");
-        Assert.AreSame (subItemAText, item.SubItems [1].Text, "#C2");
-        Assert.IsNotNull (item.SubItems [2], "#D1");
-        Assert.AreSame (subItemBText, item.SubItems [2].Text, "#D2");
-        Assert.AreEqual (Color.Blue, item.SubItems [2].ForeColor, "#D3");
-        Assert.AreEqual (Color.Red, item.SubItems [2].BackColor, "#D4");
-        Assert.AreSame (font, item.SubItems [2].Font, "#D5");
-        Assert.IsNotNull (item.SubItems [3], "#E1");
-        Assert.AreSame (subItemCText, item.SubItems [3].Text, "#E2");
-        Assert.AreEqual (Color.Blue, item.SubItems [3].ForeColor, "#E3");
-        Assert.AreEqual (Color.Red, item.SubItems [3].BackColor, "#E4");
-        Assert.AreSame (font, item.SubItems [3].Font, "#E6");
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(4));
+        Assert.IsNotNull(item.SubItems[0]);
+        object expected1 = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected1));
+        Assert.IsNotNull(item.SubItems[1]);
+        Assert.That((object?)item.SubItems[1].Text, Is.SameAs(subItemAText));
+        Assert.IsNotNull(item.SubItems[2]);
+        Assert.That((object?)item.SubItems[2].Text, Is.SameAs(subItemBText));
+        Assert.That((object?)item.SubItems[2].ForeColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)item.SubItems[2].BackColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)item.SubItems[2].Font, Is.SameAs(font));
+        Assert.IsNotNull(item.SubItems[3]);
+        Assert.That((object?)item.SubItems[3].Text, Is.SameAs(subItemCText));
+        Assert.That((object?)item.SubItems[3].ForeColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)item.SubItems[3].BackColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)item.SubItems[3].Font, Is.SameAs(font));
     }
 
     [Test]
-    public void AddRange3_Items_Null ()
+    public void AddRange3_Items_Null()
     {
-        var item = new ListViewItem ();
-        try {
-            item.SubItems.AddRange ((string []) null, Color.Blue, Color.Red,
-                new Font ("Arial", 14));
-            Assert.Fail ("#1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#2");
-            Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNotNull (ex.ParamName, "#4");
-            Assert.AreEqual ("items", ex.ParamName, "#5");
-            Assert.IsNull (ex.InnerException, "#6");
-        }
+        var item = new ListViewItem();
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            try
+            {
+                item.SubItems.AddRange(null!, Color.Blue, Color.Red,
+                    new Font("Arial", 14));
+            }
+            catch (ArgumentNullException ex)
+            {
+                object expected = typeof(ArgumentNullException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("items"));
+                Assert.IsNull(ex.InnerException);
+                throw;
+            }
+        });
     }
 
     [Test]
-    public void AddRange4 ()
+    public void AddRange4()
     {
-        var item = new ListViewItem ();
-        Assert.AreEqual (1, item.SubItems.Count, "#1");
+        var item = new ListViewItem();
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
 
-        item.SubItems.AddRange (new string [3]);
-        Assert.AreEqual (1, item.SubItems.Count, "#2");
+        item.SubItems.AddRange(new string[3]);
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
 
-        item.SubItems.AddRange (new ListViewItem.ListViewSubItem [3]);
-        Assert.AreEqual (1, item.SubItems.Count, "#3");
+        item.SubItems.AddRange(new ListViewItem.ListViewSubItem[3]);
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
     }
 
     [Test]
-    public void Clear ()
+    public void Clear()
     {
-        var item = new ListViewItem ();
-        item.SubItems.AddRange (new string [] { "A", "B", "C" });
-        item.SubItems.Clear ();
-        Assert.AreEqual (1, item.SubItems.Count, "#1");
-        Assert.IsNotNull (item.SubItems [0].Text, "#2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#3");
+        var item = new ListViewItem();
+        item.SubItems.AddRange(["A", "B", "C"]);
+        item.SubItems.Clear();
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
     }
 
     [Test]
-    public void RemoveAt ()
+    public void RemoveAt()
     {
-        var item = new ListViewItem ();
-        item.SubItems.AddRange (new string [] { "A", "B" });
-        Assert.AreEqual (3, item.SubItems.Count, "#A1");
-        Assert.IsNotNull (item.SubItems [0].Text, "#A2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#A3");
-        Assert.IsNotNull (item.SubItems [1].Text, "#A4");
-        Assert.AreEqual ("A", item.SubItems [1].Text, "#A5");
-        Assert.IsNotNull (item.SubItems [2].Text, "#A6");
-        Assert.AreEqual ("B", item.SubItems [2].Text, "#A7");
+        var item = new ListViewItem();
+        item.SubItems.AddRange(["A", "B"]);
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(3));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected));
+        Assert.IsNotNull(item.SubItems[1].Text);
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo("A"));
+        Assert.IsNotNull(item.SubItems[2].Text);
+        Assert.That((object?)item.SubItems[2].Text, Is.EqualTo("B"));
 
-        item.SubItems.RemoveAt (1);
+        item.SubItems.RemoveAt(1);
 
-        Assert.AreEqual (2, item.SubItems.Count, "#B1");
-        Assert.IsNotNull (item.SubItems [0].Text, "#B2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#B3");
-        Assert.IsNotNull (item.SubItems [1].Text, "#B4");
-        Assert.AreEqual ("B", item.SubItems [1].Text, "#B5");
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(2));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected1 = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected1));
+        Assert.IsNotNull(item.SubItems[1].Text);
+        Assert.That((object?)item.SubItems[1].Text, Is.EqualTo("B"));
 
-        item.SubItems.RemoveAt (0);
+        item.SubItems.RemoveAt(0);
 
-        Assert.AreEqual (1, item.SubItems.Count, "#C1");
-        Assert.IsNotNull (item.SubItems [0].Text, "#C2");
-        Assert.AreEqual ("B", item.SubItems [0].Text, "#C3");
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo("B"));
 
-        item.SubItems.RemoveAt (0);
+        item.SubItems.RemoveAt(0);
 
-        Assert.AreEqual (1, item.SubItems.Count, "#D1");
-        Assert.IsNotNull (item.SubItems [0].Text, "#D2");
-        Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#D3");
+        Assert.That((object?)item.SubItems.Count, Is.EqualTo(1));
+        Assert.IsNotNull(item.SubItems[0].Text);
+        object expected2 = string.Empty;
+        Assert.That((object?)item.SubItems[0].Text, Is.EqualTo(expected2));
     }
 }

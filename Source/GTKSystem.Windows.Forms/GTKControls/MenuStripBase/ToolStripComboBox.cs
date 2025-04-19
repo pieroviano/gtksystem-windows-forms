@@ -2,16 +2,17 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.Collections;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
 
-public class ToolStripComboBox : WidgetToolStrip<Gtk.MenuItem>
+using Size = Drawing.Size;
+
+public partial class ToolStripComboBox : WidgetToolStrip<Gtk.MenuItem>
 {
     private readonly ObjectCollection itemsData;
     public ToolStripComboBox() : base("ToolStripComboBox",[])
@@ -26,16 +27,6 @@ public class ToolStripComboBox : WidgetToolStrip<Gtk.MenuItem>
         OnSelectedValueChanged(e);
     }
 
-    protected virtual void OnSelectedValueChanged(EventArgs e)
-    {
-        SelectedValueChanged?.Invoke(this, e);
-    }
-
-    protected virtual void OnSelectedIndexChanged(EventArgs e)
-    {
-        SelectedIndexChanged?.Invoke(this, e);
-    }
-
     public override Size Size { get => base.Size; set { comboBox.WidthRequest = value.Width; comboBox.HeightRequest = value.Height; base.Size = value; } }
 
     public bool FormattingEnabled { get; set; }
@@ -44,13 +35,10 @@ public class ToolStripComboBox : WidgetToolStrip<Gtk.MenuItem>
     public int SelectedIndex => comboBox.Active;
     public new ObjectCollection Items => itemsData;
 
-    public event EventHandler? SelectedIndexChanged;
-    public event EventHandler? SelectedValueChanged;
-
     [ListBindable(false)]
     public class ObjectCollection : ArrayList
     {
-        readonly Gtk.ComboBoxText owner;
+        private readonly Gtk.ComboBoxText owner;
         public ObjectCollection(Gtk.ComboBoxText owner)
         {
             this.owner = owner;

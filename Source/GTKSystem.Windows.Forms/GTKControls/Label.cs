@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.ComponentModel;
@@ -12,10 +12,18 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class Label : Control
 {
-    public readonly LabelBase self = new();
+    public readonly LabelBase self;
     public override object GtkControl => self;
-    public override string Text { get => self.Text; set => self.Text = value;
+    public override string Text
+    {
+        get => self.Text;
+        set
+        {
+            self.Text = value;
+            base.Text = value ?? string.Empty;
+        }
     }
+
     public override RightToLeft RightToLeft { get => self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No;
         set => self.Direction = value == RightToLeft.Yes ?  Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr;
     }
@@ -72,4 +80,9 @@ public class Label : Control
         }
     }
     private Drawing.ContentAlignment textAlign;
+
+    public Label()
+    {
+        self = new LabelBase();
+    }
 }

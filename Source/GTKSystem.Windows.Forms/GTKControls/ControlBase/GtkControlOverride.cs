@@ -2,29 +2,28 @@
 using Cairo;
 using Gdk;
 using Gtk;
-using Color = System.Drawing.Color;
 using Graphics = System.Drawing.Graphics;
 using Image = System.Drawing.Image;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace System.Windows.Forms;
 
-public delegate void PaintGraphicsEventHandler(Context? cr, Rectangle rec);
-public class GtkControlOverride: IControlOverride, IGtkControlOverride
+using Color = Drawing.Color;
+using Rectangle = Drawing.Rectangle;
+
+public partial class GtkControlOverride: IControlOverride, IGtkControlOverride
 {
-    private readonly Widget? container;
+    private readonly IWidget? container;
     private Pixbuf? imagePixbuf;
-    public GtkControlOverride(Widget? container)
+    public GtkControlOverride(IWidget? container)
     {
         this.container = container;
     }
-    public event DrawnHandler? DrawnBackground;
-    public event PaintEventHandler? Paint;
     public Color? BackColor { get; set; }
     private Image? backgroundImage;
     public Image? BackgroundImage { get => backgroundImage;
         set { backgroundImage = value; backgroundPixbuf = null; } }
-    public ImageLayout BackgroundImageLayout { get; set; }
+
+    public ImageLayout BackgroundImageLayout { get; set; } = ImageLayout.Tile;
     public Image? Image { get; set; }
     public ContentAlignment ImageAlign { get; set; }
 
@@ -32,16 +31,6 @@ public class GtkControlOverride: IControlOverride, IGtkControlOverride
     public void AddClass(string cssClass)
     {
         cssList.Add(cssClass);
-    }
-
-    protected virtual void OnDrawnBackground(DrawnArgs e)
-    {
-        DrawnBackground?.Invoke(this, e);
-    }
-
-    void IGtkControlOverride.OnPaint(PaintEventArgs e)
-    {
-        Paint?.Invoke(this, e);
     }
 
     public void RemoveClass(string cssClass)
@@ -110,12 +99,16 @@ public class GtkControlOverride: IControlOverride, IGtkControlOverride
             ImageUtility.DrawImage(cr, imagePixbuf, area, ImageAlign);
         }
     }
-        
-    public event PaintGraphicsEventHandler? PaintGraphics;
 
     public void OnPaint(Context? cr, Gdk.Rectangle area)
     {
-        PaintGraphics?.Invoke(cr, new Rectangle(area.X, area.Y, area.Width, area.Height));
-        Paint?.Invoke(container, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
+        var rectangle = new Rectangle(area.X, area.Y, area.Width, area.Height);
+        OnPaintGraphics(new PaintGraphicsEventArgs(cr, rectangle));
+        OnPaint(new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
+    }
+
+    void IGtkControlOverride.OnPaint(PaintEventArgs e)
+    {
+        OnPaint(e);
     }
 }

@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.Text.RegularExpressions;
@@ -25,8 +25,15 @@ public class MaskedTextBox : TextBox
         self.TextInserted += Control_TextInserted;
         self.Shown += Control_Shown;
     }
-    public override string Text { get => self.Text;
-        set { isMasking = false; self.Text = value ?? ""; isMasking = true; } }
+    public override string Text
+    {
+        get => self.Text;
+        set
+        {
+            isMasking = false; self.Text = value ?? ""; isMasking = true;
+            base.Text = value ?? string.Empty;
+        }
+    }
     private void Control_Shown(object? sender, EventArgs e)
     {
         if (passwordChar != '\0')
@@ -34,7 +41,8 @@ public class MaskedTextBox : TextBox
             self.Visibility = false;
         }
         else if (!string.IsNullOrWhiteSpace(Mask))
-        {//按格式化赋值
+        {
+            // Assign value according to format
             var txt = Regex.Match(Text, "\\d").Value;
             var windex = -1;
             Text = Regex.Replace(Mask, "\\d", _ =>
@@ -49,7 +57,8 @@ public class MaskedTextBox : TextBox
             });
         }
     }
-    string? correctText;
+
+    private string? correctText;
     private void Control_TextInserted(object? o, Gtk.TextInsertedArgs args)
     {
         if (self.IsRealized && isBackspace == false)
@@ -58,7 +67,7 @@ public class MaskedTextBox : TextBox
             var newText = args.NewText;
             if (IsMaskPassword)
             {
-                if (newText.Length > 1 || self.Text.Length != (correctText??string.Empty).Length + 1)
+                if (newText.Length > 1 || self.Text.Length != (correctText ?? string.Empty).Length + 1)
                 {
                     if (correctText != null)
                         self.Text = correctText;
@@ -67,7 +76,7 @@ public class MaskedTextBox : TextBox
                 {
                     if (IsNumberText(correctText!.Substring(position - 1, 1)) && IsNumberText(newText))
                     {
-                        //正常
+                        // normal
                         self.DeleteText(position, position + 1);
                     }
                     else
@@ -84,14 +93,15 @@ public class MaskedTextBox : TextBox
         isBackspace = false;
         correctText = self.Text;
     }
-    bool isBackspace;
+
+    private bool isBackspace;
     private void Control_Backspace(object? sender, EventArgs e)
     {
         if (IsMaskPassword)
         {
-            //格式化掩码，只改数字
+            // Format mask, only change numbers
             var position = self.CursorPosition;
-            if (self.Text.Length + 1 == (correctText ?? string.Empty).Length) //删除一个字符
+            if (self.Text.Length + 1 == (correctText ?? string.Empty).Length) // delete a character
             {
                 isBackspace = true;
                 if (IsNumberChar(correctText![position]))
@@ -103,7 +113,7 @@ public class MaskedTextBox : TextBox
                     self.InsertText(correctText[position].ToString(), ref position);
                 }
             }
-            else if (self.Text.Length + 1 < (correctText ?? string.Empty).Length) //选择多字符删除
+            else if (self.Text.Length + 1 < (correctText ?? string.Empty).Length) // Select multiple characters to delete
             {
                 self.Text = correctText;
             }
@@ -124,12 +134,18 @@ public class MaskedTextBox : TextBox
         return char.IsNumber(w) || w == '_';
     }
 
-    public string Mask { get; set; } = string.Empty;
+    public string Mask
+    {
+        get => mask??string.Empty;
+        set => mask = value ?? string.Empty;
+    }
+
     private char passwordChar;
     public override char PasswordChar { get => passwordChar; set { passwordChar = value; self.InvisibleChar = value; } }
     public Type? ValidatingType { get; set; }
     public MaskFormat TextMaskFormat { get; set; }
     internal bool isMasking = true;
+    private string? mask = string.Empty;
     private bool IsMaskPassword => !string.IsNullOrWhiteSpace(Mask) && isMasking;
 
     public new string[] Lines => string.IsNullOrEmpty(Text) ? [] : Text.Replace("\r\n", "\n").Split('\n');

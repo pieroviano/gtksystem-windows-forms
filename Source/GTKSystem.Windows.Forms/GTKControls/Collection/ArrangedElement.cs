@@ -7,6 +7,9 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Size = Size;
+using Rectangle = Rectangle;
+
 internal abstract class ArrangedElement : Component, IArrangedElement
 {
     private Rectangle _bounds = Rectangle.Empty;

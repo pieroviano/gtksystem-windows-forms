@@ -36,7 +36,7 @@ namespace GtkTests.Resources;
 
 public class ResourcesTestHelper
 {
-    string tempFileWithSerializable = null;
+    private string? tempFileWithSerializable;
 
     [SetUp]
     protected virtual void SetUp()
@@ -58,9 +58,9 @@ public class ResourcesTestHelper
         {
             reader.UseResXDataNodes = true;
             var enumerator = reader.GetEnumerator();
-            enumerator.MoveNext();
+            enumerator!.MoveNext();
 
-            return ((DictionaryEntry)enumerator.Current).Value as ResXDataNode;
+            return (((DictionaryEntry)enumerator.Current).Value as ResXDataNode)!;
         }
     }
 
@@ -71,9 +71,9 @@ public class ResourcesTestHelper
         using var reader = new ResXResourceReader(sr);
         reader.UseResXDataNodes = true;
         var enumerator = reader.GetEnumerator();
-        enumerator.MoveNext();
+        enumerator!.MoveNext();
 
-        return (ResXDataNode)((DictionaryEntry)enumerator.Current).Value;
+        return (ResXDataNode)((DictionaryEntry)enumerator.Current).Value!;
     }
 
     public ResXDataNode GetNodeEmdeddedIcon()
@@ -100,7 +100,7 @@ public class ResourcesTestHelper
 
     public ResXDataNode GetNodeEmdeddedSerializable()
     {
-        var ser = new serializable("testName", "testValue");
+        var ser = new Serializable("testName", "testValue");
         var node = new ResXDataNode("test", ser);
         return node;
     }
@@ -108,16 +108,16 @@ public class ResourcesTestHelper
     public ResXDataNode GetNodeFileRefToSerializable(string filename, bool assemblyQualifiedName)
     {
         tempFileWithSerializable = Path.GetTempFileName();  // remember to delete file in teardown
-        var ser = new serializable("name", "value");
+        var ser = new Serializable("name", "value");
 
         SerializeToFile(tempFileWithSerializable, ser);
 
-        string typeName;
+        string? typeName;
 
         if (assemblyQualifiedName)
-            typeName = typeof(serializable).AssemblyQualifiedName;
+            typeName = typeof(Serializable).AssemblyQualifiedName;
         else
-            typeName = typeof(serializable).FullName;
+            typeName = typeof(Serializable).FullName;
 
         var fileRef = new ResXFileRef(tempFileWithSerializable, typeName);
         var node = new ResXDataNode("test", fileRef);
@@ -125,12 +125,15 @@ public class ResourcesTestHelper
         return node;
     }
 
-    static void SerializeToFile(string filepath, serializable ser)
+    private static void SerializeToFile(string? filepath, Serializable ser)
     {
-        Stream stream = File.Open(filepath, FileMode.Create);
-        var streamReader = new StreamWriter(stream);
-        JsonConvert.SerializeObject(ser);
-        stream.Close();
+        if (filepath != null)
+        {
+            Stream stream = File.Open(filepath, FileMode.Create);
+            var streamReader = new StreamWriter(stream);
+            JsonConvert.SerializeObject(ser);
+            stream.Close();
+        }
     }
 
     [TearDown]

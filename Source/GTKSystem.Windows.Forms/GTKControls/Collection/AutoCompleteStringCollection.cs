@@ -30,174 +30,147 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
-public class AutoCompleteStringCollection : IList
+public partial class AutoCompleteStringCollection : IList
 {
     private readonly ArrayList _list;
 
-    public AutoCompleteStringCollection ()
+    public AutoCompleteStringCollection()
     {
-        _list = new ArrayList ();
-    }
-
-    public event CollectionChangeEventHandler? CollectionChanged;
-
-    protected void OnCollectionChanged (CollectionChangeEventArgs e)
-    {
-        if(CollectionChanged == null)
-            return;
-
-        CollectionChanged (this, e);
+        _list = new ArrayList();
     }
 
     #region IEnumerable Members
 
-    public IEnumerator GetEnumerator ()
+    public IEnumerator GetEnumerator()
     {
-        return _list.GetEnumerator ();
+        return _list.GetEnumerator();
     }
 
     #endregion
 
     #region ICollection Members
 
-    void ICollection.CopyTo (Array array, int index)
+    void ICollection.CopyTo(Array array, int index)
     {
-        _list.CopyTo (array, index);
+        _list.CopyTo(array, index);
     }
 
-    public void CopyTo (string[] array, int index)
+    public void CopyTo(string[] array, int index)
     {
-        _list.CopyTo (array, index);
+        _list.CopyTo(array, index);
     }
 
-    public int Count
-    {
-        get { return _list.Count; }
-    }
+    public int Count => _list.Count;
 
-    public bool IsSynchronized
-    {
-        get { return false; }
-    }
+    public bool IsSynchronized => false;
 
-    public object SyncRoot
-    {
-        get { return this; }
-    }
+    public object SyncRoot => this;
 
     #endregion
 
     #region IList Members
 
-    int IList.Add (object? value)
+    int IList.Add(object? value)
     {
-        return Add ((string?)value);
+        return Add((string?)value);
     }
 
-    public int Add (string? value)
+    public int Add(string? value)
     {
         if (value != null)
         {
-            var index = _list.Add (value);
-            OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
+            var index = _list.Add(value);
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, value));
             return index;
         }
 
         return -1;
     }
 
-    public void AddRange (string[] value)
+    public void AddRange(string[] value)
     {
         if (value == null)
-            throw new ArgumentNullException (nameof(value), @"Argument cannot be null!");
+            throw new ArgumentNullException(nameof(value), @"Argument cannot be null!");
 
-        _list.AddRange (value);
-        OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, null));
+        _list.AddRange(value);
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null));
     }
 
-    public void Clear ()
+    public void Clear()
     {
-        _list.Clear ();
-        OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, null));
+        _list.Clear();
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null));
     }
 
-    bool IList.Contains (object? value)
+    bool IList.Contains(object? value)
     {
-        return Contains ((string?)value);
+        return Contains((string?)value);
     }
 
-    public bool Contains (string? value)
+    public bool Contains(string? value)
     {
-        return _list.Contains (value);
+        return _list.Contains(value);
     }
 
-    int IList.IndexOf (object value)
+    int IList.IndexOf(object value)
     {
-        return IndexOf ((string)value);
+        return IndexOf((string)value);
     }
 
-    public int IndexOf (string value)
+    public int IndexOf(string value)
     {
-        return _list.IndexOf (value);
+        return _list.IndexOf(value);
     }
 
-    void IList.Insert (int index, object value)
+    void IList.Insert(int index, object value)
     {
-        Insert (index, (string)value);
+        Insert(index, (string)value);
     }
 
-    public void Insert (int index, string value)
+    public void Insert(int index, string value)
     {
-        _list.Insert (index, value);
-        OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
+        _list.Insert(index, value);
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, value));
     }
 
-    bool IList.IsFixedSize
-    {
-        get { return false; }
-    }
+    bool IList.IsFixedSize => false;
 
-    bool IList.IsReadOnly
-    {
-        get { return false; }
-    }
+    bool IList.IsReadOnly => false;
 
-    public bool IsReadOnly
-    {
-        get { return false; }
-    }
+    public bool IsReadOnly => false;
 
-    void IList.Remove (object value)
+    void IList.Remove(object value)
     {
         Remove((string)value);
     }
 
-    public void Remove (string value)
+    public void Remove(string value)
     {
-        _list.Remove (value);
-        OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
+        _list.Remove(value);
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, value));
     }
 
-    public void RemoveAt (int index)
+    public void RemoveAt(int index)
     {
         var value = this[index];
-        _list.RemoveAt (index);
-        OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
+        _list.RemoveAt(index);
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, value));
     }
 
     object IList.this[int index]
     {
-        get { return this[index]; }
-        set { this[index] = (string)value; }
+        get => this[index];
+        set => this[index] = (string)value;
     }
 
     public string this[int index]
     {
-        get { return (string)_list[index]; }
-        set {
-            OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, _list[index]));
+        get => (string?)_list[index] ?? string.Empty;
+        set
+        {
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, _list[index]));
             _list[index] = value;
-            OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, value));
         }
     }
     #endregion

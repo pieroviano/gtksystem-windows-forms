@@ -58,10 +58,10 @@ public class DataGridViewRowHeightInfoNeededEventArgs : EventArgs
 
     //internal void SetProperties(int rowIndex, int height, int minimumHeight)
     //{
-    //    Debug.Assert(rowIndex >= -1);
-    //    Debug.Assert(height > 0);
-    //    Debug.Assert(minimumHeight > 0);
-    //    Debug.Assert(height >= minimumHeight);
+    //    Trace.Assert(rowIndex >= -1);
+    //    Trace.Assert(height > 0);
+    //    Trace.Assert(minimumHeight > 0);
+    //    Trace.Assert(height >= minimumHeight);
     //    RowIndex = rowIndex;
     //    _height = height;
     //    _minimumHeight = minimumHeight;

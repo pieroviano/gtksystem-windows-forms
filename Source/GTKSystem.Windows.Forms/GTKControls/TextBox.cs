@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -13,12 +13,13 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class TextBox : Control
 {
-    public readonly TextBoxBase self = new();
+    public readonly TextBoxBase self;
     private bool _shortcutsEnabled;
     public override object GtkControl => self;
 
     public TextBox()
     {
+        self = new TextBoxBase();
         self.MaxWidthChars = 1;
         self.WidthChars = 0;
         self.Valign = Align.Start;
@@ -34,10 +35,7 @@ public class TextBox : Control
 
     public bool ShortcutsEnabled
     {
-        get
-        {
-            return _shortcutsEnabled;
-        }
+        get => _shortcutsEnabled;
         set
         {
             _shortcutsEnabled = value;
@@ -128,6 +126,7 @@ public class TextBox : Control
         {
             var selfText = value ?? "";
             self.Text = selfText;
+            base.Text = value ?? string.Empty;
         }
     }
 

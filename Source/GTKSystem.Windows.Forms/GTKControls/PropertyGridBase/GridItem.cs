@@ -10,7 +10,7 @@ public abstract class GridItem
     [TypeConverter(typeof(StringConverter))]
     public object? Tag { get; set; }
 
-    public abstract GridItemCollection? GridItems { get; }
+    public abstract GridItemCollection GridItems { get; }
 
     public abstract GridItemType GridItemType { get; }
 

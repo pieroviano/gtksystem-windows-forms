@@ -90,7 +90,7 @@
     <InjectModuleInitializerVersion>1.3.0</InjectModuleInitializerVersion>
     <InputBoxLibraryVersion>2.0.0</InputBoxLibraryVersion>
     <InputSimulatorVersion>2.2.0</InputSimulatorVersion>
-    <InstallerLibraryVersion>1.8.0</InstallerLibraryVersion>
+    <InstallerLibraryVersion>1.8.1</InstallerLibraryVersion>
     <IoCLibraryVersion>1.8.0</IoCLibraryVersion>
     <iTextCoreVersion>1.3.0</iTextCoreVersion>
     <iTextSharpPdfaVersion>6.1.0</iTextSharpPdfaVersion>
@@ -119,7 +119,7 @@
     <Net35ThredingTasksVersion>1.4.0</Net35ThredingTasksVersion>
     <Net35TypeInfoVersion>1.5.0</Net35TypeInfoVersion>
     <Net4xAsyncBridgeVersion>1.5.0</Net4xAsyncBridgeVersion>
-    <Net4xBaseTypesVersion>1.3.0</Net4xBaseTypesVersion>
+    <Net4xBaseTypesVersion>1.3.1</Net4xBaseTypesVersion>
     <Net4xBuffersVersion>1.2.0</Net4xBuffersVersion>
     <Net4xConfigurationVersion>1.1.0</Net4xConfigurationVersion>
     <Net4xDataDataSetExtensionsVersion>4.8.0</Net4xDataDataSetExtensionsVersion>
@@ -173,6 +173,7 @@
     <PdfToPdfAVersion>1.90.0</PdfToPdfAVersion>
     <PdfViewerLibraryVersion>2.2.0</PdfViewerLibraryVersion>
     <PinnedLibraryVersion>1.3.0</PinnedLibraryVersion>
+    <ProjectFormatLibraryVersion>1.0.0</ProjectFormatLibraryVersion>
     <ProjectsFormatLibraryVersion>1.9.0</ProjectsFormatLibraryVersion>
     <QuestionsLibraryVersion>1.42.0</QuestionsLibraryVersion>
     <SchedulerLibraryVersion>1.1.0</SchedulerLibraryVersion>
@@ -194,6 +195,7 @@
     <SqlParametersToVariableDefinitionsVersion>1.0.0</SqlParametersToVariableDefinitionsVersion>
     <StarbCommonVersion>2.0.0</StarbCommonVersion>
     <StarbNet8Version>30.0.0</StarbNet8Version>
+    <StarbookAppBackEndVersion>1.0.0</StarbookAppBackEndVersion>
     <StarbookAppVersion>1.0.0</StarbookAppVersion>
     <StarbVersion>30.0.0</StarbVersion>
     <SystemCodeDom5Version>5.0.0</SystemCodeDom5Version>
@@ -226,7 +228,7 @@
     <TopMostLibraryVersion>1.0.0</TopMostLibraryVersion>
     <TouchLibraryVersion>1.2.0</TouchLibraryVersion>
     <UnitTestLibrary>1.2.0</UnitTestLibrary>
-    <UnitTestLibraryVersion>1.3.0</UnitTestLibraryVersion>
+    <UnitTestLibraryVersion>1.3.1</UnitTestLibraryVersion>
     <UpdateLibraryPocnet8windowsVersion>1.30.0</UpdateLibraryPocnet8windowsVersion>
     <UpdateLibraryPoCnet8windowsVersion>1.30.0</UpdateLibraryPoCnet8windowsVersion>
     <UpdateLibraryPocVersion>1.30.0</UpdateLibraryPocVersion>

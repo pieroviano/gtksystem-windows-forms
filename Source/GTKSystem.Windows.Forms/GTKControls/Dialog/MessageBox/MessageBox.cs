@@ -2,17 +2,15 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
 
 namespace System.Windows.Forms;
 
-internal class NonStaticMessageBox : IMessageBox
+internal partial class NonStaticMessageBox : IMessageBox
 {
-    public event EventHandler<DialogEventArgs>? DialogAvailable;
-
     /// <summary>
     ///  Displays a message box with specified text, caption, and style with Help Button.
     /// </summary>
@@ -205,7 +203,7 @@ internal class NonStaticMessageBox : IMessageBox
         if (owner is Form control)
         {
             //irun = ShowMessageDialogCore(control.self, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon, defaultButton, options, showHelp);
-            irun = ShowCore((Window)control.Widget, WindowPosition.CenterOnParent, text, caption, buttons, icon);
+            irun = ShowCore((Window)control.Widget, WindowPosition.CenterOnParent, text ?? string.Empty, caption, buttons, icon);
         }
         else
         {
@@ -215,7 +213,7 @@ internal class NonStaticMessageBox : IMessageBox
                 activeWindow = window;
             }
             //irun = ShowMessageDialogCore(null, Gtk.WindowPosition.Center, text, caption, buttons, icon, defaultButton, options, showHelp);
-            irun = ShowCore(activeWindow, WindowPosition.CenterOnParent, text, caption, buttons, icon);
+            irun = ShowCore(activeWindow, WindowPosition.CenterOnParent, text ?? string.Empty, caption, buttons, icon);
         }
 
         var resp = (ResponseType)Enum.Parse(typeof(ResponseType), irun.ToString());
@@ -240,40 +238,11 @@ internal class NonStaticMessageBox : IMessageBox
         return DialogResult.None;
     }
 
-    private int ShowMessageDialogCore(Window owner, WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
-    {
-        var buttonsType = ButtonsType.Close;
-        if (buttons == MessageBoxButtons.OK)
-            buttonsType = ButtonsType.Ok;
-        else if (buttons == MessageBoxButtons.OKCancel)
-            buttonsType = ButtonsType.OkCancel;
-        else if (buttons == MessageBoxButtons.YesNo)
-            buttonsType = ButtonsType.YesNo;
-        else if (buttons == MessageBoxButtons.YesNoCancel)
-            buttonsType = ButtonsType.YesNo;
-        else if (buttons == MessageBoxButtons.AbortRetryIgnore)
-            buttonsType = ButtonsType.OkCancel;
-        else if (buttons == MessageBoxButtons.RetryCancel)
-            buttonsType = ButtonsType.OkCancel;
-
-
-        var dia = new MessageDialog(owner, DialogFlags.DestroyWithParent, MessageType.Info, buttonsType, text);
-        dia.SetPosition(position);
-        dia.StyleContext.AddClass("DefaultThemeStyle");
-        dia.StyleContext.AddClass("MessageBox");
-        dia.BorderWidth = 10;
-        dia.KeepAbove = true;
-        dia.KeepBelow = false;
-        dia.Title = caption;
-        dia.Response += Dia_Response;
-        return dia.Run();
-    }
-
     private int ShowCore(Window? owner, WindowPosition position, string text, string caption,
         MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
     {
         var dia = new Dialog(caption, owner, DialogFlags.DestroyWithParent);
-        OnDialogAvailable(new DialogEventArgs(dia));
+        dia.Shown += (_, _) => { OnDialogAvailable(new DialogEventArgs(dia)); };
         dia.KeepAbove = true;
         dia.KeepBelow = false;
         dia.TypeHint = Gdk.WindowTypeHint.Dialog;
@@ -364,18 +333,18 @@ internal class NonStaticMessageBox : IMessageBox
         return dia.Run();
     }
 
-    protected virtual void OnDialogAvailable(DialogEventArgs e)
-    {
-        DialogAvailable?.Invoke(this, e);
-    }
-
     private void Dia_Response(object o, ResponseArgs args)
     {
         var dia = (Dialog?)o;
         if (dia != null)
         {
             dia.PangoContext.Dispose();
-            dia.Dispose();
+            GLib.Idle.Add(() =>
+            {
+                dia.Dispose();
+                GC.SuppressFinalize(dia);
+                return false;
+            });
         }
     }
 }

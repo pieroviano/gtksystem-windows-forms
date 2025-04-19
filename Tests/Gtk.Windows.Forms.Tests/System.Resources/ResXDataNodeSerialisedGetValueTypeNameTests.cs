@@ -27,54 +27,55 @@
 
 using System.Reflection;
 using System.Resources;
-using System.ComponentModel.Design;
-using System.Resources;
 using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
+public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper
+{
     [Test]
-    public void ITRSNotUsedWhenNodeCreatedNew ()
+    public void ITRSNotUsedWhenNodeCreatedNew()
     {
-        ResXDataNode node;
-        node = GetNodeEmdeddedSerializable ();
+        var node = GetNodeEmdeddedSerializable();
 
-        var returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
-        Assert.AreEqual ((typeof (serializable)).AssemblyQualifiedName, returnedType, "#A1");
+        var returnedType = node.GetValueTypeName(new ReturnSerializableSubClassITRS());
+        object? expected = (typeof(Serializable)).AssemblyQualifiedName;
+        Assert.That((object?)returnedType, Is.EqualTo(expected));
     }
 
     [Test]
-    public void DeserializationErrorReturnsObjectType ()
+    public void DeserializationErrorReturnsObjectType()
     {
-        var node = GetNodeFromResXReader (serializedResXCorruped);
-        Assert.IsNotNull (node, "#A1");
-        var type = node.GetValueTypeName ((AssemblyName []) null);
+        var node = GetNodeFromResXReader(serializedResXCorruped);
+        Assert.IsNotNull(node);
+        var type = node.GetValueTypeName((AssemblyName[]?)null);
 
-        Assert.AreEqual (typeof (object).AssemblyQualifiedName,type, "#A2");
-    }
-		
-    [Test]
-    public void InvalidMimeTypeFromReaderReturnsNull ()
-    {
-        var node = GetNodeFromResXReader (serializedResXInvalidMimeType);
-        Assert.IsNotNull (node, "#A1");
-        var type = node.GetValueTypeName ((AssemblyName []) null);
-        Assert.IsNull (type, "#A2");
+        object? expected = typeof(object).AssemblyQualifiedName;
+        Assert.That((object?)type, Is.EqualTo(expected));
     }
 
     [Test]
-    public void ReturnsObjectAssemblyMissing ()
+    public void InvalidMimeTypeFromReaderReturnsNull()
     {
-        var node = GetNodeFromResXReader (missingSerializableFromMissingAssembly);
-        Assert.IsNotNull (node, "#A1");
-        var type = node.GetValueTypeName ((AssemblyName []) null);
-        Assert.AreEqual (typeof (object).AssemblyQualifiedName, type, "#A2");
+        var node = GetNodeFromResXReader(serializedResXInvalidMimeType);
+        Assert.IsNotNull(node);
+        var type = node.GetValueTypeName((AssemblyName[]?)null);
+        Assert.IsNull(type);
     }
 
-    static readonly string serializedResXInvalidMimeType =
+    [Test]
+    public void ReturnsObjectAssemblyMissing()
+    {
+        var node = GetNodeFromResXReader(missingSerializableFromMissingAssembly);
+        Assert.IsNotNull(node);
+        var type = node.GetValueTypeName((AssemblyName[]?)null);
+        object? expected = typeof(object).AssemblyQualifiedName;
+        Assert.That((object?)type, Is.EqualTo(expected));
+    }
+
+    private static readonly string serializedResXInvalidMimeType =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   
@@ -100,7 +101,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static readonly string serializedResXCorruped =
+    private static readonly string serializedResXCorruped =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   
@@ -126,7 +127,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static readonly string serializedResXSOAP =
+    private static readonly string serializedResXSOAP =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root> 
   <resheader name=""resmimetype"">
@@ -158,7 +159,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static readonly string missingSerializableFromMissingAssembly =
+    private static readonly string missingSerializableFromMissingAssembly =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   <resheader name=""resmimetype"">
@@ -183,7 +184,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static readonly string anotherSerializableFromDummyAssembly =
+    private static readonly string anotherSerializableFromDummyAssembly =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
  
@@ -209,7 +210,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static string convertableResXWithoutAssemblyName =
+    private static string convertableResXWithoutAssemblyName =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   
@@ -231,7 +232,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static string thisAssemblyConvertableResXWithoutAssemblyName =
+    private static string thisAssemblyConvertableResXWithoutAssemblyName =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   

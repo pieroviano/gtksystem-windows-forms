@@ -1,10 +1,11 @@
-﻿using Gtk;
+﻿using System.Drawing;
+using Gtk;
 
 namespace System.Windows.Forms;
 
 internal class GtkFormsControlOverride: GtkControlOverride
 {
-    public GtkFormsControlOverride(Widget? container) : base(container)
+    public GtkFormsControlOverride(IWidget? container) : base(container)
     {
     }
 }

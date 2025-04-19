@@ -9,6 +9,10 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
 		<DisableImplicitFrameworkReferences Condition="'$(TargetFramework)'=='net48'">true</DisableImplicitFrameworkReferences>
+		<NoWarn>CS0109;CS0115;CS0618;CS0436;NETSDK1106;IDE1006</NoWarn>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,12 +37,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
 		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" Aliases="sre" PrivateAssets="All" IncludeAssets="All" />
-		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" IncludeAssets="All" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sd" PrivateAssets="All" IncludeAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\GTKSystem.Drawing\GTKSystem.Drawing.csproj"/>
+		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms.Extensions\GTKSystem.Windows.Forms.Extensions.csproj" />
 		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 

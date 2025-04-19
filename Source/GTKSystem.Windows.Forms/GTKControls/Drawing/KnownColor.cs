@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿#if !NET8_0
+using System.Runtime.CompilerServices;
 
 namespace System.Drawing;
 
@@ -6,6 +7,7 @@ namespace System.Drawing;
 [TypeForwardedFrom("System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 public enum KnownColor
 {
+    Default = 0,
     /// <summary>The system-defined color of the active window's border.</summary>
     ActiveBorder = 1,
     /// <summary>The system-defined color of the background of the active window's title bar.</summary>
@@ -357,3 +359,4 @@ public enum KnownColor
     /// <summary>A system-defined color representing the ARGB value <c>#663399</c>.</summary>
     RebeccaPurple = 175, // 0x000000AF
 }
+#endif

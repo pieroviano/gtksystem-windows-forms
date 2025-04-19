@@ -110,7 +110,7 @@ public partial class ListBox
                     index = 0;
                 }
 
-                //Debug.Assert(index >= 0 && index <= Count, "Wrong index for insert");
+                //Trace.Assert(index >= 0 && index <= Count, "Wrong index for insert");
                 InnerArray.InsertEntry(index, entry);
             }
 

@@ -1,5 +1,6 @@
 using System.Windows.Forms;
 using System.Drawing;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -11,14 +12,15 @@ public class SplitContainerTests : TestHelper
     {
         var sc = new SplitContainer ();
 
-        Assert.AreEqual (new Size (150, 100), sc.Size, "A1");
-        Assert.AreEqual (FixedPanel.None, sc.FixedPanel, "A2");
-        Assert.AreEqual (Orientation.Vertical, sc.Orientation, "A4");
-        Assert.AreEqual (50, sc.SplitterDistance, "A11");
-        Assert.AreEqual (1, sc.SplitterIncrement, "A12");
-        Assert.AreEqual (4, sc.SplitterWidth, "A14");
-        Assert.AreEqual (BorderStyle.None, sc.BorderStyle, "A14");
-        Assert.AreEqual (DockStyle.None, sc.Dock, "A15");
+        object expected = new Size (150, 100);
+        Assert.That((object?)sc.Size, Is.EqualTo(expected));
+        Assert.That((object?)sc.FixedPanel, Is.EqualTo(FixedPanel.None));
+        Assert.That((object?)sc.Orientation, Is.EqualTo(Orientation.Vertical));
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(50));
+        Assert.That((object?)sc.SplitterIncrement, Is.EqualTo(1));
+        Assert.That((object?)sc.SplitterWidth, Is.EqualTo(4));
+        Assert.That((object?)sc.BorderStyle, Is.EqualTo(BorderStyle.None));
+        Assert.That((object?)sc.Dock, Is.EqualTo(DockStyle.None));
     }
 		
     [Test]
@@ -27,25 +29,25 @@ public class SplitContainerTests : TestHelper
         var sc = new SplitContainer ();
 			
         sc.BorderStyle = BorderStyle.FixedSingle;
-        Assert.AreEqual (BorderStyle.FixedSingle, sc.BorderStyle, "C1");
+        Assert.That((object?)sc.BorderStyle, Is.EqualTo(BorderStyle.FixedSingle));
 
         sc.Dock =  DockStyle.Fill;
-        Assert.AreEqual (DockStyle.Fill, sc.Dock, "C2");
+        Assert.That((object?)sc.Dock, Is.EqualTo(DockStyle.Fill));
 
         sc.FixedPanel = FixedPanel.Panel1;
-        Assert.AreEqual (FixedPanel.Panel1, sc.FixedPanel, "C3");
+        Assert.That((object?)sc.FixedPanel, Is.EqualTo(FixedPanel.Panel1));
 
         sc.Orientation = Orientation.Horizontal;
-        Assert.AreEqual (Orientation.Horizontal, sc.Orientation, "C5");
+        Assert.That((object?)sc.Orientation, Is.EqualTo(Orientation.Horizontal));
 
         sc.SplitterDistance = 77;
-        Assert.AreEqual (77, sc.SplitterDistance, "C10");
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(77));
 			
         sc.SplitterIncrement = 5;
-        Assert.AreEqual (5, sc.SplitterIncrement, "C11");
+        Assert.That((object?)sc.SplitterIncrement, Is.EqualTo(5));
 			
         sc.SplitterWidth = 10;
-        Assert.AreEqual (10, sc.SplitterWidth, "C12");
+        Assert.That((object?)sc.SplitterWidth, Is.EqualTo(10));
     }
 		
     [Test]
@@ -54,57 +56,66 @@ public class SplitContainerTests : TestHelper
         var sc = new SplitContainer ();
         var p = sc.Panel1;
 
-        Assert.AreEqual (AnchorStyles.Top | AnchorStyles.Left, p.Anchor, "D1");
+        Assert.That((object?)p.Anchor, Is.EqualTo(AnchorStyles.Top | AnchorStyles.Left));
         p.Anchor = AnchorStyles.None;
-        Assert.AreEqual (AnchorStyles.None, p.Anchor, "D1-2");
+        Assert.That((object?)p.Anchor, Is.EqualTo(AnchorStyles.None), "D1-2");
 
-        Assert.AreEqual (false, p.AutoSize, "D2");
+        Assert.That((object?)p.AutoSize, Is.EqualTo(false));
         p.AutoSize = true;
-        Assert.AreEqual (true, p.AutoSize, "D2-2");
+        Assert.That((object?)p.AutoSize, Is.EqualTo(true), "D2-2");
 
-        Assert.AreEqual (BorderStyle.None, p.BorderStyle, "D4");
+        Assert.That((object?)p.BorderStyle, Is.EqualTo(BorderStyle.None));
         p.BorderStyle = BorderStyle.FixedSingle;
-        Assert.AreEqual (BorderStyle.FixedSingle, p.BorderStyle, "D4-2");
+        Assert.That((object?)p.BorderStyle, Is.EqualTo(BorderStyle.FixedSingle), "D4-2");
 
-        Assert.AreEqual (DockStyle.None, p.Dock, "D5");
+        Assert.That((object?)p.Dock, Is.EqualTo(DockStyle.None));
         p.Dock = DockStyle.Left;
-        Assert.AreEqual (DockStyle.Left, p.Dock, "D5-2");
+        Assert.That((object?)p.Dock, Is.EqualTo(DockStyle.Left), "D5-2");
 
-        Assert.AreEqual (new Point (0, 0), p.Location, "D7");
+        object expected = new Point (0, 0);
+        Assert.That((object?)p.Location, Is.EqualTo(expected));
         p.Location = new Point (10, 10);
-        Assert.AreEqual (new Point (0, 0), p.Location, "D7-2");
+        object expected1 = new Point (0, 0);
+        Assert.That((object?)p.Location, Is.EqualTo(expected1), "D7-2");
 
-        Assert.AreEqual (new Size (0, 0), p.MaximumSize, "D8");
+        object expected2 = new Size (0, 0);
+        Assert.That((object?)p.MaximumSize, Is.EqualTo(expected2));
         p.MaximumSize = new Size (10, 10);
-        Assert.AreEqual (new Size (10, 10), p.MaximumSize, "D8-2");
+        object expected3 = new Size (10, 10);
+        Assert.That((object?)p.MaximumSize, Is.EqualTo(expected3), "D8-2");
 
-        Assert.AreEqual (new Size (0, 0), p.MinimumSize, "D9");
+        object expected4 = new Size (0, 0);
+        Assert.That((object?)p.MinimumSize, Is.EqualTo(expected4));
         p.MinimumSize = new Size (10, 10);
-        Assert.AreEqual (new Size (10, 10), p.MinimumSize, "D9-2");
+        object expected5 = new Size (10, 10);
+        Assert.That((object?)p.MinimumSize, Is.EqualTo(expected5), "D9-2");
 
-        Assert.AreEqual (String.Empty, p.Name, "D10");
+        object expected6 = string.Empty;
+        Assert.That((object?)p.Name, Is.EqualTo(expected6));
         p.Name = "MyPanel";
-        Assert.AreEqual ("MyPanel", p.Name, "D10-2");
+        Assert.That((object?)p.Name, Is.EqualTo("MyPanel"), "D10-2");
 
         // We set a new max/min size above, so let's start over with new controls
         sc = new SplitContainer();
         p = sc.Panel1;
 
-        Assert.AreEqual (new Size (50, 100), p.Size, "D12");
+        object expected7 = new Size (50, 100);
+        Assert.That((object?)p.Size, Is.EqualTo(expected7));
         p.Size = new Size (10, 10);
-        Assert.AreEqual (new Size (50, 100), p.Size, "D12-2");
+        object expected8 = new Size (50, 100);
+        Assert.That((object?)p.Size, Is.EqualTo(expected8), "D12-2");
 
-        //Assert.AreEqual (0, p.TabIndex, "D13");
+        //Assert1.AreEqual(0, p.TabIndex);
         p.TabIndex = 4;
-        Assert.AreEqual (4, p.TabIndex, "D13-2");
+        Assert.That((object?)p.TabIndex, Is.EqualTo(4), "D13-2");
 
-        Assert.AreEqual (false, p.TabStop, "D14");
+        Assert.That((object?)p.TabStop, Is.EqualTo(false));
         p.TabStop = true;
-        Assert.AreEqual (true, p.TabStop, "D14-2");
+        Assert.That((object?)p.TabStop, Is.EqualTo(true), "D14-2");
 
-        Assert.AreEqual (true, p.Visible, "D15");
+        Assert.That((object?)p.Visible, Is.EqualTo(true));
         p.Visible = false;
-        Assert.AreEqual (false, p.Visible, "D15-2");
+        Assert.That((object?)p.Visible, Is.EqualTo(false), "D15-2");
     }
 		
     [Test]
@@ -115,7 +126,7 @@ public class SplitContainerTests : TestHelper
             var sc = new SplitContainer();
             var p = sc.Panel1;
 
-            Assert.AreEqual(100, p.Height, "E1");
+            Assert.That((object?)p.Height, Is.EqualTo(100));
 
             p.Height = 200;
         });
@@ -129,7 +140,7 @@ public class SplitContainerTests : TestHelper
             var sc = new SplitContainer();
             var p = sc.Panel1;
 
-            Assert.AreEqual(50, p.Width, "F1");
+            Assert.That((object?)p.Width, Is.EqualTo(50));
 
             p.Width = 200;
         });
@@ -144,7 +155,7 @@ public class SplitContainerTests : TestHelper
             var sc2 = new SplitContainer();
             var p = sc.Panel1;
 
-            Assert.AreEqual(sc, p.Parent, "G1");
+            Assert.That((object?)p.Parent, Is.EqualTo(sc));
 
             p.Parent = sc2;
         });
@@ -155,10 +166,10 @@ public class SplitContainerTests : TestHelper
     {
         var sc = new SplitContainer ();
 
-        Assert.AreEqual (50, sc.SplitterDistance, "I1");
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(50));
 
         sc.Width = 300;
-        Assert.AreEqual (100, sc.SplitterDistance, "I2");
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(100));
     }
 		
     [Test]
@@ -167,10 +178,10 @@ public class SplitContainerTests : TestHelper
         var sc = new SplitContainer ();
         sc.FixedPanel = FixedPanel.Panel1;
 			
-        Assert.AreEqual (50, sc.SplitterDistance, "J1");
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(50));
 
         sc.Width = 300;
-        Assert.AreEqual (50, sc.SplitterDistance, "J2");
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(50));
     }
 		
     [Test]
@@ -179,9 +190,9 @@ public class SplitContainerTests : TestHelper
         var sc = new SplitContainer ();
         sc.FixedPanel = FixedPanel.Panel2;
 
-        Assert.AreEqual (50, sc.SplitterDistance, "K1");
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(50));
 
         sc.Width = 300;
-        Assert.AreEqual (200, sc.SplitterDistance, "K2");
+        Assert.That((object?)sc.SplitterDistance, Is.EqualTo(200));
     }
 }

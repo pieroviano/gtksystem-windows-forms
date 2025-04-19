@@ -26,6 +26,7 @@
 //	Carlos Alberto Cortez <calberto.cortez@gmail.com>
 //
 
+using GtkTests.Helpers;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -40,14 +41,15 @@ public class ListControlTest : TestHelper
     private int dataSourceChanged;
 
     [SetUp]
-    protected override void SetUp () {
+    protected override void SetUp()
+    {
         dataSourceChanged = 0;
-        base.SetUp ();
+        base.SetUp();
     }
 
     [Test]
     // Bug 80794
-    public void DataBindingsTest ()
+    public void DataBindingsTest()
     {
         var table =
             @"<?xml version=""1.0"" standalone=""yes""?>
@@ -70,401 +72,413 @@ public class ListControlTest : TestHelper
 </klient>
 </klient>";
 
-        using var frm = new Form ();
+        using var frm = new Form();
         frm.ShowInTaskbar = false;
-        var dsTable = new DataSet ();
-        dsTable.ReadXml (new StringReader (table));
-        var dsLookup = new DataSet ();
-        dsLookup.ReadXml (new StringReader (lookup));
-        var cb = new ComboBox ();
-        cb.DataSource = dsLookup.Tables [0];
+        var dsTable = new DataSet();
+        dsTable.ReadXml(new StringReader(table));
+        var dsLookup = new DataSet();
+        dsLookup.ReadXml(new StringReader(lookup));
+        var cb = new ComboBox();
+        cb.DataSource = dsLookup.Tables[0];
         cb.DisplayMember = "nimi";
         cb.ValueMember = "kood";
-        cb.DataBindings.Add ("SelectedValue", dsTable.Tables [0], "klient");
-        frm.Controls.Add (cb);
-        Assert.AreEqual ("", cb.Text, "#01");
-        frm.Show ();
-        Assert.AreEqual ("SUCCESS", cb.Text, "#02");
+        cb.DataBindings!.Add("SelectedValue", dsTable.Tables[0], "klient");
+        frm.Controls.Add(cb);
+        Assert.That((object?)cb.Text, Is.EqualTo(string.Empty));
+        frm.Show();
+        Assert.That((object?)cb.Text, Is.EqualTo("SUCCESS"));
     }
 
     [Test]
-    public void GetItemText ()
+    public void GetItemText()
     {
-        var itemA = new MockItem ("A", 1);
-        var itemB = new MockItem ("B", 2);
-        var itemC = new object ();
+        var itemA = new MockItem("A", 1);
+        var itemB = new MockItem("B", 2);
+        var itemC = new object();
 
-        var lc = new ListControlChild ();
+        var lc = new ListControlChild();
         lc.DisplayMember = "Text";
 
         // No DataSource available
-        Assert.AreEqual ("A", lc.GetItemText (itemA), "#A1");
-        Assert.AreEqual ("B", lc.GetItemText (itemB), "#A2");
-        Assert.AreEqual (itemC.GetType ().FullName, lc.GetItemText (itemC), "#A3");
+        Assert.That((object?)lc.GetItemText(itemA), Is.EqualTo("A"));
+        Assert.That((object?)lc.GetItemText(itemB), Is.EqualTo("B"));
+        Assert.That((object?)lc.GetItemText(itemC), Is.EqualTo(itemC.GetType().FullName));
 
-        lc.DisplayMember = String.Empty;
+        lc.DisplayMember = string.Empty;
 
-        Assert.AreEqual (itemA.GetType ().FullName, lc.GetItemText (itemA), "#B1");
-        Assert.AreEqual (itemB.GetType ().FullName, lc.GetItemText (itemB), "#B2");
-        Assert.AreEqual (itemC.GetType ().FullName, lc.GetItemText (itemC), "#B3");
+        Assert.That((object?)lc.GetItemText(itemA), Is.EqualTo(itemA.GetType().FullName));
+        Assert.That((object?)lc.GetItemText(itemB), Is.EqualTo(itemB.GetType().FullName));
+        Assert.That((object?)lc.GetItemText(itemC), Is.EqualTo(itemC.GetType().FullName));
 
         // DataSource available
-        object [] objects = new object [] {itemA, itemB, itemC};
+        object[] objects = [itemA, itemB, itemC];
         lc.DisplayMember = "Text";
         lc.DataSource = objects;
 
-        Assert.AreEqual ("A", lc.GetItemText (itemA), "#C1");
-        Assert.AreEqual ("B", lc.GetItemText (itemB), "#C2");
-        Assert.AreEqual (itemC.GetType ().FullName, lc.GetItemText (itemC), "#C3");
+        Assert.That((object?)lc.GetItemText(itemA), Is.EqualTo("A"));
+        Assert.That((object?)lc.GetItemText(itemB), Is.EqualTo("B"));
+        Assert.That((object?)lc.GetItemText(itemC), Is.EqualTo(itemC.GetType().FullName));
 
-        lc.DisplayMember = String.Empty;
+        lc.DisplayMember = string.Empty;
 
-        Assert.AreEqual (itemA.GetType ().FullName, lc.GetItemText (itemA), "#D1");
-        Assert.AreEqual (itemB.GetType ().FullName, lc.GetItemText (itemB), "#D2");
-        Assert.AreEqual (itemC.GetType ().FullName, lc.GetItemText (itemC), "#D3");
-    }
-		
-    [Test]
-    public void DisplayMemberNullTest ()
-    {
-        var lc = new ListControlChild ();
-        lc.DisplayMember = null;
-        Assert.AreEqual (String.Empty, lc.DisplayMember, "#1");
+        Assert.That((object?)lc.GetItemText(itemA), Is.EqualTo(itemA.GetType().FullName));
+        Assert.That((object?)lc.GetItemText(itemB), Is.EqualTo(itemB.GetType().FullName));
+        Assert.That((object?)lc.GetItemText(itemC), Is.EqualTo(itemC.GetType().FullName));
     }
 
     [Test]
-    public void DataSource1 ()
+    public void DisplayMemberNullTest()
     {
-        var list1 = new ArrayList ();
-        list1.Add ("item 1");
-        var list2 = new ArrayList ();
+        var lc = new ListControlChild();
+        lc.DisplayMember = null!;
+        object expected = string.Empty;
+        Assert.That((object?)lc.DisplayMember, Is.EqualTo(expected));
+    }
 
-        var lc = new ListControlChild ();
+    [Test]
+    public void DataSource1()
+    {
+        var list1 = new ArrayList { "item 1" };
+        var list2 = new ArrayList();
+
+        var lc = new ListControlChild();
         lc.DataSourceChanged += ListControl_DataSourceChanged;
         lc.DataSource = list1;
-        Assert.AreEqual (1, dataSourceChanged, "#A1");
-        Assert.AreSame (list1, lc.DataSource, "#A2");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(1));
+        Assert.That(lc.DataSource, Is.SameAs(list1));
 
-        var form = new Form ();
-        form.Controls.Add (lc);
+        var form = new Form();
+        form.Controls.Add(lc);
 
-        Assert.AreEqual (1, dataSourceChanged, "#B1");
-        Assert.AreSame (list1, lc.DataSource, "#B2");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(1));
+        Assert.That(lc.DataSource, Is.SameAs(list1));
         lc.DataSource = list1;
-        Assert.AreEqual (1, dataSourceChanged, "#B3");
-        Assert.AreSame (list1, lc.DataSource, "#B4");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(1));
+        Assert.That(lc.DataSource, Is.SameAs(list1));
         lc.DataSource = list2;
-        Assert.AreEqual (2, dataSourceChanged, "#B5");
-        Assert.AreSame (list2, lc.DataSource, "#B6");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(2));
+        Assert.That(lc.DataSource, Is.SameAs(list2));
         lc.DataSource = null;
-        Assert.AreEqual (3, dataSourceChanged, "#B7");
-        Assert.IsNull (lc.DataSource, "#B8");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(3));
+        Assert.IsNull(lc.DataSource);
 
-        list1.Add ("whatever");
-        list2.Add ("whatever");
-        list1.Clear ();
-        list2.Clear ();
+        list1.Add("whatever");
+        list2.Add("whatever");
+        list1.Clear();
+        list2.Clear();
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    public void DataSource2 ()
+    public void DataSource2()
     {
-        var list1 = new ArrayList ();
-        list1.Add ("item 1");
-        var list2 = new ArrayList ();
+        var list1 = new ArrayList { "item 1" };
+        var list2 = new ArrayList();
 
-        var lc = new ListControlChild ();
+        var lc = new ListControlChild();
         lc.DataSourceChanged += ListControl_DataSourceChanged;
 
-        var form = new Form ();
-        form.Controls.Add (lc);
+        var form = new Form();
+        form.Controls.Add(lc);
 
-        Assert.AreEqual (0, dataSourceChanged, "#1");
-        Assert.IsNull (lc.DataSource, "#2");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(0));
+        Assert.IsNull(lc.DataSource);
         lc.DataSource = list1;
-        Assert.AreEqual (1, dataSourceChanged, "#3");
-        Assert.AreSame (list1, lc.DataSource, "#4");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(1));
+        Assert.That(lc.DataSource, Is.SameAs(list1));
         lc.DataSource = list2;
-        Assert.AreEqual (2, dataSourceChanged, "#5");
-        Assert.AreSame (list2, lc.DataSource, "#6");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(2));
+        Assert.That(lc.DataSource, Is.SameAs(list2));
         lc.DataSource = null;
-        Assert.AreEqual (3, dataSourceChanged, "#7");
-        Assert.IsNull (lc.DataSource, "#8");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(3));
+        Assert.IsNull(lc.DataSource);
 
-        list1.Add ("whatever");
-        list2.Add ("whatever");
-        list1.Clear ();
-        list2.Clear ();
+        list1.Add("whatever");
+        list2.Add("whatever");
+        list1.Clear();
+        list2.Clear();
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    public void SelectedValue ()
+    public void SelectedValue()
     {
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
-        var lc = new ListControlChild ();
-        f.Controls.Add (lc);
+        var lc = new ListControlChild();
+        f.Controls.Add(lc);
 
-        var list = new ArrayList ();
-        list.Add (new MockItem ("TextA", 1));
-        list.Add (new MockItem (String.Empty, 4));
-        list.Add (new MockItem ("TextC", 9));
+        var list = new ArrayList
+        {
+            new MockItem("TextA", 1),
+            new MockItem(string.Empty, 4),
+            new MockItem("TextC", 9)
+        };
 
         lc.ValueMember = "Text";
         lc.DataSource = list;
 
-        f.Show ();
+        f.Show();
 
         lc.SelectedValue = "TextC";
-        Assert.AreEqual (2, lc.SelectedIndex, "#B1");
-        Assert.AreEqual ("TextC", lc.SelectedValue, "#B2");
+        Assert.That((object?)lc.SelectedIndex, Is.EqualTo(2));
+        Assert.That(lc.SelectedValue, Is.EqualTo("TextC"));
 
-        lc.SelectedValue = String.Empty;
-        Assert.AreEqual (1, lc.SelectedIndex, "#C1");
-        Assert.AreEqual (String.Empty, lc.SelectedValue, "#C2");
+        lc.SelectedValue = string.Empty;
+        Assert.That((object?)lc.SelectedIndex, Is.EqualTo(1));
+        object expected = string.Empty;
+        Assert.That(lc.SelectedValue, Is.EqualTo(expected));
 
         lc.SelectedValue = "TextA";
-        Assert.AreEqual (0, lc.SelectedIndex, "#D1");
-        Assert.AreEqual ("TextA", lc.SelectedValue, "#D2");
+        Assert.That((object?)lc.SelectedIndex, Is.EqualTo(0));
+        Assert.That(lc.SelectedValue, Is.EqualTo("TextA"));
 
-        try {
+        Assert.Throws<ArgumentNullException>(() =>
+        {
             lc.SelectedValue = null;
-            Assert.Fail ("#E1");
-        } catch (ArgumentNullException) {
-        }
+        });
 
-        f.Dispose ();
+        f.Dispose();
     }
 
     [Test]
-    public void SelectedValue2 ()
+    public void SelectedValue2()
     {
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
-        var child = new ListControlChild ();
+        var child = new ListControlChild();
 
-        var list = new ArrayList ();
-        list.Add (new MockItem ("A", 0));
-        list.Add (new MockItem ("B", 1));
-        list.Add (new MockItem ("C", 2));
+        var list = new ArrayList
+        {
+            new MockItem("A", 0),
+            new MockItem("B", 1),
+            new MockItem("C", 2)
+        };
         child.DataSource = list;
         child.ValueMember = "Text";
 
-        var item = new MockItem (String.Empty, 0);
-        child.DataBindings.Add ("SelectedValue", item, "Text");
+        var item = new MockItem(string.Empty, 0);
+        child.DataBindings!.Add("SelectedValue", item, "Text");
 
-        Assert.AreEqual (-1, child.SelectedIndex, "#A1");
+        Assert.That((object?)child.SelectedIndex, Is.EqualTo(-1));
 
-        f.Controls.Add (child);
-        Assert.AreEqual (-1, child.SelectedIndex, "#B1");
+        f.Controls.Add(child);
+        Assert.That((object?)child.SelectedIndex, Is.EqualTo(-1));
 
         // When the form is shown, normally the SelectedIndex is the
         // CurrencyManager.Position (0 in this case), but it should remain as -1
         // since SelectedValue is bound to a String.Empty value. See #324286
-        f.Show ();
-        f.Dispose ();
+        f.Show();
+        f.Dispose();
     }
 
     [Test] // bug #81771
-    public void DataSource_BindingList1 ()
+    public void DataSource_BindingList1()
     {
-        BindingList<string> list1 = new();
-        list1.Add ("item 1");
-        BindingList<string> list2 = new();
+        BindingList<string> list1 =
+        [
+            "item 1"
+        ];
+        BindingList<string> list2 = [];
 
-        var lc = new ListControlChild ();
+        var lc = new ListControlChild();
         lc.DataSourceChanged += ListControl_DataSourceChanged;
         lc.DataSource = list1;
-        Assert.AreEqual (1, dataSourceChanged, "#A1");
-        Assert.AreSame (list1, lc.DataSource, "#A2");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(1));
+        Assert.That(lc.DataSource, Is.SameAs(list1));
 
-        var form = new Form ();
-        form.Controls.Add (lc);
+        var form = new Form();
+        form.Controls.Add(lc);
 
-        Assert.AreEqual (1, dataSourceChanged, "#B1");
-        Assert.AreSame (list1, lc.DataSource, "#B2");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(1));
+        Assert.That(lc.DataSource, Is.SameAs(list1));
         lc.DataSource = list2;
-        Assert.AreEqual (2, dataSourceChanged, "#B3");
-        Assert.AreSame (list2, lc.DataSource, "#B4");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(2));
+        Assert.That(lc.DataSource, Is.SameAs(list2));
         lc.DataSource = null;
-        Assert.AreEqual (3, dataSourceChanged, "#B5");
-        Assert.IsNull (lc.DataSource, "#B6");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(3));
+        Assert.IsNull(lc.DataSource);
 
-        list1.Add ("item");
-        list1.Clear ();
+        list1.Add("item");
+        list1.Clear();
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test] // bug #81771
-    public void DataSource_BindingList2 ()
+    public void DataSource_BindingList2()
     {
-        BindingList<string> list1 = new();
-        list1.Add ("item 1");
-        BindingList<string> list2 = new();
+        BindingList<string> list1 =
+        [
+            "item 1"
+        ];
+        BindingList<string> list2 = [];
 
-        var lc = new ListControlChild ();
+        var lc = new ListControlChild();
         lc.DataSourceChanged += ListControl_DataSourceChanged;
 
-        var form = new Form ();
-        form.Controls.Add (lc);
+        var form = new Form();
+        form.Controls.Add(lc);
 
-        Assert.AreEqual (0, dataSourceChanged, "#1");
-        Assert.IsNull (lc.DataSource, "#2");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(0));
+        Assert.IsNull(lc.DataSource);
         lc.DataSource = list1;
-        Assert.AreEqual (1, dataSourceChanged, "#3");
-        Assert.AreSame (list1, lc.DataSource, "#4");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(1));
+        Assert.That(lc.DataSource, Is.SameAs(list1));
         lc.DataSource = list2;
-        Assert.AreEqual (2, dataSourceChanged, "#5");
-        Assert.AreSame (list2, lc.DataSource, "#6");
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(2));
+        Assert.That(lc.DataSource, Is.SameAs(list2));
         lc.DataSource = null;
-        Assert.AreEqual (3, dataSourceChanged, "#7");
-        Assert.IsNull (lc.DataSource, "#8");
-        list1.Add ("item");
-        list1.Clear ();
+        Assert.That((object?)dataSourceChanged, Is.EqualTo(3));
+        Assert.IsNull(lc.DataSource);
+        list1.Add("item");
+        list1.Clear();
 
-        form.Dispose ();
+        form.Dispose();
     }
 
     [Test]
-    public void BehaviorFormatting ()
+    public void BehaviorFormatting()
     {
-        ListControl lc = new ListControlChild ();
-        var dt = new DateTime (1, 2, 3, 4, 5, 6);
+        ListControl lc = new ListControlChild();
+        var dt = new DateTime(1, 2, 3, 4, 5, 6);
 
-        Assert.AreEqual (false, lc.FormattingEnabled, "A1");
-        Assert.AreEqual (null, lc.FormatInfo, "A2");
-        Assert.AreEqual (string.Empty, lc.FormatString, "A3");
-			
-        Assert.AreEqual (dt.ToString (), lc.GetItemText (dt), "A4");
-			
+        Assert.That((object?)lc.FormattingEnabled, Is.EqualTo(false));
+        Assert.That((object?)lc.FormatInfo, Is.EqualTo(null));
+        object expected = string.Empty;
+        Assert.That((object?)lc.FormatString, Is.EqualTo(expected));
+
+        Assert.That((object?)lc.GetItemText(dt), Is.EqualTo(dt.ToString()));
+
         lc.FormattingEnabled = true;
         lc.FormatString = "MM/dd";
 
-        Assert.AreEqual ("02/03", lc.GetItemText (dt), "A5");
+        Assert.That((object?)lc.GetItemText(dt), Is.EqualTo("02/03"));
 
         lc.Format += lc_Format;
-        Assert.AreEqual ("Monkey!", lc.GetItemText (dt), "A6");
+        Assert.That((object?)lc.GetItemText(dt), Is.EqualTo("Monkey!"));
     }
 
-    void lc_Format (object? sender, ListControlConvertEventArgs e)
+    private void lc_Format(object? sender, ListControlConvertEventArgs e)
     {
         e.Value = "Monkey!";
     }
 
     [Test]
-    public void FormattingChanges ()
+    public void FormattingChanges()
     {
         var refresh_items_called = false;
 
-        var lc = new ListControlChild ();
+        var lc = new ListControlChild();
         lc.RefreshingItems += delegate
         {
             refresh_items_called = true;
         };
 
         lc.FormattingEnabled = !lc.FormattingEnabled;
-        Assert.AreEqual (true, refresh_items_called, "A1");
+        Assert.That((object?)refresh_items_called, Is.EqualTo(true));
 
         refresh_items_called = false;
         lc.FormatInfo = CultureInfo.CurrentCulture;
-        Assert.AreEqual (true, refresh_items_called, "B1");
+        Assert.That((object?)refresh_items_called, Is.EqualTo(true));
 
         refresh_items_called = false;
-        lc.FormatString = CultureInfo.CurrentCulture.NumberFormat.ToString ();
-        Assert.AreEqual (true, refresh_items_called, "C1");
+        lc.FormatString = CultureInfo.CurrentCulture.NumberFormat.ToString()!;
+        Assert.That((object?)refresh_items_called, Is.EqualTo(true));
     }
 
-    void ListControl_DataSourceChanged (object? sender, EventArgs e)
+    private void ListControl_DataSourceChanged(object? sender, EventArgs e)
     {
         dataSourceChanged++;
     }
 
     [Test]
-    public void FormatEventValueType ()
+    public void FormatEventValueType()
     {
-        string event_log = null;
-        var comboBox = new ComboBox ();
+        string? event_log = null;
+        var comboBox = new ComboBox();
         comboBox.FormattingEnabled = true;
-        comboBox.Format += delegate(object _, ListControlConvertEventArgs e)
+        comboBox.Format += delegate (object? _, ListControlConvertEventArgs e)
         {
-            event_log = e.Value.GetType ().Name;
+            event_log = e.Value?.GetType().Name;
         };
-			
-        var objects = new int [] { 1, 2, 3 };
-        comboBox.DataSource = objects;
-        comboBox.GetItemText (1);
 
-        Assert.AreEqual (typeof (int).Name, event_log, "#A0");
+        var objects = new int[] { 1, 2, 3 };
+        comboBox.DataSource = objects;
+        comboBox.GetItemText(1);
+
+        object expected = typeof(int).Name;
+        Assert.That((object?)event_log, Is.EqualTo(expected));
     }
 
     public class ListControlChild : ListControl
     {
-        int selected_index = -1;
+        private int selected_index = -1;
 
-        public override int SelectedIndex {
-            get {
-                return selected_index;
-            }
-            set {
-                selected_index = value;
-            }
+        public override int SelectedIndex
+        {
+            get => selected_index;
+            set => selected_index = value;
         }
 
+#pragma warning disable CS0067 // Event is never used
         public event EventHandler RefreshingItems;
+#pragma warning restore CS0067 // Event is never used
     }
 }
 
 public class MockItem
 {
-    public MockItem (string text, int value)
+    public MockItem(string text, int value)
     {
         _text = text;
         _value = value;
     }
 
-    public MockItem ()
+    public MockItem()
     {
-        _text = String.Empty;
+        _text = string.Empty;
         _value = -1;
     }
 
-    public string Text {
-        get { return _text; }
-        set {
+    public string Text
+    {
+        get => _text;
+        set
+        {
             if (_text == value)
                 return;
 
             _text = value;
-            OnTextChanged (EventArgs.Empty);
+            OnTextChanged(EventArgs.Empty);
         }
     }
 
-    public int Value {
-        get { return _value; }
-        set {
+    public int Value
+    {
+        get => _value;
+        set
+        {
             if (_value == value)
                 return;
 
             _value = value;
-            OnValueChanged (EventArgs.Empty);
+            OnValueChanged(EventArgs.Empty);
         }
     }
 
-    protected virtual void OnTextChanged (EventArgs args)
+    protected virtual void OnTextChanged(EventArgs args)
     {
         if (TextChanged != null)
-            TextChanged (this, args);
+            TextChanged(this, args);
     }
 
-    protected virtual void OnValueChanged (EventArgs args)
+    protected virtual void OnValueChanged(EventArgs args)
     {
         if (ValueChanged != null)
-            ValueChanged (this, args);
+            ValueChanged(this, args);
     }
 
     public event EventHandler TextChanged;
@@ -476,17 +490,11 @@ public class MockItem
 
 public class MockContainer
 {
-    MockItem item;
+    private MockItem item;
 
     public MockItem Item
     {
-        get
-        {
-            return item;
-        }
-        set
-        {
-            item = value;
-        }
+        get => item;
+        set => item = value;
     }
 }

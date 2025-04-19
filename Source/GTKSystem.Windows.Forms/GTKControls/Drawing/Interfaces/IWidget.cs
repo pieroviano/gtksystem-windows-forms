@@ -10,7 +10,7 @@ namespace System.Drawing;
 public interface IWidget: IDisposable
 {
     event EventHandler? Destroyed;
-    string? Name { get; set; }
+    string Name { get; set; }
     Widget Parent { get; set; }
     int WidthRequest { get; set; }
     int HeightRequest { get; set; }
@@ -82,7 +82,7 @@ public interface IWidget: IDisposable
     bool HasWindow { get; set; }
     bool IsMapped { get; set; }
     RcStyle ModifierStyle { get; }
-    Pango.Context PangoContext { get; }
+    Pango.Context? PangoContext { get; }
     Gdk.Window ParentWindow { get; set; }
     WidgetPath WidgetPath { get; }
     bool IsRealized { get; set; }

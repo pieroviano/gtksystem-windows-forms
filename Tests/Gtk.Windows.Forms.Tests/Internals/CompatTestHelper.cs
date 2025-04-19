@@ -11,21 +11,30 @@ internal class CompatTestHelper
     {
         var r = new ResXResourceReader(fileName);
         var h = new Hashtable();
-        foreach (DictionaryEntry e in r)
+        foreach (DictionaryEntry e in r!)
         {
             h.Add(e.Key, e.Value);
         }
         r.Close();
 
-        Assert.AreEqual("hola", (string)h["String"]!, fileName + "#1");
-        Assert.AreEqual("hello", (string)h["String2"]!, fileName + "#2");
-        Assert.AreEqual(42, (int?)h["Int"], fileName + "#3");
-        Assert.AreEqual(PlatformID.Win32NT, (PlatformID?)h["Enum"], fileName + "#4");
-        Assert.AreEqual(43, ((Point)h["Convertible"]!).X, fileName + "#5");
-        Assert.AreEqual(13, ((byte[])h["ByteArray"]!)[1], fileName + "#7");
-        Assert.AreEqual(16, ((byte[])h["ByteArray2"]!)[1], fileName + "#8");
-        Assert.IsNull(h["InvalidMimeType"], "#11");
+        var message = fileName + "#1";
+        Assert.That((object?)(string)h["String"]!, Is.EqualTo("hola"));
+        var message1 = fileName + "#2";
+        Assert.That((object?)(string)h["String2"]!, Is.EqualTo("hello"), message1);
+        var message2 = fileName + "#3";
+        Assert.That((object?)(int?)h["Int"], Is.EqualTo(42), message2);
+        var message3 = fileName + "#4";
+        Assert.That((object?)(PlatformID?)h["Enum"], Is.EqualTo(PlatformID.Win32NT), message3);
+        var message4 = fileName + "#5";
+        Assert.That((object?)((Point)h["Convertible"]!).X, Is.EqualTo(43), message4);
+        var message5 = fileName + "#7";
+        Assert.That((object?)((byte[])h["ByteArray"]!)[1], Is.EqualTo(13), message5);
+        var message6 = fileName + "#8";
+        Assert.That((object?)((byte[])h["ByteArray2"]!)[1], Is.EqualTo(16), message6);
+        Assert.IsNull(h["InvalidMimeType"]);
         Assert.IsNotNull(h["Image"], fileName + "#12");
-        Assert.AreEqual(typeof(Bitmap).FullName, h["Image"].GetType().FullName, fileName + "#13");
+        object? expected = typeof(Bitmap).FullName;
+        var message7 = fileName + "#13";
+        Assert.That((object?)h["Image"].GetType().FullName, Is.EqualTo(expected), message7);
     }
 }

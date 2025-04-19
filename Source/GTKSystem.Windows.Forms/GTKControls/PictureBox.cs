@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.ComponentModel;
@@ -15,10 +15,15 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class PictureBox : Control
 {
-    private readonly PictureBoxBase self = new();
+    private readonly PictureBoxBase self;
+    private string? _imageLocation;
+    private Image? _image;
+
     public override object GtkControl => self;
+
     public PictureBox()
     {
+        self = new PictureBoxBase();
         self.Shown += Self_Shown;
     }
 
@@ -54,18 +59,21 @@ public class PictureBox : Control
         }
     }
 
-
     public PictureBoxSizeMode SizeMode { get; set; }
 
     public Image? InitialImage { get; set; }
-    private string? imageLocation;
-    public string? ImageLocation { get => imageLocation;
-        set { imageLocation = value; Load(value); } }
 
-    private Image? _image;
-    public override Image? Image { 
+    public string? ImageLocation
+    {
+        get => _imageLocation;
+        set { _imageLocation = value; Load(value); }
+    }
+
+    public override Image? Image
+    {
         get => _image;
-        set {
+        set
+        {
             _image = value;
             if (self.IsRealized && _image is { PixbufData: not null })
             {
@@ -79,12 +87,18 @@ public class PictureBox : Control
     [DefaultValue(BorderStyle.None)]
     public override BorderStyle BorderStyle { get; set; }
 
-    public void CancelAsync() { }
-    public new void Load(string? url) {
-        if(string.IsNullOrWhiteSpace(url))
+    public Task CancelAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    public new void Load(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
         { return; }
 
-        if ((url??string.Empty).Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out var result)){
+        if ((url ?? string.Empty).Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out var result))
+        {
             var file = GLib.FileFactory.NewForUri(result);
             var stream = file.Read(new GLib.Cancellable());
             var pixbuf = new Pixbuf(stream, new GLib.Cancellable());
@@ -97,11 +111,12 @@ public class PictureBox : Control
             _image = new Bitmap(0, 0);
             _image.Pixbuf = pixbuf;
         }
-        if(self.IsMapped && self.IsVisible)
+        if (self.IsMapped && self.IsVisible)
         {
             Self_Shown(null, null);
         }
     }
+
     public new void Load()
     {
         try
@@ -116,17 +131,24 @@ public class PictureBox : Control
             Trace.Write(e);
         }
     }
-    public void LoadAsync() { 
-        if (File.Exists(ImageLocation)) { 
-            LoadAsync(ImageLocation);
-        } 
+
+    public async Task LoadAsync(CancellationToken cancellationToken = default)
+    {
+        if (File.Exists(ImageLocation))
+        {
+            await LoadAsync(ImageLocation, cancellationToken);
+        }
     }
-    public void LoadAsync(string? url) {
-        Task.Run(() => Gtk.Application.Invoke((_, _) => { 
+
+    public async Task LoadAsync(string? url, CancellationToken cancellationToken = default)
+    {
+        await Task.Run(() => Gtk.Application.Invoke((_, _) =>
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             Load(url);
-        }));
+        }), cancellationToken);
     }
-  
+
     public override void EndInit()
     {
 

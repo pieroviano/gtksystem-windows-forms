@@ -24,7 +24,7 @@ public partial class ResXResourceReader
             AssemblyName? result = null;
             if (_cachedAliases != null)
             {
-                result = (AssemblyName)_cachedAliases[alias];
+                result = (AssemblyName?)_cachedAliases[alias];
             }
 
             return result;

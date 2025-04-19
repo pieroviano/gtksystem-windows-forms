@@ -2,29 +2,20 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFrameworks>net48;net8.0</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>false</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
+		<AssemblyName>GTKSystemWinFormsApp11</AssemblyName>
+		<RootNamespace>GTKSystemWinFormsApp11</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Form1.cs" />
-		<Compile Remove="Form1.Designer.cs" />
-		<Compile Include="Form1.cs" Link="GtkForm.cs" SubType="Form" />
-		<Compile Include="Form1.Designer.cs" Link="GtkForm.Designer.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Remove="Form1.resx" />
-		<EmbeddedResource Include="Form1.resx" Link="GtkForm.resx" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
-		<PackageReference Include="Net4x.Gtk.Windows.Forms" Version="1.4.2463" />
+		<PackageReference Include="Net4x.Gtk.Resources.Extensions" Version="1.4.*" />
+		<PackageReference Include="Net4x.Gtk.Windows.Forms" Version="1.4.*" />
 	</ItemGroup>
 
 	<ItemGroup>

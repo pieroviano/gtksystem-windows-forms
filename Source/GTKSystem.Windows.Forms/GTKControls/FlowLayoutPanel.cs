@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -10,16 +10,19 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
+using Point = Drawing.Point;
+
 [ProvideProperty("FlowBreak", typeof(Control))]
 [DefaultProperty("FlowDirection")]
 [DesignerCategory("Component")]
 public class FlowLayoutPanel : Control, IExtenderProvider
 {
-    public readonly FlowLayoutPanelBase self = new();
+    public readonly FlowLayoutPanelBase self;
     public override object GtkControl => self;
     private readonly ObjectCollection? _controls;
     public FlowLayoutPanel()
     {
+        self = new FlowLayoutPanelBase();
         self.Orientation = Gtk.Orientation.Horizontal;
         self.Halign = Align.Start;
         self.Valign = Align.Start;
@@ -72,7 +75,7 @@ public class FlowLayoutPanel : Control, IExtenderProvider
             box.Expand = false;
             if (control != null)
             {
-                control.Location = new Drawing.Point(0, 0);
+                control.Location = new Point(0, 0);
                 control.LockLocation = true;
                 control.Parent = _owner;
                 var widg = control.Widget;

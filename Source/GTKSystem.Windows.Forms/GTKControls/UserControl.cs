@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -10,17 +10,20 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
+using SizeF = Drawing.SizeF;
+
 [DesignerCategory("UserControl")]
 [ToolboxItem(true)]
 public class UserControl : ContainerControl
 {
-    public readonly UserControlBase self = new();
+    public readonly UserControlBase self;
     public override object GtkControl => self;
     private readonly Overlay? contaner;
     private readonly ControlCollection _controls = null!;
 
     public UserControl()
     {
+        self = new UserControlBase();
         contaner = new Overlay();
         contaner.MarginStart = 0;
         contaner.MarginTop = 0;
@@ -55,19 +58,17 @@ public class UserControl : ContainerControl
         OnParentChanged(EventArgs.Empty);
     }
 
-    private void Override_Paint(object? sender, PaintEventArgs e)
-    {
-        OnPaint(e);
-    }
+    public SizeF AutoScaleDimensions { get; set; }
 
-    public Drawing.SizeF AutoScaleDimensions { get; set; }
     public AutoScaleMode AutoScaleMode { get; set; }
+    
     public override ControlCollection Controls => _controls;
 
     public override void SuspendLayout()
     {
 
     }
+
     public override void ResumeLayout(bool performLayout)
     {
 

@@ -7,6 +7,8 @@ using System.Diagnostics;
 
 namespace System.Windows.Forms;
 
+using Rectangle = Rectangle;
+
 public class DataGridViewRowPostPaintEventArgs : EventArgs
 {
     private readonly DataGridView? _dataGridView;
@@ -36,7 +38,7 @@ public class DataGridViewRowPostPaintEventArgs : EventArgs
 
     internal DataGridViewRowPostPaintEventArgs(DataGridView dataGridView)
     {
-        Debug.Assert(dataGridView != null);
+        Trace.Assert(dataGridView != null);
         _dataGridView = dataGridView;
     }
 
@@ -167,7 +169,7 @@ public class DataGridViewRowPostPaintEventArgs : EventArgs
         bool isFirstDisplayedRow,
         bool isLastVisibleRow)
     {
-        Debug.Assert(graphics != null);
+        Trace.Assert(graphics != null);
 
         Graphics = graphics;
         ClipBounds = clipBounds;

@@ -6,6 +6,7 @@ namespace System.Windows.Forms;
 public sealed class TabPageBase : ScrollableBoxBase
 {
     public Overlay? content = new();
+
     public TabPageBase()
     {
         Override = new GtkFormsControlOverride(this);
@@ -20,11 +21,13 @@ public sealed class TabPageBase : ScrollableBoxBase
         Valign = Align.Fill;
         Add(content);
     }
+    
     protected override void OnShown()
     {
         Override.OnAddClass();
         base.OnShown();
     }
+    
     protected override bool OnDrawn(Context? cr)
     {
         var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);

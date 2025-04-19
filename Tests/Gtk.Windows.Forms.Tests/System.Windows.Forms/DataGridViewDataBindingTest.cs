@@ -26,6 +26,7 @@
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Data;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms.DataGridViewBindingTest;
 
@@ -33,460 +34,461 @@ namespace GtkTests.System.Windows.Forms.DataGridViewBindingTest;
 public class DataSetBindingTest : TestHelper
 {
     [Test]
-    public void TestDataSet ()
+    public void TestDataSet()
     {
         // Binding to a DataSet doesn't work unless you specify DataMember
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
-			
-        var ds = new DataSet ();
-			
-        var dt = ds.Tables.Add ("Muppets");
 
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-        dt.Columns.Add ("Sex");
+        var ds = new DataSet();
 
-        dt.Rows.Add (1, "Kermit", "Male");
-        dt.Rows.Add (2, "Miss Piggy", "Female");
-        dt.Rows.Add (3, "Gonzo", "Male");
-			
-        var dgv = new DataGridView ();
+        var dt = ds.Tables.Add("Muppets");
+
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+        dt.Columns.Add("Sex");
+
+        dt.Rows.Add(1, "Kermit", "Male");
+        dt.Rows.Add(2, "Miss Piggy", "Female");
+        dt.Rows.Add(3, "Gonzo", "Male");
+
+        var dgv = new DataGridView();
         dgv.DataSource = ds;
-	
-        f.Controls.Add (dgv);
-        f.Show ();
-			
-        Assert.AreEqual (0, dgv.Columns.Count, "A1");
-			
+
+        f.Controls.Add(dgv);
+        f.Show();
+
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(0));
+
         dgv.DataMember = "Muppets";
 
-        Assert.AreEqual (3, dgv.Columns.Count, "A3");
-			
-        f.Dispose ();
-    }
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(3));
 
-    [Test]
-    public void TestBasic ()
-    {
-        // Binding to a basic DataTable
-        var f = new Form ();
-        f.ShowInTaskbar = false;
-			
-        var ds = new DataSet ();
-
-        var dt = ds.Tables.Add ("Muppets");
-
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-        dt.Columns.Add ("Sex");
-
-        dt.Rows.Add (1, "Kermit", "Male");
-        dt.Rows.Add (2, "Miss Piggy", "Female");
-        dt.Rows.Add (3, "Gonzo", "Male");
-
-        var dgv = new DataGridView ();
-        dgv.DataSource = dt;
-
-        f.Controls.Add (dgv);
-        f.Show ();
-
-        Assert.AreEqual (3, dgv.Columns.Count, "A1");
-        Assert.AreEqual (4, dgv.Rows.SharedList.Count, "A2");
-
-        Assert.AreEqual ("ID", dgv.Columns[0].Name, "A3");
-        Assert.AreEqual ("ID", dgv.Columns[0].DataPropertyName, "A4");
-        Assert.AreEqual (0, dgv.Columns[0].DisplayIndex, "A5");
-        Assert.AreEqual ("ID", dgv.Columns[0].HeaderText, "A6");
-        Assert.AreEqual (0, dgv.Columns[0].Index, "A7");
-        Assert.AreEqual (true, dgv.Columns[0].IsDataBound, "A8");
-        Assert.AreEqual (false, dgv.Columns[0].ReadOnly, "A9");
-        Assert.AreEqual (true, dgv.Columns[0].Visible, "A10");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[0].CellType.ToString (), "A11");
-        Assert.AreEqual ("System.String", dgv.Columns[0].ValueType.ToString (), "A11-B");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxColumn", dgv.Columns[0].GetType ().ToString (), "A11-C");
-
-        Assert.AreEqual ("Name", dgv.Columns[1].Name, "A12");
-        Assert.AreEqual ("Name", dgv.Columns[1].DataPropertyName, "A13");
-        Assert.AreEqual (1, dgv.Columns[1].DisplayIndex, "A14");
-        Assert.AreEqual ("Name", dgv.Columns[1].HeaderText, "A15");
-        Assert.AreEqual (1, dgv.Columns[1].Index, "A16");
-        Assert.AreEqual (true, dgv.Columns[1].IsDataBound, "A17");
-        Assert.AreEqual (false, dgv.Columns[1].ReadOnly, "A18");
-        Assert.AreEqual (true, dgv.Columns[1].Visible, "A19");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[1].CellType.ToString (), "A20");
-        Assert.AreEqual ("System.String", dgv.Columns[1].ValueType.ToString (), "A20-B");
-
-        Assert.AreEqual ("Sex", dgv.Columns[2].Name, "A21");
-        Assert.AreEqual ("Sex", dgv.Columns[2].DataPropertyName, "A22");
-        Assert.AreEqual (2, dgv.Columns[2].DisplayIndex, "A23");
-        Assert.AreEqual ("Sex", dgv.Columns[2].HeaderText, "A24");
-        Assert.AreEqual (2, dgv.Columns[2].Index, "A25");
-        Assert.AreEqual (true, dgv.Columns[2].IsDataBound, "A26");
-        Assert.AreEqual (false, dgv.Columns[2].ReadOnly, "A27");
-        Assert.AreEqual (true, dgv.Columns[2].Visible, "A28");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewTextBoxCell", dgv.Columns[2].CellType.ToString (), "A29");
-        Assert.AreEqual ("System.String", dgv.Columns[2].ValueType.ToString (), "A29-B");
-
-        Assert.AreEqual ("1", dgv.Rows[0].Cells[0].Value, "A30");
-        Assert.AreEqual ("Kermit", dgv.Rows[0].Cells[1].Value, "A31");
-        Assert.AreEqual ("Male", dgv.Rows[0].Cells[2].Value, "A32");
-        Assert.AreEqual ("2", dgv.Rows[1].Cells[0].Value, "A33");
-        Assert.AreEqual ("Miss Piggy", dgv.Rows[1].Cells[1].Value, "A34");
-        Assert.AreEqual ("Female", dgv.Rows[1].Cells[2].Value, "A35");
-        Assert.AreEqual ("3", dgv.Rows[2].Cells[0].Value, "A36");
-        Assert.AreEqual ("Gonzo", dgv.Rows[2].Cells[1].Value, "A37");
-        Assert.AreEqual ("Male", dgv.Rows[2].Cells[2].Value, "A38");
-			
-        f.Dispose ();
-    }
-
-    [Test]
-    public void TestCheckBoxColumn ()
-    {
-        // Binding to a basic DataTable with a boolean value
-        var f = new Form ();
-        f.ShowInTaskbar = false;
-
-        var ds = new DataSet ();
-
-        var dt = ds.Tables.Add ("Muppets");
-
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-        dt.Columns.Add ("IsFunny", typeof (bool));
-
-        dt.Rows.Add (1, "Kermit", "true");
-        dt.Rows.Add (2, "Miss Piggy", "false");
-        dt.Rows.Add (3, "Gonzo", DBNull.Value);
-        dt.Rows.Add (4, "Animal", true);
-        dt.Rows.Add (5, "Fozzy", false);
-        dt.Rows.Add (6, "Beaker", "TRUE");
-        dt.Rows.Add (7, "Bunsen", "fALSe");
-        dt.Rows.Add (8, "Sweedish Chef", 1);
-        dt.Rows.Add (9, "Rolf", 0);
-
-        var dgv = new DataGridView ();
-        dgv.DataSource = dt;
-
-        f.Controls.Add (dgv);
-        f.Show ();
-
-        Assert.AreEqual (3, dgv.Columns.Count, "A1");
-        Assert.AreEqual (10, dgv.Rows.SharedList.Count, "A2");
-
-        Assert.AreEqual ("IsFunny", dgv.Columns[2].Name, "A3");
-        Assert.AreEqual ("IsFunny", dgv.Columns[2].DataPropertyName, "A4");
-        Assert.AreEqual (2, dgv.Columns[2].DisplayIndex, "A5");
-        Assert.AreEqual ("IsFunny", dgv.Columns[2].HeaderText, "A6");
-        Assert.AreEqual (2, dgv.Columns[2].Index, "A7");
-        Assert.AreEqual (true, dgv.Columns[2].IsDataBound, "A8");
-        Assert.AreEqual (false, dgv.Columns[2].ReadOnly, "A9");
-        Assert.AreEqual (true, dgv.Columns[2].Visible, "A10");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewCheckBoxCell", dgv.Columns[2].CellType.ToString (), "A11");
-        Assert.AreEqual ("System.Boolean", dgv.Columns[2].ValueType.ToString (), "A12");
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewCheckBoxColumn", dgv.Columns[2].GetType ().ToString (), "A12-B");
-
-        Assert.AreEqual (true, dgv.Rows[0].Cells[2].Value, "A13");
-        Assert.AreEqual (false, dgv.Rows[1].Cells[2].Value, "A14");
-        Assert.AreEqual (DBNull.Value, dgv.Rows[2].Cells[2].Value, "A15");
-        Assert.AreEqual (true, dgv.Rows[3].Cells[2].Value, "A16");
-        Assert.AreEqual (false, dgv.Rows[4].Cells[2].Value, "A17");
-        Assert.AreEqual (true, dgv.Rows[5].Cells[2].Value, "A18");
-        Assert.AreEqual (false, dgv.Rows[6].Cells[2].Value, "A19");
-        Assert.AreEqual (true, dgv.Rows[7].Cells[2].Value, "A20");
-        Assert.AreEqual (false, dgv.Rows[8].Cells[2].Value, "A21");
-
-        Assert.AreEqual ("System.Windows.Forms.DataGridViewCheckBoxCell", dgv.Rows[8].Cells[2].GetType ().ToString (), "A22");
-			
-        f.Dispose ();
-    }
-
-    [Test]
-    public void TestAutoGenerateColumns ()
-    {
-        // Binding when AutoGenerateColumns is false
-        var f = new Form ();
-        f.ShowInTaskbar = false;
-
-        var ds = new DataSet ();
-
-        var dt = ds.Tables.Add ("Muppets");
-
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-
-        dt.Rows.Add (1, "Kermit");
-        dt.Rows.Add (2, "Miss Piggy");
-        dt.Rows.Add (3, "Gonzo");
-
-        var dgv = new DataGridView ();
-        dgv.DataSource = dt;
-
-        f.Controls.Add (dgv);
-        f.Show ();
-
-        Assert.AreEqual (0, dgv.Columns.Count, "A1");
-        Assert.AreEqual (0, dgv.Rows.SharedList.Count, "A2");
-
-        dgv.DataSource = null;
-			
-        var col1 = new DataGridViewTextBoxColumn ();
-        col1.DataPropertyName = "Name";
-        dgv.Columns.Add (col1);
-
-        dgv.DataSource = dt;
-
-        Assert.AreEqual (1, dgv.Columns.Count, "A3");
-        Assert.AreEqual (4, dgv.Rows.SharedList.Count, "A4");
-
-        Assert.AreEqual ("Kermit", dgv.Rows[0].Cells[0].Value, "A5");
-
-        dgv.DataSource = null;
-
-        var col2 = new DataGridViewTextBoxColumn ();
-        col2.DataPropertyName = "id";
-        dgv.Columns.Add (col2);
-
-        dgv.DataSource = dt;
-
-        Assert.AreEqual (2, dgv.ColumnCount, "A6");
-        Assert.AreEqual (4, dgv.RowCount, "A7");
-
-        Assert.AreEqual ("Kermit", dgv.Rows[0].Cells[0].Value, "A8");
-        Assert.AreEqual ("1", dgv.Rows[0].Cells[1].Value, "A9");
-
-        f.Dispose ();
-    }
-		
-    [Test]	// Bug #399601
-    public void TestAddingWithoutAutoGenerate ()
-    {
-        // Binding when AutoGenerateColumns is false
-        // and adding rows to the dataset
-        var f = new Form ();
-        f.ShowInTaskbar = false;
-
-        var ds = new DataSet ();
-
-        var dt = ds.Tables.Add ("Muppets");
-
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-
-        var dgv = new DataGridView ();
-			
-        var col1 = new DataGridViewTextBoxColumn ();
-        col1.DataPropertyName = "Name";
-        dgv.Columns.Add (col1);
-
-        dgv.DataSource = dt;
-
-        f.Controls.Add (dgv);
-        f.Show ();
-
-        dt.Rows.Add (1, "Kermit");
-        dt.Rows.Add (2, "Miss Piggy");
-        dt.Rows.Add (3, "Gonzo");
-
-        Assert.AreEqual (1, dgv.ColumnCount, "A1");
-        Assert.AreEqual (3, dgv.RowCount, "A2");
-
-        f.Dispose ();
-    }
-
-    [Test]
-    public void TestDeleting ()
-    {
-        // Binding when AutoGenerateColumns is false
-        // and deleting rows from the dataset and DGV
-        var f = new Form ();
-        f.ShowInTaskbar = false;
-
-        var ds = new DataSet ();
-
-        var dt = ds.Tables.Add ("Muppets");
-
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-
-        var dgv = new DataGridView ();
-
-        var col1 = new DataGridViewTextBoxColumn ();
-        col1.DataPropertyName = "Name";
-        dgv.Columns.Add (col1);
-
-        dgv.DataSource = dt;
-
-        f.Controls.Add (dgv);
-        f.Show ();
-
-        dt.Rows.Add (1, "Kermit");
-        dt.Rows.Add (2, "Miss Piggy");
-        dt.Rows.Add (3, "Gonzo");
-
-        Assert.AreEqual (1, dgv.ColumnCount, "A1");
-        Assert.AreEqual (3, dgv.RowCount, "A2");
-
-        dt.Rows[2].Delete ();
-        Assert.AreEqual (2, dgv.RowCount, "A3");
-
-        dgv.Rows.RemoveAt (0);
-        Assert.AreEqual (1, dgv.RowCount, "A4");
-			
         f.Dispose();
     }
 
     [Test]
-    public void TestChangingDataSetAfterSettingDataSource ()
+    public void TestBasic()
+    {
+        // Binding to a basic DataTable
+        var f = new Form();
+        f.ShowInTaskbar = false;
+
+        var ds = new DataSet();
+
+        var dt = ds.Tables.Add("Muppets");
+
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+        dt.Columns.Add("Sex");
+
+        dt.Rows.Add(1, "Kermit", "Male");
+        dt.Rows.Add(2, "Miss Piggy", "Female");
+        dt.Rows.Add(3, "Gonzo", "Male");
+
+        var dgv = new DataGridView();
+        dgv.DataSource = dt;
+
+        f.Controls.Add(dgv);
+        f.Show();
+
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(3));
+        Assert.That((object?)dgv.Rows.SharedList.Count, Is.EqualTo(4));
+
+        Assert.That((object?)dgv.Columns[0].Name, Is.EqualTo("ID"));
+        Assert.That((object?)dgv.Columns[0].DataPropertyName, Is.EqualTo("ID"));
+        Assert.That((object?)dgv.Columns[0].DisplayIndex, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].HeaderText, Is.EqualTo("ID"));
+        Assert.That((object?)dgv.Columns[0].Index, Is.EqualTo(0));
+        Assert.That((object?)dgv.Columns[0].IsDataBound, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[0].ReadOnly, Is.EqualTo(false));
+        Assert.That((object?)dgv.Columns[0].Visible, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[0].CellType?.ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewTextBoxCell"));
+        Assert.That((object?)dgv.Columns[0].ValueType?.ToString(), Is.EqualTo("System.String"), "A11-B");
+        Assert.That((object?)dgv.Columns[0].GetType().ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewTextBoxColumn"), "A11-C");
+
+        Assert.That((object?)dgv.Columns[1].Name, Is.EqualTo("Name"));
+        Assert.That((object?)dgv.Columns[1].DataPropertyName, Is.EqualTo("Name"));
+        Assert.That((object?)dgv.Columns[1].DisplayIndex, Is.EqualTo(1));
+        Assert.That((object?)dgv.Columns[1].HeaderText, Is.EqualTo("Name"));
+        Assert.That((object?)dgv.Columns[1].Index, Is.EqualTo(1));
+        Assert.That((object?)dgv.Columns[1].IsDataBound, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[1].ReadOnly, Is.EqualTo(false));
+        Assert.That((object?)dgv.Columns[1].Visible, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[1].CellType?.ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewTextBoxCell"));
+        Assert.That((object?)dgv.Columns[1].ValueType?.ToString(), Is.EqualTo("System.String"), "A20-B");
+
+        Assert.That((object?)dgv.Columns[2].Name, Is.EqualTo("Sex"));
+        Assert.That((object?)dgv.Columns[2].DataPropertyName, Is.EqualTo("Sex"));
+        Assert.That((object?)dgv.Columns[2].DisplayIndex, Is.EqualTo(2));
+        Assert.That((object?)dgv.Columns[2].HeaderText, Is.EqualTo("Sex"));
+        Assert.That((object?)dgv.Columns[2].Index, Is.EqualTo(2));
+        Assert.That((object?)dgv.Columns[2].IsDataBound, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[2].ReadOnly, Is.EqualTo(false));
+        Assert.That((object?)dgv.Columns[2].Visible, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[2].CellType?.ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewTextBoxCell"));
+        Assert.That((object?)dgv.Columns[2].ValueType?.ToString(), Is.EqualTo("System.String"), "A29-B");
+
+        Assert.That(dgv.Rows[0]!.Cells[0]!.Value, Is.EqualTo("1"));
+        Assert.That(dgv.Rows[0]!.Cells[1]!.Value, Is.EqualTo("Kermit"));
+        Assert.That(dgv.Rows[0]!.Cells[2]!.Value, Is.EqualTo("Male"));
+        Assert.That(dgv.Rows[1]!.Cells[0]!.Value, Is.EqualTo("2"));
+        Assert.That(dgv.Rows[1]!.Cells[1]!.Value, Is.EqualTo("Miss Piggy"));
+        Assert.That(dgv.Rows[1]!.Cells[2]!.Value, Is.EqualTo("Female"));
+        Assert.That(dgv.Rows[2]!.Cells[0]!.Value, Is.EqualTo("3"));
+        Assert.That(dgv.Rows[2]!.Cells[1]!.Value, Is.EqualTo("Gonzo"));
+        Assert.That(dgv.Rows[2]!.Cells[2]!.Value, Is.EqualTo("Male"));
+
+        f.Dispose();
+    }
+
+    [Test]
+    public void TestCheckBoxColumn()
+    {
+        // Binding to a basic DataTable with a boolean value
+        var f = new Form();
+        f.ShowInTaskbar = false;
+
+        var ds = new DataSet();
+
+        var dt = ds.Tables.Add("Muppets");
+
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+        dt.Columns.Add("IsFunny", typeof(bool));
+
+        dt.Rows.Add(1, "Kermit", "true");
+        dt.Rows.Add(2, "Miss Piggy", "false");
+        dt.Rows.Add(3, "Gonzo", DBNull.Value);
+        dt.Rows.Add(4, "Animal", true);
+        dt.Rows.Add(5, "Fozzy", false);
+        dt.Rows.Add(6, "Beaker", "TRUE");
+        dt.Rows.Add(7, "Bunsen", "fALSe");
+        dt.Rows.Add(8, "Sweedish Chef", 1);
+        dt.Rows.Add(9, "Rolf", 0);
+
+        var dgv = new DataGridView();
+        dgv.DataSource = dt;
+
+        f.Controls.Add(dgv);
+        f.Show();
+
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(3));
+        Assert.That((object?)dgv.Rows.SharedList.Count, Is.EqualTo(10));
+
+        Assert.That((object?)dgv.Columns[2].Name, Is.EqualTo("IsFunny"));
+        Assert.That((object?)dgv.Columns[2].DataPropertyName, Is.EqualTo("IsFunny"));
+        Assert.That((object?)dgv.Columns[2].DisplayIndex, Is.EqualTo(2));
+        Assert.That((object?)dgv.Columns[2].HeaderText, Is.EqualTo("IsFunny"));
+        Assert.That((object?)dgv.Columns[2].Index, Is.EqualTo(2));
+        Assert.That((object?)dgv.Columns[2].IsDataBound, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[2].ReadOnly, Is.EqualTo(false));
+        Assert.That((object?)dgv.Columns[2].Visible, Is.EqualTo(true));
+        Assert.That((object?)dgv.Columns[2].CellType?.ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewCheckBoxCell"));
+        Assert.That((object?)dgv.Columns[2].ValueType?.ToString(), Is.EqualTo("System.Boolean"));
+        Assert.That((object?)dgv.Columns[2].GetType().ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewCheckBoxColumn"), "A12-B");
+
+        Assert.That(dgv.Rows[0]!.Cells[2]!.Value, Is.EqualTo(true));
+        Assert.That(dgv.Rows[1]!.Cells[2]!.Value, Is.EqualTo(false));
+        Assert.That(dgv.Rows[2]!.Cells[2]!.Value, Is.EqualTo(DBNull.Value));
+        Assert.That(dgv.Rows[3]!.Cells[2]!.Value, Is.EqualTo(true));
+        Assert.That(dgv.Rows[4]!.Cells[2]!.Value, Is.EqualTo(false));
+        Assert.That(dgv.Rows[5]!.Cells[2]!.Value, Is.EqualTo(true));
+        Assert.That(dgv.Rows[6]!.Cells[2]!.Value, Is.EqualTo(false));
+        Assert.That(dgv.Rows[7]!.Cells[2]!.Value, Is.EqualTo(true));
+        Assert.That(dgv.Rows[8]!.Cells[2]!.Value, Is.EqualTo(false));
+
+        Assert.That((object?)dgv.Rows[8]!.Cells[2]!.GetType().ToString(), Is.EqualTo("System.Windows.Forms.DataGridViewCheckBoxCell"));
+
+        f.Dispose();
+    }
+
+    [Test]
+    public void TestAutoGenerateColumns()
+    {
+        // Binding when AutoGenerateColumns is false
+        var f = new Form();
+        f.ShowInTaskbar = false;
+
+        var ds = new DataSet();
+
+        var dt = ds.Tables.Add("Muppets");
+
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+
+        dt.Rows.Add(1, "Kermit");
+        dt.Rows.Add(2, "Miss Piggy");
+        dt.Rows.Add(3, "Gonzo");
+
+        var dgv = new DataGridView();
+        dgv.DataSource = dt;
+
+        f.Controls.Add(dgv);
+        f.Show();
+
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(0));
+        Assert.That((object?)dgv.Rows.SharedList.Count, Is.EqualTo(0));
+
+        dgv.DataSource = null;
+
+        var col1 = new DataGridViewTextBoxColumn();
+        col1.DataPropertyName = "Name";
+        dgv.Columns.Add(col1);
+
+        dgv.DataSource = dt;
+
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(1));
+        Assert.That((object?)dgv.Rows.SharedList.Count, Is.EqualTo(4));
+
+        Assert.That(dgv.Rows[0]!.Cells[0]!.Value, Is.EqualTo("Kermit"));
+
+        dgv.DataSource = null;
+
+        var col2 = new DataGridViewTextBoxColumn();
+        col2.DataPropertyName = "id";
+        dgv.Columns.Add(col2);
+
+        dgv.DataSource = dt;
+
+        Assert.That((object?)dgv.ColumnCount, Is.EqualTo(2));
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(4));
+
+        Assert.That(dgv.Rows[0]!.Cells[0]!.Value, Is.EqualTo("Kermit"));
+        Assert.That(dgv.Rows[0]!.Cells[1]!.Value, Is.EqualTo("1"));
+
+        f.Dispose();
+    }
+
+    [Test]	// Bug #399601
+    public void TestAddingWithoutAutoGenerate()
+    {
+        // Binding when AutoGenerateColumns is false
+        // and adding rows to the dataset
+        var f = new Form();
+        f.ShowInTaskbar = false;
+
+        var ds = new DataSet();
+
+        var dt = ds.Tables.Add("Muppets");
+
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+
+        var dgv = new DataGridView();
+
+        var col1 = new DataGridViewTextBoxColumn();
+        col1.DataPropertyName = "Name";
+        dgv.Columns.Add(col1);
+
+        dgv.DataSource = dt;
+
+        f.Controls.Add(dgv);
+        f.Show();
+
+        dt.Rows.Add(1, "Kermit");
+        dt.Rows.Add(2, "Miss Piggy");
+        dt.Rows.Add(3, "Gonzo");
+
+        Assert.That((object?)dgv.ColumnCount, Is.EqualTo(1));
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(3));
+
+        f.Dispose();
+    }
+
+    [Test]
+    public void TestDeleting()
     {
         // Binding when AutoGenerateColumns is false
         // and deleting rows from the dataset and DGV
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        var ds = new DataSet ();
+        var ds = new DataSet();
 
-        var dgv = new DataGridView ();
+        var dt = ds.Tables.Add("Muppets");
 
-        var col1 = new DataGridViewTextBoxColumn ();
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+
+        var dgv = new DataGridView();
+
+        var col1 = new DataGridViewTextBoxColumn();
         col1.DataPropertyName = "Name";
-        dgv.Columns.Add (col1);
+        dgv.Columns.Add(col1);
+
+        dgv.DataSource = dt;
+
+        f.Controls.Add(dgv);
+        f.Show();
+
+        dt.Rows.Add(1, "Kermit");
+        dt.Rows.Add(2, "Miss Piggy");
+        dt.Rows.Add(3, "Gonzo");
+
+        Assert.That((object?)dgv.ColumnCount, Is.EqualTo(1));
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(3));
+
+        dt.Rows[2].Delete();
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(2));
+
+        dgv.Rows.RemoveAt(0);
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(1));
+
+        f.Dispose();
+    }
+
+    [Test]
+    public void TestChangingDataSetAfterSettingDataSource()
+    {
+        // Binding when AutoGenerateColumns is false
+        // and deleting rows from the dataset and DGV
+        var f = new Form();
+        f.ShowInTaskbar = false;
+
+        var ds = new DataSet();
+
+        var dgv = new DataGridView();
+
+        var col1 = new DataGridViewTextBoxColumn();
+        col1.DataPropertyName = "Name";
+        dgv.Columns.Add(col1);
 
         dgv.DataSource = ds;
         dgv.DataMember = "Muppets";
 
-        var dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add("Muppets");
 
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
 
-        f.Controls.Add (dgv);
-        f.Show ();
+        f.Controls.Add(dgv);
+        f.Show();
 
-        dt.Rows.Add (1, "Kermit");
-        dt.Rows.Add (2, "Miss Piggy");
-        dt.Rows.Add (3, "Gonzo");
+        dt.Rows.Add(1, "Kermit");
+        dt.Rows.Add(2, "Miss Piggy");
+        dt.Rows.Add(3, "Gonzo");
 
-        Assert.AreEqual (1, dgv.ColumnCount, "A1");
-        Assert.AreEqual (3, dgv.RowCount, "A2");
+        Assert.That((object?)dgv.ColumnCount, Is.EqualTo(1));
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(3));
 
-        dt.Rows[2].Delete ();
-        Assert.AreEqual (2, dgv.RowCount, "A3");
+        dt.Rows[2].Delete();
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(2));
 
-        dgv.Rows.RemoveAt (0);
-        Assert.AreEqual (1, dgv.RowCount, "A4");
+        dgv.Rows.RemoveAt(0);
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(1));
 
-        f.Dispose ();
+        f.Dispose();
     }
 
     [Test]  // bug #448005
-    public void TestClearing ()
+    public void TestClearing()
     {
         // Binding to a DataSet doesn't work unless you specify DataMember
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        var ds = new DataSet ();
+        var ds = new DataSet();
 
-        var dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add("Muppets");
 
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-        dt.Columns.Add ("Sex");
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+        dt.Columns.Add("Sex");
 
-        dt.Rows.Add (1, "Kermit", "Male");
-        dt.Rows.Add (2, "Miss Piggy", "Female");
-        dt.Rows.Add (3, "Gonzo", "Male");
+        dt.Rows.Add(1, "Kermit", "Male");
+        dt.Rows.Add(2, "Miss Piggy", "Female");
+        dt.Rows.Add(3, "Gonzo", "Male");
 
-        var dgv = new DataGridView ();
+        var dgv = new DataGridView();
         dgv.DataSource = ds;
 
-        f.Controls.Add (dgv);
-        f.Show ();
+        f.Controls.Add(dgv);
+        f.Show();
 
         dgv.DataMember = "Muppets";
 
-        Assert.AreEqual (3, dgv.Columns.Count, "A1");
-        Assert.AreEqual (4, dgv.Rows.Count, "A2");
-			
-        ds.Tables[0].Clear ();
-			
-        Assert.AreEqual (3, dgv.Columns.Count, "A3");
-        Assert.AreEqual (1, dgv.Rows.Count, "A4");
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(3));
+        Assert.That((object?)dgv.Rows.Count, Is.EqualTo(4));
 
-        f.Dispose ();
+        ds.Tables[0].Clear();
+
+        Assert.That((object?)dgv.Columns.Count, Is.EqualTo(3));
+        Assert.That((object?)dgv.Rows.Count, Is.EqualTo(1));
+
+        f.Dispose();
     }
 
     [Test]  // bug #462019
-    public void TestCreatingColumnsAfterBind ()
+    public void TestCreatingColumnsAfterBind()
     {
         // When columns are added, we need to rebind.
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        var ds = new DataSet ();
+        var ds = new DataSet();
 
-        var dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add("Muppets");
 
-        dt.Columns.Add ("ID");
-        dt.Columns.Add ("Name");
-        dt.Columns.Add ("Sex");
+        dt.Columns.Add("ID");
+        dt.Columns.Add("Name");
+        dt.Columns.Add("Sex");
 
-        dt.Rows.Add (1, "Kermit", "Male");
-        dt.Rows.Add (2, "Miss Piggy", "Female");
-        dt.Rows.Add (3, "Gonzo", "Male");
+        dt.Rows.Add(1, "Kermit", "Male");
+        dt.Rows.Add(2, "Miss Piggy", "Female");
+        dt.Rows.Add(3, "Gonzo", "Male");
 
-        var dgv = new DataGridView ();
+        var dgv = new DataGridView();
         dgv.DataSource = ds;
         dgv.DataMember = "Muppets";
 
-        f.Controls.Add (dgv);
-        f.Show ();
+        f.Controls.Add(dgv);
+        f.Show();
 
-        Assert.AreEqual (0, dgv.Rows.Count, "A1");
-			
-        DataGridViewColumn col = new DataGridViewTextBoxColumn ();
+        Assert.That((object?)dgv.Rows.Count, Is.EqualTo(0));
+
+        DataGridViewColumn col = new DataGridViewTextBoxColumn();
         col.DataPropertyName = "ID";
-        dgv.Columns.Add (col);
+        dgv.Columns.Add(col);
 
-        Assert.AreEqual (3, dgv.Rows.Count, "A1");
+        Assert.That((object?)dgv.Rows.Count, Is.EqualTo(3));
 
-        f.Dispose ();
+        f.Dispose();
     }
 }
-	
+
 [TestFixture]
 public class BindingListTest : TestHelper
 {
     [Test]	// bug #325239
-    public void TestNullItemInList ()
+    public void TestNullItemInList()
     {
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
         // The list contains one object, but the object is null
         IList<Customer> list = new Customer[1];
 
-        var dgv = new DataGridView ();
-        dgv.DataSource = new BindingList<Customer> (list);
+        var dgv = new DataGridView();
+        dgv.DataSource = new BindingList<Customer>(list);
 
-        f.Controls.Add (dgv);
-        f.Show ();
+        f.Controls.Add(dgv);
+        f.Show();
 
-        Assert.AreEqual (1, dgv.ColumnCount, "A1");
-        Assert.AreEqual (2, dgv.RowCount, "A2");
+        Assert.That((object?)dgv.ColumnCount, Is.EqualTo(1));
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(2));
 
-        f.Dispose ();
+        f.Dispose();
     }
 
     private class Customer
     {
-        string name;
-			
-        public string Name {
-            get { return name; }
-            set { name = value; }
+        private string name;
+
+        public string Name
+        {
+            get => name;
+            set => name = value;
         }
     }
 }
@@ -495,31 +497,31 @@ public class BindingListTest : TestHelper
 public class ArrayTest : TestHelper
 {
     [Test]	// bug #337470
-    public void TestNestedCollections ()
+    public void TestNestedCollections()
     {
         // The grid should not accept collection properties, like Names
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
         Array customers = new Customer[1];
-        customers.SetValue (new Customer (), 0);
-			
-        var dgv = new DataGridView ();
+        customers.SetValue(new Customer(), 0);
+
+        var dgv = new DataGridView();
         dgv.DataSource = customers;
 
-        f.Controls.Add (dgv);
-        f.Show ();
+        f.Controls.Add(dgv);
+        f.Show();
 
-        Assert.AreEqual (1, dgv.ColumnCount, "A1");
-        Assert.AreEqual ("Name", dgv.Columns[0].Name, "A2");
+        Assert.That((object?)dgv.ColumnCount, Is.EqualTo(1));
+        Assert.That((object?)dgv.Columns[0].Name, Is.EqualTo("Name"));
 
-        f.Dispose ();
+        f.Dispose();
     }
 
     private class Customer
     {
-        public string Name { get { return "Kermit"; } }
-        public string[] Names { get { return new string[] { "Kermit", "Gonzo" }; } }
+        public string Name => "Kermit";
+        public string[] Names { get { return ["Kermit", "Gonzo"]; } }
     }
 }
 
@@ -527,44 +529,44 @@ public class ArrayTest : TestHelper
 public class BindingSourceTest : TestHelper
 {
     [Test]	// bug #345483
-    public void TestBindingSource ()
+    public void TestBindingSource()
     {
         // The grid has to extract the List from the BindingSource
-        var f = new Form ();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        var BindingSource = new BindingSource ();
+        var BindingSource = new BindingSource();
 
-        var dataSet1 = new DataSet ();
+        var dataSet1 = new DataSet();
 
-        dataSet1.Tables.Add ();
-        dataSet1.Tables[0].Columns.Add ();
-        dataSet1.Tables[0].Columns.Add ();
-        dataSet1.Tables[0].Columns.Add ();
-        dataSet1.Tables[0].Columns.Add ();
-        dataSet1.Tables[0].Columns.Add ();
-        dataSet1.Tables[0].Rows.Add ("111111", "222222", "333333", "444444", "555555");
+        dataSet1.Tables.Add();
+        dataSet1.Tables[0].Columns.Add();
+        dataSet1.Tables[0].Columns.Add();
+        dataSet1.Tables[0].Columns.Add();
+        dataSet1.Tables[0].Columns.Add();
+        dataSet1.Tables[0].Columns.Add();
+        dataSet1.Tables[0].Rows.Add("111111", "222222", "333333", "444444", "555555");
 
         BindingSource.DataSource = dataSet1.Tables[0];
 
-        var dgv = new DataGridView ();
+        var dgv = new DataGridView();
         dgv.DataSource = BindingSource;
 
-        f.Controls.Add (dgv);
-        f.Show ();
+        f.Controls.Add(dgv);
+        f.Show();
 
-        Assert.AreEqual (5, dgv.ColumnCount, "A1");
-        Assert.AreEqual (2, dgv.RowCount, "A2");
+        Assert.That((object?)dgv.ColumnCount, Is.EqualTo(5));
+        Assert.That((object?)dgv.RowCount, Is.EqualTo(2));
 
-        Assert.AreEqual ("Column1", dgv.Columns[0].Name, "A3");
-        Assert.AreEqual ("111111", dgv.Rows[0].Cells[0].Value, "A4");
+        Assert.That((object?)dgv.Columns[0].Name, Is.EqualTo("Column1"));
+        Assert.That(dgv.Rows[0]!.Cells[0]!.Value, Is.EqualTo("111111"));
 
-        f.Dispose ();
+        f.Dispose();
     }
 
     private class Customer
     {
-        public string Name { get { return "Kermit"; } }
-        public string[] Names { get { return new string[] { "Kermit", "Gonzo" }; } }
+        public string Name => "Kermit";
+        public string[] Names { get { return ["Kermit", "Gonzo"]; } }
     }
 }

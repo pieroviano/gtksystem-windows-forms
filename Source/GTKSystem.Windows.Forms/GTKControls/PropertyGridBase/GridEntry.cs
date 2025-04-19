@@ -4,16 +4,19 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace System.Windows.Forms.PropertyGridInternal;
+namespace System.Windows.Forms;
 
 internal class GridEntry : GridItem, ITypeDescriptorContext
 {
     public PropertyGrid? OwnerGrid { get; set; }
+    
     public GridEntry? _parent;
+
     protected GridEntry(PropertyGrid? ownerGrid, GridEntry? parent)
     {
         _parent = parent;
         OwnerGrid = ownerGrid;
+        gridItems = new GridItemCollection([]);
     }
     public GridEntry(GridEntry? parent, GridItemType itemtype, int level, string? label, object? value, string? description)
     {
@@ -24,9 +27,10 @@ internal class GridEntry : GridItem, ITypeDescriptorContext
         Label = label;
         this.value = value;
         Description = description;
+        gridItems = new GridItemCollection([]);
     }
 
-    public override GridItemCollection? GridItems => gridItems;
+    public override GridItemCollection GridItems => gridItems;
 
     public override GridItemType GridItemType { get; }
 
@@ -37,7 +41,7 @@ internal class GridEntry : GridItem, ITypeDescriptorContext
     public override PropertyDescriptor? PropertyDescriptor => propertyDescriptor;
 
     internal object? value;
-    internal GridItemCollection? gridItems;
+    internal GridItemCollection gridItems;
     internal PropertyDescriptor? propertyDescriptor;
     public override object? Value => value;
 

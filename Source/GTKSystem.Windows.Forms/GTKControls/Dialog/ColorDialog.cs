@@ -2,19 +2,20 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.ComponentModel;
-using System.Drawing;
 using Gtk;
 
 namespace System.Windows.Forms;
 
+using Color = Drawing.Color;
+
 public class ColorDialog : CommonDialog
 {
     private int[]? customColors;
-    private ColorChooserDialog? _dialog;
+    internal ColorChooserDialog? _dialog;
 
     public virtual bool AllowFullOpen { get; set; } = true;
 
@@ -33,6 +34,17 @@ public class ColorDialog : CommonDialog
             if (value == null)
             {
                 value = [];
+            }
+
+            if (value.Length < 16)
+            {
+                var ints = new List<int>(value);
+                while (ints.Count < 16)
+                {
+                    ints.Add(Color.Transparent.ToArgb());
+                }
+
+                value = ints.ToArray();
             }
             customColors = value;
         }
@@ -62,6 +74,19 @@ public class ColorDialog : CommonDialog
     {
         Color = Color.Black;
     }
+
+    public override void ClickOk()
+    {
+        _dialog?.Respond(ResponseType.Ok);
+        OnOKClicked(EventArgs.Empty);
+    }
+
+    public override void ClickCancel()
+    {
+        _dialog?.Respond(ResponseType.Cancel);
+        OnCancelClicked(EventArgs.Empty);
+    }
+
     protected override bool RunDialog(IWin32Window? owner)
     {
         if (owner is Form ownerform)
@@ -83,6 +108,7 @@ public class ColorDialog : CommonDialog
             _dialog.Rgba = new Gdk.RGBA() { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
         if (FullOpen && AllowFullOpen)
             _dialog.Fullscreen();
+        _dialog.Shown += OnDialogOnShown;
         var res = _dialog.Run();
         var colorSelection = _dialog.Rgba;
         Color = Color.FromArgb((int)(colorSelection.Alpha * 255), (int)Math.Round(colorSelection.Red * 255, 0), (int)Math.Round(colorSelection.Green * 255, 0), (int)Math.Round(colorSelection.Blue * 255, 0));
@@ -91,5 +117,10 @@ public class ColorDialog : CommonDialog
         return res == -5;
     }
 
-    public override string ToString() { return Color.Name; }
+    private void OnDialogOnShown(object? sender, EventArgs e)
+    {
+        OnDialogOnShown(new CommonDialogEventArgs(this));
+    }
+
+    public override string ToString() { return $"System.Windows.Forms.ColorDialog,  Color: Color [{Color.Name}]"; }
 }

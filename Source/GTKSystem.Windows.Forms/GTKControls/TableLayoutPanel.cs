@@ -2,13 +2,14 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Size = Drawing.Size;
 
 //[ProvideProperty("ColumnSpan", typeof(Control))]
 //[ProvideProperty("RowSpan", typeof(Control))]
@@ -19,7 +20,7 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class TableLayoutPanel : ContainerControl, IExtenderProvider
 {
-    public readonly TableLayoutPanelBase self = new();
+    public readonly TableLayoutPanelBase self;
     public override object GtkControl => self;
     private readonly TableLayoutControlCollection _controls;
     private readonly TableLayoutColumnStyleCollection _columnStyles;
@@ -27,6 +28,7 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     public Gtk.Grid grid => self.grid;
     public TableLayoutPanel()
     {
+        self = new TableLayoutPanelBase();
         _controls=new TableLayoutControlCollection(this);
         _columnStyles = new TableLayoutColumnStyleCollection();
         _rowStyles = new TableLayoutRowStyleCollection();

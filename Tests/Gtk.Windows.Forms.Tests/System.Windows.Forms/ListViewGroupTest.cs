@@ -25,6 +25,7 @@
 // Author:
 //      Daniel Nauck    (dna(at)mono-project(dot)de)
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -32,12 +33,12 @@ namespace GtkTests.System.Windows.Forms;
 [TestFixture]
 public class ListViewGroupTest : TestHelper
 {
-    ListView lv = null;
+    private ListView? lv;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
-        lv.Dispose();
+        lv?.Dispose();
     }
 
     [SetUp]
@@ -50,19 +51,19 @@ public class ListViewGroupTest : TestHelper
     public void DefaultProperties ()
     {
         //default ListView properties for groups
-        Assert.AreEqual (true, lv.ShowGroups, "#A1");
-        Assert.AreEqual (true, (lv.Groups != null), "#A2");
-        Assert.AreEqual (0, lv.Groups.Count, "#A3");
+        Assert.That((object?)lv!.ShowGroups, Is.EqualTo(true));
+        Assert.That((object?)(lv.Groups != null), Is.EqualTo(true));
+        Assert.That((object?)lv.Groups!.Count, Is.EqualTo(0));
 
         //default ListViewGroup properties
         var lg1 = new ListViewGroup ();
-        Assert.AreEqual ("ListViewGroup", lg1.Header, "#A4");
-        Assert.AreEqual (null, lg1.Name, "#A5");
-        Assert.AreEqual (HorizontalAlignment.Left, lg1.HeaderAlignment, "#A6");
-        Assert.AreEqual (0, lg1.Items.Count, "#A7");
-        Assert.AreEqual (null, lg1.ListView, "#A8");
-        Assert.AreEqual (null, lg1.Tag, "#A9");
-        Assert.AreEqual (lg1.Header, lg1.ToString(), "#A10");
+        Assert.That((object?)lg1.Header, Is.EqualTo("ListViewGroup"));
+        Assert.That((object?)lg1.Name, Is.EqualTo(null));
+        Assert.That((object?)lg1.HeaderAlignment, Is.EqualTo(HorizontalAlignment.Left));
+        Assert.That((object?)lg1.Items.Count, Is.EqualTo(0));
+        Assert.That((object?)lg1.ListView, Is.EqualTo(null));
+        Assert.That(lg1.Tag, Is.EqualTo(null));
+        Assert.That((object?)lg1.ToString(), Is.EqualTo(lg1.Header));
     }
 
     [Test]
@@ -70,16 +71,16 @@ public class ListViewGroupTest : TestHelper
     {
         var lg1 = new ListViewGroup ();
         lg1.Items.Add ("Item1");
-        Assert.AreEqual (1, lg1.Items.Count, "#B1");
-        Assert.AreEqual (null, lg1.Items[0].ListView, "#B2");
+        Assert.That((object?)lg1.Items.Count, Is.EqualTo(1));
+        Assert.That((object?)lg1.Items[0].ListView, Is.EqualTo(null));
 
-        lv.Groups.Add (lg1);
-        Assert.AreEqual (null, lg1.Items[0].ListView, "#B3");
-        Assert.AreEqual (false, lv.Items.Contains(lg1.Items[0]), "#B4");
+        lv!.Groups.Add (lg1);
+        Assert.That((object?)lg1.Items[0].ListView, Is.EqualTo(null));
+        Assert.That((object?)lv.Items.Contains(lg1.Items[0]), Is.EqualTo(false));
 
         var lvi = lg1.Items.Add ("Item1");
-        Assert.AreEqual (null, lvi.ListView, "#C1");
-        Assert.AreEqual (lg1, lvi.Group, "#C2");
+        Assert.That((object?)lvi.ListView, Is.EqualTo(null));
+        Assert.That((object?)lvi.Group, Is.EqualTo(lg1));
     }
 
     [Test]
@@ -87,28 +88,28 @@ public class ListViewGroupTest : TestHelper
     {
         var lg1 = new ListViewGroup ();
         lg1.Items.Add ("Item1");
-        lv.Groups.Add (lg1);
+        lv!.Groups.Add (lg1);
         lv.Groups.Remove (lg1);
 
-        Assert.AreEqual (1, lg1.Items.Count, "#C1");
-        Assert.AreEqual (0, lv.Items.Count, "#C2");
-        Assert.AreEqual (false, lv.Items.Contains (lg1.Items [0]), "#C3");
+        Assert.That((object?)lg1.Items.Count, Is.EqualTo(1));
+        Assert.That((object?)lv.Items.Count, Is.EqualTo(0));
+        Assert.That((object?)lv.Items.Contains (lg1.Items [0]), Is.EqualTo(false));
 
         lg1.Items.Clear ();
         lv.Groups.Add (lg1);
         var lvi = lv.Items.Add ("Item1");
         lg1.Items.Add (lvi);
 
-        Assert.AreEqual (1, lg1.Items.Count, "#D1");
-        Assert.AreEqual (1, lv.Items.Count, "#D2");
-        Assert.AreEqual (lv, lvi.ListView, "#D3");
-        Assert.AreEqual (lg1, lvi.Group, "#D4");
+        Assert.That((object?)lg1.Items.Count, Is.EqualTo(1));
+        Assert.That((object?)lv.Items.Count, Is.EqualTo(1));
+        Assert.That((object?)lvi.ListView, Is.EqualTo(lv));
+        Assert.That((object?)lvi.Group, Is.EqualTo(lg1));
 				
         lg1.Items.Remove (lvi);
 				
-        Assert.AreEqual (0, lg1.Items.Count, "#E1");
-        Assert.AreEqual (1, lv.Items.Count, "#E2");
-        Assert.AreEqual (lv, lvi.ListView, "#E3");
-        Assert.AreEqual (null, lvi.Group, "#E4");
+        Assert.That((object?)lg1.Items.Count, Is.EqualTo(0));
+        Assert.That((object?)lv.Items.Count, Is.EqualTo(1));
+        Assert.That((object?)lvi.ListView, Is.EqualTo(lv));
+        Assert.That((object?)lvi.Group, Is.EqualTo(null));
     }
 }

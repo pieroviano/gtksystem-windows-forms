@@ -91,7 +91,7 @@ public class KeysConverter : TypeConverter, IComparer
         {
             if (_keyNames == null)
             {
-                Debug.Assert(_displayOrder == null);
+                Trace.Assert(_displayOrder == null);
                 Initialize();
             }
             return _keyNames!;
@@ -104,7 +104,7 @@ public class KeysConverter : TypeConverter, IComparer
         {
             if (_displayOrder == null)
             {
-                Debug.Assert(_keyNames == null);
+                Trace.Assert(_keyNames == null);
                 Initialize();
             }
             return _displayOrder!;

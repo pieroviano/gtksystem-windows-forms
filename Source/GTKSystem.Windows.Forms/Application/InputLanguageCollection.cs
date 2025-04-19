@@ -22,7 +22,7 @@ public class InputLanguageCollection : ReadOnlyCollectionBase
     /// <summary>
     ///  Represents the entry at the specified index of the <see cref='InputLanguage'/>.
     /// </summary>
-    public InputLanguage this[int index] => (InputLanguage)InnerList[index];
+    public InputLanguage? this[int index] => (InputLanguage?)InnerList[index];
 
     /// <summary>
     ///  Gets a value indicating whether the

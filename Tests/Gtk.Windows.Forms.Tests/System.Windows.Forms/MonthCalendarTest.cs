@@ -7,6 +7,7 @@
 // (C) 2005 Novell, Inc. (http://www.novell.com)
 //
 
+using GtkTests.Helpers;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -27,21 +28,23 @@ public class MonthCalendarTest : TestHelper
         //DateTime myDateTime = new DateTime ();
 
         // F
-        Assert.AreEqual(Day.Default, myMonthCal1.FirstDayOfWeek, "#F1");
+        Assert.That((object?)myMonthCal1.FirstDayOfWeek, Is.EqualTo(Day.Default));
         myMonthCal1.FirstDayOfWeek = Day.Sunday;
-        Assert.AreEqual(Day.Sunday, myMonthCal1.FirstDayOfWeek, "#F2");
-        Assert.AreEqual("WindowText", myMonthCal1.ForeColor.Name, "#F3");
+        Assert.That((object?)myMonthCal1.FirstDayOfWeek, Is.EqualTo(Day.Sunday));
+        Assert.That((object?)myMonthCal1.ForeColor.Name, Is.EqualTo("WindowText"));
 
         // M 
-        Assert.AreEqual(new DateTime(9998, 12, 31), myMonthCal1.MaxDate, "#M1");
-        Assert.AreEqual(new DateTime(1753, 1, 1), myMonthCal1.MinDate, "#M3");
-        Assert.AreEqual(true, myMonthCal1.ShowToday, "#S5");
-        Assert.AreEqual(true, myMonthCal1.ShowTodayCircle, "#S6");
-        Assert.AreEqual(false, myMonthCal1.ShowWeekNumbers, "#S7");
-        // Font dependent. // Assert.AreEqual (153, myMonthCal1.SingleMonthSize.Height, "#S8a");
-        // Font dependent. // Assert.AreEqual (176, myMonthCal1.SingleMonthSize.Width, "#S8b");
-        Assert.AreEqual(null, myMonthCal1.Site, "#S9");
-        Assert.AreEqual(DateTime.Today, myMonthCal1.TodayDate, "#T3");
+        object expected = new DateTime(9998, 12, 31);
+        Assert.That((object?)myMonthCal1.MaxDate, Is.EqualTo(expected));
+        object expected1 = new DateTime(1753, 1, 1);
+        Assert.That((object?)myMonthCal1.MinDate, Is.EqualTo(expected1));
+        Assert.That((object?)myMonthCal1.ShowToday, Is.EqualTo(true));
+        Assert.That((object?)myMonthCal1.ShowTodayCircle, Is.EqualTo(true));
+        Assert.That((object?)myMonthCal1.ShowWeekNumbers, Is.EqualTo(false));
+        // Font dependent. // Assert1.AreEqual(153, myMonthCal1.SingleMonthSize.Height, "#S8a");
+        // Font dependent. // Assert1.AreEqual(176, myMonthCal1.SingleMonthSize.Width, "#S8b");
+        Assert.That((object?)myMonthCal1.Site, Is.EqualTo(null));
+        Assert.That((object?)myMonthCal1.TodayDate, Is.EqualTo(DateTime.Today));
 
         myfrm.Dispose();
     }
@@ -50,7 +53,7 @@ public class MonthCalendarTest : TestHelper
     public void InitialSizeTest()
     {
         var cal = new MonthCalendar();
-        Assert.IsTrue(cal.Size != Size.Empty, "#01");
+        Assert.IsTrue(cal.Size != Size.Empty);
     }
 
     [Test]
@@ -58,19 +61,23 @@ public class MonthCalendarTest : TestHelper
     {
         var myMonthCal1 = new MonthCalendar();
 
-        try
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            myMonthCal1.MaxDate = new DateTime(1752, 1, 1, 0, 0, 0, 0); // value is less than min date (01/01/1753)
-            Assert.Fail("#A1");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            Assert.AreEqual(typeof(ArgumentOutOfRangeException), ex.GetType(), "#A2");
-            Assert.IsNotNull(ex.Message, "#A3");
-            Assert.IsNotNull(ex.ParamName, "#A4");
-            Assert.AreEqual("MaxDate", ex.ParamName, "#A5");
-            Assert.IsNull(ex.InnerException, "#A6");
-        }
+            try
+            {
+                myMonthCal1.MaxDate = new DateTime(1752, 1, 1, 0, 0, 0, 0); // value is less than min date (01/01/1753)
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                object expected = typeof(ArgumentOutOfRangeException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("MaxDate"));
+                Assert.IsNull(ex.InnerException);
+                throw;
+            }
+        });
     }
 
     [Test]
@@ -78,33 +85,41 @@ public class MonthCalendarTest : TestHelper
     {
         var myMonthCal1 = new MonthCalendar();
 
-        try
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            myMonthCal1.MinDate = new DateTime(1752, 1, 1, 0, 0, 0, 0); // Date earlier than 01/01/1753
-            Assert.Fail("#A1");
-        }
-        catch (ArgumentOutOfRangeException ex)
+            try
+            {
+                myMonthCal1.MinDate = new DateTime(1752, 1, 1, 0, 0, 0, 0); // Date earlier than 01/01/1753
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                object expected = typeof(ArgumentOutOfRangeException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("MinDate"));
+                Assert.IsNull(ex.InnerException);
+                throw;
+            }
+        });
+        
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            Assert.AreEqual(typeof(ArgumentOutOfRangeException), ex.GetType(), "#A2");
-            Assert.IsNotNull(ex.Message, "#A3");
-            Assert.IsNotNull(ex.ParamName, "#A4");
-            Assert.AreEqual("MinDate", ex.ParamName, "#A5");
-            Assert.IsNull(ex.InnerException, "#A6");
-        }
-
-        try
-        {
-            myMonthCal1.MinDate = new DateTime(9999, 12, 31, 0, 0, 0, 0); // Date greater than max date
-            Assert.Fail("#B1");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            Assert.AreEqual(typeof(ArgumentOutOfRangeException), ex.GetType(), "#B2");
-            Assert.IsNotNull(ex.Message, "#B3");
-            Assert.IsNotNull(ex.ParamName, "#B4");
-            Assert.AreEqual("MinDate", ex.ParamName, "#B5");
-            Assert.IsNull(ex.InnerException, "#B6");
-        }
+            try
+            {
+                myMonthCal1.MinDate = new DateTime(9999, 12, 31, 0, 0, 0, 0); // Date greater than max date
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                object expected = typeof(ArgumentOutOfRangeException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNotNull(ex.ParamName);
+                Assert.That((object?)ex.ParamName, Is.EqualTo("MinDate"));
+                Assert.IsNull(ex.InnerException);
+                throw;
+            }
+        });
     }
 
     [Test]
@@ -144,7 +159,7 @@ public class MonthCalendarPropertiesTest : MonthCalendar
     [Test]
     public void DefaultMarginTest ()
     {
-        Assert.AreEqual (DefaultMargin.All, 9, "#01");
+        Assert.That((object?)DefaultMargin.All, Is.EqualTo(9));
     }
 }
 

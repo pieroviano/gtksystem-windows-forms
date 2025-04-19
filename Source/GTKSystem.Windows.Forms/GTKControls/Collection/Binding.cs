@@ -6,7 +6,7 @@ namespace System.Windows.Forms;
 
 /// <summary>Represents the simple binding between the property value of an object and the property value of a control.</summary>
 /// <filterpriority>1</filterpriority>
-public class Binding
+public partial class Binding
 {
     private IBindableComponent? _control;
 
@@ -46,15 +46,9 @@ public class Binding
 
     private bool _dsNullValueSet;
 
-    private ConvertEventHandler? _parse;
-
-    private ConvertEventHandler? _format;
-
     private ControlUpdateMode _controlUpdateMode;
 
     private DataSourceUpdateMode _dataSourceUpdateMode;
-
-    private BindingCompleteEventHandler? _bindingComplete;
 
     /// <summary>Gets the control the <see cref="T:System.Windows.Forms.Binding" /> is associated with.</summary>
     /// <returns>The <see cref="T:System.Windows.Forms.IBindableComponent" /> the <see cref="T:System.Windows.Forms.Binding" /> is associated with.</returns>
@@ -272,7 +266,7 @@ public class Binding
     /// <exception cref="T:System.Exception">
     ///   <paramref name="propertyName" /> is neither a valid property of a control nor an empty string (""). </exception>
     /// <exception cref="T:System.ArgumentException">The property given by <paramref name="propertyName" /> does not exist on the control.</exception>
-    public Binding(string propertyName, object dataSource, string? dataMember) : this(propertyName, dataSource, dataMember, false, DataSourceUpdateMode.OnValidation, null, string.Empty, null)
+    public Binding(string propertyName, object? dataSource, string? dataMember) : this(propertyName, dataSource, dataMember, true, DataSourceUpdateMode.OnValidation, null, string.Empty, null)
     {
     }
 
@@ -333,7 +327,7 @@ public class Binding
     /// <param name="formatString">One or more format specifier characters that indicate how a value is to be displayed.</param>
     /// <param name="formatInfo">An implementation of <see cref="T:System.IFormatProvider" /> to override default formatting behavior.</param>
     /// <exception cref="T:System.ArgumentException">The property given by <paramref name="propertyName" /> does not exist on the control.-or-The data source or data member or control property specified are associated with another binding in the collection.</exception>
-    public Binding(string propertyName, object dataSource, string? dataMember, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object? nullValue, string formatString, IFormatProvider? formatInfo)
+    public Binding(string propertyName, object? dataSource, string? dataMember, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object? nullValue, string formatString, IFormatProvider? formatInfo)
     {
         _bindToObject = new BindToObject(this, dataSource, dataMember);
         _propertyName = propertyName;
@@ -399,7 +393,7 @@ public class Binding
             var str = string.Concat(_propertyName, "IsNull");
             PropertyDescriptor? item = null;
             PropertyDescriptor? propertyDescriptor = null;
-            var inheritanceAttribute = (InheritanceAttribute)TypeDescriptor.GetAttributes(_control)[typeof(InheritanceAttribute)];
+            var inheritanceAttribute = (InheritanceAttribute?)TypeDescriptor.GetAttributes(_control)[typeof(InheritanceAttribute)];
             var propertyDescriptorCollections = inheritanceAttribute == null || inheritanceAttribute.InheritanceLevel == InheritanceLevel.NotInherited ? TypeDescriptor.GetProperties(_control) : TypeDescriptor.GetProperties(type);
             for (var i = 0; i < propertyDescriptorCollections.Count; i++)
             {
@@ -508,7 +502,7 @@ public class Binding
             {
                 converter = _bindToObject.FieldInfo.Converter;
             }
-            return Formatter.FormatObject(value, propertyType, converter, _propInfoConverter, _formatString??string.Empty, _formatInfo, _nullValue, _dsNullValue);
+            return Formatter.FormatObject(value, propertyType, converter, _propInfoConverter, _formatString ?? string.Empty, _formatInfo, _nullValue, _dsNullValue);
         }
         var convertEventArg1 = new ConvertEventArgs(value, propertyType);
         OnFormat(convertEventArg1);
@@ -580,57 +574,6 @@ public class Binding
             return true;
         }
         return control.Created;
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.Binding.BindingComplete" /> event. </summary>
-    /// <param name="e">A <see cref="T:System.Windows.Forms.BindingCompleteEventArgs" />  that contains the event data. </param>
-    protected virtual void OnBindingComplete(BindingCompleteEventArgs e)
-    {
-        if (!_inOnBindingComplete)
-        {
-            try
-            {
-                try
-                {
-                    _inOnBindingComplete = true;
-                    _bindingComplete?.Invoke(this, e);
-                }
-                catch (Exception exception)
-                {
-                    if (ClientUtils.IsSecurityOrCriticalException(exception))
-                    {
-                        throw;
-                    }
-                    e.Cancel = true;
-                }
-            }
-            finally
-            {
-                _inOnBindingComplete = false;
-            }
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.Binding.Format" /> event.</summary>
-    /// <param name="e">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
-    protected virtual void OnFormat(ConvertEventArgs e)
-    {
-        _format?.Invoke(this, e);
-        if (!_formattingEnabled && !(e.Value is DBNull) && e.DesiredType != null && !e.DesiredType.IsInstanceOfType(e.Value) && e.Value is IConvertible)
-        {
-            e.Value = Convert.ChangeType(e.Value, e.DesiredType, CultureInfo.CurrentCulture);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.Binding.Parse" /> event.</summary>
-    /// <param name="e">A <see cref="T:System.Windows.Forms.ConvertEventArgs" /> that contains the event data. </param>
-    protected virtual void OnParse(ConvertEventArgs e)
-    {
-        _parse?.Invoke(this, e);
-        if (!_formattingEnabled && !(e.Value is DBNull) && e is { Value: not null, DesiredType: not null } && !e.DesiredType.IsInstanceOfType(e.Value) && e.Value is IConvertible)
-        {
-            e.Value = Convert.ChangeType(e.Value, e.DesiredType, CultureInfo.CurrentCulture);
-        }
     }
 
     private object? ParseObject(object? value)
@@ -999,28 +942,5 @@ public class Binding
     public void WriteValue()
     {
         PullData(true, true);
-    }
-
-    /// <summary>Occurs when the <see cref="P:System.Windows.Forms.Binding.FormattingEnabled" /> property is set to true and a binding operation is complete, such as when data is pushed from the control to the data source or vice versa</summary>
-    public event BindingCompleteEventHandler? BindingComplete
-    {
-        add => _bindingComplete += value;
-        remove => _bindingComplete -= value;
-    }
-
-    /// <summary>Occurs when the property of a control is bound to a data value.</summary>
-    /// <filterpriority>1</filterpriority>
-    public event ConvertEventHandler? Format
-    {
-        add => _format += value;
-        remove => _format -= value;
-    }
-
-    /// <summary>Occurs when the value of a data-bound control changes.</summary>
-    /// <filterpriority>1</filterpriority>
-    public event ConvertEventHandler? Parse
-    {
-        add => _parse += value;
-        remove => _parse -= value;
     }
 }

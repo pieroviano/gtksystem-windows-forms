@@ -4,9 +4,13 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
+using Color = Color;
+using Rectangle = Rectangle;
+using Point = Point;
+
 public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 {
-    private ListViewSubItemCollection? _subitems;
+    private ListViewSubItemCollection _subitems = null!;
 
     public class ListViewSubItem
     {
@@ -24,20 +28,26 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 
 
         internal string _text = string.Empty;
+        private string name = string.Empty;
 
         public string Text
         {
             get => _text;
             set
             {
+                value ??= string.Empty;
                 _text = value;
                 if (_label != null)
                     _label.Text = value;
             }
         }
 
+        public string Name
+        {
+            get => name;
+            set => name = value ?? string.Empty;
+        }
 
-        public string Name { get; set; } = string.Empty;
         public ListViewItem? ListViewItem { get; set; }
 
         public ListViewSubItem()
@@ -45,16 +55,16 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 
         }
 
-        public ListViewSubItem(ListViewItem? owner, string text)
+        public ListViewSubItem(ListViewItem? owner, string? text)
         {
             ListViewItem = owner;
-            Text = text;
+            Text = text ?? string.Empty;
         }
 
-        public ListViewSubItem(ListViewItem? owner, string text, Color foreColor, Color backColor, Font? font)
+        public ListViewSubItem(ListViewItem? owner, string? text, Color foreColor, Color backColor, Font? font)
         {
             ListViewItem = owner;
-            Text = text;
+            Text = text ?? string.Empty;
             ForeColor = foreColor;
             BackColor = backColor;
             Font = font;
@@ -71,7 +81,7 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
     {
         private readonly ListViewItem? _owner;
 
-        public virtual ListViewSubItem this[string key]
+        public virtual ListViewSubItem this[string? key]
         {
             get { return Find(w => w.Name == key); }
         }
@@ -104,7 +114,7 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         public void AddRange(string[] items)
         {
             foreach (var item in items)
-                Add(item);
+                Add(item ?? string.Empty);
         }
 
         public void AddRange(string[] items, Color foreColor, Color backColor, Font? font)
@@ -113,19 +123,19 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
                 Add(item, foreColor, backColor, font);
         }
 
-        public virtual bool ContainsKey(string key)
+        public virtual bool ContainsKey(string? key)
         {
             return FindIndex(w => w.Name == key) > -1;
 
         }
 
-        public virtual int IndexOfKey(string key)
+        public virtual int IndexOfKey(string? key)
         {
             return FindIndex(w => w.Name == key);
 
         }
 
-        public virtual void RemoveByKey(string key)
+        public virtual void RemoveByKey(string? key)
         {
             RemoveAt(FindIndex(w => w.Name == key));
         }
@@ -246,7 +256,7 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 
 
 
-    public ListViewSubItemCollection? SubItems => _subitems;
+    public ListViewSubItemCollection SubItems => _subitems;
 
     public object? Tag { get; set; }
 
@@ -281,7 +291,7 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 
     public ListViewItem(string? text)
     {
-        InitListViewItem(text??string.Empty, -1, "", null, null, null, null);
+        InitListViewItem(text ?? string.Empty, -1, "", null, null, null, null);
     }
 
     public ListViewItem(string? text, int imageIndex)
@@ -289,17 +299,17 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         InitListViewItem(text ?? string.Empty, imageIndex, "", null, null, null, null);
     }
 
-    public ListViewItem(string[] items)
+    public ListViewItem(string[]? items)
     {
-        InitListViewItem(items??[], -1, "", null, null, null, null);
+        InitListViewItem(items ?? [], -1, "", null, null, null, null);
     }
 
-    public ListViewItem(string[] items, int imageIndex)
+    public ListViewItem(string[]? items, int imageIndex)
     {
         InitListViewItem(items, imageIndex, "", null, null, null, null);
     }
 
-    public ListViewItem(string[] items, int imageIndex, Color foreColor, Color backColor, Font? font)
+    public ListViewItem(string[]? items, int imageIndex, Color foreColor, Color backColor, Font? font)
     {
         InitListViewItem(items, imageIndex, "", foreColor, backColor, font, null);
     }
@@ -399,14 +409,16 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         Group = group;
     }
 
-    internal void InitListViewItem(string[] items, int imageIndex, string? imageKey, Color? foreColor,
+    internal void InitListViewItem(string[]? items, int imageIndex, string? imageKey, Color? foreColor,
         Color? backColor, Font? font, ListViewGroup? group)
     {
-        InitListViewItem(items.Length > 0 ? items[0] : "", imageIndex, imageKey, foreColor, backColor, font, group);
+        InitListViewItem((items?.Length ?? 0) > 0 ? items?[0] ?? "" : "", imageIndex, imageKey, foreColor, backColor, font, group);
         _subitems ??= new ListViewSubItemCollection(this);
-        foreach (var item in items)
-            _subitems.Add(item);
-
+        if (items != null)
+        {
+            foreach (var item in items)
+                _subitems.Add(item);
+        }
     }
 
     internal void InitListViewItem(ListViewSubItem[] subItems, int imageIndex, string? imageKey, Color? foreColor,
@@ -430,37 +442,37 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         return null!;
     }
 
-		public virtual void EnsureVisible()
-		{
-			 
-		}
+    public virtual void EnsureVisible()
+    {
 
-        public ListViewSubItem GetSubItemAt(int x, int y)
+    }
+
+    public ListViewSubItem? GetSubItemAt(int x, int y)
+    {
+        if (_listView is not null && _listView.IsHandleCreated && _listView.View == View.Details)
         {
-            if (_listView is not null && _listView.IsHandleCreated && _listView.View == View.Details)
+            _listView.GetSubItemAt(x, y, out var iItem, out var iSubItem);
+            if (Index > -1 && iSubItem > -1 && iSubItem < SubItems?.Count)
             {
-                _listView.GetSubItemAt(x, y, out var iItem, out var iSubItem);
-                if (Index > -1 && iSubItem > -1 && iSubItem < SubItems.Count)
-                {
-                    return SubItems[iSubItem];
-                }
-                else
-                {
-                    return null;
-                }
+                return SubItems[iSubItem];
             }
-            return null;
+            else
+            {
+                return null;
+            }
         }
+        return null;
+    }
 
-        internal void Host(ListView parent, int id, int index)
-		{
-			
-		}
-		  
-		public virtual void Remove()
-		{
-			
-		}
+    internal void Host(ListView parent, int id, int index)
+    {
+
+    }
+
+    public virtual void Remove()
+    {
+
+    }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
     {

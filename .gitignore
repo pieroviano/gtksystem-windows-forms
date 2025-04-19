@@ -380,3 +380,5 @@ Packages
 /Source/System.Resources.Extensions/obj/System.Resources.Extensions.csproj.nuget.g.props
 /Tests/Gtk.Windows.Forms.Tests/bin/Debug/net8.0
 /Tests/Gtk.Windows.Forms.Tests/obj
+/Packages/Net4x.NuGetUtility.1.0.0.snupkg
+/Packages/Net4x.NuGetUtility.1.0.0.snupkg

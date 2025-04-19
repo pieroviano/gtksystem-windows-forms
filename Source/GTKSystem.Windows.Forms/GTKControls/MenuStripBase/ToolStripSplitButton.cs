@@ -3,6 +3,8 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms;
 
+using Rectangle = Rectangle;
+
 public class ToolStripSplitButton : ToolStripDropDownItem
 {
  

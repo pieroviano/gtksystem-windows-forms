@@ -26,6 +26,7 @@
 //	Jonathan Pobst (monkey@jpobst.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -38,10 +39,10 @@ public class ToolStripDropDownTests : TestHelper
     {
         var tsdd = new ToolStripDropDown ();
 
-        Assert.AreEqual (null, tsdd.OwnerItem, "A8");
-        Assert.AreEqual (null, tsdd.Region, "A9");
-        Assert.AreEqual (RightToLeft.No, tsdd.RightToLeft, "A10");
-        Assert.AreEqual (ToolStripTextDirection.Horizontal, tsdd.TextDirection, "A11");
+        Assert.That((object?)tsdd.OwnerItem, Is.EqualTo(null));
+        Assert.That((object?)tsdd.Region, Is.EqualTo(null));
+        Assert.That((object?)tsdd.RightToLeft, Is.EqualTo(RightToLeft.No));
+        Assert.That((object?)tsdd.TextDirection, Is.EqualTo(ToolStripTextDirection.Horizontal));
     }
 
 }

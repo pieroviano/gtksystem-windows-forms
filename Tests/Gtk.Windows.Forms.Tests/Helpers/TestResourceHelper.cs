@@ -33,8 +33,8 @@ namespace GtkTests.Helpers;
 
 public static class TestResourceHelper
 {
-    static readonly string tempFolder;
-    static readonly Assembly currentAssembly;
+    private static readonly string tempFolder;
+    private static readonly Assembly currentAssembly;
 
     static TestResourceHelper()
     {

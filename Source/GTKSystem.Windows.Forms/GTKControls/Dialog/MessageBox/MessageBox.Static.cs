@@ -4,10 +4,9 @@ public class MessageBox
 {
     internal static NonStaticMessageBox Instance { get; set; } = new();
 
-    public static IMessageBox ReplaceInstance()
+    public static IMessageBox CreateInstance()
     {
-        Instance = new NonStaticMessageBox();
-        return Instance;
+        return new NonStaticMessageBox();
     }
 
     public static DialogResult Show(string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
@@ -127,6 +126,4 @@ public class MessageBox
     {
         return Instance.ShowCore(owner, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None);
     }
-
-
 }

@@ -27,50 +27,49 @@
 
 using System.Resources;
 using System.ComponentModel.Design;
-using System.Drawing;
-using System.Reflection;
-using System.Resources;
 using GtkTests.Resources;
 using GtkTests.TypeResolutionService_;
 
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelper {
+public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelper
+{
     [Test]
-    public void ITRSUsedWithNodeFromReader ()
+    public void ITRSUsedWithNodeFromReader()
     {
-        ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = new ResXDataNode("aNumber", 23L);
+        var returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
-        var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual ((typeof (Int32)).AssemblyQualifiedName, returnedType, "#A2");
+        Assert.IsNotNull(returnedNode);
+        var returnedType = returnedNode.GetValueTypeName(new ReturnIntITRS());
+        object? expected = (typeof(int)).AssemblyQualifiedName;
+        Assert.That((object?)returnedType, Is.EqualTo(expected));
     }
 
     [Test]
-    public void ITRSUsedEachTimeWhenNodeFromReader ()
+    public void ITRSUsedEachTimeWhenNodeFromReader()
     {
-        ResXDataNode returnedNode, originalNode;
-        originalNode = new ResXDataNode ("aNumber", 23L);
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = new ResXDataNode("aNumber", 23L);
+        var returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
-        var newType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual (typeof (int).AssemblyQualifiedName, newType, "#A2");
-        var origType = returnedNode.GetValueTypeName ((ITypeResolutionService) null);
-        Assert.AreEqual (typeof (long).AssemblyQualifiedName, origType, "#A3");				
+        Assert.IsNotNull(returnedNode);
+        var newType = returnedNode.GetValueTypeName(new ReturnIntITRS());
+        object? expected = typeof(int).AssemblyQualifiedName;
+        Assert.That((object?)newType, Is.EqualTo(expected));
+        var origType = returnedNode.GetValueTypeName((ITypeResolutionService?)null);
+        object? expected1 = typeof(long).AssemblyQualifiedName;
+        Assert.That((object?)origType, Is.EqualTo(expected1));
     }
 
     [Test]
-    public void ITRSNotUsedWhenNodeCreatedNew ()
+    public void ITRSNotUsedWhenNodeCreatedNew()
     {
-        ResXDataNode node;
-        node = new ResXDataNode ("along", 34L);
+        var node = new ResXDataNode("along", 34L);
 
-        var returnedType = node.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual ((typeof (long)).AssemblyQualifiedName, returnedType, "#A1");
+        var returnedType = node.GetValueTypeName(new ReturnIntITRS());
+        object? expected = (typeof(long)).AssemblyQualifiedName;
+        Assert.That((object?)returnedType, Is.EqualTo(expected));
     }
 
 }

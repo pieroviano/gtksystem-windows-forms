@@ -4,6 +4,8 @@ using System.Drawing.Printing;
 
 namespace System.Windows.Forms;
 
+using Rectangle = Drawing.Rectangle;
+
 [DefaultProperty(nameof(Document))]
 public sealed class PrintDialog : CommonDialog
 {
@@ -197,6 +199,6 @@ public sealed class PrintDialog : CommonDialog
 
         cr.Scale(pxscale, pxscale);
         cr.Translate(0, 0);
-        _printDocument?.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics(cr, new Gdk.Rectangle(0, 0, width, height)), new Drawing.Rectangle(left, top, width - left - right, height - top - bottom), new Drawing.Rectangle(0, 0, width, height), PageSettings));
+        _printDocument?.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics(cr, new Gdk.Rectangle(0, 0, width, height)), new Rectangle(left, top, width - left - right, height - top - bottom), new Rectangle(0, 0, width, height), PageSettings));
     }
 }

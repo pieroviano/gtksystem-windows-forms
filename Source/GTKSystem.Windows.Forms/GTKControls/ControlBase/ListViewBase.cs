@@ -3,7 +3,9 @@
 public sealed class ListViewBase : Gtk.Viewport, IControlGtk
 {
     public Gtk.Box box = new(Gtk.Orientation.Vertical, 0);
+
     public IGtkControlOverride Override { get; set; }
+    
     public ListViewBase()
     {
         Override = new GtkFormsControlOverride(this);

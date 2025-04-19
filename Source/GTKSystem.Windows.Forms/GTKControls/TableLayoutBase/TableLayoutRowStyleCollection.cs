@@ -4,9 +4,9 @@ namespace System.Windows.Forms;
 public class TableLayoutRowStyleCollection : TableLayoutStyleCollection
 {
 
-    public new RowStyle this[int index]
+    public new RowStyle? this[int index]
     {
-        get => (RowStyle)base[index];
+        get => (RowStyle?)base[index];
         set => base[index] = value;
     }
 

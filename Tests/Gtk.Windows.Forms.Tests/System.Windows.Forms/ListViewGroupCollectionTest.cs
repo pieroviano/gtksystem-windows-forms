@@ -28,192 +28,196 @@
 
 using System.Windows.Forms;
 using System.Collections;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
 [TestFixture]
 public class ListViewGroupCollectionTest : TestHelper
 {
-    ListViewGroupCollection grpCol = null;
-    ListView lv = null;
+    private ListViewGroupCollection? grpCol;
+    private ListView? lv;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
-        lv.Dispose();
+        lv?.Dispose();
     }
 
     [SetUp]
-    protected override void SetUp () {
-        lv = new ListView ();
+    protected override void SetUp()
+    {
+        lv = new ListView();
         grpCol = lv.Groups;
-        base.SetUp ();
+        base.SetUp();
     }
 
     [Test]
-    public void DefaultProperties ()
+    public void DefaultProperties()
     {
-        Assert.AreEqual (false, ((IList)grpCol).IsReadOnly, "#A1");
-        Assert.AreEqual (false, ((IList)grpCol).IsFixedSize, "#A2");
-        Assert.AreEqual (true, ((ICollection)grpCol).IsSynchronized, "#A3");
-        Assert.AreEqual (grpCol, ((ICollection)grpCol).SyncRoot, "#A4");
-        Assert.AreEqual (0, grpCol.Count, "#A5");
+        Assert.That((object?)((IList)grpCol!).IsReadOnly, Is.EqualTo(false));
+        Assert.That((object?)((IList)grpCol).IsFixedSize, Is.EqualTo(false));
+        Assert.That((object?)((ICollection)grpCol).IsSynchronized, Is.EqualTo(true));
+        Assert.That(((ICollection)grpCol).SyncRoot, Is.EqualTo(grpCol));
+        Assert.That((object?)grpCol.Count, Is.EqualTo(0));
     }
 
     [Test]
-    public void AddTest ()
+    public void AddTest()
     {
-        var group1 = new ListViewGroup ("Item1");
-        var group2 = new ListViewGroup ("Item2");
-        grpCol.Add (group1);
-        grpCol.Add (group2);
+        var group1 = new ListViewGroup("Item1");
+        var group2 = new ListViewGroup("Item2");
+        grpCol!.Add(group1);
+        grpCol.Add(group2);
 
-        Assert.AreEqual (2, grpCol.Count, "#B1");
-        Assert.AreEqual (lv, group1.ListView, "#B2");
-        Assert.AreEqual (lv, group2.ListView, "#B2");
+        Assert.That((object?)grpCol.Count, Is.EqualTo(2));
+        Assert.That((object?)group1.ListView, Is.EqualTo(lv));
+        Assert.That((object?)group2.ListView, Is.EqualTo(lv));
     }
 
     [Test]
-    public void ClearTest ()
+    public void ClearTest()
     {
-        var group1 = new ListViewGroup ("Item1");
-        var group2 = new ListViewGroup ("Item2");
-        grpCol.Add (group1);
-        grpCol.Add (group2);
-        grpCol.Clear ();
+        var group1 = new ListViewGroup("Item1");
+        var group2 = new ListViewGroup("Item2");
+        grpCol!.Add(group1);
+        grpCol.Add(group2);
+        grpCol.Clear();
 
-        Assert.AreEqual (0, grpCol.Count, "#C1");
-        Assert.AreEqual (null, group1.ListView, "#C2");
-        Assert.AreEqual (null, group2.ListView, "#C3");
+        Assert.That((object?)grpCol.Count, Is.EqualTo(0));
+        Assert.That((object?)group1.ListView, Is.EqualTo(null));
+        Assert.That((object?)group2.ListView, Is.EqualTo(null));
     }
 
     [Test]
-    public void ContainsTest ()
+    public void ContainsTest()
     {
-        var obj = new ListViewGroup ("Item1");
-        var obj2 = new ListViewGroup ("Item2");
-        grpCol.Add (obj);
-        Assert.AreEqual (true, grpCol.Contains (obj), "#D1");
-        Assert.AreEqual (false, grpCol.Contains (obj2), "#D2");
+        var obj = new ListViewGroup("Item1");
+        var obj2 = new ListViewGroup("Item2");
+        grpCol!.Add(obj);
+        Assert.That((object?)grpCol.Contains(obj), Is.EqualTo(true));
+        Assert.That((object?)grpCol.Contains(obj2), Is.EqualTo(false));
     }
 
     [Test]
-    public void IndexOfTest ()
+    public void IndexOfTest()
     {
-        var obj = new ListViewGroup ("Item1");
-        var obj2 = new ListViewGroup ("Item2");
-        grpCol.Add (obj);
-        grpCol.Add (obj2);
-        Assert.AreEqual (1, grpCol.IndexOf (obj2), "#E1");
+        var obj = new ListViewGroup("Item1");
+        var obj2 = new ListViewGroup("Item2");
+        grpCol!.Add(obj);
+        grpCol.Add(obj2);
+        Assert.That((object?)grpCol.IndexOf(obj2), Is.EqualTo(1));
     }
 
     [Test]
-    public void RemoveTest ()
+    public void RemoveTest()
     {
-        var obj = new ListViewGroup ("Item1");
-        var obj2 = new ListViewGroup ("Item2");
-        grpCol.Add (obj);
-        grpCol.Add (obj2);
-        grpCol.Remove (obj);
-        Assert.AreEqual (1, grpCol.Count, "#F1");
-        Assert.AreEqual (null, obj.ListView, "#F2");
-        Assert.AreEqual (lv, obj2.ListView, "#F3");
+        var obj = new ListViewGroup("Item1");
+        var obj2 = new ListViewGroup("Item2");
+        grpCol!.Add(obj);
+        grpCol.Add(obj2);
+        grpCol.Remove(obj);
+        Assert.That((object?)grpCol.Count, Is.EqualTo(1));
+        Assert.That((object?)obj.ListView, Is.EqualTo(null));
+        Assert.That((object?)obj2.ListView, Is.EqualTo(lv));
     }
 
     [Test]
-    public void RemoveAtTest ()
+    public void RemoveAtTest()
     {
-        var obj = new ListViewGroup ("Item1");
-        var obj2 = new ListViewGroup ("Item2");
-        grpCol.Add (obj);
-        grpCol.Add (obj2);
-        grpCol.RemoveAt (0);
-        Assert.AreEqual (1, grpCol.Count, "#G1");
-        Assert.AreEqual (true, grpCol.Contains (obj2), "#G2");
-        Assert.AreEqual (null, obj.ListView, "#G3");
-        Assert.AreEqual (lv, obj2.ListView, "#G4");
+        var obj = new ListViewGroup("Item1");
+        var obj2 = new ListViewGroup("Item2");
+        grpCol!.Add(obj);
+        grpCol.Add(obj2);
+        grpCol.RemoveAt(0);
+        Assert.That((object?)grpCol.Count, Is.EqualTo(1));
+        Assert.That((object?)grpCol.Contains(obj2), Is.EqualTo(true));
+        Assert.That((object?)obj.ListView, Is.EqualTo(null));
+        Assert.That((object?)obj2.ListView, Is.EqualTo(lv));
     }
 
     [Test]
-    public void IndexerTest ()
+    public void IndexerTest()
     {
-        var group1 = new ListViewGroup ("Item1");
+        var group1 = new ListViewGroup("Item1");
 
-        grpCol.Add (group1);
-        Assert.AreEqual (group1, grpCol [0], "#A1");
-        Assert.AreEqual (lv, group1.ListView, "#A2");
-        Assert.AreEqual (1, grpCol.Count, "#A3");
+        grpCol!.Add(group1);
+        Assert.That((object?)grpCol[0], Is.EqualTo(group1));
+        Assert.That((object?)group1.ListView, Is.EqualTo(lv));
+        Assert.That((object?)grpCol.Count, Is.EqualTo(1));
 
-        grpCol [0] = null;
-        Assert.AreEqual (null, grpCol [0], "#A4");
-        Assert.AreEqual (1, grpCol.Count, "#A5");
+        grpCol[0] = null!;
+        Assert.That((object?)grpCol[0], Is.EqualTo(null));
+        Assert.That((object?)grpCol.Count, Is.EqualTo(1));
 
-        var group2 = new ListViewGroup ("Item2");
-        grpCol [0] = group2;
-        Assert.AreEqual (group2, grpCol [0], "#A6");
-        Assert.AreEqual (null, group2.ListView, "#A7");
-        Assert.AreEqual (1, grpCol.Count, "#A8");
+        var group2 = new ListViewGroup("Item2");
+        grpCol[0] = group2;
+        Assert.That((object?)grpCol[0], Is.EqualTo(group2));
+        Assert.That((object?)group2.ListView, Is.EqualTo(null));
+        Assert.That((object?)grpCol.Count, Is.EqualTo(1));
     }
 
     [Test]
-    public void IndexerNullTest ()
+    public void IndexerNullTest()
     {
-        var group1 = new ListViewGroup ("Item1");
-        grpCol.Add (group1);
-        grpCol [0] = null;
+        var group1 = new ListViewGroup("Item1");
+        grpCol!.Add(group1);
+        grpCol[0] = null!;
 
-        Assert.AreEqual (null, grpCol [0], "#A1");
-        Assert.AreEqual (1, grpCol.Count, "#A2");
+        Assert.That((object?)grpCol[0], Is.EqualTo(null));
+        Assert.That((object?)grpCol.Count, Is.EqualTo(1));
     }
 
     /* There's an inconsistency between other collections using
      * Key methods and the impl of this collection */
     [Test]
-    public void IndexerKeyTest ()
+    public void IndexerKeyTest()
     {
-        var group1 = new ListViewGroup ("Item1");
-        var group2 = new ListViewGroup ("Item2");
-        var group3 = new ListViewGroup ("Item3");
-        grpCol.Add (group1);
-        grpCol.Add (group2);
-        grpCol.Add (group3);
+        var group1 = new ListViewGroup("Item1");
+        var group2 = new ListViewGroup("Item2");
+        var group3 = new ListViewGroup("Item3");
+        grpCol!.Add(group1);
+        grpCol.Add(group2);
+        grpCol.Add(group3);
 
-        group1.Name = String.Empty;
+        group1.Name = string.Empty;
         group2.Name = "A";
         group3.Name = "A";
 
-        Assert.AreEqual (group1, grpCol [String.Empty], "#A1"); /* Inconsistent */
-        Assert.AreEqual (null, grpCol [null], "#A2");
-        Assert.AreEqual (group2, grpCol ["A"], "#A3");
-        Assert.AreEqual (null, grpCol ["a"], "#A4"); /* Inconsistent, again */
+        Assert.That((object?)grpCol[string.Empty], Is.EqualTo(group1)); /* Inconsistent */
+        Assert.That((object?)grpCol[null!], Is.EqualTo(null));
+        Assert.That((object?)grpCol["A"], Is.EqualTo(group2));
+        Assert.That((object?)grpCol["a"], Is.EqualTo(null)); /* Inconsistent, again */
 
-        var group4 = new ListViewGroup ("Item4");
-        group4.Name = "A";
+        var group4 = new ListViewGroup("Item4")
+        {
+            Name = "A"
+        };
 
-        grpCol [String.Empty] = group4;
-        Assert.AreEqual (group4, grpCol [0], "#A5"); /* First position */
-        Assert.AreEqual (group4, grpCol ["A"], "#A6");
-        Assert.AreEqual (null, group4.ListView, "#A7");
+        grpCol[string.Empty] = group4;
+        Assert.That((object?)grpCol[0], Is.EqualTo(group4)); /* First position */
+        Assert.That((object?)grpCol["A"], Is.EqualTo(group4));
+        Assert.That((object?)group4.ListView, Is.EqualTo(null));
 
-        grpCol ["A"] = null;
-        Assert.AreEqual (null, grpCol [0], "#A8");
+        grpCol["A"] = null!;
+        Assert.That((object?)grpCol[0], Is.EqualTo(null));
     }
 
     [Test]
-    public void IndexerOutOfRangeTest ()
+    public void IndexerOutOfRangeTest()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            grpCol.Add(new ListViewGroup("Item1"));
-            grpCol[10] = null;
+            grpCol!.Add(new ListViewGroup("Item1"));
+            grpCol[10] = null!;
         });
     }
 
     [Test]
     public void IndexerOutOfRangeTest2()
     {   //.NET 2.0 don't throw a exception here
-        grpCol.Add (new ListViewGroup ("Item1"));
-        grpCol["TestItemThatDoesNotExist"] = null;
-        Assert.IsNotNull (grpCol [0], "#A1");
+        grpCol!.Add(new ListViewGroup("Item1"));
+        grpCol["TestItemThatDoesNotExist"] = null!;
+        Assert.IsNotNull(grpCol[0]);
     }
 }

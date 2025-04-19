@@ -23,8 +23,8 @@
 //	Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
-using GtkTests.System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -36,36 +36,36 @@ public class DataGridViewTextBoxColumnTest : TestHelper
     {
         var col = new DataGridViewTextBoxColumn ();
 
-        Assert.AreEqual ("DataGridViewTextBoxColumn { Name=, Index=-1 }", col.ToString (), "T3");
-        Assert.AreEqual ("DataGridViewTextBoxColumn", col.GetType ().Name, "G2");
+        Assert.That((object?)col.ToString (), Is.EqualTo("DataGridViewTextBoxColumn { Name=, Index=-1 }"));
+        Assert.That((object?)col.GetType ().Name, Is.EqualTo("DataGridViewTextBoxColumn"));
 
-        Assert.AreEqual (DataGridViewAutoSizeColumnMode.NotSet, col.AutoSizeMode, "#A col.AutoSizeMode");
+        Assert.That((object?)col.AutoSizeMode, Is.EqualTo(DataGridViewAutoSizeColumnMode.NotSet), "#A col.AutoSizeMode");
         Assert.IsNotNull (col.CellTemplate, "#A col.CellTemplate");
         Assert.IsNotNull (col.CellType, "#A col.CellType");
         Assert.IsNull (col.ContextMenuStrip, "#A col.ContextMenuStrip");
         Assert.IsNull (col.DataGridView, "#A col.DataGridView");
-        Assert.AreEqual (@"", col.DataPropertyName, "#A col.DataPropertyName");
+        Assert.That((object?)col.DataPropertyName, Is.EqualTo(string.Empty), "#A col.DataPropertyName");
         Assert.IsNotNull (col.DefaultCellStyle, "#A col.DefaultCellStyle");
-        Assert.AreEqual (-1, col.DisplayIndex, "#A col.DisplayIndex");
-        Assert.AreEqual (0, col.DividerWidth, "#A col.DividerWidth");
-        Assert.AreEqual (100, col.FillWeight, "#A col.FillWeight");
-        Assert.AreEqual (false, col.Frozen, "#A col.Frozen");
+        Assert.That((object?)col.DisplayIndex, Is.EqualTo(-1), "#A col.DisplayIndex");
+        Assert.That((object?)col.DividerWidth, Is.EqualTo(0), "#A col.DividerWidth");
+        Assert.That((object?)col.FillWeight, Is.EqualTo(100), "#A col.FillWeight");
+        Assert.That((object?)col.Frozen, Is.EqualTo(false), "#A col.Frozen");
         Assert.IsNotNull (col.HeaderCell, "#A col.HeaderCell");
-        Assert.AreEqual (@"", col.HeaderText, "#A col.HeaderText");
-        Assert.AreEqual (-1, col.Index, "#A col.Index");
-        Assert.AreEqual (DataGridViewAutoSizeColumnMode.NotSet, col.InheritedAutoSizeMode, "#A col.InheritedAutoSizeMode");
+        Assert.That((object?)col.HeaderText, Is.EqualTo(string.Empty), "#A col.HeaderText");
+        Assert.That((object?)col.Index, Is.EqualTo(-1), "#A col.Index");
+        Assert.That((object?)col.InheritedAutoSizeMode, Is.EqualTo(DataGridViewAutoSizeColumnMode.NotSet), "#A col.InheritedAutoSizeMode");
         Assert.IsNotNull (col.InheritedStyle, "#A col.InheritedStyle");
-        Assert.AreEqual (false, col.IsDataBound, "#A col.IsDataBound");
-        Assert.AreEqual (5, col.MinimumWidth, "#A col.MinimumWidth");
-        Assert.AreEqual (@"", col.Name, "#A col.Name");
-        Assert.AreEqual (false, col.ReadOnly, "#A col.ReadOnly");
-        Assert.AreEqual (DataGridViewTriState.NotSet, col.Resizable, "#A col.Resizable");
+        Assert.That((object?)col.IsDataBound, Is.EqualTo(false), "#A col.IsDataBound");
+        Assert.That((object?)col.MinimumWidth, Is.EqualTo(5), "#A col.MinimumWidth");
+        Assert.That((object?)col.Name, Is.EqualTo(string.Empty), "#A col.Name");
+        Assert.That((object?)col.ReadOnly, Is.EqualTo(false), "#A col.ReadOnly");
+        Assert.That((object?)col.Resizable, Is.EqualTo(DataGridViewTriState.NotSet), "#A col.Resizable");
         Assert.IsNull (col.Site, "#A col.Site");
-        Assert.AreEqual (DataGridViewColumnSortMode.Automatic, col.SortMode, "#A col.SortMode");
-        Assert.AreEqual (DataGridViewElementStates.Visible, col.State, "#A col.State");
-        Assert.AreEqual (@"", col.ToolTipText, "#A col.ToolTipText");
+        Assert.That((object?)col.SortMode, Is.EqualTo(DataGridViewColumnSortMode.Automatic), "#A col.SortMode");
+        Assert.That((object?)col.State, Is.EqualTo(DataGridViewElementStates.Visible), "#A col.State");
+        Assert.That((object?)col.ToolTipText, Is.EqualTo(string.Empty), "#A col.ToolTipText");
         Assert.IsNull (col.ValueType, "#A col.ValueType");
-        Assert.AreEqual (true, col.Visible, "#A col.Visible");
-        Assert.AreEqual (100, col.Width, "#A col.Width");
+        Assert.That((object?)col.Visible, Is.EqualTo(true), "#A col.Visible");
+        Assert.That((object?)col.Width, Is.EqualTo(100), "#A col.Width");
     }
 }

@@ -3,7 +3,7 @@
 
 namespace System.Windows.Forms;
 
-public sealed partial class ImageList
+public partial class ImageList
 {
     /// <summary>
     ///  This class is for classes that want to support both an ImageIndex

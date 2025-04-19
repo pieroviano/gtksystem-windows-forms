@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
     <PropertyGroup>
@@ -24,8 +24,8 @@
 			https://github.com/easywebfactory/gtksystem-windows-forms；
 			This fork:
 			https://github.com/pieroviano/gtksystem-windows-forms.git
-        </Description>
-        <WarningsAsErrors>CS8618;CS8600</WarningsAsErrors>
+		</Description>
+        <WarningsAsErrors>CS8618;CS8600;CS8601;CS8602;CS8604;CS8625;</WarningsAsErrors>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/pieroviano/gtksystem-windows-forms.git</RepositoryUrl>
@@ -39,46 +39,50 @@
         <Nullable>enable</Nullable>
         <RootNamespace>System.Windows.Forms</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
-        <IsAotCompatible>True</IsAotCompatible>
         <DefineConstants>$(DefineConstants);GTKSystemWindowsForms</DefineConstants>
         <PackageId>Net4x.Gtk.Windows.Forms</PackageId>
+        <NoWarn>CS0436</NoWarn>
+        <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     </PropertyGroup>
     <ItemGroup>
+        <InternalsVisibleTo Include="GTKSystem.Windows.Forms.Extensions, PublicKey=0024000004800000940000000602000000240000525341310004000001000100518ef14d1a0c9efc88ac39397509c94a703ec7a674ed0414a18d3bad86b3618863d9d20204b50c28a13c56df0493d2943f2013a9b4f2bd5a829217698fa2444fbbebd449d6a8942a1278c87fe9ccba10535b9b2b1f47295168308a2b2a85af1fc655f8c736b51fe1d457d1b7be6c807516f58d5d981b112929c5c24f3ff1c0ce" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Core" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Data" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Drawing" Aliases="sd" Condition="'$(TargetFramework)'=='net462'" PrivateAssets="All" />
+        <Reference Include="System.Linq" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Runtime.Serialization" Condition="'$(TargetFramework)'=='net462'" />
+        <Reference Include="System.Xml" Condition="'$(TargetFramework)'=='net462'" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="GtkSharp" Version="$(GtkSharpVersion).$(VersionBuildSuffix)" />
+        <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GTKSystem.Drawing\GTKSystem.Drawing.csproj" />
+        <ProjectReference Include="..\GTKSystem.Resources.Extensions\GTKSystem.Resources.Extensions.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Gtk.Windows.Forms.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100518ef14d1a0c9efc88ac39397509c94a703ec7a674ed0414a18d3bad86b3618863d9d20204b50c28a13c56df0493d2943f2013a9b4f2bd5a829217698fa2444fbbebd449d6a8942a1278c87fe9ccba10535b9b2b1f47295168308a2b2a85af1fc655f8c736b51fe1d457d1b7be6c807516f58d5d981b112929c5c24f3ff1c0ce" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="GTKControls\Atrribute\**" />
         <Compile Remove="GTKControls\Drawing\**" />
         <Compile Remove="GTKControls\ImageList\**" />
         <Compile Remove="GTKControls\Internal\**" />
-        <Compile Remove="GTKSystem\ComponentModel\**" />
-        <Compile Remove="GTKSystem\Numerics\**" />
-        <Compile Remove="GTKSystem\Resources\**" />
+        <Compile Remove="GTKSystem\**" />
         <Compile Remove="Resources\Forms_ico\**" />
         <Compile Remove="Resources\icons\**" />
         <Compile Remove="System.Diagnostics.CodeAnalysis\**" />
-        <EmbeddedResource Remove="GTKControls\Drawing\**" />
-        <EmbeddedResource Remove="GTKControls\ImageList\**" />
-        <EmbeddedResource Remove="GTKControls\Internal\**" />
-        <EmbeddedResource Remove="GTKSystem\ComponentModel\**" />
-        <EmbeddedResource Remove="GTKSystem\Numerics\**" />
-        <EmbeddedResource Remove="GTKSystem\Resources\**" />
-        <EmbeddedResource Remove="Resources\Forms_ico\**" />
-        <EmbeddedResource Remove="Resources\icons\**" />
-        <EmbeddedResource Remove="System.Diagnostics.CodeAnalysis\**" />
-        <None Remove="GTKControls\Drawing\**" />
-        <None Remove="GTKControls\ImageList\**" />
-        <None Remove="GTKControls\Internal\**" />
-        <None Remove="GTKSystem\ComponentModel\**" />
-        <None Remove="GTKSystem\Numerics\**" />
-        <None Remove="GTKSystem\Resources\**" />
-        <None Remove="Resources\Forms_ico\**" />
-        <None Remove="Resources\icons\**" />
-        <None Remove="System.Diagnostics.CodeAnalysis\**" />
-    </ItemGroup>
-    <ItemGroup>
         <Compile Remove="Content\System.ComponentModel.cs" />
         <Compile Remove="Content\System.Resources.ResourceManager.cs" />
         <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
         <Compile Remove="GTKControls\Control\GridItem.cs" />
         <Compile Remove="GTKControls\Control\GridItemCollection.cs" />
         <Compile Remove="GTKControls\Control\IArrangedElement.cs" />
+        <Compile Remove="GTKControls\Designer\ToolboxItem.cs" />
         <Compile Remove="GTKControls\Enum\Enums\ColorDepth.cs" />
         <Compile Remove="GTKControls\Enum\Enums\GridItemType.cs" />
         <Compile Remove="GTKControls\EventArgs\PropertyValueChangedEventArgs.cs" />
@@ -87,14 +91,494 @@
         <Compile Remove="GTKControls\Interface\WidgetContainerControl.cs" />
         <Compile Remove="GTKControls\Interface\WidgetControl.cs" />
         <Compile Remove="GTKControls\ListViewBase\ImageList.cs" />
+        <Compile Remove="GTKControls\ImageList\ImageList.Events.cs" />
+        <Compile Remove="GTKControls\ImageList\ImageList.On.cs" />
         <Compile Remove="GTKControls\ListViewBase\ImageListStreamer.cs" />
         <Compile Remove="GTKControls\ListViewBase\SerializationInfo.cs" />
+        <Compile Include="GTKControls\Atrribute\KeysConverter.cs" Link="GTKControls\Converters\%(Filename)%(Extension)" />
+        <Compile Include="GTKControls\Atrribute\OpacityConverter.cs" Link="GTKControls\Converters\%(Filename)%(Extension)" />
+        <Compile Include="GTKControls\Drawing\Printing\PrintDocument.cs" />
+        <Compile Update="GTKControls\ToolStrip.Events.cs">
+            <DependentUpon>ToolStrip.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ToolStrip.On.cs">
+            <DependentUpon>ToolStrip.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Timer.Events.cs">
+            <DependentUpon>Timer.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Timer.On.cs">
+            <DependentUpon>Timer.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\SwitchBox.Events.cs">
+            <DependentUpon>SwitchBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\SwitchBox.On.cs">
+            <DependentUpon>SwitchBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\RadioButton.Events.cs">
+            <DependentUpon>RadioButton.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\RadioButton.On.cs">
+            <DependentUpon>RadioButton.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\PropertyGridBase\PropertyGridView.Events.cs">
+            <DependentUpon>PropertyGridView.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Printing\PrintPreviewDialog.Events.cs">
+            <DependentUpon>PrintPreviewDialog.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Printing\PrintPreviewDialog.On.cs">
+            <DependentUpon>PrintPreviewDialog.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Printing\PrintPreviewControl.Events.cs">
+            <DependentUpon>PrintPreviewControl.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Printing\PrintPreviewControl.On.cs">
+            <DependentUpon>PrintPreviewControl.cs</DependentUpon>
+        </Compile>
+        <Compile Include="GTKControls\Drawing\Printing\PrintDocument.Events.cs">
+            <DependentUpon>PrintDocument.cs</DependentUpon>
+        </Compile>
+        <Compile Include="GTKControls\Drawing\Printing\PrintDocument.On.cs">
+            <DependentUpon>PrintDocument.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownItem.Events.cs">
+            <DependentUpon>ToolStripDropDownItem.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownItem.On.cs">
+            <DependentUpon>ToolStripDropDownItem.cs</DependentUpon>
+        </Compile>
+        <Compile Include="GTKSystem\Misc\ClientUtils.cs" Link="GTKControls\Utility\%(Filename)%(Extension)" />
+        <Compile Include="GTKSystem\Misc\MultitargetUtil.cs" Link="GTKControls\Utility\%(Filename)%(Extension)" />
+        <Compile Include="System.Diagnostics.CodeAnalysis\DynamicallyAccessedMembersAttribute.cs" />
+        <Compile Include="System.Diagnostics.CodeAnalysis\DynamicallyAccessedMemberTypes.cs" />
+        <Compile Update="GTKControls\ListViewBase\ListViewGroupConverter.cs" Link="GTKControls\Converters\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ListViewItemConverter.cs" Link="GTKControls\Converters\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MonthCalendarBase\SelectionRangeConverter.cs" Link="GTKControls\Converters\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Designer\AssemblyRef.cs" Link="GTKControls\Utility\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\Formatter.cs" Link="GTKControls\Utility\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ControlBase\GtkControlOverride.cs" Link="GTKControls\Gtk\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\ScrollableControl.Events.cs">
+            <DependentUpon>ScrollableControl.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Control\ScrollableControl.On.cs">
+            <DependentUpon>ScrollableControl.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\GtkControlOverride.On.cs" Link="GTKControls\Gtk\%(Filename)%(Extension)">
+            <DependentUpon>GtkControlOverride.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\GtkControlOverride.Events.cs" Link="GTKControls\Gtk\%(Filename)%(Extension)">
+            <DependentUpon>GtkControlOverride.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ComboBox.Events.cs">
+            <DependentUpon>ComboBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ComboBox.On.cs">
+            <DependentUpon>ComboBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\BindingsCollection.Events.cs">
+            <DependentUpon>BindingsCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\BindingsCollection.On.cs">
+            <DependentUpon>BindingsCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\AutoCompleteStringCollection.Events.cs">
+            <DependentUpon>AutoCompleteStringCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\AutoCompleteStringCollection.On.cs">
+            <DependentUpon>AutoCompleteStringCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\CheckedListBox.Events.cs">
+            <DependentUpon>CheckedListBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\CheckedListBox.On.cs">
+            <DependentUpon>CheckedListBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\GtkControlOverride.On.cs" Link="GTKControls\Gtk\%(Filename)%(Extension)">
+            <DependentUpon>GtkControlOverride.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\ScrollableBoxBase.Events.cs">
+            <DependentUpon>ScrollableBoxBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\ScrollableBoxBase.On.cs">
+            <DependentUpon>ScrollableBoxBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Application\ApplicationContext.Events.cs">
+            <DependentUpon>ApplicationContext.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\ControlCollection.Events.cs">
+            <DependentUpon>ControlCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\ControlCollection.On.cs">
+            <DependentUpon>ControlCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MenuStripBase\GtkMenuItem.cs" Link="GTKControls\Gtk\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ControlBase\GtkLib.cs" Link="GTKControls\Gtk\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\SecurityUtils.cs" Link="GTKControls\Utility\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\ListBindingHelper.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewCellCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewColumnCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewColumnCollection.Events.cs" Link="GTKControls\Collection\%(Filename)%(Extension)">
+            <DependentUpon>DataGridViewColumnCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewColumnCollection.On.cs" Link="GTKControls\Collection\%(Filename)%(Extension)">
+            <DependentUpon>DataGridViewColumnCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewRowCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewRowCollection.Events.cs" Link="GTKControls\Collection\%(Filename)%(Extension)">
+            <DependentUpon>DataGridViewRowCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewRowCollection.On.cs" Link="GTKControls\Collection\%(Filename)%(Extension)">
+            <DependentUpon>DataGridViewRowCollection.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewSelectedCellCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewSelectedColumnCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewSelectedRowCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ListViewGroupCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ListViewGroupItemCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\GridItemCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\TableLayoutColumnStyleCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\TableLayoutControlCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\TableLayoutRowStyleCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\TableLayoutStyleCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TreeViewBase\TreeNodeCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\ListManagerBindingsCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\PropertyManager.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\PropertyStore.ColorWrapper.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\PropertyStore.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\PropertyStore.PaddingWrapper.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\PropertyStore.RectangleWrapper.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\PropertyStore.SizeWrapper.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\RelatedCurrencyManager.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\CurrencyManager.Events.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>CurrencyManager.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\CurrencyManager.On.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>CurrencyManager.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\RelatedPropertyManager.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\Binding.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\Binding.Events.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>Binding.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\Binding.On.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>Binding.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Dialog\DialogResult.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnHeaderStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ItemActivation.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ListViewAlignment.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ListViewGroupCollapsedState.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\SortOrder.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\View.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\Border3DSide.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\Border3DStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\MergeAction.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ProgressBarStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\TextImageRelation.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownDirection.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemAlignment.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemDisplayStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemImageScaling.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemOverflow.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemPlacement.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripLayoutStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripStatusLabelBorderSides.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripTextDirection.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolTipIcon.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Printing\SizeGripStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\GridItemType.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\PropertySort.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TabControlBase\TabAlignment.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TabControlBase\TabDrawMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TabControlBase\TabSizeMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\FlowDirection.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\SizeType.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\TableLayoutPanelCellBorderStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TableLayoutBase\TableLayoutPanelGrowStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Dialog\MessageBox\MessageBoxButtons.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Dialog\MessageBox\MessageBoxDefaultButton.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Dialog\MessageBox\MessageBoxIcon.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Dialog\MessageBox\MessageBoxOptions.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewAdvancedCellBorderStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewAutoSizeColumnMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewAutoSizeRowsMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewColumnHeadersHeightSizeMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewColumnSortMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewSelectionMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewContentAlignment.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\ControlUpdateMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\DataSourceUpdateMode.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingCompleteContext.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingCompleteState.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingManagerBase.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingManagerBase.Events.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>BindingManagerBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\BindingManagerBase.On.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>BindingManagerBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\BindingMemberInfo.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingsCollection.cs" Link="GTKControls\Collection\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingSource.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingSource.Events.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>BindingSource.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\BindingSource.On.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)">
+            <DependentUpon>BindingSource.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Collection\BindToObject.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\CurrencyManager.cs" Link="GTKControls\Bindings\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\GtkFormsControlOverride.cs" Link="GTKControls\Gtk\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Utility\IEventInvoker.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ITextControl.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ComponentModel\IComPropertyBrowser.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ControlBase\IControlGtk.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ControlBase\IControlOverride.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ControlBase\IScrollableBoxBase.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IButtonControl.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IContainerControl.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IControl.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IControlBase.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IControl_Sample.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IDataObject.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IDropTarget.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IGtkControlOverride.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IHandle.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IKeyboardToolTip.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IOleControl.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IOleInPlaceActiveObject.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IOleInPlaceObject.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IOleObject.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IOleWindow.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IPersist.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IPersistPropertyBag.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IPersistStorage.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IPersistStreamInit.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IQuickActivate.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\ISupportOleDropSource.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IViewObject.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IViewObject2.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IWin32Window.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\IWindowTarget.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\DataGridViewBase\IDataGridViewCell.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Designer\IOleDragClient.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Designer\IToolboxUser.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Dialog\MessageBox\IMessageBox.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ComboBoxBase\ComboBoxStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\AccessibleRole.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\ControlStyles.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\DockStyle.cs" Link="GTKControls\Enum\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\IArrangedElement.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\IBindableComponent.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\ICurrencyManagerProvider.cs" Link="GTKControls\Interfaces\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingCompleteEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingManagerDataErrorEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnClickEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnReorderedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnWidthChangedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnWidthChangingEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Dialog\MessageBox\DialogEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ListViewGroupEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemClickedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\PropertyTabChangedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\PropertyValueChangedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\SelectedGridItemChangedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\WindowStateArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\MethodInvoker.cs" Link="GTKControls\Delegates\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItemClickedEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingCompleteEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Collection\BindingManagerDataErrorEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnClickEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnReorderedEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnWidthChangedEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\ListViewBase\ColumnWidthChangingEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\PropertyTabChangedEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TabControlBase\DrawItemEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\PropertyTabChangedEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\PropertyGridBase\SelectedGridItemChangedEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\TabControlBase\DrawItemEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
+        <Compile Update="GTKControls\Control\Control.Events.cs">
+            <DependentUpon>Control.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Control\Control.On.cs">
+            <DependentUpon>Control.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Control\ListControl.Events.cs">
+            <DependentUpon>ListControl.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Control\ListControl.On.cs">
+            <DependentUpon>ListControl.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Form.Events.cs">
+            <DependentUpon>Form.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Form.Custom.cs">
+            <DependentUpon>Form.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\CheckBox.Events.cs">
+            <DependentUpon>CheckBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\CheckBox.On.cs">
+            <DependentUpon>CheckBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridView.Events.cs">
+            <DependentUpon>DataGridView.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridView.On.cs">
+            <DependentUpon>DataGridView.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Form.On.cs">
+            <DependentUpon>Form.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Form.BindingContext.cs">
+            <DependentUpon>Form.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Form.MdiLayout.cs">
+            <DependentUpon>Form.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\FormBase.Events.cs">
+            <DependentUpon>FormBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\FormBase.On.cs">
+            <DependentUpon>FormBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\GroupBoxBase.Events.cs">
+            <DependentUpon>GroupBoxBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ControlBase\GroupBoxBase.On.cs">
+            <DependentUpon>GroupBoxBase.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewColumn.Events.cs">
+            <DependentUpon>DataGridViewColumn.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DataGridViewBase\DataGridViewColumn.On.cs">
+            <DependentUpon>DataGridViewColumn.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DateTimePicker.Events.cs">
+            <DependentUpon>DateTimePicker.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\DateTimePicker.On.cs">
+            <DependentUpon>DateTimePicker.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Dialog\CommonDialog.Events.cs">
+            <DependentUpon>CommonDialog.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Dialog\CommonDialog.On.cs">
+            <DependentUpon>CommonDialog.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Dialog\FileDialog.Events.cs">
+            <DependentUpon>FileDialog.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Dialog\FileDialog.On.cs">
+            <DependentUpon>FileDialog.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Dialog\MessageBox\MessageBox.Events.cs">
+            <DependentUpon>MessageBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Dialog\MessageBox\MessageBox.On.cs">
+            <DependentUpon>MessageBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\LinkLabel.Events.cs">
+            <DependentUpon>LinkLabel.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\LinkLabel.On.cs">
+            <DependentUpon>LinkLabel.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ListView.Events.cs">
+            <DependentUpon>ListView.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ListView.On.cs">
+            <DependentUpon>ListView.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ListViewBase\ColumnHeader.Events.cs">
+            <DependentUpon>ColumnHeader.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ListViewBase\ColumnHeader.On.cs">
+            <DependentUpon>ColumnHeader.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MenuStripBase\ToolStripComboBox.Events.cs">
+            <DependentUpon>ToolStripComboBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MenuStripBase\ToolStripComboBox.On.cs">
+            <DependentUpon>ToolStripComboBox.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItem.Events.cs">
+            <DependentUpon>ToolStripItem.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MenuStripBase\ToolStripItem.On.cs">
+            <DependentUpon>ToolStripItem.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MonthCalendar.Events.cs">
+            <DependentUpon>MonthCalendar.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\MonthCalendar.On.cs">
+            <DependentUpon>MonthCalendar.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\NumericUpDown.Events.cs">
+            <DependentUpon>NumericUpDown.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\NumericUpDown.On.cs">
+            <DependentUpon>NumericUpDown.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\PropertyGrid.Events.cs">
+            <DependentUpon>PropertyGrid.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\PropertyGrid.On.cs">
+            <DependentUpon>PropertyGrid.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Scrolling\ScrollBar.Events.cs">
+            <DependentUpon>ScrollBar.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\Scrolling\ScrollBar.On.cs">
+            <DependentUpon>ScrollBar.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\TabControl.Events.cs">
+            <DependentUpon>TabControl.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\TabControl.On.cs">
+            <DependentUpon>TabControl.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\TrackBar.Events.cs">
+            <DependentUpon>TrackBar.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\TrackBar.On.cs">
+            <DependentUpon>TrackBar.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\TreeView.Events.cs">
+            <DependentUpon>TreeView.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\TreeView.On.cs">
+            <DependentUpon>TreeView.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
-        <InternalsVisibleTo Include="Gtk.Windows.Forms.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100518ef14d1a0c9efc88ac39397509c94a703ec7a674ed0414a18d3bad86b3618863d9d20204b50c28a13c56df0493d2943f2013a9b4f2bd5a829217698fa2444fbbebd449d6a8942a1278c87fe9ccba10535b9b2b1f47295168308a2b2a85af1fc655f8c736b51fe1d457d1b7be6c807516f58d5d981b112929c5c24f3ff1c0ce" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Remove="Net4x.Gtk.Windows.Forms.props" />
+        <None Include="Content\System.ComponentModel.cs" Pack="true" PackagePath="\content\" />
+        <None Include="Content\System.Resources.ResourceManager.cs" Pack="true" PackagePath="\content\" />
+        <None Include="..\..\README.en.md" Link="README.md" Pack="true" PackagePath="\README.md" />
+        <None Include="..\..\README.md" Link="README.zh-HANS.md" Pack="true" PackagePath="\README.zh-HANS.md" />
+        <None Include="Net4x.Gtk.Windows.Forms.props" Pack="true" PackagePath="\build\" />
+        <None Include="..\licenses\LICENSE.txt" Pack="True" PackagePath="\" />
+        <None Remove="GTKControls\Atrribute\**" />
+        <None Remove="GTKControls\Drawing\**" />
+        <None Remove="GTKControls\ImageList\**" />
+        <None Remove="GTKControls\Internal\**" />
+        <None Remove="GTKSystem\**" />
+        <None Remove="Resources\Forms_ico\**" />
+        <None Remove="Resources\icons\**" />
+        <None Remove="System.Diagnostics.CodeAnalysis\**" />
         <None Remove="Resources\Cursors\aero_ew.cur" />
         <None Remove="Resources\Cursors\aero_nesw.cur" />
         <None Remove="Resources\Cursors\aero_ns.cur" />
@@ -132,18 +616,14 @@
         <None Remove="Resources\System\view-more.png" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="GTKControls\Drawing\Printing\PrintDocument.cs" />
-        <Compile Include="System.Diagnostics.CodeAnalysis\DynamicallyAccessedMembersAttribute.cs" />
-        <Compile Include="System.Diagnostics.CodeAnalysis\DynamicallyAccessedMemberTypes.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="Content\System.ComponentModel.cs" Pack="true" PackagePath="\content\" />
-        <None Include="Content\System.Resources.ResourceManager.cs" Pack="true" PackagePath="\content\" />
-        <None Include="..\..\README.en.md" Link="README.md" Pack="true" PackagePath="\README.md" />
-        <None Include="..\..\README.md" Link="README.zh-HANS.md" Pack="true" PackagePath="\README.zh-HANS.md" />
-        <None Include="Net4x.Gtk.Windows.Forms.props" Pack="true" PackagePath="\build\" />
-    </ItemGroup>
-    <ItemGroup>
+        <EmbeddedResource Remove="GTKControls\Atrribute\**" />
+        <EmbeddedResource Remove="GTKControls\Drawing\**" />
+        <EmbeddedResource Remove="GTKControls\ImageList\**" />
+        <EmbeddedResource Remove="GTKControls\Internal\**" />
+        <EmbeddedResource Remove="GTKSystem\**" />
+        <EmbeddedResource Remove="Resources\Forms_ico\**" />
+        <EmbeddedResource Remove="Resources\icons\**" />
+        <EmbeddedResource Remove="System.Diagnostics.CodeAnalysis\**" />
         <EmbeddedResource Include="Resources\System\dialog-error.png" />
         <EmbeddedResource Include="Resources\System\dialog-information.png" />
         <EmbeddedResource Include="Resources\System\dialog-password.png" />
@@ -176,41 +656,6 @@
         <EmbeddedResource Include="Resources\System\PBAlpha.ico" />
         <EmbeddedResource Include="Resources\System\PBCategory.ico" />
         <EmbeddedResource Include="Resources\System\view-more.png" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="GtkSharp" Version="$(GtkSharpVersion).$(VersionBuildSuffix)" />
-        <PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" />
-        <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Update="Properties\Resources.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="..\licenses\LICENSE.txt" Pack="True" PackagePath="\" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="System" Condition="'$(TargetFramework)'=='net462'" />
-        <Reference Include="System.Drawing" Condition="'$(TargetFramework)'=='net462'" Aliases="sd" PrivateAssets="all" />
-        <Reference Include="System.Core" Condition="'$(TargetFramework)'=='net462'" />
-        <Reference Include="System.Data" Condition="'$(TargetFramework)'=='net462'" />
-        <Reference Include="System.Linq" Condition="'$(TargetFramework)'=='net462'" />
-        <Reference Include="System.Runtime.Serialization" Condition="'$(TargetFramework)'=='net462'" />
-        <Reference Include="System.Xml" Condition="'$(TargetFramework)'=='net462'" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\GTKSystem.Drawing\GTKSystem.Drawing.csproj" />
-        <ProjectReference Include="..\GTKSystem.Resources.Extensions\GTKSystem.Resources.Extensions.csproj" />
-    </ItemGroup>
-    <ItemGroup>
         <EmbeddedResource Update="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>

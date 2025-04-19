@@ -28,70 +28,68 @@
 
 using System.Resources;
 using System.ComponentModel.Design;
-using System.Resources;
 using GtkTests.Resources;
 using GtkTests.TypeResolutionService_;
 
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
-		
-    [Test]
-    public void GetValueITRSNotUsedWhenNodeReturnedFromReader ()
-    {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+public class ResXDataNodeByteArrayTests : ResourcesTestHelper
+{
 
-        Assert.IsNotNull (returnedNode, "#A1");
-        var val = returnedNode.GetValue (new ReturnIntITRS ());
-        Assert.True (typeof (byte[])== val.GetType(), "#A2");
+    [Test]
+    public void GetValueITRSNotUsedWhenNodeReturnedFromReader()
+    {
+        var originalNode = GetNodeEmdeddedBytes1To10();
+        var returnedNode = GetNodeFromResXReader(originalNode);
+
+        Assert.IsNotNull(returnedNode);
+        var val = returnedNode.GetValue(new ReturnIntITRS());
+        Assert.True(typeof(byte[]) == val?.GetType());
     }
 
     [Test]
-    public void GetValueITRSNotTouchedWhenNodeCreatedNew ()
+    public void GetValueITRSNotTouchedWhenNodeCreatedNew()
     {
-        ResXDataNode node;
-        node = GetNodeEmdeddedBytes1To10 ();
+        var node = GetNodeEmdeddedBytes1To10();
 
         //would raise exception if param used
-        var obj = node.GetValue (new ExceptionalITRS ());
-        Assert.True (typeof(byte[]) == obj.GetType(), "#A1");
+        var obj = node.GetValue(new ExceptionalITRS());
+        Assert.True(typeof(byte[]) == obj?.GetType());
     }
 
     [Test]
-    public void GetValueTypeNameITRSIsUsedWithNodeFromReader ()
+    public void GetValueTypeNameITRSIsUsedWithNodeFromReader()
     {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeEmdeddedBytes1To10();
+        var returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
-        var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual ((typeof (int)).AssemblyQualifiedName, returnedType, "#A2");
+        Assert.IsNotNull(returnedNode);
+        var returnedType = returnedNode.GetValueTypeName(new ReturnIntITRS());
+        object? expected = (typeof(int)).AssemblyQualifiedName;
+        Assert.That((object?)returnedType, Is.EqualTo(expected));
     }
 
     [Test]
-    public void GetValueTypeNameITRSIsUsedAfterGetValueCalledWithNodeFromReader ()
+    public void GetValueTypeNameITRSIsUsedAfterGetValueCalledWithNodeFromReader()
     {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedBytes1To10 ();
-        returnedNode = GetNodeFromResXReader (originalNode);
+        var originalNode = GetNodeEmdeddedBytes1To10();
+        var returnedNode = GetNodeFromResXReader(originalNode);
 
-        Assert.IsNotNull (returnedNode, "#A1");
-        var obj = returnedNode.GetValue ((ITypeResolutionService) null);
-        var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual ((typeof (int)).AssemblyQualifiedName, returnedType, "#A2");
+        Assert.IsNotNull(returnedNode);
+        var obj = returnedNode.GetValue((ITypeResolutionService?)null);
+        var returnedType = returnedNode.GetValueTypeName(new ReturnIntITRS());
+        object? expected = (typeof(int)).AssemblyQualifiedName;
+        Assert.That((object?)returnedType, Is.EqualTo(expected));
     }
 
     [Test]
-    public void GetValueTypeNameITRSNotUsedWhenNodeCreatedNew ()
+    public void GetValueTypeNameITRSNotUsedWhenNodeCreatedNew()
     {
-        ResXDataNode node;
-        node = GetNodeEmdeddedBytes1To10 ();
+        var node = GetNodeEmdeddedBytes1To10();
 
-        var returnedType = node.GetValueTypeName (new ReturnIntITRS ());
-        Assert.AreEqual ((typeof (byte[])).AssemblyQualifiedName, returnedType, "#A1");
+        var returnedType = node.GetValueTypeName(new ReturnIntITRS());
+        object? expected = (typeof(byte[])).AssemblyQualifiedName;
+        Assert.That((object?)returnedType, Is.EqualTo(expected));
     }
 }

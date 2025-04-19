@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gdk;
@@ -58,7 +58,7 @@ public class CellRendererValue : CellRendererText, ICellRenderer
 
 public class CellRendererToggleValue : CellRendererToggle, ICellRenderer
 {
-    DataGridViewColumn Column;
+    private DataGridViewColumn Column;
     private readonly CellReandererUtility utility;
 
     public CellRendererToggleValue(DataGridViewColumn view)
@@ -95,7 +95,7 @@ public class CellRendererToggleValue : CellRendererToggle, ICellRenderer
 
 public class CellRendererComboValue : CellRendererCombo, ICellRenderer
 {
-    DataGridViewColumn Column;
+    private DataGridViewColumn Column;
     private readonly CellReandererUtility utility;
 
     public CellRendererComboValue(DataGridViewColumn view)
@@ -128,7 +128,7 @@ public class CellRendererComboValue : CellRendererCombo, ICellRenderer
 
 public class CellRendererPixbufValue : CellRendererPixbuf, ICellRenderer
 {
-    DataGridViewColumn Column;
+    private DataGridViewColumn Column;
     private readonly CellReandererUtility utility;
 
     public CellRendererPixbufValue(DataGridViewColumn view)
@@ -186,7 +186,7 @@ public class CellRendererPixbufValue : CellRendererPixbuf, ICellRenderer
 
 public class CellRendererButtonValue : CellRendererText, ICellRenderer
 {
-    DataGridViewColumn Column;
+    private DataGridViewColumn Column;
     private readonly CellReandererUtility utility;
 
     public CellRendererButtonValue(DataGridViewColumn view)

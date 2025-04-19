@@ -3,7 +3,7 @@
 
 namespace System.Windows.Forms;
 
-public sealed partial class ImageList
+public partial class ImageList
 {
     [Flags]
     private enum OriginalOptions

@@ -2,22 +2,24 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.Collections;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Color = Drawing.Color;
+
 [DesignerCategory("Component")]
-public class LinkLabel: Control
+public partial class LinkLabel : Control
 {
-    public readonly LinkLabelBase self = new();
+    public readonly LinkLabelBase self;
     public override object GtkControl => self;
     public LinkLabel()
     {
+        self = new LinkLabelBase();
         Links = new LinkCollection(this);
         self.Clicked += LinkLabel_Click;
         self.ActivateLink += LinkLabel_ActivateLink;
@@ -25,31 +27,27 @@ public class LinkLabel: Control
 
     private void LinkLabel_ActivateLink(object? o, Gtk.ActivateLinkArgs args)
     {
-        PerformClick();
-    }
-
-    public override void PerformClick()
-    {
         var eventArgs = new LinkLabelLinkClickedEventArgs(new Link { Description = self.Label, LinkData = self.Uri });
         OnLinkClicked(eventArgs);
-        base.PerformClick();
-    }
-
-    protected virtual void OnLinkClicked(LinkLabelLinkClickedEventArgs e)
-    {
-        LinkClicked?.Invoke(this, e);
+        base.OnClick(EventArgs.Empty);
     }
 
     private void LinkLabel_Click(object? sender, EventArgs e)
     {
-        //Console.WriteLine("LinkLabel_Click");
         OnClick(e);
     }
-    public override string Text { get => string.IsNullOrEmpty(self.Label)? self.Uri : self.Label;
-        set { self.Label = value; self.Uri = value; } }
-         
+    public override string Text
+    {
+        get => string.IsNullOrEmpty(self.Label) ? self.Uri : self.Label;
+        set
+        {
+            {
+                self.Label = value; self.Uri = value;
+                base.Text = value ?? string.Empty;
+            }
+        }
+    }
 
-    public event LinkLabelLinkClickedEventHandler? LinkClicked;
 
     public bool LinkVisited { get; set; }
 
@@ -115,13 +113,13 @@ public class LinkLabel: Control
 
         public int Add(object? value)
         {
-            if(value is Label)
+            if (value is Label)
             {
                 owner.Text = ((Label)value).Text;
             }
             else
             {
-                owner.Text = value?.ToString()??string.Empty;
+                owner.Text = value?.ToString() ?? string.Empty;
             }
             return 1;
         }
@@ -133,7 +131,7 @@ public class LinkLabel: Control
 
         public bool Contains(object? value)
         {
-            return (owner.Text??string.Empty).Contains(value?.ToString()??string.Empty);
+            return (owner.Text ?? string.Empty).Contains(value?.ToString() ?? string.Empty);
         }
 
         public void CopyTo(Array array, int index)

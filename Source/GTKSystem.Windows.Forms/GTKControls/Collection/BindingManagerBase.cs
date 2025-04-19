@@ -7,25 +7,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Forms;
 
-public abstract class BindingManagerBase
+public abstract partial class BindingManagerBase
 {
     private BindingsCollection? _bindings;
     private bool _pullingData;
-
-    protected EventHandler? OnCurrentChangedHandler; // Don't rename (breaking change)
-
-    protected EventHandler? OnCurrentItemChangedHandler; // Don't rename (breaking change)
-
-    protected EventHandler? OnPositionChangedHandler; // Don't rename (breaking change)
-
-    // Hook BindingComplete events on all owned Binding objects, and propagate those events through our own BindingComplete event
-    private BindingCompleteEventHandler? _bindingCompleteEventHandler;
-
-    // same deal about the new currentItemChanged event
-    private protected EventHandler? OnCurrentItemChangedValueHandler;
-
-    // Event handler for the DataError event
-    private BindingManagerDataErrorEventHandler? _dataError;
 
     public BindingsCollection Bindings
     {
@@ -42,20 +27,6 @@ public abstract class BindingManagerBase
 
             return _bindings;
         }
-    }
-
-    protected internal void OnBindingComplete(BindingCompleteEventArgs e)
-    {
-        _bindingCompleteEventHandler?.Invoke(this, e);
-    }
-
-    protected internal abstract void OnCurrentChanged(EventArgs e);
-
-    protected internal abstract void OnCurrentItemChanged(EventArgs e);
-
-    protected internal void OnDataError(Exception e)
-    {
-        _dataError?.Invoke(this, new BindingManagerDataErrorEventArgs(e));
     }
 
     public abstract object? Current { get; }
@@ -198,30 +169,6 @@ public abstract class BindingManagerBase
         return null;
     }
 
-    public event BindingCompleteEventHandler? BindingComplete
-    {
-        add => _bindingCompleteEventHandler += value;
-        remove => _bindingCompleteEventHandler -= value;
-    }
-
-    public event EventHandler? CurrentChanged
-    {
-        add => OnCurrentChangedHandler += value;
-        remove => OnCurrentChangedHandler -= value;
-    }
-
-    public event EventHandler? CurrentItemChanged
-    {
-        add => OnCurrentItemChangedValueHandler += value;
-        remove => OnCurrentItemChangedValueHandler -= value;
-    }
-
-    public event BindingManagerDataErrorEventHandler? DataError
-    {
-        add => _dataError += value;
-        remove => _dataError -= value;
-    }
-
     internal abstract string? GetListName();
     public abstract void CancelCurrentEdit();
     public abstract void EndCurrentEdit();
@@ -230,12 +177,6 @@ public abstract class BindingManagerBase
     public abstract void RemoveAt(int index);
 
     public abstract int Position { get; set; }
-
-    public event EventHandler? PositionChanged
-    {
-        add => OnPositionChangedHandler += value;
-        remove => OnPositionChangedHandler -= value;
-    }
 
     protected abstract void UpdateIsBinding();
 
@@ -294,56 +235,6 @@ public abstract class BindingManagerBase
     public bool IsBindingSuspended => !IsBinding;
 
     public abstract int Count { get; }
-
-    /// <summary>
-    ///  BindingComplete events on individual Bindings are propagated up through the BindingComplete event on
-    ///  the owning BindingManagerBase. To do this, we have to track changes to the bindings collection, adding
-    ///  or removing handlers on items in the collection as appropriate.
-    ///
-    ///  For the Add and Remove cases, we hook the collection 'changed' event, and add or remove handler for
-    ///  specific binding.
-    ///
-    ///  For the Refresh case, we hook both the 'changing' and 'changed' events, removing handlers for all
-    ///  items that were in the collection before the change, then adding handlers for whatever items are
-    ///  in the collection after the change.
-    /// </summary>
-    private void OnBindingsCollectionChanged(object? sender, CollectionChangeEventArgs e)
-    {
-        if (e.Element is not Binding binding)
-        {
-            return;
-        }
-
-        switch (e.Action)
-        {
-            case CollectionChangeAction.Add:
-                binding.BindingComplete += Binding_BindingComplete;
-                break;
-            case CollectionChangeAction.Remove:
-                binding.BindingComplete -= Binding_BindingComplete;
-                break;
-            case CollectionChangeAction.Refresh:
-                foreach (Binding bi in Bindings)
-                {
-                    bi.BindingComplete += Binding_BindingComplete;
-                }
-
-                break;
-        }
-    }
-
-    private void OnBindingsCollectionChanging(object? sender, CollectionChangeEventArgs e)
-    {
-        if (e.Action != CollectionChangeAction.Refresh)
-        {
-            return;
-        }
-
-        foreach (Binding bi in Bindings)
-        {
-            bi.BindingComplete -= Binding_BindingComplete;
-        }
-    }
 
     private void Binding_BindingComplete(object? sender, BindingCompleteEventArgs args)
     {

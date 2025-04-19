@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -116,7 +116,7 @@ public class DataGridViewRadioCell : DataGridViewCell;
 
 public class DataGridViewComboBoxColumn : DataGridViewColumn
 {
-    readonly ObjectCollection _items;
+    private readonly ObjectCollection _items;
     internal ListStore modelInternal = new(typeof(string));
     public DataGridViewComboBoxColumn() : this(null)
     {
@@ -258,7 +258,7 @@ public class DataGridViewLinkColumn : DataGridViewColumn
     }
 }
 
-public class DataGridViewColumn : TreeViewColumn
+public partial class DataGridViewColumn : TreeViewColumn
 {
     public int Column { get; }
     internal DataGridViewCell? _cellTemplate;
@@ -564,10 +564,6 @@ public class DataGridViewColumn : TreeViewColumn
     }
     private DataGridViewAutoSizeColumnMode _AutoSizeMode;
 
-    [Browsable(false)]
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public virtual event EventHandler? Disposed;
-
     public object? Clone()
     {
         return null;
@@ -588,4 +584,5 @@ public class DataGridViewColumn : TreeViewColumn
             foreach (var cell in Cells) { AddAttribute(cell, "cellvalue", _index); }
         }
     }
+
 }

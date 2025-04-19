@@ -30,6 +30,7 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Data;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -69,18 +70,14 @@ public class ListBindingHelperTest : TestHelper
 
     internal class ListSource : IListSource
     {
-        readonly bool contains_collection;
+        private readonly bool contains_collection;
 
         public ListSource (bool containsCollection)
         {
             contains_collection = containsCollection;
         }
 
-        public bool ContainsListCollection {
-            get {
-                return contains_collection;
-            }
-        }
+        public bool ContainsListCollection => contains_collection;
 
         public IList GetList ()
         {
@@ -88,35 +85,21 @@ public class ListBindingHelperTest : TestHelper
         }
     }
 
-    class SuperContainer
+    private class SuperContainer
     {
-        public ListContainer ListContainer
-        {
-            get
-            {
-                return new ListContainer ();
-            }
-        }
+        public ListContainer ListContainer => new();
     }
 
-    class ListContainer
+    private class ListContainer
     {
-        public IList List {
-            get {
-                return new SimpleItem [0];
-            }
-        }
+        public IList List => new SimpleItem [0];
 
-        public SimpleItem NonList {
-            get {
-                return new SimpleItem ();
-            }
-        }
+        public SimpleItem NonList => new();
     }
 
-    class SimpleItem
+    private class SimpleItem
     {
-        int value;
+        private int value;
 
         public SimpleItem ()
         {
@@ -129,14 +112,8 @@ public class ListBindingHelperTest : TestHelper
 
         public int Value
         {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                this.value = value;
-            }
+            get => value;
+            set => this.value = value;
         }
 
         public override int GetHashCode ()
@@ -144,24 +121,24 @@ public class ListBindingHelperTest : TestHelper
             return base.GetHashCode ();
         }
 
-        public override bool Equals (object obj)
+        public override bool Equals (object? obj)
         {
-            return value == ((SimpleItem)obj).value;
+            return value == ((SimpleItem)obj!).value;
         }
     }
 
     // useless class that help us with a simple enumerator with a null Current property
     // and implementing IList to let the ListBindingHelper get info from the this [] property
-    class NullEnumerable : IList, ICollection, IEnumerable
+    private class NullEnumerable : IList
     {
         public IEnumerator GetEnumerator ()
         {
             return new NullEnumerator ();
         }
 
-        class NullEnumerator : IEnumerator
+        private class NullEnumerator : IEnumerator
         {
-            int pos = -1;
+            private int pos = -1;
 
             // the idea is that we just move one time - the first time
             public bool MoveNext ()
@@ -178,11 +155,7 @@ public class ListBindingHelperTest : TestHelper
                 pos = -1;
             }
 
-            public object Current {
-                get {
-                    return null;
-                }
-            }
+            public object Current => null!;
         }
 
         // make this return a string, and hide the interface impl,
@@ -192,21 +165,19 @@ public class ListBindingHelperTest : TestHelper
                 if (index != 0)
                     throw new ArgumentOutOfRangeException ("index");
 
-                return null;
+                return null!;
             }
             set {
             }
         }
 
-        object IList.this [int index] {
-            get {
-                return this [index];
-            }
+        object? IList.this [int index] {
+            get => this [index];
             set {
             }
         }
 
-        public int Add (object o)
+        public int Add (object? o)
         {
             return 0;
         }
@@ -215,21 +186,21 @@ public class ListBindingHelperTest : TestHelper
         {
         }
 
-        public bool Contains (object o)
+        public bool Contains (object? o)
         {
             return false;
         }
 
-        public int IndexOf (object o)
+        public int IndexOf (object? o)
         {
             return -1;
         }
 
-        public void Insert (int index, object o)
+        public void Insert (int index, object? o)
         {
         }
 
-        public void Remove (object o)
+        public void Remove (object? o)
         {
         }
 
@@ -237,38 +208,18 @@ public class ListBindingHelperTest : TestHelper
         {
         }
 
-        public bool IsFixedSize {
-            get {
-                return true;
-            }
-        }
+        public bool IsFixedSize => true;
 
-        public bool IsReadOnly {
-            get {
-                return true;
-            }
-        }
+        public bool IsReadOnly => true;
 
         public void CopyTo (Array array, int offset)
         {
         }
 
-        public int Count {
-            get {
-                return 1;
-            }
-        }
+        public int Count => 1;
 
-        public bool IsSynchronized {
-            get {
-                return false;
-            }
-        }
+        public bool IsSynchronized => false;
 
-        public object SyncRoot {
-            get {
-                return this;
-            }
-        }
+        public object SyncRoot => this;
     }
 }

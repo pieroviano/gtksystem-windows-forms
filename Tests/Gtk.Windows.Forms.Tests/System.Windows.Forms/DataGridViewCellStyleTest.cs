@@ -27,13 +27,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Globalization;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
 [TestFixture]
 public class DataGridViewCellStyleTest  : TestHelper {
-
-    DataGridViewCellStyle style;
+    private DataGridViewCellStyle style;
 		
     [SetUp]
     protected override void SetUp () {
@@ -43,36 +43,38 @@ public class DataGridViewCellStyleTest  : TestHelper {
 
     [Test]
     public void TestDefaultValues () {
-        Assert.AreEqual (DataGridViewContentAlignment.NotSet, style.Alignment, "#A1");
-        Assert.AreEqual (Color.Empty, style.BackColor, "#A2");
-        Assert.AreEqual (null, style.Font, "#A3");
-        Assert.AreEqual (Color.Empty, style.ForeColor, "#A4");
-        Assert.AreEqual (String.Empty, style.Format, "#A5");
-        Assert.AreEqual (true, style.IsNullValueDefault, "#A8");
-        Assert.AreEqual (string.Empty, style.NullValue, "#A9");
-        Assert.AreEqual (Color.Empty, style.SelectionBackColor, "#A10");
-        Assert.AreEqual (Color.Empty, style.SelectionForeColor, "#A11");
-        Assert.AreEqual (null, style.Tag, "#A12");
-        Assert.AreEqual (DataGridViewTriState.NotSet, style.WrapMode, "#A13");
+        Assert.That((object?)style.Alignment, Is.EqualTo(DataGridViewContentAlignment.NotSet));
+        Assert.That((object?)style.BackColor, Is.EqualTo(Color.Empty));
+        Assert.That((object?)style.Font, Is.EqualTo(null));
+        Assert.That((object?)style.ForeColor, Is.EqualTo(Color.Empty));
+        object expected = string.Empty;
+        Assert.That((object?)style.Format, Is.EqualTo(expected));
+        Assert.That((object?)style.IsNullValueDefault, Is.EqualTo(true));
+        object expected1 = string.Empty;
+        Assert.That(style.NullValue, Is.EqualTo(expected1));
+        Assert.That((object?)style.SelectionBackColor, Is.EqualTo(Color.Empty));
+        Assert.That((object?)style.SelectionForeColor, Is.EqualTo(Color.Empty));
+        Assert.That(style.Tag, Is.EqualTo(null));
+        Assert.That((object?)style.WrapMode, Is.EqualTo(DataGridViewTriState.NotSet));
     }
 
     [Test]
     public void TestApplyStyle () {
         var style_aux = new DataGridViewCellStyle();
         style.ApplyStyle(style_aux);
-        Assert.AreEqual (style_aux, style, "#B1");
+        Assert.That((object?)style, Is.EqualTo(style_aux));
     }
 
     [Test]
     public void TestClone () {
         var style_aux = (DataGridViewCellStyle) style.Clone();
-        Assert.AreEqual (style_aux, style, "#C1");
+        Assert.That((object?)style, Is.EqualTo(style_aux));
     }
 
     [Test]
     public void TestEquals () {
         var style_aux = (DataGridViewCellStyle) style.Clone();
-        Assert.AreEqual (true, (style_aux.Equals(style)), "#D1");
+        Assert.That((object?)(style_aux.Equals(style)), Is.EqualTo(true));
     }
 
     [Test]
@@ -102,15 +104,16 @@ public class DataGridViewCellStyleTest  : TestHelper {
         try {
             Thread.CurrentThread.CurrentCulture = new CultureInfo ("nl-BE");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo ("ja-JP");
-            Assert.AreSame (CultureInfo.CurrentCulture, style.FormatProvider, "#1");
+            Assert.That((object?)style.FormatProvider, Is.SameAs(CultureInfo.CurrentCulture));
             Thread.CurrentThread.CurrentCulture = new CultureInfo ("fr-FR");
-            Assert.AreSame (CultureInfo.CurrentCulture, style.FormatProvider, "#2");
+            Assert.That((object?)style.FormatProvider, Is.SameAs(CultureInfo.CurrentCulture));
             style.FormatProvider = CultureInfo.CurrentCulture;
-            Assert.AreSame (CultureInfo.CurrentCulture, style.FormatProvider, "#3");
+            Assert.That((object?)style.FormatProvider, Is.SameAs(CultureInfo.CurrentCulture));
             Thread.CurrentThread.CurrentCulture = new CultureInfo ("en-US");
-            Assert.AreEqual (new CultureInfo ("fr-FR"), style.FormatProvider, "#4");
+            object expected = new CultureInfo ("fr-FR");
+            Assert.That((object?)style.FormatProvider, Is.EqualTo(expected));
             style.FormatProvider = null;
-            Assert.AreSame (CultureInfo.CurrentCulture, style.FormatProvider, "#5");
+            Assert.That((object?)style.FormatProvider, Is.SameAs(CultureInfo.CurrentCulture));
         } finally {
             Thread.CurrentThread.CurrentCulture = orignalCulture;
             Thread.CurrentThread.CurrentUICulture = orignalUICulture;
@@ -123,17 +126,17 @@ public class DataGridViewCellStyleTest  : TestHelper {
         var orignalCulture = CultureInfo.CurrentCulture;
 
         try {
-            Assert.IsTrue (style.IsFormatProviderDefault, "#1");
+            Assert.IsTrue (style.IsFormatProviderDefault);
             Thread.CurrentThread.CurrentCulture = new CultureInfo ("nl-BE");
-            Assert.IsTrue (style.IsFormatProviderDefault, "#2");
+            Assert.IsTrue (style.IsFormatProviderDefault);
             Thread.CurrentThread.CurrentCulture = new CultureInfo ("fr-FR");
-            Assert.IsTrue (style.IsFormatProviderDefault, "#3");
+            Assert.IsTrue (style.IsFormatProviderDefault);
             style.FormatProvider = CultureInfo.CurrentCulture;
-            Assert.IsFalse (style.IsFormatProviderDefault, "#4");
+            Assert.IsFalse (style.IsFormatProviderDefault);
             style.FormatProvider = new CultureInfo ("en-US");
-            Assert.IsFalse (style.IsFormatProviderDefault, "#5");
+            Assert.IsFalse (style.IsFormatProviderDefault);
             style.FormatProvider = null;
-            Assert.IsTrue (style.IsFormatProviderDefault, "#6");
+            Assert.IsTrue (style.IsFormatProviderDefault);
         } finally {
             Thread.CurrentThread.CurrentCulture = orignalCulture;
         }

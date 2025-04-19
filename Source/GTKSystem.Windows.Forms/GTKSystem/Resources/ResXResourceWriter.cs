@@ -5,7 +5,6 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
-using System.Resources;
 using System.Text;
 using System.Xml;
 
@@ -194,7 +193,7 @@ public class ResXResourceWriter : IResourceWriter
             }
             else
             {
-                if(_fileName != null) throw new InvalidOperationException("Nothing to output to");
+                if(_fileName == null) throw new InvalidOperationException("Nothing to output to");
                 if (_fileName != null)
                 {
                     _xmlTextWriter = new XmlTextWriter(_fileName, Encoding.UTF8);
@@ -302,7 +301,7 @@ public class ResXResourceWriter : IResourceWriter
     /// <summary>
     ///  Adds aliases to the resource file...
     /// </summary>
-    public virtual void AddAlias(string aliasName, AssemblyName assemblyName)
+    public virtual void AddAlias(string? aliasName, AssemblyName assemblyName)
     {
         //ArgumentNullException.ThrowIfNull(assemblyName);
 
@@ -572,14 +571,14 @@ public class ResXResourceWriter : IResourceWriter
         }
     }
 
-    private string GetAliasFromName(AssemblyName assemblyName)
+    private string? GetAliasFromName(AssemblyName assemblyName)
     {
         if (_cachedAliases is null)
         {
             _cachedAliases = new Hashtable();
         }
 
-        var alias = (string)_cachedAliases[assemblyName.FullName];
+        var alias = (string?)_cachedAliases[assemblyName.FullName];
 
         if (string.IsNullOrEmpty(alias))
         {
@@ -651,7 +650,7 @@ public class ResXResourceWriter : IResourceWriter
         return typeName!.Substring(indexStart + 2);
     }
 
-    static string ToBase64WrappedString(byte[] data)
+    private static string ToBase64WrappedString(byte[] data)
     {
         const int lineWrap = 80;
         const string crlf = "\r\n";

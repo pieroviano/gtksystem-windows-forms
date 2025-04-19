@@ -7,6 +7,7 @@
 // (C) 2006 Gert Driesen
 //
 
+using GtkTests.Helpers;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -18,104 +19,132 @@ public class ScrollableControlTest : TestHelper
     [Test]
     public void AutoScrollPositionTest ()
     {
-        ScrollableControl sc;
-
-        sc = new ScrollableControl ();
+        var sc = new ScrollableControl ();
         sc.AutoScroll = true;
 			
         sc.AutoScrollPosition = new Point (-25, -50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#01");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 
         sc.AutoScrollPosition = new Point (2500, 5000);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#02");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 			
         sc.AutoScrollPosition = new Point (25, 50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#03");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 			
         object o = sc.Handle;
 
         sc.AutoScrollPosition = new Point (-25, -50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#04");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 
         sc.AutoScrollPosition = new Point (2500, 5000);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#05");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 
         sc.AutoScrollPosition = new Point (25, 50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#06");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 			
         sc.Size = new Size (200, 400);
         sc.Location = new Point (20, 40);
 
         sc.AutoScrollPosition = new Point (-25, -50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#07");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 
         sc.AutoScrollPosition = new Point (2500, 5000);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#08");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
 
         sc.AutoScrollPosition = new Point (25, 50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#09");
-			
-			
-        Control c1, c2;
-        c1 = new Control ();
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
+
+
+        var c1 = new Control ();
         c1.Location = new Point (-100, -200);
         c1.Size = new Size (10, 10);
         sc.Controls.Add (c1);
 
-        c2 = new Control ();
+        var c2 = new Control ();
         c2.Location = new Point (400, 800);
         c2.Size = new Size (10, 10);
         sc.Controls.Add (c2);
 
-        Assert.AreEqual (new Rectangle (0, 0, 410, 810), sc.DisplayRectangle, "#10");
+        object expected = new Rectangle (0, 0, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected));
 			
         sc.AutoScrollPosition = new Point (-25, -50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#01");
-        Assert.AreEqual (new Rectangle (0, 0, 410, 810), sc.DisplayRectangle, "#15");
-        Assert.AreEqual (new Point (-100, -200), c1.Location, "#16");
-        Assert.AreEqual (new Point (400, 800), c2.Location, "#17");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
+        object expected1 = new Rectangle (0, 0, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected1));
+        object expected2 = new Point (-100, -200);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected2));
+        object expected3 = new Point (400, 800);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected3));
 
         sc.AutoScrollPosition = new Point (2500, 5000);
-        Assert.AreEqual (new Point (-226, -426), sc.AutoScrollPosition, "#18");
-        Assert.AreEqual (new Rectangle (-226, -426, 410, 810), sc.DisplayRectangle, "#19");
-        Assert.AreEqual (new Point (-326, -626), c1.Location, "#20");
-        Assert.AreEqual (new Point (174, 374), c2.Location, "#21");
+        object expected4 = new Point (-226, -426);
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(expected4));
+        object expected5 = new Rectangle (-226, -426, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected5));
+        object expected6 = new Point (-326, -626);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected6));
+        object expected7 = new Point (174, 374);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected7));
 
         sc.AutoScrollPosition = new Point (25, 50);
-        Assert.AreEqual (new Point (-25, -50), sc.AutoScrollPosition, "#22");
-        Assert.AreEqual (new Rectangle (-25, -50, 410, 810), sc.DisplayRectangle, "#23");
-        Assert.AreEqual (new Point (-125, -250), c1.Location, "#24");
-        Assert.AreEqual (new Point (375, 750), c2.Location, "#25");
+        object expected8 = new Point (-25, -50);
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(expected8));
+        object expected9 = new Rectangle (-25, -50, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected9));
+        object expected10 = new Point (-125, -250);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected10));
+        object expected11 = new Point (375, 750);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected11));
 			
         sc.AutoScrollPosition = new Point (2500, 5000);
-        Assert.AreEqual (new Point (-226, -426), sc.AutoScrollPosition, "#30");
-        Assert.AreEqual (new Rectangle (-226, -426, 410, 810), sc.DisplayRectangle, "#31");
-        Assert.AreEqual (new Point (-326, -626), c1.Location, "#32");
-        Assert.AreEqual (new Point (174, 374), c2.Location, "#33");
+        object expected12 = new Point (-226, -426);
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(expected12));
+        object expected13 = new Rectangle (-226, -426, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected13));
+        object expected14 = new Point (-326, -626);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected14));
+        object expected15 = new Point (174, 374);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected15));
 
         sc.AutoScrollPosition = new Point (25, 50);
-        Assert.AreEqual (new Point (-25, -50), sc.AutoScrollPosition, "#34");
-        Assert.AreEqual (new Rectangle (-25, -50, 410, 810), sc.DisplayRectangle, "#35");
-        Assert.AreEqual (new Point (-125, -250), c1.Location, "#36");
-        Assert.AreEqual (new Point (375, 750), c2.Location, "#37");
+        object expected16 = new Point (-25, -50);
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(expected16));
+        object expected17 = new Rectangle (-25, -50, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected17));
+        object expected18 = new Point (-125, -250);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected18));
+        object expected19 = new Point (375, 750);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected19));
 			
         sc.AutoScrollPosition = new Point (-25, -50);
-        Assert.AreEqual (Point.Empty, sc.AutoScrollPosition, "#42");
-        Assert.AreEqual (new Rectangle (0, 0, 410, 810), sc.DisplayRectangle, "#43");
-        Assert.AreEqual (new Point (-100, -200), c1.Location, "#44");
-        Assert.AreEqual (new Point (400, 800), c2.Location, "#45");
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(Point.Empty));
+        object expected20 = new Rectangle (0, 0, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected20));
+        object expected21 = new Point (-100, -200);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected21));
+        object expected22 = new Point (400, 800);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected22));
 
         sc.AutoScrollPosition = new Point (2500, 5000);
-        Assert.AreEqual (new Point (-226, -426), sc.AutoScrollPosition, "#46");
-        Assert.AreEqual (new Rectangle (-226, -426, 410, 810), sc.DisplayRectangle, "#47");
-        Assert.AreEqual (new Point (-326, -626), c1.Location, "#48");
-        Assert.AreEqual (new Point (174, 374), c2.Location, "#49");
+        object expected23 = new Point (-226, -426);
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(expected23));
+        object expected24 = new Rectangle (-226, -426, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected24));
+        object expected25 = new Point (-326, -626);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected25));
+        object expected26 = new Point (174, 374);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected26));
 
         sc.AutoScrollPosition = new Point (25, 50);
-        Assert.AreEqual (new Point (-25, -50), sc.AutoScrollPosition, "#50");
-        Assert.AreEqual (new Rectangle (-25, -50, 410, 810), sc.DisplayRectangle, "#51");
-        Assert.AreEqual (new Point (-125, -250), c1.Location, "#52");
-        Assert.AreEqual (new Point (375, 750), c2.Location, "#53");
+        object expected27 = new Point (-25, -50);
+        Assert.That((object?)sc.AutoScrollPosition, Is.EqualTo(expected27));
+        object expected28 = new Rectangle (-25, -50, 410, 810);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected28));
+        object expected29 = new Point (-125, -250);
+        Assert.That((object?)c1.Location, Is.EqualTo(expected29));
+        object expected30 = new Point (375, 750);
+        Assert.That((object?)c2.Location, Is.EqualTo(expected30));
 			
 			
     }
@@ -132,8 +161,8 @@ public class ScrollableControlTest : TestHelper
         sc.Controls.Add (lbl);
         sc.Height *= 2;
         sc.Height *= 2;
-        Assert.AreEqual (lbl.Location, Point.Empty, "#1");
-        Assert.AreEqual (lbl.Size, sc.ClientSize, "#2");
+        Assert.That((object?)Point.Empty, Is.EqualTo(lbl.Location));
+        Assert.That((object?)sc.ClientSize, Is.EqualTo(lbl.Size));
 			
         RemoveWarning (h);
     }
@@ -141,60 +170,66 @@ public class ScrollableControlTest : TestHelper
     public void AutoScroll ()
     {
         var sc = new ScrollableControl ();
-        Assert.IsFalse (sc.AutoScroll, "#A1");
-        Assert.AreEqual (0, sc.Controls.Count, "#A2");
+        Assert.IsFalse (sc.AutoScroll);
+        Assert.That((object?)sc.Controls.Count, Is.EqualTo(0));
 
         sc.AutoScroll = true;
-        Assert.IsTrue(sc.AutoScroll, "#B1");
-        Assert.AreEqual (0, sc.Controls.Count, "#B2");
+        Assert.IsTrue(sc.AutoScroll);
+        Assert.That((object?)sc.Controls.Count, Is.EqualTo(0));
 
         sc.AutoScroll = false;
-        Assert.IsFalse (sc.AutoScroll, "#C1");
-        Assert.AreEqual (0, sc.Controls.Count, "#C2");
+        Assert.IsFalse (sc.AutoScroll);
+        Assert.That((object?)sc.Controls.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void AutoScrollMinSize ()
     {
         var sc = new ScrollableControl ();
-        Assert.AreEqual (Size.Empty, sc.AutoScrollMinSize, "#A1");
-        Assert.IsFalse (sc.AutoScroll, "#A2");
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(Size.Empty));
+        Assert.IsFalse (sc.AutoScroll);
 
         sc.AutoScrollMinSize = Size.Empty;
-        Assert.AreEqual (Size.Empty, sc.AutoScrollMinSize, "#B1");
-        Assert.IsFalse (sc.AutoScroll, "#B2");
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(Size.Empty));
+        Assert.IsFalse (sc.AutoScroll);
 
         sc.AutoScrollMinSize = new Size (10, 20);
-        Assert.AreEqual (new Size (10, 20), sc.AutoScrollMinSize, "#C1");
-        Assert.IsTrue (sc.AutoScroll, "#C2");
+        object expected = new Size (10, 20);
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(expected));
+        Assert.IsTrue (sc.AutoScroll);
 
         sc.AutoScroll = false;
-        Assert.AreEqual (new Size (10, 20), sc.AutoScrollMinSize, "#D1");
-        Assert.IsFalse (sc.AutoScroll, "#D2");
+        object expected1 = new Size (10, 20);
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(expected1));
+        Assert.IsFalse (sc.AutoScroll);
 
         sc.AutoScrollMinSize = new Size (10, 20);
-        Assert.AreEqual (new Size (10, 20), sc.AutoScrollMinSize, "#E1");
-        Assert.IsFalse (sc.AutoScroll, "#E2");
+        object expected2 = new Size (10, 20);
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(expected2));
+        Assert.IsFalse (sc.AutoScroll);
 
         sc.AutoScrollMinSize = new Size (20, 20);
-        Assert.AreEqual (new Size (20, 20), sc.AutoScrollMinSize, "#F1");
-        Assert.IsTrue (sc.AutoScroll, "#F2");
+        object expected3 = new Size (20, 20);
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(expected3));
+        Assert.IsTrue (sc.AutoScroll);
 
         sc.AutoScroll = false;
-        Assert.AreEqual (new Size (20, 20), sc.AutoScrollMinSize, "#G1");
-        Assert.IsFalse (sc.AutoScroll, "#G2");
+        object expected4 = new Size (20, 20);
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(expected4));
+        Assert.IsFalse (sc.AutoScroll);
 
         sc.AutoScrollMinSize = Size.Empty;
-        Assert.AreEqual (Size.Empty, sc.AutoScrollMinSize, "#H1");
-        Assert.IsTrue (sc.AutoScroll, "#H2");
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(Size.Empty));
+        Assert.IsTrue (sc.AutoScroll);
 
         sc.AutoScrollMinSize = new Size (10, 20);
-        Assert.AreEqual (new Size (10, 20), sc.AutoScrollMinSize, "#I1");
-        Assert.IsTrue (sc.AutoScroll, "#I2");
+        object expected5 = new Size (10, 20);
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(expected5));
+        Assert.IsTrue (sc.AutoScroll);
 
         sc.AutoScrollMinSize = Size.Empty;
-        Assert.AreEqual (Size.Empty, sc.AutoScrollMinSize, "#J1");
-        Assert.IsTrue (sc.AutoScroll, "#J2");
+        Assert.That((object?)sc.AutoScrollMinSize, Is.EqualTo(Size.Empty));
+        Assert.IsTrue (sc.AutoScroll);
     }
 
     [Test]
@@ -204,10 +239,10 @@ public class ScrollableControlTest : TestHelper
         c.Dock = DockStyle.Fill;
         c.Padding = new Padding (40);
 
-        Assert.AreEqual (40, c.Padding.All, "A1");
+        Assert.That((object?)c.Padding.All, Is.EqualTo(40));
         c.Padding = new Padding (40, 40, 40, 40);
 
-        Assert.AreEqual (40, c.Padding.Right, "A5");
+        Assert.That((object?)c.Padding.Right, Is.EqualTo(40));
         var f = new Form ();
         f.Controls.Add (c);
 			
@@ -217,7 +252,8 @@ public class ScrollableControlTest : TestHelper
         f.Show ();
 			
         // Padding does not affect laying out the controls
-        Assert.AreEqual (new Point (0, 0), b.Location, "A7");
+        object expected = new Point (0, 0);
+        Assert.That((object?)b.Location, Is.EqualTo(expected));
 			
         f.Close ();
         f.Dispose ();
@@ -233,8 +269,10 @@ public class ScrollableControlTest : TestHelper
         using var c = new ScrollableControl ();
         c.Size = new Size (100, 100);
         c.Padding = new Padding (4);
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), c.ClientRectangle);
-        Assert.AreEqual (new Rectangle (4, 4, 92, 92), c.DisplayRectangle);
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)c.ClientRectangle, Is.EqualTo(expected));
+        object expected1 = new Rectangle (4, 4, 92, 92);
+        Assert.That((object?)c.DisplayRectangle, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -243,8 +281,10 @@ public class ScrollableControlTest : TestHelper
         using var c = new ScrollableControl ();
         c.Size = new Size (100, 100);
         c.Padding = new Padding (1, 2, 3, 4);
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), c.ClientRectangle);
-        Assert.AreEqual (new Rectangle (1, 2, 96, 94), c.DisplayRectangle);
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)c.ClientRectangle, Is.EqualTo(expected));
+        object expected1 = new Rectangle (1, 2, 96, 94);
+        Assert.That((object?)c.DisplayRectangle, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -254,14 +294,15 @@ public class ScrollableControlTest : TestHelper
         sc.Size = new Size (100, 100);
         sc.AutoScroll = true;
 
-        Control c;
-        c = new Control ();
+        var c = new Control ();
         c.Location = new Point (0, 0);
         c.Size = new Size (200, 200);
         sc.Controls.Add (c);
-        Assert.AreEqual (new Rectangle (0, 0, 200, 200), sc.DisplayRectangle);
+        object expected = new Rectangle (0, 0, 200, 200);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected));
 
         c.Visible = false;
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), sc.DisplayRectangle);
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)sc.DisplayRectangle, Is.EqualTo(expected1));
     }
 }

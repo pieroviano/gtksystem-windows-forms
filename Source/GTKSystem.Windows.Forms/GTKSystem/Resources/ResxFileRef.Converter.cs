@@ -75,7 +75,7 @@ public partial class ResXFileRef
                     var nextSemiColumn = stringValue.IndexOf(';');
                     if (nextSemiColumn == -1)
                     {
-                        throw new ArgumentException(nameof(stringValue));
+                        throw new ArgumentException("value");
                     }
 
                     fileName = stringValue.Substring(0, nextSemiColumn);
@@ -112,7 +112,7 @@ public partial class ResXFileRef
         {
             if (value is string stringValue)
             {
-                var parts = ParseResxFileRefString(stringValue);
+                string?[]? parts = ParseResxFileRefString(stringValue);
                 var fileName = parts?[0];
                 if (parts != null)
                 {
@@ -149,7 +149,7 @@ public partial class ResXFileRef
                             using (var fileStream =
                                    new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                             {
-                                Debug.Assert(fileStream != null, "Couldn't open " + fileName);
+                                Trace.Assert(fileStream != null, "Couldn't open " + fileName);
                                 temp = new byte[fileStream?.Length ?? 0];
                                 _ = fileStream?.Read(temp, 0, (int)fileStream.Length);
                             }
@@ -173,6 +173,11 @@ public partial class ResXFileRef
                                 return ico.ToBitmap();
                             }
 
+                            if (toCreate == typeof(string))
+                            {
+                                return Encoding.UTF8.GetString(temp);
+                            }
+
                             if (toCreate != null)
                             {
                                 return Activator.CreateInstance(toCreate,
@@ -189,7 +194,7 @@ public partial class ResXFileRef
 
         private static string? SecondPart(string?[] parts)
         {
-            if (parts?.Length < 2)
+            if ((parts?.Length ?? 0) <= 2)
             {
                 return null;
             }

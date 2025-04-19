@@ -1,9 +1,10 @@
 using System.Windows.Forms;
 using System.Drawing;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
-[TestFixture()]	
+[TestFixture]	
 public class FlowPanelTests : TestHelper
 {
     [Test]
@@ -11,15 +12,15 @@ public class FlowPanelTests : TestHelper
     {
         var p = new FlowLayoutPanel();
 			
-        Assert.AreEqual(FlowDirection.LeftToRight, p.FlowDirection, "A1");
-        Assert.AreEqual(true, p.WrapContents, "A2");
-        Assert.AreEqual("System.Windows.Forms.Layout.FlowLayout", p.LayoutEngine.ToString(), "A3");
+        Assert.That((object?)p.FlowDirection, Is.EqualTo(FlowDirection.LeftToRight));
+        Assert.That((object?)p.WrapContents, Is.EqualTo(true));
+        Assert.That((object?)p.LayoutEngine?.ToString(), Is.EqualTo("System.Windows.Forms.Layout.FlowLayout"));
 			
         p.FlowDirection = FlowDirection.BottomUp;
         p.WrapContents = false;
 
-        Assert.AreEqual (FlowDirection.BottomUp, p.FlowDirection, "A4");
-        Assert.AreEqual (false, p.WrapContents, "A5");
+        Assert.That((object?)p.FlowDirection, Is.EqualTo(FlowDirection.BottomUp));
+        Assert.That((object?)p.WrapContents, Is.EqualTo(false));
     }
 		
     [Test]
@@ -28,11 +29,11 @@ public class FlowPanelTests : TestHelper
         var p = new FlowLayoutPanel ();
         var b = new Button();
 			
-        Assert.AreEqual(false, p.GetFlowBreak(b), "B1");
+        Assert.That((object?)p.GetFlowBreak(b), Is.EqualTo(false));
 			
         p.SetFlowBreak(b, true);
 
-        Assert.AreEqual (true, p.GetFlowBreak (b), "B2");
+        Assert.That((object?)p.GetFlowBreak (b), Is.EqualTo(true));
     }
 
     #region LeftToRight Tests
@@ -45,8 +46,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "C1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "C2");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -58,8 +61,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "D1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "D2");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -71,8 +76,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "E1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "E2");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -84,8 +91,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 0), p.Controls[0].Bounds, "F1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 0), p.Controls[1].Bounds, "F2");
+        object expected = new Rectangle (0, 0, 100, 0);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 0);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -97,8 +106,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 0), p.Controls[0].Bounds, "G1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 0), p.Controls[1].Bounds, "G2");
+        object expected = new Rectangle (0, 0, 100, 0);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 0);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -110,8 +121,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 0), p.Controls[0].Bounds, "H1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 0), p.Controls[1].Bounds, "H2");
+        object expected = new Rectangle (0, 0, 100, 0);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 0);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -123,8 +136,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Top, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 50), p.Controls[0].Bounds, "I1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "I2");
+        object expected = new Rectangle (0, 0, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -136,8 +151,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Bottom, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 50, 100, 50), p.Controls[0].Bounds, "J1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "J2");
+        object expected = new Rectangle (0, 50, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -149,8 +166,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 50, 100, 50), p.Controls[0].Bounds, "K1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "K2");
+        object expected = new Rectangle (0, 50, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -162,8 +181,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.None));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 25, 100, 50), p.Controls[0].Bounds, "L1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "L2");
+        object expected = new Rectangle (0, 25, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
 
     [Test]
@@ -177,10 +198,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 50), p.Controls[0].Bounds, "M1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "M2");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[2].Bounds, "M3");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[3].Bounds, "M4");
+        object expected = new Rectangle (0, 0, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
+        object expected2 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2));
+        object expected3 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3));
     }
 
     [Test]
@@ -195,10 +220,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 50), p.Controls[0].Bounds, "N1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "N2");
-        Assert.AreEqual (new Rectangle (200, 0, 100, 100), p.Controls[2].Bounds, "N3");
-        Assert.AreEqual (new Rectangle (300, 0, 100, 100), p.Controls[3].Bounds, "N4");
+        object expected = new Rectangle (0, 0, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
+        object expected2 = new Rectangle (200, 0, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2));
+        object expected3 = new Rectangle (300, 0, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3));
     }
 
     [Test]
@@ -212,16 +241,22 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Size (400, 100), p.PreferredSize, "O1");
+        object expected = new Size (400, 100);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected));
 
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Size (200, 300), p.PreferredSize, "O2");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "O3");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "O4");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[2].Bounds, "O5");
-        Assert.AreEqual (new Rectangle (0, 200, 100, 100), p.Controls[3].Bounds, "O6");
+        object expected1 = new Size (200, 300);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected1));
+        object expected2 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected2));
+        object expected3 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected3));
+        object expected4 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected4));
+        object expected5 = new Rectangle (0, 200, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected5));
     }
 
     [Test]
@@ -235,11 +270,16 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (14,7,1,3), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Size (248, 60), p.PreferredSize, "P1");
-        Assert.AreEqual (new Rectangle (1, 3, 50, 50), p.Controls[0].Bounds, "P2");
-        Assert.AreEqual (new Rectangle (63, 3, 50, 50), p.Controls[1].Bounds, "P3");
-        Assert.AreEqual (new Rectangle (139, 7, 50, 50), p.Controls[2].Bounds, "P4");
-        Assert.AreEqual (new Rectangle (4, 64, 50, 50), p.Controls[3].Bounds, "P5");
+        object expected = new Size (248, 60);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected));
+        object expected1 = new Rectangle (1, 3, 50, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected1));
+        object expected2 = new Rectangle (63, 3, 50, 50);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected2));
+        object expected3 = new Rectangle (139, 7, 50, 50);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected3));
+        object expected4 = new Rectangle (4, 64, 50, 50);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected4));
     }
 
     [Test]
@@ -253,11 +293,16 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (15, 85, false, DockStyle.None, new Padding (2), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 20, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Size (192, 89), p.PreferredSize, "Q1");
-        Assert.AreEqual (new Rectangle (6, 6, 25, 45), p.Controls[0].Bounds, "Q2");
-        Assert.AreEqual (new Rectangle (46, 9, 60, 20), p.Controls[1].Bounds, "Q3");
-        Assert.AreEqual (new Rectangle (117, 2, 15, 85), p.Controls[2].Bounds, "Q4");
-        Assert.AreEqual (new Rectangle (138, 4, 50, 20), p.Controls[3].Bounds, "Q5");
+        object expected = new Size (192, 89);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected));
+        object expected1 = new Rectangle (6, 6, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected1));
+        object expected2 = new Rectangle (46, 9, 60, 20);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected2));
+        object expected3 = new Rectangle (117, 2, 15, 85);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected3));
+        object expected4 = new Rectangle (138, 4, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected4));
     }
 
     [Test]
@@ -273,13 +318,20 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (13, 22, false, DockStyle.None, new Padding (12), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (73, 28, false, DockStyle.Top, new Padding (6), AnchorStyles.None));
 
-        Assert.AreEqual (new Size (314, 57), p.PreferredSize, "R1");
-        Assert.AreEqual (new Rectangle (6, 6, 25, 45), p.Controls[0].Bounds, "R2");
-        Assert.AreEqual (new Rectangle (46, 9, 60, 39), p.Controls[1].Bounds, "R3");
-        Assert.AreEqual (new Rectangle (117, 2, 15, 53), p.Controls[2].Bounds, "R4");
-        Assert.AreEqual (new Rectangle (138, 33, 50, 20), p.Controls[3].Bounds, "R5");
-        Assert.AreEqual (new Rectangle (12, 69, 13, 22), p.Controls[4].Bounds, "R6");
-        Assert.AreEqual (new Rectangle (43, 63, 73, 28), p.Controls[5].Bounds, "R7");
+        object expected = new Size (314, 57);
+        Assert.That((object?)p.PreferredSize, Is.EqualTo(expected));
+        object expected1 = new Rectangle (6, 6, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected1));
+        object expected2 = new Rectangle (46, 9, 60, 39);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected2));
+        object expected3 = new Rectangle (117, 2, 15, 53);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected3));
+        object expected4 = new Rectangle (138, 33, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected4));
+        object expected5 = new Rectangle (12, 69, 13, 22);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected5));
+        object expected6 = new Rectangle (43, 63, 73, 28);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected6));
     }
 
     [Test]
@@ -298,12 +350,18 @@ public class FlowPanelTests : TestHelper
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Rectangle (1, 2, 12, 345), p.Controls[0].Bounds, "S1");
-        Assert.AreEqual (new Rectangle (6, 354, 9, 44), p.Controls[1].Bounds, "S2");
-        Assert.AreEqual (new Rectangle (22, 352, 78, 49), p.Controls[2].Bounds, "S3");
-        Assert.AreEqual (new Rectangle (3, 408, 21, 64), p.Controls[3].Bounds, "S4");
-        Assert.AreEqual (new Rectangle (38, 409, 14, 61), p.Controls[4].Bounds, "S5");
-        Assert.AreEqual (new Rectangle (63, 410, 132, 58), p.Controls[5].Bounds, "S6");
+        object expected = new Rectangle (1, 2, 12, 345);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (6, 354, 9, 44);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
+        object expected2 = new Rectangle (22, 352, 78, 49);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2));
+        object expected3 = new Rectangle (3, 408, 21, 64);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3));
+        object expected4 = new Rectangle (38, 409, 14, 61);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected4));
+        object expected5 = new Rectangle (63, 410, 132, 58);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected5));
     }
 		
     [Test]
@@ -317,9 +375,11 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
         p.SetFlowBreak(p.Controls[0], true);
-			
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "T1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "T2");
+
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1));
     }
     #endregion
 
@@ -334,8 +394,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[0].Bounds, "AC1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AC2");
+        object expected = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AC1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AC2");
     }
 
     [Test]
@@ -348,8 +410,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[0].Bounds, "AD1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AD2");
+        object expected = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AD1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AD2");
     }
 
     [Test]
@@ -362,8 +426,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[0].Bounds, "AE1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AE2");
+        object expected = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AE1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AE2");
     }
 
     [Test]
@@ -376,8 +442,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 0), p.Controls[0].Bounds, "AF1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 0), p.Controls[1].Bounds, "AF2");
+        object expected = new Rectangle (100, 0, 100, 0);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AF1");
+        object expected1 = new Rectangle (0, 0, 100, 0);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AF2");
     }
 
     [Test]
@@ -390,8 +458,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 0), p.Controls[0].Bounds, "AG1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 0), p.Controls[1].Bounds, "AG2");
+        object expected = new Rectangle (100, 0, 100, 0);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AG1");
+        object expected1 = new Rectangle (0, 0, 100, 0);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AG2");
     }
 
     [Test]
@@ -404,8 +474,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 0), p.Controls[0].Bounds, "AH1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 0), p.Controls[1].Bounds, "AH2");
+        object expected = new Rectangle (100, 0, 100, 0);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AH1");
+        object expected1 = new Rectangle (0, 0, 100, 0);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AH2");
     }
 
     [Test]
@@ -418,8 +490,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Top, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 50), p.Controls[0].Bounds, "AI1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AI2");
+        object expected = new Rectangle (100, 0, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AI1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AI2");
     }
 
     [Test]
@@ -432,8 +506,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Bottom, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 50, 100, 50), p.Controls[0].Bounds, "AJ1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AJ2");
+        object expected = new Rectangle (100, 50, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AJ1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AJ2");
     }
 
     [Test]
@@ -446,8 +522,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 50, 100, 50), p.Controls[0].Bounds, "AK1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AK2");
+        object expected = new Rectangle (100, 50, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AK1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AK2");
     }
 
     [Test]
@@ -460,8 +538,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.None));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 25, 100, 50), p.Controls[0].Bounds, "AL1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AL2");
+        object expected = new Rectangle (100, 25, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AL1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AL2");
     }
 
     [Test]
@@ -476,10 +556,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 50), p.Controls[0].Bounds, "AM1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AM2");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[2].Bounds, "AM3");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[3].Bounds, "AM4");
+        object expected = new Rectangle (100, 0, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AM1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AM2");
+        object expected2 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "AM3");
+        object expected3 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "AM4");
     }
 
     [Test]
@@ -495,10 +579,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 50), p.Controls[0].Bounds, "AN1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AN2");
-        Assert.AreEqual (new Rectangle (-100, 0, 100, 100), p.Controls[2].Bounds, "AN3");
-        Assert.AreEqual (new Rectangle (-200, 0, 100, 100), p.Controls[3].Bounds, "AN4");
+        object expected = new Rectangle (100, 0, 100, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AN1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AN2");
+        object expected2 = new Rectangle (-100, 0, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "AN3");
+        object expected3 = new Rectangle (-200, 0, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "AN4");
     }
 
     [Test]
@@ -516,10 +604,14 @@ public class FlowPanelTests : TestHelper
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[0].Bounds, "AO1");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[1].Bounds, "AO2");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[2].Bounds, "AO3");
-        Assert.AreEqual (new Rectangle (100, 200, 100, 100), p.Controls[3].Bounds, "AO4");
+        object expected = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AO1");
+        object expected1 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AO2");
+        object expected2 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "AO3");
+        object expected3 = new Rectangle (100, 200, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "AO4");
     }
 
     [Test]
@@ -534,10 +626,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (14, 7, 1, 3), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (145, 3, 50, 50), p.Controls[0].Bounds, "AP1");
-        Assert.AreEqual (new Rectangle (82, 3, 50, 50), p.Controls[1].Bounds, "AP2");
-        Assert.AreEqual (new Rectangle (24, 7, 50, 50), p.Controls[2].Bounds, "AP3");
-        Assert.AreEqual (new Rectangle (146, 64, 50, 50), p.Controls[3].Bounds, "AP4");
+        object expected = new Rectangle (145, 3, 50, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AP1");
+        object expected1 = new Rectangle (82, 3, 50, 50);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AP2");
+        object expected2 = new Rectangle (24, 7, 50, 50);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "AP3");
+        object expected3 = new Rectangle (146, 64, 50, 50);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "AP4");
     }
 
     [Test]
@@ -552,10 +648,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (15, 85, false, DockStyle.None, new Padding (2), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 20, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (169, 6, 25, 45), p.Controls[0].Bounds, "AQ1");
-        Assert.AreEqual (new Rectangle (94, 9, 60, 20), p.Controls[1].Bounds, "AQ2");
-        Assert.AreEqual (new Rectangle (68, 2, 15, 85), p.Controls[2].Bounds, "AQ3");
-        Assert.AreEqual (new Rectangle (12, 4, 50, 20), p.Controls[3].Bounds, "AQ4");
+        object expected = new Rectangle (169, 6, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AQ1");
+        object expected1 = new Rectangle (94, 9, 60, 20);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AQ2");
+        object expected2 = new Rectangle (68, 2, 15, 85);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "AQ3");
+        object expected3 = new Rectangle (12, 4, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "AQ4");
     }
 
     [Test]
@@ -572,12 +672,18 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (13, 22, false, DockStyle.None, new Padding (12), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (73, 28, false, DockStyle.Top, new Padding (6), AnchorStyles.None));
 
-        Assert.AreEqual (new Rectangle (169, 6, 25, 45), p.Controls[0].Bounds, "AR1");
-        Assert.AreEqual (new Rectangle (94, 9, 60, 39), p.Controls[1].Bounds, "AR2");
-        Assert.AreEqual (new Rectangle (68, 2, 15, 53), p.Controls[2].Bounds, "AR3");
-        Assert.AreEqual (new Rectangle (12, 33, 50, 20), p.Controls[3].Bounds, "AR4");
-        Assert.AreEqual (new Rectangle (175, 69, 13, 22), p.Controls[4].Bounds, "AR5");
-        Assert.AreEqual (new Rectangle (84, 63, 73, 28), p.Controls[5].Bounds, "AR6");
+        object expected = new Rectangle (169, 6, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AR1");
+        object expected1 = new Rectangle (94, 9, 60, 39);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AR2");
+        object expected2 = new Rectangle (68, 2, 15, 53);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "AR3");
+        object expected3 = new Rectangle (12, 33, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "AR4");
+        object expected4 = new Rectangle (175, 69, 13, 22);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected4), "AR5");
+        object expected5 = new Rectangle (84, 63, 73, 28);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected5), "AR6");
     }
 
     [Test]
@@ -597,12 +703,18 @@ public class FlowPanelTests : TestHelper
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Rectangle (185, 2, 12, 345), p.Controls[0].Bounds, "AS1");
-        Assert.AreEqual (new Rectangle (189, 354, 9, 44), p.Controls[1].Bounds, "AS2");
-        Assert.AreEqual (new Rectangle (103, 352, 78, 49), p.Controls[2].Bounds, "AS3");
-        Assert.AreEqual (new Rectangle (176, 408, 21, 64), p.Controls[3].Bounds, "AS4");
-        Assert.AreEqual (new Rectangle (153, 409, 14, 61), p.Controls[4].Bounds, "AS5");
-        Assert.AreEqual (new Rectangle (6, 410, 132, 58), p.Controls[5].Bounds, "AS6");
+        object expected = new Rectangle (185, 2, 12, 345);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AS1");
+        object expected1 = new Rectangle (189, 354, 9, 44);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AS2");
+        object expected2 = new Rectangle (103, 352, 78, 49);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "AS3");
+        object expected3 = new Rectangle (176, 408, 21, 64);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "AS4");
+        object expected4 = new Rectangle (153, 409, 14, 61);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected4), "AS5");
+        object expected5 = new Rectangle (6, 410, 132, 58);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected5), "AS6");
     }
 
     [Test]
@@ -618,8 +730,10 @@ public class FlowPanelTests : TestHelper
 
         p.SetFlowBreak (p.Controls[0], true);
 
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[0].Bounds, "AT1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "AT2");
+        object expected = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "AT1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "AT2");
     }
     #endregion
 
@@ -635,8 +749,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "BC1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BC2");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BC1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BC2");
     }
 
     [Test]
@@ -650,8 +766,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "BD1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BD2");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BD1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BD2");
     }
 
     [Test]
@@ -665,8 +783,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "BE1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BE2");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BE1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BE2");
     }
 
     [Test]
@@ -680,8 +800,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 0, 100), p.Controls[0].Bounds, "BF1");
-        Assert.AreEqual (new Rectangle (0, 100, 0, 100), p.Controls[1].Bounds, "BF2");
+        object expected = new Rectangle (0, 0, 0, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BF1");
+        object expected1 = new Rectangle (0, 100, 0, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BF2");
     }
 
     [Test]
@@ -695,8 +817,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
 
-        Assert.AreEqual (new Rectangle (0, 0, 0, 100), p.Controls[0].Bounds, "BG1");
-        Assert.AreEqual (new Rectangle (0, 100, 0, 100), p.Controls[1].Bounds, "BG2");
+        object expected = new Rectangle (0, 0, 0, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BG1");
+        object expected1 = new Rectangle (0, 100, 0, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BG2");
     }
 
     [Test]
@@ -710,8 +834,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 0, 100), p.Controls[0].Bounds, "BH1");
-        Assert.AreEqual (new Rectangle (0, 100, 0, 100), p.Controls[1].Bounds, "BH2");
+        object expected = new Rectangle (0, 0, 0, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BH1");
+        object expected1 = new Rectangle (0, 100, 0, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BH2");
     }
 
     [Test]
@@ -725,8 +851,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Left, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 50, 100), p.Controls[0].Bounds, "BI1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BI2");
+        object expected = new Rectangle (0, 0, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BI1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BI2");
     }
 
     [Test]
@@ -740,8 +868,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Right, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (50, 0, 50, 100), p.Controls[0].Bounds, "BJ1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BJ2");
+        object expected = new Rectangle (50, 0, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BJ1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BJ2");
     }
 
     [Test]
@@ -755,8 +885,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Left));
 
-        Assert.AreEqual (new Rectangle (50, 0, 50, 100), p.Controls[0].Bounds, "BK1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BK2");
+        object expected = new Rectangle (50, 0, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BK1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BK2");
     }
 
     [Test]
@@ -770,8 +902,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.None));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (25, 0, 50, 100), p.Controls[0].Bounds, "BL1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BL2");
+        object expected = new Rectangle (25, 0, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BL1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BL2");
     }
 
     [Test]
@@ -787,10 +921,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 50, 100), p.Controls[0].Bounds, "BM1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BM2");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[2].Bounds, "BM3");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[3].Bounds, "BM4");
+        object expected = new Rectangle (0, 0, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BM1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BM2");
+        object expected2 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "BM3");
+        object expected3 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "BM4");
     }
 
     [Test]
@@ -807,10 +945,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 0, 50, 100), p.Controls[0].Bounds, "BN1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BN2");
-        Assert.AreEqual (new Rectangle (0, 200, 100, 100), p.Controls[2].Bounds, "BN3");
-        Assert.AreEqual (new Rectangle (0, 300, 100, 100), p.Controls[3].Bounds, "BN4");
+        object expected = new Rectangle (0, 0, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BN1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BN2");
+        object expected2 = new Rectangle (0, 200, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "BN3");
+        object expected3 = new Rectangle (0, 300, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "BN4");
     }
 
     [Test]
@@ -829,10 +971,14 @@ public class FlowPanelTests : TestHelper
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "BO1");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[1].Bounds, "BO2");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[2].Bounds, "BO3");
-        Assert.AreEqual (new Rectangle (200, 0, 100, 100), p.Controls[3].Bounds, "BO4");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BO1");
+        object expected1 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BO2");
+        object expected2 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "BO3");
+        object expected3 = new Rectangle (200, 0, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "BO4");
     }
 
     [Test]
@@ -848,10 +994,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (14, 7, 1, 3), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (1, 3, 50, 50), p.Controls[0].Bounds, "BP1");
-        Assert.AreEqual (new Rectangle (7, 58, 50, 50), p.Controls[1].Bounds, "BP2");
-        Assert.AreEqual (new Rectangle (14, 120, 50, 50), p.Controls[2].Bounds, "BP3");
-        Assert.AreEqual (new Rectangle (73, 4, 50, 50), p.Controls[3].Bounds, "BP4");
+        object expected = new Rectangle (1, 3, 50, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BP1");
+        object expected1 = new Rectangle (7, 58, 50, 50);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BP2");
+        object expected2 = new Rectangle (14, 120, 50, 50);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "BP3");
+        object expected3 = new Rectangle (73, 4, 50, 50);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "BP4");
     }
 
     [Test]
@@ -867,10 +1017,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (15, 85, false, DockStyle.None, new Padding (2), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 20, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (6, 6, 25, 45), p.Controls[0].Bounds, "BQ1");
-        Assert.AreEqual (new Rectangle (9, 66, 60, 20), p.Controls[1].Bounds, "BQ2");
-        Assert.AreEqual (new Rectangle (2, 97, 15, 85), p.Controls[2].Bounds, "BQ3");
-        Assert.AreEqual (new Rectangle (82, 4, 50, 20), p.Controls[3].Bounds, "BQ4");
+        object expected = new Rectangle (6, 6, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BQ1");
+        object expected1 = new Rectangle (9, 66, 60, 20);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BQ2");
+        object expected2 = new Rectangle (2, 97, 15, 85);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "BQ3");
+        object expected3 = new Rectangle (82, 4, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "BQ4");
     }
 
     [Test]
@@ -888,12 +1042,18 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (13, 22, false, DockStyle.None, new Padding (12), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (73, 28, false, DockStyle.Left, new Padding (6), AnchorStyles.None));
 
-        Assert.AreEqual (new Rectangle (6, 6, 25, 45), p.Controls[0].Bounds, "BR1");
-        Assert.AreEqual (new Rectangle (9, 66, 19, 20), p.Controls[1].Bounds, "BR2");
-        Assert.AreEqual (new Rectangle (2, 97, 15, 85), p.Controls[2].Bounds, "BR3");
-        Assert.AreEqual (new Rectangle (41, 4, 50, 20), p.Controls[3].Bounds, "BR4");
-        Assert.AreEqual (new Rectangle (49, 40, 61, 22), p.Controls[4].Bounds, "BR5");
-        Assert.AreEqual (new Rectangle (43, 80, 73, 28), p.Controls[5].Bounds, "BR6");
+        object expected = new Rectangle (6, 6, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BR1");
+        object expected1 = new Rectangle (9, 66, 19, 20);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BR2");
+        object expected2 = new Rectangle (2, 97, 15, 85);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "BR3");
+        object expected3 = new Rectangle (41, 4, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "BR4");
+        object expected4 = new Rectangle (49, 40, 61, 22);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected4), "BR5");
+        object expected5 = new Rectangle (43, 80, 73, 28);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected5), "BR6");
     }
 
     [Test]
@@ -914,12 +1074,18 @@ public class FlowPanelTests : TestHelper
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Rectangle (1, 2, 12, 345), p.Controls[0].Bounds, "BS1");
-        Assert.AreEqual (new Rectangle (22, 3, 9, 44), p.Controls[1].Bounds, "BS2");
-        Assert.AreEqual (new Rectangle (21, 55, 10, 14), p.Controls[2].Bounds, "BS3");
-        Assert.AreEqual (new Rectangle (36, 3, 21, 64), p.Controls[3].Bounds, "BS4");
-        Assert.AreEqual (new Rectangle (44, 72, 10, 14), p.Controls[4].Bounds, "BS5");
-        Assert.AreEqual (new Rectangle (38, 94, 18, 6), p.Controls[5].Bounds, "BS6");
+        object expected = new Rectangle (1, 2, 12, 345);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BS1");
+        object expected1 = new Rectangle (22, 3, 9, 44);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BS2");
+        object expected2 = new Rectangle (21, 55, 10, 14);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "BS3");
+        object expected3 = new Rectangle (36, 3, 21, 64);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "BS4");
+        object expected4 = new Rectangle (44, 72, 10, 14);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected4), "BS5");
+        object expected5 = new Rectangle (38, 94, 18, 6);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected5), "BS6");
     }
 
     [Test]
@@ -936,8 +1102,10 @@ public class FlowPanelTests : TestHelper
 
         p.SetFlowBreak (p.Controls[0], true);
 
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[0].Bounds, "BT1");
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[1].Bounds, "BT2");
+        object expected = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "BT1");
+        object expected1 = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "BT2");
     }
     #endregion
 
@@ -953,8 +1121,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[0].Bounds, "CC1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CC2");
+        object expected = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CC1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CC2");
     }
 
     [Test]
@@ -968,8 +1138,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[0].Bounds, "CD1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CD2");
+        object expected = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CD1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CD2");
     }
 
     [Test]
@@ -983,8 +1155,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[0].Bounds, "CE1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CE2");
+        object expected = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CE1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CE2");
     }
 
     [Test]
@@ -998,8 +1172,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 0, 100), p.Controls[0].Bounds, "CF1");
-        Assert.AreEqual (new Rectangle (0, 0, 0, 100), p.Controls[1].Bounds, "CF2");
+        object expected = new Rectangle (0, 100, 0, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CF1");
+        object expected1 = new Rectangle (0, 0, 0, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CF2");
     }
 
     [Test]
@@ -1013,8 +1189,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Right));
 
-        Assert.AreEqual (new Rectangle (0, 100, 0, 100), p.Controls[0].Bounds, "CG1");
-        Assert.AreEqual (new Rectangle (0, 0, 0, 100), p.Controls[1].Bounds, "CG2");
+        object expected = new Rectangle (0, 100, 0, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CG1");
+        object expected1 = new Rectangle (0, 0, 0, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CG2");
     }
 
     [Test]
@@ -1028,8 +1206,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 0, 100), p.Controls[0].Bounds, "CH1");
-        Assert.AreEqual (new Rectangle (0, 0, 0, 100), p.Controls[1].Bounds, "CH2");
+        object expected = new Rectangle (0, 100, 0, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CH1");
+        object expected1 = new Rectangle (0, 0, 0, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CH2");
     }
 
     [Test]
@@ -1043,8 +1223,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Left, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 50, 100), p.Controls[0].Bounds, "CI1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CI2");
+        object expected = new Rectangle (0, 100, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CI1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CI2");
     }
 
     [Test]
@@ -1058,8 +1240,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.Right, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (50, 100, 50, 100), p.Controls[0].Bounds, "CJ1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CJ2");
+        object expected = new Rectangle (50, 100, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CJ1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CJ2");
     }
 
     [Test]
@@ -1073,8 +1257,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Right));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Left));
 
-        Assert.AreEqual (new Rectangle (50, 100, 50, 100), p.Controls[0].Bounds, "CK1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CK2");
+        object expected = new Rectangle (50, 100, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CK1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CK2");
     }
 
     [Test]
@@ -1088,8 +1274,10 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 100, false, DockStyle.None, new Padding (), AnchorStyles.None));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (25, 100, 50, 100), p.Controls[0].Bounds, "CL1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CL2");
+        object expected = new Rectangle (25, 100, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CL1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CL2");
     }
 
     [Test]
@@ -1105,10 +1293,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 50, 100), p.Controls[0].Bounds, "CM1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CM2");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[2].Bounds, "CM3");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[3].Bounds, "CM4");
+        object expected = new Rectangle (0, 100, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CM1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CM2");
+        object expected2 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "CM3");
+        object expected3 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "CM4");
     }
 
     [Test]
@@ -1125,10 +1317,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (0, 100, 50, 100), p.Controls[0].Bounds, "CN1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CN2");
-        Assert.AreEqual (new Rectangle (0, -100, 100, 100), p.Controls[2].Bounds, "CN3");
-        Assert.AreEqual (new Rectangle (0, -200, 100, 100), p.Controls[3].Bounds, "CN4");
+        object expected = new Rectangle (0, 100, 50, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CN1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CN2");
+        object expected2 = new Rectangle (0, -100, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "CN3");
+        object expected3 = new Rectangle (0, -200, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "CN4");
     }
 
     [Test]
@@ -1147,10 +1343,14 @@ public class FlowPanelTests : TestHelper
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[0].Bounds, "CO1");
-        Assert.AreEqual (new Rectangle (100, 100, 100, 100), p.Controls[1].Bounds, "CO2");
-        Assert.AreEqual (new Rectangle (100, 0, 100, 100), p.Controls[2].Bounds, "CO3");
-        Assert.AreEqual (new Rectangle (200, 100, 100, 100), p.Controls[3].Bounds, "CO4");
+        object expected = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CO1");
+        object expected1 = new Rectangle (100, 100, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CO2");
+        object expected2 = new Rectangle (100, 0, 100, 100);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "CO3");
+        object expected3 = new Rectangle (200, 100, 100, 100);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "CO4");
     }
 
     [Test]
@@ -1166,10 +1366,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (14, 7, 1, 3), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (1, 148, 50, 50), p.Controls[0].Bounds, "CP1");
-        Assert.AreEqual (new Rectangle (7, 90, 50, 50), p.Controls[1].Bounds, "CP2");
-        Assert.AreEqual (new Rectangle (14, 34, 50, 50), p.Controls[2].Bounds, "CP3");
-        Assert.AreEqual (new Rectangle (73, 146, 50, 50), p.Controls[3].Bounds, "CP4");
+        object expected = new Rectangle (1, 148, 50, 50);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CP1");
+        object expected1 = new Rectangle (7, 90, 50, 50);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CP2");
+        object expected2 = new Rectangle (14, 34, 50, 50);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "CP3");
+        object expected3 = new Rectangle (73, 146, 50, 50);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "CP4");
     }
 
     [Test]
@@ -1185,10 +1389,14 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (15, 85, false, DockStyle.None, new Padding (2), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 20, false, DockStyle.None, new Padding (4), AnchorStyles.Left | AnchorStyles.Top));
 
-        Assert.AreEqual (new Rectangle (6, 149, 25, 45), p.Controls[0].Bounds, "CQ1");
-        Assert.AreEqual (new Rectangle (9, 114, 60, 20), p.Controls[1].Bounds, "CQ2");
-        Assert.AreEqual (new Rectangle (2, 18, 15, 85), p.Controls[2].Bounds, "CQ3");
-        Assert.AreEqual (new Rectangle (82, 176, 50, 20), p.Controls[3].Bounds, "CQ4");
+        object expected = new Rectangle (6, 149, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CQ1");
+        object expected1 = new Rectangle (9, 114, 60, 20);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CQ2");
+        object expected2 = new Rectangle (2, 18, 15, 85);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "CQ3");
+        object expected3 = new Rectangle (82, 176, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "CQ4");
     }
 
     [Test]
@@ -1206,12 +1414,18 @@ public class FlowPanelTests : TestHelper
         p.Controls.Add (CreateButton (13, 22, false, DockStyle.None, new Padding (12), AnchorStyles.Left | AnchorStyles.Right));
         p.Controls.Add (CreateButton (73, 28, false, DockStyle.Left, new Padding (6), AnchorStyles.None));
 
-        Assert.AreEqual (new Rectangle (6, 149, 25, 45), p.Controls[0].Bounds, "CR1");
-        Assert.AreEqual (new Rectangle (9, 114, 19, 20), p.Controls[1].Bounds, "CR2");
-        Assert.AreEqual (new Rectangle (2, 18, 15, 85), p.Controls[2].Bounds, "CR3");
-        Assert.AreEqual (new Rectangle (41, 176, 50, 20), p.Controls[3].Bounds, "CR4");
-        Assert.AreEqual (new Rectangle (49, 138, 61, 22), p.Controls[4].Bounds, "CR5");
-        Assert.AreEqual (new Rectangle (43, 92, 73, 28), p.Controls[5].Bounds, "CR6");
+        object expected = new Rectangle (6, 149, 25, 45);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CR1");
+        object expected1 = new Rectangle (9, 114, 19, 20);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CR2");
+        object expected2 = new Rectangle (2, 18, 15, 85);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "CR3");
+        object expected3 = new Rectangle (41, 176, 50, 20);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "CR4");
+        object expected4 = new Rectangle (49, 138, 61, 22);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected4), "CR5");
+        object expected5 = new Rectangle (43, 92, 73, 28);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected5), "CR6");
     }
 
     [Test]
@@ -1232,12 +1446,18 @@ public class FlowPanelTests : TestHelper
         p.SetFlowBreak (p.Controls[0], true);
         p.SetFlowBreak (p.Controls[2], true);
 
-        Assert.AreEqual (new Rectangle (1, -149, 12, 345), p.Controls[0].Bounds, "CS1");
-        Assert.AreEqual (new Rectangle (22, 149, 9, 44), p.Controls[1].Bounds, "CS2");
-        Assert.AreEqual (new Rectangle (21, 128, 10, 14), p.Controls[2].Bounds, "CS3");
-        Assert.AreEqual (new Rectangle (36, 135, 21, 64), p.Controls[3].Bounds, "CS4");
-        Assert.AreEqual (new Rectangle (44, 115, 10, 14), p.Controls[4].Bounds, "CS5");
-        Assert.AreEqual (new Rectangle (38, 100, 18, 6), p.Controls[5].Bounds, "CS6");
+        object expected = new Rectangle (1, -149, 12, 345);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CS1");
+        object expected1 = new Rectangle (22, 149, 9, 44);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CS2");
+        object expected2 = new Rectangle (21, 128, 10, 14);
+        Assert.That((object?)p.Controls[2].Bounds, Is.EqualTo(expected2), "CS3");
+        object expected3 = new Rectangle (36, 135, 21, 64);
+        Assert.That((object?)p.Controls[3].Bounds, Is.EqualTo(expected3), "CS4");
+        object expected4 = new Rectangle (44, 115, 10, 14);
+        Assert.That((object?)p.Controls[4].Bounds, Is.EqualTo(expected4), "CS5");
+        object expected5 = new Rectangle (38, 100, 18, 6);
+        Assert.That((object?)p.Controls[5].Bounds, Is.EqualTo(expected5), "CS6");
     }
 
     [Test]
@@ -1254,8 +1474,10 @@ public class FlowPanelTests : TestHelper
 
         p.SetFlowBreak (p.Controls[0], true);
 
-        Assert.AreEqual (new Rectangle (0, 100, 100, 100), p.Controls[0].Bounds, "CT1");
-        Assert.AreEqual (new Rectangle (0, 0, 100, 100), p.Controls[1].Bounds, "CT2");
+        object expected = new Rectangle (0, 100, 100, 100);
+        Assert.That((object?)p.Controls[0].Bounds, Is.EqualTo(expected), "CT1");
+        object expected1 = new Rectangle (0, 0, 100, 100);
+        Assert.That((object?)p.Controls[1].Bounds, Is.EqualTo(expected1), "CT2");
     }
     #endregion
 
@@ -1276,31 +1498,41 @@ public class FlowPanelTests : TestHelper
     public void PreferredSize ()
     {
         var panel = new FlowLayoutPanel ();
-        panel.Controls.AddRange (new Control [] { new PreferredSizeControl (), new PreferredSizeControl () });
-        Assert.AreEqual (new Size (212, 106), panel.PreferredSize, "1");
-        Assert.AreEqual (new Size (106, 212), panel.GetPreferredSize (new Size (150, 150)), "2");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (1000, 1000)) , "3");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (0, 0)), "4");
-        Assert.AreEqual (new Size (106, 212), panel.GetPreferredSize (new Size (1, 1)), "5");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (0, 150)), "6");
-        Assert.AreEqual (new Size (106, 212), panel.GetPreferredSize (new Size (150, 0)), "7");
+        panel.Controls.AddRange (new PreferredSizeControl (), new PreferredSizeControl ());
+        object expected = new Size (212, 106);
+        Assert.That((object?)panel.PreferredSize, Is.EqualTo(expected), "1");
+        object expected1 = new Size (106, 212);
+        Assert.That((object?)panel.GetPreferredSize (new Size (150, 150)), Is.EqualTo(expected1), "2");
+        object expected2 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (1000, 1000)), Is.EqualTo(expected2), "3");
+        object expected3 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (0, 0)), Is.EqualTo(expected3), "4");
+        object expected4 = new Size (106, 212);
+        Assert.That((object?)panel.GetPreferredSize (new Size (1, 1)), Is.EqualTo(expected4), "5");
+        object expected5 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (0, 150)), Is.EqualTo(expected5), "6");
+        object expected6 = new Size (106, 212);
+        Assert.That((object?)panel.GetPreferredSize (new Size (150, 0)), Is.EqualTo(expected6), "7");
         panel.WrapContents = false;
-        Assert.AreEqual (new Size (212, 106), panel.PreferredSize, "1, WrapContents");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (150, 150)), "2, WrapContents");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (1000, 1000)) , "3, WrapContents");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (0, 0)), "4, WrapContents");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (1, 1)), "5, WrapContents");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (0, 150)), "6, WrapContents");
-        Assert.AreEqual (new Size (212, 106), panel.GetPreferredSize (new Size (150, 0)), "7, WrapContents");
+        object expected7 = new Size (212, 106);
+        Assert.That((object?)panel.PreferredSize, Is.EqualTo(expected7), "1, WrapContents");
+        object expected8 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (150, 150)), Is.EqualTo(expected8), "2, WrapContents");
+        object expected9 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (1000, 1000)), Is.EqualTo(expected9), "3, WrapContents");
+        object expected10 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (0, 0)), Is.EqualTo(expected10), "4, WrapContents");
+        object expected11 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (1, 1)), Is.EqualTo(expected11), "5, WrapContents");
+        object expected12 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (0, 150)), Is.EqualTo(expected12), "6, WrapContents");
+        object expected13 = new Size (212, 106);
+        Assert.That((object?)panel.GetPreferredSize (new Size (150, 0)), Is.EqualTo(expected13), "7, WrapContents");
     }
 
-    class PreferredSizeControl : Control
+    private class PreferredSizeControl : Control
     {
-        protected override Size DefaultSize {
-            get {
-                return new Size (100, 100);
-            }
-        }
+        protected override Size DefaultSize => new(100, 100);
     }
     #endregion
 		
@@ -1323,9 +1555,11 @@ public class FlowPanelTests : TestHelper
         flp.Controls.Add (b2);
 
         f.Controls.Add (flp);
-			
-        Assert.AreEqual (new Rectangle (23, 23, 50, 50), b.Bounds, "A1");
-        Assert.AreEqual (new Rectangle (23, 79, 50, 50), b2.Bounds, "A2");
+
+        object expected = new Rectangle (23, 23, 50, 50);
+        Assert.That((object?)b.Bounds, Is.EqualTo(expected));
+        object expected1 = new Rectangle (23, 79, 50, 50);
+        Assert.That((object?)b2.Bounds, Is.EqualTo(expected1));
     }
 }
 
@@ -1368,8 +1602,8 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add (panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (192, panel.Width, "1"); // 2 * 90 + 4 * 3 margin
-        Assert.AreEqual (25, panel.Height, "2");
+        Assert.That((object?)panel.Width, Is.EqualTo(192), "1"); // 2 * 90 + 4 * 3 margin
+        Assert.That((object?)panel.Height, Is.EqualTo(25), "2");
     }
 
     [Test]
@@ -1391,9 +1625,9 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add (panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (250, panel.Top, "1");
-        Assert.AreEqual (f.ClientRectangle.Width, panel.Width, "2");
-        Assert.AreEqual (50, panel.Height, "3");
+        Assert.That((object?)panel.Top, Is.EqualTo(250), "1");
+        Assert.That((object?)panel.Width, Is.EqualTo(f.ClientRectangle.Width), "2");
+        Assert.That((object?)panel.Height, Is.EqualTo(50), "3");
     }
 
     [Test]
@@ -1412,8 +1646,8 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add (panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (100, panel.Width, "1");
-        Assert.AreEqual (100, panel.Height, "2");
+        Assert.That((object?)panel.Width, Is.EqualTo(100), "1");
+        Assert.That((object?)panel.Height, Is.EqualTo(100), "2");
     }
 
     [Test]
@@ -1432,9 +1666,9 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add(panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (0, panel.Top, "1");
-        Assert.AreEqual (f.ClientRectangle.Width, panel.Width, "2");
-        Assert.AreEqual (25, panel.Height, "3");
+        Assert.That((object?)panel.Top, Is.EqualTo(0), "1");
+        Assert.That((object?)panel.Width, Is.EqualTo(f.ClientRectangle.Width), "2");
+        Assert.That((object?)panel.Height, Is.EqualTo(25), "3");
     }
 
     [Test]
@@ -1453,9 +1687,9 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add(panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (275, panel.Top, "1");
-        Assert.AreEqual (f.ClientRectangle.Width, panel.Width, "2");
-        Assert.AreEqual (25, panel.Height, "3");
+        Assert.That((object?)panel.Top, Is.EqualTo(275), "1");
+        Assert.That((object?)panel.Width, Is.EqualTo(f.ClientRectangle.Width), "2");
+        Assert.That((object?)panel.Height, Is.EqualTo(25), "3");
     }
 
     [Test]
@@ -1476,9 +1710,9 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add(panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (0, panel.Left, "1");
-        Assert.AreEqual (f.ClientRectangle.Height, panel.Height, "2");
-        Assert.AreEqual (31, panel.Width, "3"); // 25 + 2*3 margin
+        Assert.That((object?)panel.Left, Is.EqualTo(0), "1");
+        Assert.That((object?)panel.Height, Is.EqualTo(f.ClientRectangle.Height), "2");
+        Assert.That((object?)panel.Width, Is.EqualTo(31), "3"); // 25 + 2*3 margin
     }
 
     [Test]
@@ -1499,9 +1733,9 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add(panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (269, panel.Left, "1");
-        Assert.AreEqual (f.ClientRectangle.Height, panel.Height, "2");
-        Assert.AreEqual (31, panel.Width, "3"); // 25 + 2*3 margin
+        Assert.That((object?)panel.Left, Is.EqualTo(269), "1");
+        Assert.That((object?)panel.Height, Is.EqualTo(f.ClientRectangle.Height), "2");
+        Assert.That((object?)panel.Width, Is.EqualTo(31), "3"); // 25 + 2*3 margin
     }
 
     [Test]
@@ -1520,8 +1754,8 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add(panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (96, panel.Width, "1"); // 90 + 2*3 margin
-        Assert.AreEqual (25, panel.Height, "2");
+        Assert.That((object?)panel.Width, Is.EqualTo(96), "1"); // 90 + 2*3 margin
+        Assert.That((object?)panel.Height, Is.EqualTo(25), "2");
     }
 
     [Test]
@@ -1540,9 +1774,9 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add (panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (275, panel.Top, "1");
-        Assert.AreEqual (f.ClientRectangle.Width, panel.Width, "2");
-        Assert.AreEqual (25, panel.Height, "3");
+        Assert.That((object?)panel.Top, Is.EqualTo(275), "1");
+        Assert.That((object?)panel.Width, Is.EqualTo(f.ClientRectangle.Width), "2");
+        Assert.That((object?)panel.Height, Is.EqualTo(25), "3");
     }
 
     [Test]
@@ -1564,8 +1798,8 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add (panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (10, panel.Width, "1");
-        Assert.AreEqual (10, panel.Height, "2");
+        Assert.That((object?)panel.Width, Is.EqualTo(10), "1");
+        Assert.That((object?)panel.Height, Is.EqualTo(10), "2");
     }
 
     [Test]
@@ -1587,9 +1821,9 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add (panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (290, panel.Top, "1");
-        Assert.AreEqual (f.ClientRectangle.Width, panel.Width, "2");
-        Assert.AreEqual (10, panel.Height, "3");
+        Assert.That((object?)panel.Top, Is.EqualTo(290), "1");
+        Assert.That((object?)panel.Width, Is.EqualTo(f.ClientRectangle.Width), "2");
+        Assert.That((object?)panel.Height, Is.EqualTo(10), "3");
     }
 
     [Test]
@@ -1608,8 +1842,8 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add (panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (100, panel.Width, "1");
-        Assert.AreEqual (100, panel.Height, "2");
+        Assert.That((object?)panel.Width, Is.EqualTo(100), "1");
+        Assert.That((object?)panel.Height, Is.EqualTo(100), "2");
     }
 
     [Test]
@@ -1628,8 +1862,8 @@ public class FlowPanelTests_AutoSize: TestHelper
         f.Controls.Add(panel);
         panel.ResumeLayout (true);
 
-        Assert.AreEqual (200, panel.Top, "1");
-        Assert.AreEqual (f.ClientRectangle.Width, panel.Width, "2");
-        Assert.AreEqual (100, panel.Height, "3");
+        Assert.That((object?)panel.Top, Is.EqualTo(200), "1");
+        Assert.That((object?)panel.Width, Is.EqualTo(f.ClientRectangle.Width), "2");
+        Assert.That((object?)panel.Height, Is.EqualTo(100), "3");
     }
 }

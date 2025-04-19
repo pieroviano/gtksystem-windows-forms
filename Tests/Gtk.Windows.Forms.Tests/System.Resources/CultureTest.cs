@@ -5,18 +5,17 @@
 //     Robert Jordan <robertj@gmx.net>
 //
 
-using System.Collections;
 using System.Globalization;
 using System.Drawing;
 using System.Resources;
-using System.Resources;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class CultureTest : Windows.Forms.TestHelper
+public class CultureTest : TestHelper
 {
-    string? fileName;
+    private string? fileName;
 
     [SetUp]
     protected override void SetUp ()
@@ -51,16 +50,17 @@ public class CultureTest : Windows.Forms.TestHelper
         var r = new ResXResourceReader (fileName);
         var e = r.GetEnumerator ();
         using var disposable = e as IDisposable;
-        while (e.MoveNext ()) {
+        while (e!.MoveNext ()) {
             if ((string) e.Key == "point") {
-                Assert.AreEqual (typeof (Point).FullName, e.Value!.GetType().FullName, "#1");
+                object? expected = typeof (Point).FullName;
+                Assert.That((object?)e.Value!.GetType().FullName, Is.EqualTo(expected));
                 var p = (Point) e.Value;
-                Assert.AreEqual (42, p.X, "#2");
-                Assert.AreEqual (43, p.Y, "#3");
+                Assert.That((object?)p.X, Is.EqualTo(42));
+                Assert.That((object?)p.Y, Is.EqualTo(43));
                 count++;
             }
         }
         r.Close ();
-        Assert.AreEqual (1, count, "#100");
+        Assert.That((object?)count, Is.EqualTo(1));
     }
 }

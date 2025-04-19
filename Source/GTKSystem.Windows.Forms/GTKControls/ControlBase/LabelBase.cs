@@ -5,6 +5,7 @@ namespace System.Windows.Forms;
 public sealed class LabelBase : Gtk.Label, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+
     public LabelBase()
     {
         Override = new GtkFormsControlOverride(this);
@@ -30,11 +31,13 @@ public sealed class LabelBase : Gtk.Label, IControlGtk
         LineWrap = true;
         LineWrapMode = Pango.WrapMode.WordChar;
     }
+
     protected override void OnShown()
     {
         Override.OnAddClass();
         base.OnShown();
     }
+    
     protected override bool OnDrawn(Context? cr)
     {
         var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);

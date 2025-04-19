@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace System.Drawing.Printing;
 
 [DefaultProperty("DocumentName"), DefaultEvent("PrintPage")]
-public class PrintDocument : Component
+public partial class PrintDocument : Component
 {
     private string _documentName = "document";
 
@@ -41,23 +41,27 @@ public class PrintDocument : Component
         {
             _pageSetup = value;
             var pageSettings = DefaultPageSettings;
-            pageSettings.Landscape = value.Orientation == PageOrientation.Landscape ||
-                                     value.Orientation == PageOrientation.ReverseLandscape;
-            pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points),
-                (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points),
-                (int)value.GetBottomMargin(Unit.Points));
-            pageSettings.PaperSize = new PaperSize(
-                (PaperKind)Enum.Parse(typeof(PaperKind),value.PaperSize.DisplayName), value.PaperSize.Name,
-                (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
+            if (pageSettings != null)
+            {
+                pageSettings.Landscape = value.Orientation == PageOrientation.Landscape ||
+                                         value.Orientation == PageOrientation.ReverseLandscape;
+                pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points),
+                    (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points),
+                    (int)value.GetBottomMargin(Unit.Points));
+                pageSettings.PaperSize = new PaperSize(
+                    (PaperKind)Enum.Parse(typeof(PaperKind), value.PaperSize.DisplayName), value.PaperSize.Name,
+                    (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
+            }
+
             _userSetPageSettings = true;
         }
     }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public PageSettings DefaultPageSettings
+    public PageSettings? DefaultPageSettings
     {
-        get { return _defaultPageSettings; }
+        get => _defaultPageSettings;
         set
         {
             _defaultPageSettings = value ?? new PageSettings();
@@ -104,39 +108,6 @@ public class PrintDocument : Component
             }
         }
     }
-
-    public event PrintEventHandler? BeginPrint
-    {
-        add => _beginPrint += value;
-        remove => _beginPrint -= value;
-    }
-
-    public event PrintEventHandler? EndPrint
-    {
-        add => _endPrint += value;
-        remove => _endPrint -= value;
-    }
-
-    public event PrintPageEventHandler? PrintPage
-    {
-        add => _printPage += value;
-        remove => _printPage -= value;
-    }
-
-    public event QueryPageSettingsEventHandler? QueryPageSettings
-    {
-        add => _queryPageSettings += value;
-        remove => _queryPageSettings -= value;
-    }
-
-    protected internal virtual void OnBeginPrint(PrintEventArgs e) => _beginPrint?.Invoke(this, e);
-
-    protected internal virtual void OnEndPrint(PrintEventArgs e) => _endPrint?.Invoke(this, e);
-
-    protected internal virtual void OnPrintPage(PrintPageEventArgs e) => _printPage?.Invoke(this, e);
-
-    protected internal virtual void OnQueryPageSettings(QueryPageSettingsEventArgs e) =>
-        _queryPageSettings?.Invoke(this, e);
 
     public void Print()
     {

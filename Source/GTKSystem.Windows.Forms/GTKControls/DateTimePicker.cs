@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -10,20 +10,30 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Calendar = Gtk.Calendar;
 
 namespace System.Windows.Forms;
 
+using Color = Color;
+#if NET462_OR_GREATER
+using GtkSystemColors = System.Drawing.SystemColors;
+#endif
+
 [DesignerCategory("Component")]
-public class DateTimePicker : MaskedTextBox
+public partial class DateTimePicker : MaskedTextBox
 {
-    readonly Popover popver;
-    readonly Gtk.Calendar calendar = new();
+    private static DateTime initialMinDate = new DateTime(1753, 1, 1);
+    private static DateTime initialMaxDate = DateTime.MaxValue;
+    private readonly Popover popver;
+    private readonly Gtk.Calendar calendar;
     public DateTimePicker() : base("DateTimePicker")
     {
+        calendar = new Calendar();
+        Format = DateTimePickerFormat.Long;
         Mask = Properties.Resources.DateTimePicker_DateTimePicker_Mask;
 
         self.SecondaryIconActivatable = true;
-        self.SecondaryIconStock= "open-menu";
+        self.SecondaryIconStock = "open-menu";
         self.SecondaryIconPixbuf = new Gdk.Pixbuf(GetType().Assembly, "System.Windows.Forms.Resources.System.MonthCalendar.ico");
         self.IconRelease += DateTimePicker_IconRelease;
         self.Shown += Self_Shown;
@@ -41,7 +51,7 @@ public class DateTimePicker : MaskedTextBox
         calendar.PrevMonth += Calendar_PrevMonth;
         calendar.NextMonth += Calendar_NextMonth;
 
-        var popbody=new Box(Gtk.Orientation.Vertical, 6);
+        var popbody = new Box(Gtk.Orientation.Vertical, 6);
         popbody.Add(calendar);
         var todaybtn = new Gtk.Button()
         {
@@ -57,11 +67,6 @@ public class DateTimePicker : MaskedTextBox
     {
         if (ValueChanged != null && self.IsMapped)
             OnValueChanged(e);
-    }
-
-    protected virtual void OnValueChanged(EventArgs e)
-    {
-        ValueChanged?.Invoke(this, e);
     }
 
     private void Calendar_NextMonth(object? sender, EventArgs e)
@@ -114,7 +119,7 @@ public class DateTimePicker : MaskedTextBox
         {
             calendar.Date = MaxDate.Date.AddDays(-1);
         }
-        else if(current <= MinDate)
+        else if (current <= MinDate)
         {
             calendar.Date = MinDate.AddDays(1);
         }
@@ -128,7 +133,7 @@ public class DateTimePicker : MaskedTextBox
     private void Calendar_DaySelected(object? sender, EventArgs e)
     {
         var calendarValue = sender as Gtk.Calendar;
-        var dt = calendarValue?.GetDate()??default;
+        var dt = calendarValue?.GetDate() ?? default;
         if (dt > MaxDate || dt < MinDate)
         {
             if (calendarValue != null)
@@ -149,8 +154,32 @@ public class DateTimePicker : MaskedTextBox
         }
     }
 
-    public DateTime MaxDate { get; set; } = DateTime.MaxValue;
-    public DateTime MinDate { get; set; } = DateTime.MinValue;
+    public DateTime MaxDate
+    {
+        get => maxDate;
+        set
+        {
+            if (value > initialMaxDate)
+            {
+                throw new ArgumentOutOfRangeException(nameof(MaxDate), value, @$"{nameof(MaxDate)} too big: {value}");
+            }
+            maxDate = value;
+        }
+    }
+
+    public DateTime MinDate
+    {
+        get => minDate;
+        set
+        {
+            if (value < initialMinDate)
+            {
+                throw new ArgumentOutOfRangeException(nameof(MinDate), value, @$"{nameof(MinDate)} too small: {value}");
+            }
+            minDate = value;
+        }
+    }
+
     public DateTime Value
     {
         get
@@ -164,7 +193,7 @@ public class DateTimePicker : MaskedTextBox
             else if (DateTime.TryParse(Text, provider, DateTimeStyles.AllowWhiteSpaces, out result))
             { }
             else
-            { 
+            {
                 result = DateTime.Now;
             }
             if (result > MaxDate)
@@ -177,15 +206,18 @@ public class DateTimePicker : MaskedTextBox
             }
             return result;
         }
-        set { 
-            if(value > MaxDate)
+        set
+        {
+            if (value > MaxDate)
             {
-                value = MaxDate.AddDays(-1);
+                throw new ArgumentOutOfRangeException(nameof(MaxDate),value, @$"{nameof(MaxDate)} too big: {value}");
             }
             if (value < MinDate)
             {
-                value = MinDate.AddDays(1);
+                throw new ArgumentOutOfRangeException(nameof(MinDate), value, @$"{nameof(MinDate)} too small: {value}");
             }
+
+            _value = value;
             if (Format == DateTimePickerFormat.Long)
                 base.Text = value.ToString(Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日);
             else if (Format == DateTimePickerFormat.Short)
@@ -199,14 +231,27 @@ public class DateTimePicker : MaskedTextBox
         }
     }
     private string customFormat = Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日;
-    public string CustomFormat { get => customFormat; 
-        set { customFormat = value; 
-            Mask = Regex.Replace(value,"[ymdhs]","_",RegexOptions.IgnoreCase); 
+    public string CustomFormat
+    {
+        get => customFormat;
+        set
+        {
+            value ??= string.Empty;
+            customFormat = value;
+            Mask = Regex.Replace(value, "[ymdhs]", "_", RegexOptions.IgnoreCase);
+            Value = _value;
         }
     }
     public DateTimePickerFormat format;
-    public DateTimePickerFormat Format { get => format;
-        set {
+    private DateTime _value;
+    private DateTime minDate = initialMinDate;
+    private DateTime maxDate = initialMaxDate;
+
+    public DateTimePickerFormat Format
+    {
+        get => format;
+        set
+        {
             format = value;
             if (Format == DateTimePickerFormat.Long)
                 Mask = Properties.Resources.DateTimePicker_DateTimePicker_Mask;
@@ -220,12 +265,23 @@ public class DateTimePicker : MaskedTextBox
                 Mask = Properties.Resources.DateTimePicker_DateTimePicker_Mask;
         }
     }
+    public override string Text
+    {
+        get => base.Text;
+        set
+        {
+            if (!DateTime.TryParseExact(value ?? string.Empty, CustomFormat, CultureInfo.CurrentCulture,
+                    DateTimeStyles.None, out _))
+            {
+                throw new FormatException();
+            }
+            base.Text = value ?? string.Empty;
+        }
+    }
     public Font? CalendarFont { get; set; }
-    public Color CalendarForeColor { get; set; }
-    public Color CalendarMonthBackground { get; set; }
-    public Color CalendarTitleBackColor { get; set; }
-    public Color CalendarTitleForeColor { get; set; }
-    public Color CalendarTrailingForeColor { get; set; }
-
-    public event EventHandler? ValueChanged;
+    public Color CalendarForeColor { get; set; } = GtkSystemColors.ControlText;
+    public Color CalendarMonthBackground { get; set; } = GtkSystemColors.Window;
+    public Color CalendarTitleBackColor { get; set; } = GtkSystemColors.ActiveCaption;
+    public Color CalendarTitleForeColor { get; set; } = GtkSystemColors.ActiveCaptionText;
+    public Color CalendarTrailingForeColor { get; set; } = GtkSystemColors.GrayText;
 }

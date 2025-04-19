@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using GLib;
@@ -15,9 +15,9 @@ using System.Reflection;
 namespace System.Windows.Forms;
 
 [DesignerCategory("Component")]
-public class DataGridView : ScrollableControl
+public partial class DataGridView : ScrollableControl
 {
-    public readonly DataGridViewBase self = new();
+    public readonly DataGridViewBase self;
     public override object GtkControl => self;
     private DataGridViewColumnCollection _columns = null!;
     private DataGridViewRowCollection _rows = null!;
@@ -28,6 +28,7 @@ public class DataGridView : ScrollableControl
 
     public DataGridView()
     {
+        self = new DataGridViewBase();
         Init();
     }
 
@@ -67,11 +68,6 @@ public class DataGridView : ScrollableControl
             OnSelectionChanged(e);
     }
 
-    protected virtual void OnSelectionChanged(EventArgs e)
-    {
-        SelectionChanged?.Invoke(this, e);
-    }
-
     private void GridView_RowActivated(object o, RowActivatedArgs args)
     {
         // Single row selection is valid
@@ -100,8 +96,6 @@ public class DataGridView : ScrollableControl
         var binding = DataBindings[args.Property];
         binding?.WriteValue();
     }
-    public event EventHandler? SelectionChanged;
-    public event DataGridViewCellEventHandler? CellClick;
     internal void CellValueChanagedHandler(int column, int row)
     {
         if (CellValueChanged != null)
@@ -109,7 +103,6 @@ public class DataGridView : ScrollableControl
             CellValueChanged(this, new DataGridViewCellEventArgs(column, row));
         }
     }
-    public event DataGridViewCellEventHandler? CellValueChanged;
     public void SetExpandRow(DataGridViewRow row, bool all)
     {
         GridView.ExpandRow(Store.GetPath(row.TreeIter), all);
@@ -150,24 +143,24 @@ public class DataGridView : ScrollableControl
             switch (_SelectionMode)
             {
                 case DataGridViewSelectionMode.CellSelect:
-                {
-                    GridView.Selection.Mode = Gtk.SelectionMode.None;
-                    break;
-                }
+                    {
+                        GridView.Selection.Mode = Gtk.SelectionMode.None;
+                        break;
+                    }
 
                 case DataGridViewSelectionMode.FullColumnSelect:
                 case DataGridViewSelectionMode.ColumnHeaderSelect:
-                {
-                    GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
-                    break;
-                }
+                    {
+                        GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
+                        break;
+                    }
 
                 case DataGridViewSelectionMode.FullRowSelect:
                 case DataGridViewSelectionMode.RowHeaderSelect:
-                {
-                    GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
-                    break;
-                }
+                    {
+                        GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
+                        break;
+                    }
             }
 
         }
@@ -255,40 +248,41 @@ public class DataGridView : ScrollableControl
         }
         _columns.Invalidate();
 
-            if (_columns.Count > 0)
+        if (_columns.Count > 0)
+        {
+            foreach (DataRow dr in dt.Rows)
             {
-                foreach (DataRow dr in dt.Rows)
+                var newRow = new DataGridViewRow();
+                foreach (var col in _columns)
                 {
-                    var newRow = new DataGridViewRow();
-                    foreach (var col in _columns)
-                    {
-                        var cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
-                        newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
-                    }
-                    _rows.Add(newRow);
+                    var cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
+                    newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
                 }
+                _rows.Add(newRow);
             }
         }
-        private void LoadListSource()
+    }
+
+    private void LoadListSource()
+    {
+        var _type = _DataSource?.GetType();
+        var _entityType = _type?.GetGenericArguments();
+        if (_entityType?.Length == 1)
         {
-            var _type = _DataSource.GetType();
-            var _entityType = _type.GetGenericArguments();
-            if (_entityType.Length == 1)
+            var pros = _entityType[0].GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var pro in pros)
             {
-                var pros = _entityType[0].GetProperties(BindingFlags.Public|BindingFlags.Instance);
-                foreach (var pro in pros)
+                if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
                 {
-                    if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
-                    {
-                        if (pro.PropertyType.Name == "Boolean")
-                            _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
-                        else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
-                            _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
-                        else
-                            _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
-                    }
+                    if (pro.PropertyType.Name == "Boolean")
+                        _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                    else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
+                        _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                    else
+                        _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
                 }
-                _columns.Invalidate();
+            }
+            _columns.Invalidate();
 
             if (_columns.Count > 0)
             {
@@ -321,47 +315,55 @@ public class DataGridView : ScrollableControl
             switch (SelectionMode)
             {
                 case DataGridViewSelectionMode.CellSelect:
-                {
-                    var cols = Store.NColumns;
-                    Store.Foreach((model, _, iter) =>
                     {
-                        for (var i = 0; i < cols; i++)
+                        var cols = Store.NColumns;
+                        Store.Foreach((model, _, iter) =>
                         {
-                            var cell = (DataGridViewCell)model.GetValue(iter, i);
-                            if (cell.Selected)
-                                stcc.Add(cell);
-                        }
-                        return false;
-                    });
-                    break;
-                }
+                            for (var i = 0; i < cols; i++)
+                            {
+                                var cell = (DataGridViewCell)model.GetValue(iter, i);
+                                if (cell.Selected)
+                                    stcc.Add(cell);
+                            }
+                            return false;
+                        });
+                        break;
+                    }
 
                 case DataGridViewSelectionMode.FullColumnSelect:
                 case DataGridViewSelectionMode.ColumnHeaderSelect:
-                {
-                    foreach (var columnIndex in _selectedBandIndexes)
                     {
-                        foreach (DataGridViewRow dataGridViewRow in Rows)   // unshares all rows!
+                        foreach (var columnIndex in _selectedBandIndexes)
                         {
-                            stcc.Add(dataGridViewRow.Cells[columnIndex]);
+                            foreach (DataGridViewRow dataGridViewRow in Rows)   // unshares all rows!
+                            {
+                                var dataGridViewCell = dataGridViewRow.Cells[columnIndex];
+                                if (dataGridViewCell != null)
+                                {
+                                    stcc.Add(dataGridViewCell);
+                                }
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
 
                 case DataGridViewSelectionMode.FullRowSelect:
                 case DataGridViewSelectionMode.RowHeaderSelect:
-                {
-                    foreach (var rowIndex in _selectedBandIndexes)
                     {
-                        var dataGridViewRow = Rows[rowIndex];
-                        foreach (DataGridViewCell dataGridViewCell in dataGridViewRow.Cells)
+                        foreach (var rowIndex in _selectedBandIndexes)
                         {
-                            stcc.Add(dataGridViewCell);
+                            var dataGridViewRow = Rows[rowIndex];
+                            var collection = dataGridViewRow?.Cells;
+                            if (collection != null)
+                            {
+                                foreach (DataGridViewCell dataGridViewCell in collection)
+                                {
+                                    stcc.Add(dataGridViewCell);
+                                }
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
             }
 
             return stcc;
@@ -410,7 +412,11 @@ public class DataGridView : ScrollableControl
                 case DataGridViewSelectionMode.RowHeaderSelect:
                     foreach (var rowIndex in _selectedBandIndexes)
                     {
-                        strc.Add(Rows[rowIndex]);
+                        var dataGridViewRow = Rows[rowIndex];
+                        if (dataGridViewRow != null)
+                        {
+                            strc.Add(dataGridViewRow);
+                        }
                     }
                     break;
             }
@@ -437,10 +443,15 @@ public class DataGridView : ScrollableControl
     {
         Gtk.Application.Invoke(delegate
         {
+            var dataGridViewRow = Rows[rowindex];
             if (selected)
-                GridView?.Selection.SelectIter(Rows[rowindex].TreeIter);
-            else
-                GridView?.Selection.UnselectIter(Rows[rowindex].TreeIter);
+            {
+                if (dataGridViewRow != null)
+                {
+                    GridView?.Selection.SelectIter(dataGridViewRow.TreeIter);
+                }
+            }
+            else if (dataGridViewRow != null) GridView?.Selection.UnselectIter(dataGridViewRow.TreeIter);
         });
     }
 
@@ -462,258 +473,4 @@ public class DataGridView : ScrollableControl
         if (CellPainting != null)
             CellPainting(sender, e);
     }
-#pragma warning disable CS0067 // Event is never used
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellValueEventHandler? CellValuePushed;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewColumnEventHandler? ColumnHeaderCellChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellValueEventHandler? CellValueNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewEditingControlShowingEventHandler? EditingControlShowing;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowContextMenuStripChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowUnshared;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowStateChangedEventHandler? RowStateChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowsRemovedEventHandler? RowsRemoved;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowsAddedEventHandler? RowsAdded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowPrePaintEventHandler? RowPrePaint;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowPostPaintEventHandler? RowPostPaint;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowMinimumHeightChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? RowLeave;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowHeightInfoPushedEventHandler? RowHeightInfoPushed;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowHeightInfoNeededEventHandler? RowHeightInfoNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? NewRowNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowHeightChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellMouseEventHandler? RowHeaderMouseDoubleClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellMouseEventHandler? RowHeaderMouseClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowErrorTextNeededEventHandler? RowErrorTextNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowErrorTextChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? RowEnter;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowDividerHeightChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowDividerDoubleClickEventHandler? RowDividerDoubleClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event QuestionEventHandler? RowDirtyStateNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowDefaultCellStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowContextMenuStripNeededEventHandler? RowContextMenuStripNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? RowHeaderCellChanged;
-
-    //[Obsolete("This event is not implemented and is developed by ourselves.")]
-    //public event DataGridViewCellEventHandler CellValueChanged;
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellValidatingEventHandler? CellValidating;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellValidated;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event QuestionEventHandler? CancelRowEdit;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewAutoSizeColumnModeEventHandler? AutoSizeColumnModeChanged;
-
-    //[Obsolete("This event is not implemented and is developed by ourselves.")]
-    //public event EventHandler TextChanged;
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? RowsDefaultCellStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewAutoSizeModeEventHandler? RowHeadersWidthSizeModeChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? RowHeadersWidthChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? RowHeadersDefaultCellStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? RowHeadersBorderStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? ReadOnlyChanged;
-
-    //[Obsolete("This event is not implemented and is developed by ourselves.")]
-    //public event EventHandler PaddingChanged;
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellCancelEventHandler? CellBeginEdit;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? MultiSelectChanged;
-
-    //[Obsolete("This event is not implemented and is developed by ourselves.")]
-    //public event EventHandler FontChanged;
-    //[Obsolete("This event is not implemented and is developed by ourselves.")]
-    //public event EventHandler ForeColorChanged;
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? EditModeChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? DefaultCellStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? DataSourceChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? DataMemberChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewAutoSizeModeEventHandler? ColumnHeadersHeightSizeModeChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? ColumnHeadersHeightChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? ColumnHeadersDefaultCellStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? ColumnHeadersBorderStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? GridColorChanged;
-
-    //[Obsolete("This event is not implemented and is developed by ourselves.")]
-    //public event DataGridViewCellEventHandler CellClick;
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellContentClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellContentDoubleClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellToolTipTextNeededEventHandler? CellToolTipTextNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellToolTipTextChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellStyleContentChangedEventHandler? CellStyleContentChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellStateChangedEventHandler? CellStateChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellParsingEventHandler? CellParsing;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellPaintingEventHandler? CellPainting;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellMouseEventHandler? CellMouseUp;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellMouseEventHandler? CellMouseMove;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellMouseLeave;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellMouseEnter;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellMouseEventHandler? CellMouseDown;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellMouseEventHandler? CellMouseDoubleClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellMouseEventHandler? CellMouseClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellLeave;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellFormattingEventHandler? CellFormatting;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellErrorTextNeededEventHandler? CellErrorTextNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellErrorTextChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellEnter;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellEndEdit;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellDoubleClick;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellContextMenuStripNeededEventHandler? CellContextMenuStripNeeded;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? CellContextMenuStripChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event EventHandler? BorderStyleChanged;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellEventHandler? RowValidated;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewCellCancelEventHandler? RowValidating;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowCancelEventHandler? UserDeletingRow;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? UserDeletedRow;
-
-    [Obsolete("This event is not implemented and is developed by ourselves.")]
-    public event DataGridViewRowEventHandler? UserAddedRow;
-
-    public event EventHandler<DataGridViewColumnEventArgs>? ColumnNameChanged;
 }

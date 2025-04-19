@@ -44,7 +44,7 @@ namespace GTKWinFormsApp
             button9 = new Button();
             button8 = new Button();
             button7 = new Button();
-            button6 = new Button();
+            buttonSaveFile = new Button();
             treeView1 = new TreeView();
             imageList1 = new ImageList(components);
             button5 = new Button();
@@ -56,7 +56,7 @@ namespace GTKWinFormsApp
             test13ToolStripMenuItem = new ToolStripMenuItem();
             panel1 = new Panel();
             button4 = new Button();
-            button3 = new Button();
+            buttonOpenFile = new Button();
             label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -87,11 +87,11 @@ namespace GTKWinFormsApp
             splitContainer1.Panel2.Controls.Add(button9);
             splitContainer1.Panel2.Controls.Add(button8);
             splitContainer1.Panel2.Controls.Add(button7);
-            splitContainer1.Panel2.Controls.Add(button6);
+            splitContainer1.Panel2.Controls.Add(buttonSaveFile);
             splitContainer1.Panel2.Controls.Add(treeView1);
             splitContainer1.Panel2.Controls.Add(button5);
             splitContainer1.Panel2.Controls.Add(panel1);
-            splitContainer1.Panel2.Controls.Add(button3);
+            splitContainer1.Panel2.Controls.Add(buttonOpenFile);
             
             splitContainer1.Size = new System.Drawing.Size(992, 441);
             splitContainer1.SplitterDistance = 265;
@@ -160,12 +160,12 @@ namespace GTKWinFormsApp
             // 
             // button6
             // 
-            button6.Location = new System.Drawing.Point(189, 85);
-            button6.Name = "button6";
-            button6.Size = new System.Drawing.Size(94, 29);
-            button6.TabIndex = 3;
-            button6.Text = "保存文件";
-            button6.UseVisualStyleBackColor = true;
+            buttonSaveFile.Location = new System.Drawing.Point(189, 85);
+            buttonSaveFile.Name = "buttonSaveFile";
+            buttonSaveFile.Size = new System.Drawing.Size(94, 29);
+            buttonSaveFile.TabIndex = 3;
+            buttonSaveFile.Text = "保存文件";
+            buttonSaveFile.UseVisualStyleBackColor = true;
             // 
             // treeView1
             // 
@@ -194,7 +194,7 @@ namespace GTKWinFormsApp
             // imageList1
             // 
             imageList1.ColorDepth = ColorDepth.Depth32Bit;
-            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.ImageStream = resources.GetObject<ImageListStreamer>("imageList1.ImageStream");
             imageList1.TransparentColor = System.Drawing.Color.Transparent;
             imageList1.Images.SetKeyName(0, "img10.jpg");
             imageList1.Images.SetKeyName(1, "img11.jpg");
@@ -269,12 +269,12 @@ namespace GTKWinFormsApp
             // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(63, 85);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(94, 29);
-            button3.TabIndex = 0;
-            button3.Text = "打开文件";
-            button3.UseVisualStyleBackColor = true;
+            buttonOpenFile.Location = new System.Drawing.Point(63, 85);
+            buttonOpenFile.Name = "buttonOpenFile";
+            buttonOpenFile.Size = new System.Drawing.Size(94, 29);
+            buttonOpenFile.TabIndex = 0;
+            buttonOpenFile.Text = "打开文件";
+            buttonOpenFile.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -316,10 +316,10 @@ namespace GTKWinFormsApp
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonOpenFile;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button buttonSaveFile;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;

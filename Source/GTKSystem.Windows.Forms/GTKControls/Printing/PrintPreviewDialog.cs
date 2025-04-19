@@ -3,22 +3,28 @@
 
 using Gtk;
 using System.ComponentModel;
-using System.Drawing;
 using System.Drawing.Printing;
 
 namespace System.Windows.Forms;
+
+using SdSize = Drawing.Size;
 
 [DesignTimeVisible(true)]
 //[DefaultProperty(nameof(Document))]
 [ToolboxItemFilter("System.Windows.Forms.Control.TopLevel")]
 [ToolboxItem(true)]
-public class PrintPreviewDialog : ScrollableControl
+public partial class PrintPreviewDialog : ScrollableControl
 {
-    public ViewportBase self = new();
+    public ViewportBase self;
     public override object GtkControl => self;
     private PrintPreviewControl? _previewControl;
     private Form? previewForm;
     private Box? box;
+
+    public PrintPreviewDialog()
+    {
+        self = new ViewportBase();
+    }
 
     private void Printbutton_ButtonPressEvent(object? o, ButtonPressEventArgs args)
     {
@@ -46,11 +52,11 @@ public class PrintPreviewDialog : ScrollableControl
         _previewControl.Document = Document;
         var formwidth = _previewControl.Width + 100;
         var formheight = _previewControl.Height + 100;
-        previewForm.ClientSize = new Size(formwidth, formheight);
+        previewForm.ClientSize = new SdSize(formwidth, formheight);
         box = new Box(Gtk.Orientation.Vertical, 15);
         var header = new Box(Gtk.Orientation.Horizontal, 20);
-        header.PackStart(new Gtk.Label("打印预览"), false, false, 0);
-        var printbutton = new Gtk.Button("打印") { WidthRequest = 200 };
+        header.PackStart(new Gtk.Label(Properties.Resources.PrintPreviewDialog_Init_Print_preview), false, false, 0);
+        var printbutton = new Gtk.Button(Properties.Resources.PrintPreviewDialog_Init_Print) { WidthRequest = 200 };
         printbutton.ButtonReleaseEvent += Printbutton_ButtonReleaseEvent;
         header.PackEnd(printbutton, false, false, 0);
         box.PackStart(header, false, true, 0);
@@ -99,7 +105,7 @@ public class PrintPreviewDialog : ScrollableControl
     public DialogResult ShowDialog(IWin32Window? owner)
     {
         Init();
-        return previewForm?.ShowDialog(owner)??DialogResult.None;
+        return previewForm?.ShowDialog(owner) ?? DialogResult.None;
     }
     public DialogResult ShowDialog()
     {
@@ -155,12 +161,6 @@ public class PrintPreviewDialog : ScrollableControl
     }
 
 
-#pragma warning disable CS0067 // Event is never used
-    public event EventHandler? MaximumSizeChanged;
-
-    public event EventHandler? MinimumSizeChanged;
-#pragma warning restore CS0067 // Event is never used
-
     public FormStartPosition StartPosition
     {
         get;
@@ -174,7 +174,7 @@ public class PrintPreviewDialog : ScrollableControl
 
     public bool UseAntiAlias
     {
-        get => PrintPreviewControl?.UseAntiAlias??false;
+        get => PrintPreviewControl?.UseAntiAlias ?? false;
         set
         {
             if (PrintPreviewControl != null)
@@ -197,5 +197,4 @@ public class PrintPreviewDialog : ScrollableControl
         get;
         set;
     }
-
 }

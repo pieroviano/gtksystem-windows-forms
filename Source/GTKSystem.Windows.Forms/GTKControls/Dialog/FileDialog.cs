@@ -2,20 +2,25 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
-using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Forms.Extensions;
 using Gtk;
 
 namespace System.Windows.Forms;
 
-public abstract class FileDialog : CommonDialog
+public abstract partial class FileDialog : CommonDialog
 {
 
     public bool ValidateNames { get; set; } = true;
 
-    public string? Title { get; set; } = string.Empty;
+    public string Title
+    {
+        get => title;
+        set => title = value ?? string.Empty;
+    }
 
     public bool SupportMultiDottedExtensions { get; set; }
 
@@ -23,21 +28,28 @@ public abstract class FileDialog : CommonDialog
 
     public bool RestoreDirectory { get; set; }
 
-    public string? InitialDirectory { get; set; }
-    public string? Description { get; set; }
+    public string InitialDirectory { get; set; } = string.Empty;
+
+    public string Description
+    {
+        get => description ?? string.Empty;
+        set => description = value;
+    }
+
     internal bool Multiselect { get; set; }
-    public int FilterIndex { get; set; }
+    public int FilterIndex { get; set; } = 1;
 
     private string? _filter;
-    private FileChooserDialog? _dialog;
+    protected FileChooserDialog? _dialog;
     private string defaultExt = string.Empty;
+    private string description = string.Empty;
+    private string fileName = string.Empty;
+    private string[] fileNames = [];
+    private string title = string.Empty;
 
     public string Filter
     {
-        get
-        {
-            return _filter ?? string.Empty;
-        }
+        get => _filter ?? string.Empty;
         set
         {
             if (value == _filter)
@@ -50,13 +62,13 @@ public abstract class FileDialog : CommonDialog
                 var pipeCount = filters.Length;
                 if (pipeCount == 1 || pipeCount % 2 == 1)
                 {
-                    throw new ArgumentException("FileDialog Invalid Filter", value);
+                    throw new ArgumentException(@"FileDialog Invalid Filter", value);
                 }
                 for (var i = 1; i < pipeCount; i += 2)
                 {
                     if (filters[i].Split('.').Length == 1)
                     {
-                        throw new ArgumentException("FileDialog Invalid Filter", value);
+                        throw new ArgumentException(@"FileDialog Invalid Filter", value);
                     }
                 }
             }
@@ -71,8 +83,22 @@ public abstract class FileDialog : CommonDialog
 
     public bool AutoUpgradeEnabled { get; set; }
     internal string? SelectedDirectory { get; set; }
-    public string? FileName { get; set; }
-    public string[]? FileNames { get; internal set; }
+
+    public string FileName
+    {
+        get => fileName;
+        set
+        {
+            fileName = value ?? string.Empty;
+            FileNames = [value ?? string.Empty];
+        }
+    }
+
+    public string[] FileNames
+    {
+        get => fileNames.ToArray(i => !string.IsNullOrEmpty(i));
+        internal set => fileNames = value;
+    }
 
     public bool DereferenceLinks { get; set; } = true;
 
@@ -86,8 +112,8 @@ public abstract class FileDialog : CommonDialog
 
     public virtual bool CheckFileExists { get; set; } = true;
 
-    public event CancelEventHandler? FileOk;
     internal FileChooserAction ActionType { get; set; }
+
     public new virtual void Dispose()
     {
         _dialog?.Dispose();
@@ -98,23 +124,24 @@ public abstract class FileDialog : CommonDialog
     public override void Reset()
     {
         AddExtension = true;
-        Title = null;
-        InitialDirectory = null;
-        FileName = null;
-        FileNames = null;
+        Title = string.Empty;
+        InitialDirectory = string.Empty;
+        FileName = string.Empty;
+        FileNames = [];
         _filter = null;
         FilterIndex = 1;
+        DefaultExt = string.Empty;
         SupportMultiDottedExtensions = false;
     }
 
-    public bool AddExtension { get; set; }
+    public bool AddExtension { get; set; } = true;
 
     protected override bool RunDialog(IWin32Window? owner)
     {
         _dialog = null;
         if (owner is Form ownerform)
         {
-            _dialog = new FileChooserDialog(System.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
+            _dialog = new FileChooserDialog(Properties.Resources.FileDialog_RunDialog_Select_File, ownerform.self, ActionType);
             _dialog.WindowPosition = WindowPosition.CenterOnParent;
         }
         else
@@ -123,8 +150,11 @@ public abstract class FileDialog : CommonDialog
             _dialog.WindowPosition = WindowPosition.Center;
         }
         _dialog.IconName = "document-open";
-        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_OK, ResponseType.Ok);
-        _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_Cancel, ResponseType.Cancel);
+        okButton = _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_OK, ResponseType.Ok);
+        ((Gtk.Button)okButton).Clicked += (_, _) => { OnOKClicked(EventArgs.Empty); };
+        cancelButton = _dialog.AddButton(Properties.Resources.FileDialog_RunDialog_Cancel, ResponseType.Cancel);
+        ((Gtk.Button)cancelButton).Clicked += (_, _) => { OnCancelClicked(EventArgs.Empty); };
+        _dialog.Shown += OnDialogOnShown;
         _dialog.SelectMultiple = Multiselect;
         _dialog.Title = Title ?? string.Empty;
         _dialog.TooltipText = Description ?? string.Empty;
@@ -160,15 +190,30 @@ public abstract class FileDialog : CommonDialog
                 }
             }
         }
-        var response = _dialog.Run();
+
+        var response = 0;
+        try
+        {
+            response = _dialog.Run();
+        }
+        catch (Exception e)
+        {
+            Trace.WriteLine(e);
+        }
         FileName = _dialog.Filename;
-        FileNames = _dialog.Filenames.Clone() as string[];
+        FileNames = _dialog.Filenames.Clone() as string[] ?? [];
         SelectedDirectory = _dialog.Filename;
         _dialog.Dispose();
         _dialog.Destroy();
         return response == -5;
     }
-    static readonly Dictionary<string, string> MimeMapping = new(StringComparer.OrdinalIgnoreCase);
+
+    private void OnDialogOnShown(object? sender, EventArgs e)
+    {
+        OnDialogOnShown(new CommonDialogEventArgs(this));
+    }
+
+    private static readonly Dictionary<string, string> MimeMapping = new(StringComparer.OrdinalIgnoreCase);
     static FileDialog()
     {
         MimeMapping.Clear();
@@ -515,5 +560,10 @@ public abstract class FileDialog : CommonDialog
         MimeMapping.Add(".xwd", "image/x-xwindowdump");
         MimeMapping.Add(".z", "application/x-compress");
         MimeMapping.Add(".zip", "application/x-zip-compressed");
+    }
+
+    public override string ToString()
+    {
+        return $"{$"System.Windows.Forms.OpenFileDialog: Title: {Title}, FileName: {FileName}"}";
     }
 }

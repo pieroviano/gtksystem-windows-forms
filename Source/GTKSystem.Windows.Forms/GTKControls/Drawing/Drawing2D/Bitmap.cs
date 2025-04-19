@@ -43,7 +43,7 @@ public sealed class Bitmap : Image
     ///   <paramref name="stream" /> does not contain image data or is <see langword="null" />.
     /// -or-
     /// <paramref name="stream" /> contains a PNG image file with a single dimension greater than 65,535 pixels.</exception>
-    public Bitmap(Stream? stream)
+    public Bitmap(Stream stream)
         : this(stream, useIcm: false)
     {
     }
@@ -56,7 +56,7 @@ public sealed class Bitmap : Image
     ///   <paramref name="stream" /> does not contain image data or is <see langword="null" />.
     /// -or-
     /// <paramref name="stream" /> contains a PNG image file with a single dimension greater than 65,535 pixels.</exception>
-    public Bitmap(Stream? stream, bool useIcm)
+    public Bitmap(Stream stream, bool useIcm)
     {
         stream.Position = 0;
         var binaryReader = new BinaryReader(stream);
@@ -67,7 +67,7 @@ public sealed class Bitmap : Image
     /// <param name="type">The class used to extract the resource.</param>
     /// <param name="resource">The name of the resource.</param>
     public Bitmap(Type type, string resource)
-        : this(GetResourceStream(type, resource))
+        : this(GetResourceStream(type, resource)??throw new InvalidOperationException("Resource stream is null."))
     {
     }
 
@@ -127,7 +127,7 @@ public sealed class Bitmap : Image
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified existing image.</summary>
     /// <param name="original">The <see cref="T:System.Drawing.Image" /> from which to create the new <see cref="T:System.Drawing.Bitmap" />.</param>
-    public Bitmap(Image? original)
+    public Bitmap(Image original)
         : this(original, original.Width, original.Height)
     {
     }
@@ -136,7 +136,7 @@ public sealed class Bitmap : Image
     /// <param name="original">The <see cref="T:System.Drawing.Image" /> from which to create the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <param name="newSize">The <see cref="T:System.Drawing.Size" /> structure that represent the size of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <exception cref="T:System.Exception">The operation failed.</exception>
-    public Bitmap(Image? original, Size newSize)
+    public Bitmap(Image original, Size newSize)
         : this(original, newSize.Width, newSize.Height)
     {
     }
@@ -146,7 +146,7 @@ public sealed class Bitmap : Image
     /// <param name="width">The width, in pixels, of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <param name="height">The height, in pixels, of the new <see cref="T:System.Drawing.Bitmap" />.</param>
     /// <exception cref="T:System.Exception">The operation failed.</exception>
-    public Bitmap(Image? original, int width, int height)
+    public Bitmap(Image original, int width, int height)
         : this(width, height, PixelFormat.Format32BppArgb)
     {
         PixbufData = original.PixbufData;
@@ -340,6 +340,6 @@ public sealed class Bitmap : Image
     public Bitmap Clone(Rectangle rect, PixelFormat format)
     {
 
-        return new Bitmap(rect.Width, rect.Height, format) { PixbufData = (byte[])PixbufData.Clone() };
+        return new Bitmap(rect.Width, rect.Height, format) { PixbufData = (byte[])(PixbufData?.Clone()?? throw new InvalidOperationException("PixbufData is null")) };
     }
 }

@@ -10,6 +10,7 @@ public sealed class PanelBase: ScrollableBoxBase
         ShadowType = Gtk.ShadowType.None;
         BorderWidth = 0;
     }
+
     protected override bool OnDrawn(Context? cr)
     {
         var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);

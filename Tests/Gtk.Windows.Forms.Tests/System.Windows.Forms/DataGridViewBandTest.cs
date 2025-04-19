@@ -23,6 +23,8 @@
 //	Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 
+using GtkTests.Helpers;
+
 namespace GtkTests.System.Windows.Forms;
 
 [TestFixture]

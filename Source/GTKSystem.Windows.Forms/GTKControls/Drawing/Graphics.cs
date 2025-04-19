@@ -119,7 +119,17 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
     public TextRenderingHint TextRenderingHint => throw new NotImplementedException();
 
-    public Matrix Transform => throw new NotImplementedException();
+    public Matrix Transform
+    {
+        get
+        {
+            if (_disposed)
+            {
+                throw new ArgumentException();
+            }
+            return transform;
+        }
+    }
 
     public RectangleF VisibleClipBounds => new(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 
@@ -242,6 +252,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
     public void Dispose()
     {
+        _disposed = true;
     }
     private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
     {
@@ -946,12 +957,12 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                         while (text?.Length > 0 && context.TextExtents(text).Width > str.LayoutRect.Width)
                             text = text.Substring(0, text.Length - 1);
                     }
-                    float textSize = str.EmSize < 1 ? 14f : str.EmSize;
+                    var textSize = str.EmSize < 1 ? 14f : str.EmSize;
                     var font = str.Family;
                     var family = font?.Name;
                     if (widget != null && family != null)
                     {
-                        Pango.Context pangocontext = widget.PangoContext;
+                        var pangocontext = widget.PangoContext;
                         var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font?.Name);
                         if (pangoFamily == null)
                             family = pangocontext.FontDescription.Family;
@@ -1160,7 +1171,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                 {
                     context.Save();
                     var family = font?.Name;
-                    float textSize = 14f;
+                    var textSize = 14f;
                     if (font != null)
                     {
                         textSize = font.Size;
@@ -1171,7 +1182,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
                         if (widget != null && family != null)
                         {
-                            Pango.Context pangocontext = widget.PangoContext;
+                            var pangocontext = widget.PangoContext;
                             var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                             if (pangoFamily == null)
                                 family = pangocontext.FontDescription.Family;
@@ -1182,7 +1193,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                     context.SelectFontFace(family,
                         font != null && font.Style.HasFlag(FontStyle.Italic) ? FontSlant.Italic : FontSlant.Normal,
                         font != null && font.Style.HasFlag(FontStyle.Bold) ? FontWeight.Bold : FontWeight.Normal);
-                    TextExtents textext = context.TextExtents(text);
+                    var textext = context.TextExtents(text);
                     SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textext.Height);
                     SetSourceColor(new Pen(brush, 1));
                     context.ShowText(text);
@@ -1519,13 +1530,20 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     private static ImageSurface? imagesurface;
     private static Surface? simisurface;
     private static Context? imagecontext;
-    /// <summary>
-    /// 使用此方法必须要执行Flush()方法输出Image
-    /// </summary>
-    /// <param name="image"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static Graphics? FromImage(Image? image)
+
+    /// <summary>Creates a new <see cref="T:System.Drawing.Graphics" /> from the specified <see cref="T:System.Drawing.Image" />.</summary>
+    /// <returns>This method returns a new <see cref="T:System.Drawing.Graphics" /> for the specified <see cref="T:System.Drawing.Image" />.</returns>
+    /// <param name="image">
+    ///   <see cref="T:System.Drawing.Image" /> from which to create the new <see cref="T:System.Drawing.Graphics" />. </param>
+    /// <exception cref="T:System.ArgumentNullException">
+    ///   <paramref name="image" /> is null.</exception>
+    /// <exception cref="T:System.Exception">
+    ///   <paramref name="image" /> has an indexed pixel format or its format is undefined.</exception>
+    /// <filterpriority>1</filterpriority>
+    /// <PermissionSet>
+    ///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+    /// </PermissionSet>
+    public static Graphics FromImage(Image image)
     {
         var _width = image.Width;
         var _height = image.Height;
@@ -1549,7 +1567,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
             return new Graphics(widgetValue, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
         }
 
-        return null;
+        throw new InvalidOperationException();
     }
 
     public void Flush()
@@ -1676,7 +1694,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
 		public SizeF MeasureString(string text, Font font, int width, StringFormat format)
         {
-            float textSize = 14f;
+            var textSize = 14f;
             var family = font?.Name;
 			if (font != null)
 			{
@@ -1688,7 +1706,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
 				if (widget != null && family != null)
 				{
-					Pango.Context pangocontext = widget.PangoContext;
+					var pangocontext = widget.PangoContext;
 					var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
 					if (pangoFamily == null)
 						family = pangocontext.FontDescription.Family;
@@ -1747,6 +1765,8 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     }
     private float _angle;
     private readonly Widget? widget;
+    private readonly Matrix transform = new ();
+    private bool _disposed;
 
     public void RotateTransform(float angle)
     {

@@ -26,6 +26,7 @@
 //	Gert Driesen (drieseng@user.sourceforge.net)
 //
 
+using GtkTests.Helpers;
 using System.Text;
 using System.Windows.Forms;
 
@@ -35,212 +36,233 @@ namespace GtkTests.System.Windows.Forms;
 public class SaveFileDialogTest : TestHelper
 {
     [Test]
-    public void AddExtension ()
+    public void AddExtension()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsTrue (sfd.AddExtension, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.IsTrue(sfd.AddExtension);
         sfd.AddExtension = false;
-        Assert.IsFalse (sfd.AddExtension, "#2");
+        Assert.IsFalse(sfd.AddExtension);
     }
 
     [Test]
-    public void CheckFileExists ()
+    public void CheckFileExists()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsFalse (sfd.CheckFileExists, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.IsFalse(sfd.CheckFileExists);
         sfd.CheckFileExists = true;
-        Assert.IsTrue (sfd.CheckFileExists, "#2");
+        Assert.IsTrue(sfd.CheckFileExists);
     }
 
     [Test]
-    public void CheckPathExists ()
+    public void CheckPathExists()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsTrue (sfd.CheckPathExists, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.IsTrue(sfd.CheckPathExists);
         sfd.CheckPathExists = false;
-        Assert.IsFalse (sfd.CheckPathExists, "#2");
+        Assert.IsFalse(sfd.CheckPathExists);
     }
 
     [Test]
-    public void DefaultExt ()
+    public void DefaultExt()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsNotNull (sfd.DefaultExt, "#A1");
-        Assert.AreEqual (string.Empty, sfd.DefaultExt, "#A2");
+        var sfd = new SaveFileDialog();
+        Assert.IsNotNull(sfd.DefaultExt);
+        object expected = string.Empty;
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo(expected));
 
         sfd.DefaultExt = "txt";
-        Assert.IsNotNull (sfd.DefaultExt, "#B1");
-        Assert.AreEqual ("txt", sfd.DefaultExt, "#B2");
+        Assert.IsNotNull(sfd.DefaultExt);
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo("txt"));
 
-        sfd.DefaultExt = null;
-        Assert.IsNotNull (sfd.DefaultExt, "#C1");
-        Assert.AreEqual (string.Empty, sfd.DefaultExt, "#C2");
+        sfd.DefaultExt = null!;
+        Assert.IsNotNull(sfd.DefaultExt);
+        object expected1 = string.Empty;
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo(expected1));
 
         sfd.DefaultExt = ".Xml";
-        Assert.IsNotNull (sfd.DefaultExt, "#D1");
-        Assert.AreEqual ("Xml", sfd.DefaultExt, "#D2");
+        Assert.IsNotNull(sfd.DefaultExt);
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo("Xml"));
 
         sfd.DefaultExt = ".tar.gz";
-        Assert.IsNotNull (sfd.DefaultExt, "#E1");
-        Assert.AreEqual ("tar.gz", sfd.DefaultExt, "#E2");
+        Assert.IsNotNull(sfd.DefaultExt);
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo("tar.gz"));
 
         sfd.DefaultExt = "..Xml";
-        Assert.IsNotNull (sfd.DefaultExt, "#F1");
-        Assert.AreEqual (".Xml", sfd.DefaultExt, "#F2");
+        Assert.IsNotNull(sfd.DefaultExt);
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo(".Xml"));
 
         sfd.DefaultExt = "tar.gz";
-        Assert.IsNotNull (sfd.DefaultExt, "#G1");
-        Assert.AreEqual ("tar.gz", sfd.DefaultExt, "#G2");
+        Assert.IsNotNull(sfd.DefaultExt);
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo("tar.gz"));
 
         sfd.DefaultExt = ".";
-        Assert.IsNotNull (sfd.DefaultExt, "#H1");
-        Assert.AreEqual (string.Empty, sfd.DefaultExt, "#H2");
+        Assert.IsNotNull(sfd.DefaultExt);
+        object expected2 = string.Empty;
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo(expected2));
     }
 
     [Test]
-    public void DereferenceLinks ()
+    public void DereferenceLinks()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsTrue (sfd.DereferenceLinks, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.IsTrue(sfd.DereferenceLinks);
         sfd.DereferenceLinks = false;
-        Assert.IsFalse (sfd.DereferenceLinks, "#2");
+        Assert.IsFalse(sfd.DereferenceLinks);
     }
 
     [Test]
-    public void FileName ()
+    public void FileName()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsNotNull (sfd.FileName, "#A1");
-        Assert.AreEqual (string.Empty, sfd.FileName, "#A2");
+        var sfd = new SaveFileDialog();
+        Assert.IsNotNull(sfd.FileName);
+        object expected = string.Empty;
+        Assert.That((object?)sfd.FileName, Is.EqualTo(expected));
 
         sfd.FileName = "default.build";
-        Assert.IsNotNull (sfd.FileName, "#B1");
-        Assert.AreEqual ("default.build", sfd.FileName, "#B2");
+        Assert.IsNotNull(sfd.FileName);
+        Assert.That((object?)sfd.FileName, Is.EqualTo("default.build"));
 
-        sfd.FileName = null;
-        Assert.IsNotNull (sfd.FileName, "#C1");
-        Assert.AreEqual (string.Empty, sfd.FileName, "#C2");
+        sfd.FileName = null!;
+        Assert.IsNotNull(sfd.FileName);
+        object expected1 = string.Empty;
+        Assert.That((object?)sfd.FileName, Is.EqualTo(expected1));
 
         sfd.FileName = string.Empty;
-        Assert.IsNotNull (sfd.FileName, "#D1");
-        Assert.AreEqual (string.Empty, sfd.FileName, "#D2");
+        Assert.IsNotNull(sfd.FileName);
+        object expected2 = string.Empty;
+        Assert.That((object?)sfd.FileName, Is.EqualTo(expected2));
     }
 
     [Test]
-    public void FileName_InvalidPathCharacter ()
+    public void FileName_InvalidPathCharacter()
     {
-        var sfd = new SaveFileDialog ();
-        sfd.FileName = Path.InvalidPathChars [0] + "file";
-        Assert.IsNotNull (sfd.FileName, "#1");
-        Assert.AreEqual (Path.InvalidPathChars [0] + "file", sfd.FileName, "#2");
+        var sfd = new SaveFileDialog();
+        sfd.FileName = Path.InvalidPathChars[0] + "file";
+        Assert.IsNotNull(sfd.FileName);
+        object expected = Path.InvalidPathChars[0] + "file";
+        Assert.That((object?)sfd.FileName, Is.EqualTo(expected));
     }
 
     [Test]
-    public void FileNames ()
+    public void FileNames()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsNotNull (sfd.FileNames, "#A1");
-        Assert.AreEqual (0, sfd.FileNames.Length, "#A2");
+        var sfd = new SaveFileDialog();
+        Assert.IsNotNull(sfd.FileNames);
+        Assert.That((object?)sfd.FileNames.Length, Is.EqualTo(0));
 
         sfd.FileName = "default.build";
-        Assert.IsNotNull (sfd.FileNames, "#B1");
-        Assert.AreEqual (1, sfd.FileNames.Length, "#B2");
-        Assert.AreEqual ("default.build", sfd.FileNames [0], "#B3");
+        Assert.IsNotNull(sfd.FileNames);
+        Assert.That((object?)sfd.FileNames.Length, Is.EqualTo(1));
+        Assert.That((object?)sfd.FileNames[0], Is.EqualTo("default.build"));
 
-        sfd.FileName = null;
-        Assert.IsNotNull (sfd.FileNames, "#C1");
-        Assert.AreEqual (0, sfd.FileNames.Length, "#C2");
+        sfd.FileName = null!;
+        Assert.IsNotNull(sfd.FileNames);
+        Assert.That((object?)sfd.FileNames.Length, Is.EqualTo(0));
     }
 
     [Test]
-    public void FileNames_InvalidPathCharacter ()
+    public void FileNames_InvalidPathCharacter()
     {
-        var sfd = new SaveFileDialog ();
-        sfd.FileName = Path.InvalidPathChars [0] + "file";
-        Assert.IsNotNull (sfd.FileNames, "#1");
-        Assert.AreEqual (1, sfd.FileNames.Length, "#2");
-        Assert.AreEqual (Path.InvalidPathChars [0] + "file", sfd.FileNames [0], "#3");
+        var sfd = new SaveFileDialog();
+        sfd.FileName = Path.InvalidPathChars[0] + "file";
+        Assert.IsNotNull(sfd.FileNames);
+        Assert.That((object?)sfd.FileNames.Length, Is.EqualTo(1));
+        object expected = Path.InvalidPathChars[0] + "file";
+        Assert.That((object?)sfd.FileNames[0], Is.EqualTo(expected));
     }
 
     [Test]
-    public void Filter ()
+    public void Filter()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsNotNull (sfd.Filter, "#A1");
-        Assert.AreEqual (string.Empty, sfd.Filter, "#A2");
+        var sfd = new SaveFileDialog();
+        Assert.IsNotNull(sfd.Filter);
+        object expected = string.Empty;
+        Assert.That((object?)sfd.Filter, Is.EqualTo(expected));
 
         sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-        Assert.IsNotNull (sfd.Filter, "#B1");
-        Assert.AreEqual ("Text files (*.txt)|*.txt|All files (*.*)|*.*", sfd.Filter, "#B2");
+        Assert.IsNotNull(sfd.Filter);
+        Assert.That((object?)sfd.Filter, Is.EqualTo("Text files (*.txt)|*.txt|All files (*.*)|*.*"));
 
-        sfd.Filter = null;
-        Assert.IsNotNull (sfd.Filter, "#C1");
-        Assert.AreEqual (string.Empty, sfd.Filter, "#C2");
+        sfd.Filter = null!;
+        Assert.IsNotNull(sfd.Filter);
+        object expected1 = string.Empty;
+        Assert.That((object?)sfd.Filter, Is.EqualTo(expected1));
 
         sfd.Filter = string.Empty;
-        Assert.IsNotNull (sfd.Filter, "#D1");
-        Assert.AreEqual (string.Empty, sfd.Filter, "#D2");
+        Assert.IsNotNull(sfd.Filter);
+        object expected2 = string.Empty;
+        Assert.That((object?)sfd.Filter, Is.EqualTo(expected2));
     }
 
     [Test]
-    public void Filter_InvalidFormat ()
+    public void Filter_InvalidFormat()
     {
-        var sfd = new SaveFileDialog ();
-        try {
-            sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)";
-            Assert.Fail ("#1");
-        } catch (ArgumentException ex) {
-            // The provided filter string is invalid. The filter string
-            // should contain a description of the filter, followed by the
-            // vertical bar (|) and the filter pattern. The strings for
-            // different filtering options should also be separated by the
-            // vertical bar. Example: "Text files (*.txt)|*.txt|All files
-            // (*.*)|*.*"
-            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
-            Assert.IsNull (ex.InnerException, "#3");
-            Assert.IsNotNull (ex.Message, "#4");
-            Assert.IsNull (ex.ParamName, "#5");
-        }
+        Assert.Throws<ArgumentException>(() =>
+        {
+            var sfd = new SaveFileDialog();
+            try
+            {
+                sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)";
+            }
+            catch (ArgumentException ex)
+            {
+                // The provided filter string is invalid. The filter string
+                // should contain a description of the filter, followed by the
+                // vertical bar (|) and the filter pattern. The strings for
+                // different filtering options should also be separated by the
+                // vertical bar. Example: "Text files (*.txt)|*.txt|All files
+                // (*.*)|*.*"
+                object expected = typeof(ArgumentException);
+                Assert.That((object?)ex.GetType(), Is.EqualTo(expected));
+                Assert.IsNull(ex.InnerException);
+                Assert.IsNotNull(ex.Message);
+                Assert.IsNull(ex.ParamName);
+                throw;
+            }
+        });
     }
 
     [Test]
-    public void FilterIndex ()
+    public void FilterIndex()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.AreEqual (1, sfd.FilterIndex, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.That((object?)sfd.FilterIndex, Is.EqualTo(1));
         sfd.FilterIndex = 99;
-        Assert.AreEqual (99, sfd.FilterIndex, "#2");
+        Assert.That((object?)sfd.FilterIndex, Is.EqualTo(99));
         sfd.FilterIndex = -5;
-        Assert.AreEqual (-5, sfd.FilterIndex, "#3");
+        Assert.That((object?)sfd.FilterIndex, Is.EqualTo(-5));
     }
 
     [Test]
-    public void InitialDirectory ()
+    public void InitialDirectory()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsNotNull (sfd.InitialDirectory, "#A1");
-        Assert.AreEqual (string.Empty, sfd.InitialDirectory, "#A2");
+        var sfd = new SaveFileDialog();
+        Assert.IsNotNull(sfd.InitialDirectory);
+        object expected = string.Empty;
+        Assert.That((object?)sfd.InitialDirectory, Is.EqualTo(expected));
 
-        sfd.InitialDirectory = Path.GetTempPath ();
-        Assert.IsNotNull (sfd.InitialDirectory, "#B1");
-        Assert.AreEqual (Path.GetTempPath (), sfd.InitialDirectory, "#B2");
+        sfd.InitialDirectory = Path.GetTempPath();
+        Assert.IsNotNull(sfd.InitialDirectory);
+        object expected1 = Path.GetTempPath();
+        Assert.That((object?)sfd.InitialDirectory, Is.EqualTo(expected1));
 
-        sfd.InitialDirectory = null;
-        Assert.IsNotNull (sfd.InitialDirectory, "#C1");
-        Assert.AreEqual (string.Empty, sfd.InitialDirectory, "#C2");
+        sfd.InitialDirectory = null!;
+        Assert.IsNotNull(sfd.InitialDirectory);
+        object expected2 = string.Empty;
+        Assert.That((object?)sfd.InitialDirectory, Is.EqualTo(expected2));
 
-        var initialDir = Path.Combine (Path.GetTempPath (), 
+        var initialDir = Path.Combine(Path.GetTempPath(),
             "doesnotexistforsure");
         sfd.InitialDirectory = initialDir;
-        Assert.IsNotNull (sfd.InitialDirectory, "#D1");
-        Assert.AreEqual (initialDir, sfd.InitialDirectory, "#D2");
+        Assert.IsNotNull(sfd.InitialDirectory);
+        Assert.That((object?)sfd.InitialDirectory, Is.EqualTo(initialDir));
 
     }
 
     [Test]
-    public void Reset ()
+    public void Reset()
     {
-        var sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog();
         sfd.AddExtension = false;
         sfd.CheckFileExists = true;
         sfd.CheckPathExists = false;
@@ -249,113 +271,120 @@ public class SaveFileDialogTest : TestHelper
         sfd.FileName = "default.build";
         sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
         sfd.FilterIndex = 5;
-        sfd.InitialDirectory = Path.GetTempPath ();
+        sfd.InitialDirectory = Path.GetTempPath();
         sfd.RestoreDirectory = true;
         sfd.ShowHelp = true;
         sfd.Title = "Saving";
         sfd.ValidateNames = false;
-        sfd.Reset ();
+        sfd.Reset();
 
-        Assert.IsTrue (sfd.AddExtension, "#1");
-        Assert.IsFalse (sfd.CheckFileExists, "#2");
-        Assert.IsTrue (sfd.CheckPathExists, "#3");
-        Assert.IsNotNull (sfd.DefaultExt, "#5");
-        Assert.AreEqual (string.Empty, sfd.DefaultExt, "#6");
-        Assert.IsTrue (sfd.DereferenceLinks, "#7");
-        Assert.IsNotNull (sfd.FileName, "#8");
-        Assert.AreEqual (string.Empty, sfd.FileName, "#9");
-        Assert.IsNotNull (sfd.FileNames, "#10");
-        Assert.AreEqual (0, sfd.FileNames.Length, "#11");
-        Assert.IsNotNull (sfd.Filter, "#12");
-        Assert.AreEqual (string.Empty, sfd.Filter, "#13");
-        Assert.AreEqual (1, sfd.FilterIndex, "#14");
-        Assert.IsNotNull (sfd.InitialDirectory, "#15");
-        Assert.AreEqual (string.Empty, sfd.InitialDirectory, "#16");
-        Assert.IsFalse (sfd.RestoreDirectory, "#18");
-        Assert.IsFalse (sfd.ShowHelp, "#19");
-        Assert.IsNotNull (sfd.Title, "#20");
-        Assert.AreEqual (string.Empty, sfd.Title, "#21");
-        Assert.IsTrue (sfd.ValidateNames, "#22");
+        Assert.IsTrue(sfd.AddExtension);
+        Assert.IsFalse(sfd.CheckFileExists);
+        Assert.IsTrue(sfd.CheckPathExists);
+        Assert.IsNotNull(sfd.DefaultExt);
+        object expected = string.Empty;
+        Assert.That((object?)sfd.DefaultExt, Is.EqualTo(expected));
+        Assert.IsTrue(sfd.DereferenceLinks);
+        Assert.IsNotNull(sfd.FileName);
+        object expected1 = string.Empty;
+        Assert.That((object?)sfd.FileName, Is.EqualTo(expected1));
+        Assert.IsNotNull(sfd.FileNames);
+        Assert.That((object?)sfd.FileNames.Length, Is.EqualTo(0));
+        Assert.IsNotNull(sfd.Filter);
+        object expected2 = string.Empty;
+        Assert.That((object?)sfd.Filter, Is.EqualTo(expected2));
+        Assert.That((object?)sfd.FilterIndex, Is.EqualTo(1));
+        Assert.IsNotNull(sfd.InitialDirectory);
+        object expected3 = string.Empty;
+        Assert.That((object?)sfd.InitialDirectory, Is.EqualTo(expected3));
+        Assert.IsFalse(sfd.RestoreDirectory);
+        Assert.IsFalse(sfd.ShowHelp);
+        Assert.IsNotNull(sfd.Title);
+        object expected4 = string.Empty;
+        Assert.That((object?)sfd.Title, Is.EqualTo(expected4));
+        Assert.IsTrue(sfd.ValidateNames);
     }
 
     [Test]
-    public void RestoreDirectory ()
+    public void RestoreDirectory()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsFalse (sfd.RestoreDirectory, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.IsFalse(sfd.RestoreDirectory);
         sfd.RestoreDirectory = true;
-        Assert.IsTrue (sfd.RestoreDirectory, "#2");
+        Assert.IsTrue(sfd.RestoreDirectory);
     }
 
     [Test]
-    public void ShowHelp ()
+    public void ShowHelp()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsFalse (sfd.ShowHelp, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.IsFalse(sfd.ShowHelp);
         sfd.ShowHelp = true;
-        Assert.IsTrue (sfd.ShowHelp, "#2");
+        Assert.IsTrue(sfd.ShowHelp);
     }
 
     [Test]
-    public void Title ()
+    public void Title()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsNotNull (sfd.Title, "#A1");
-        Assert.AreEqual (string.Empty, sfd.Title, "#A2");
+        var sfd = new SaveFileDialog();
+        Assert.IsNotNull(sfd.Title);
+        object expected = string.Empty;
+        Assert.That((object?)sfd.Title, Is.EqualTo(expected));
 
         sfd.Title = "Saving";
-        Assert.IsNotNull (sfd.Title, "#B1");
-        Assert.AreEqual ("Saving", sfd.Title, "#B2");
+        Assert.IsNotNull(sfd.Title);
+        Assert.That((object?)sfd.Title, Is.EqualTo("Saving"));
 
-        sfd.Title = null;
-        Assert.IsNotNull (sfd.Title, "#C1");
-        Assert.AreEqual (string.Empty, sfd.Title, "#C2");
+        sfd.Title = null!;
+        Assert.IsNotNull(sfd.Title);
+        object expected1 = string.Empty;
+        Assert.That((object?)sfd.Title, Is.EqualTo(expected1));
     }
 
     [Test]
-    public void ToStringTest ()
+    public void ToStringTest()
     {
-        var sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog();
         sfd.CheckFileExists = true;
         sfd.DefaultExt = "txt";
         sfd.DereferenceLinks = false;
         sfd.FileName = "default.build";
         sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
         sfd.FilterIndex = 5;
-        sfd.InitialDirectory = Path.GetTempPath ();
+        sfd.InitialDirectory = Path.GetTempPath();
         sfd.RestoreDirectory = true;
         sfd.ShowHelp = true;
         sfd.Title = "Saving";
         sfd.ValidateNames = false;
 
-        var sb = new StringBuilder ();
-        sb.Append (typeof (SaveFileDialog).FullName);
-        sb.Append (": Title: ");
-        sb.Append (sfd.Title);
-        sb.Append (", FileName: ");
-        sb.Append (sfd.FileName);
+        var sb = new StringBuilder();
+        sb.Append(typeof(SaveFileDialog).FullName);
+        sb.Append(": Title: ");
+        sb.Append(sfd.Title);
+        sb.Append(", FileName: ");
+        sb.Append(sfd.FileName);
 
-        Assert.AreEqual (sb.ToString (), sfd.ToString (), "#1");
+        Assert.That((object?)sfd.ToString(), Is.EqualTo(sb.ToString()));
 
-        sfd.FileName = null;
-        sfd.Title = null;
+        sfd.FileName = null!;
+        sfd.Title = null!;
 
         sb.Length = 0;
-        sb.Append (typeof (SaveFileDialog).FullName);
-        sb.Append (": Title: ");
-        sb.Append (sfd.Title);
-        sb.Append (", FileName: ");
-        sb.Append (sfd.FileName);
+        sb.Append(typeof(SaveFileDialog).FullName);
+        sb.Append(": Title: ");
+        sb.Append(sfd.Title);
+        sb.Append(", FileName: ");
+        sb.Append(sfd.FileName);
 
-        Assert.AreEqual (sb.ToString (), sfd.ToString (), "#2");
+        Assert.That((object?)sfd.ToString(), Is.EqualTo(sb.ToString()));
     }
 
     [Test]
-    public void ValidateNames ()
+    public void ValidateNames()
     {
-        var sfd = new SaveFileDialog ();
-        Assert.IsTrue (sfd.ValidateNames, "#1");
+        var sfd = new SaveFileDialog();
+        Assert.IsTrue(sfd.ValidateNames);
         sfd.ValidateNames = false;
-        Assert.IsFalse (sfd.ValidateNames, "#2");
+        Assert.IsFalse(sfd.ValidateNames);
     }
 }

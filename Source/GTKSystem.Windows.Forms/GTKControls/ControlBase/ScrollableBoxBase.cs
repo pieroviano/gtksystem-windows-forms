@@ -3,10 +3,10 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
-public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollableBoxBase
+public abstract partial class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollableBoxBase
 {
-    public event ScrollEventHandler? Scroll;
     public IGtkControlOverride Override { get; set; }
+    
     public ScrollableBoxBase()
     {
         Override = new GtkFormsControlOverride(this);
@@ -33,9 +33,9 @@ public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollab
         }
     }
 
-    protected virtual void OnScroll(ScrollEventArgs e)
+    void IScrollableBoxBase.OnScroll(ScrollEventArgs e)
     {
-        Scroll?.Invoke(this, e);
+        OnScroll(e);
     }
 
     private void Hadjustment_ValueChanged(object? sender, EventArgs e)
@@ -51,8 +51,11 @@ public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollab
     {
         Override.AddClass(cssClass);
     }
+    
     public bool VScroll { get; set; } = true;
+    
     public bool HScroll { get; set; } = true;
+    
     public virtual bool AutoScroll
     {
         get => VscrollbarPolicy == PolicyType.Automatic;
@@ -72,15 +75,18 @@ public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollab
             }
         }
     }
+    
     protected override void OnShown()
     {
         Override.OnAddClass();
         base.OnShown();
     }
+    
     protected virtual Gdk.Rectangle GetDrawRectangle()
     {
         return new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
     }
+    
     protected override bool OnDrawn(Context? cr)
     {
         var rec = GetDrawRectangle();

@@ -8,8 +8,9 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Globalization;
-using Thread=System.Threading.Thread;
+using Thread = System.Threading.Thread;
 using System.Reflection;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -17,223 +18,197 @@ namespace GtkTests.System.Windows.Forms;
 public class MaskedTextBoxTest : TestHelper
 {
     [SetUp]
-    protected override void SetUp () {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo ("en-US");
-        base.SetUp ();
+    protected override void SetUp()
+    {
+        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        base.SetUp();
     }
 
     [Test]
-    public void InitialProperties ()
+    public void InitialProperties()
     {
-        var mtb = new MaskedTextBox ();
-        Assert.AreEqual (0, mtb.Lines.Length, "#L1");
-        Assert.AreEqual ("", mtb.Mask, "#M1");
-        Assert.AreEqual (false, mtb.Multiline, "#M6");
-        Assert.AreEqual ('\0', mtb.PasswordChar, "#P1");
-        Assert.AreEqual (false, mtb.ReadOnly, "#R1");
-        Assert.AreEqual (MaskFormat.IncludeLiterals, mtb.TextMaskFormat, "#T4");
-        Assert.IsNull (mtb.ValidatingType, "#V1");
-			
-        mtb.Dispose ();
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.Lines.Length, Is.EqualTo(0));
+        Assert.That((object?)mtb.Mask, Is.EqualTo(string.Empty));
+        Assert.That((object?)mtb.Multiline, Is.EqualTo(false));
+        Assert.That((object?)mtb.PasswordChar, Is.EqualTo('\0'));
+        Assert.That((object?)mtb.ReadOnly, Is.EqualTo(false));
+        Assert.That((object?)mtb.TextMaskFormat, Is.EqualTo(MaskFormat.IncludeLiterals));
+        Assert.IsNull(mtb.ValidatingType);
+
+        mtb.Dispose();
     }
-		
+
     [Test]
-    public void ValidatingTypeTest ()
+    public void ValidatingTypeTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.IsNull (mtb.ValidatingType, "#V1");
+        var mtb = new MaskedTextBox();
+        Assert.IsNull(mtb.ValidatingType);
         mtb.ValidatingType = typeof(int);
-        Assert.IsNotNull (mtb.ValidatingType, "#V2");
-        Assert.AreSame (typeof(int), mtb.ValidatingType, "#V3");
-        mtb.Dispose ();
+        Assert.IsNotNull(mtb.ValidatingType);
+        object expected = typeof(int);
+        Assert.That((object?)mtb.ValidatingType, Is.SameAs(expected));
+        mtb.Dispose();
     }
-		
+
     [Test]
-    public void TextMaskFormatTest ()
+    public void TextMaskFormatTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.AreEqual (MaskFormat.IncludeLiterals, mtb.TextMaskFormat, "#T1");
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.TextMaskFormat, Is.EqualTo(MaskFormat.IncludeLiterals));
         mtb.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-        Assert.AreEqual (MaskFormat.ExcludePromptAndLiterals, mtb.TextMaskFormat, "#T2");
+        Assert.That((object?)mtb.TextMaskFormat, Is.EqualTo(MaskFormat.ExcludePromptAndLiterals));
         mtb.TextMaskFormat = MaskFormat.IncludePromptAndLiterals;
-        Assert.AreEqual (MaskFormat.IncludePromptAndLiterals, mtb.TextMaskFormat, "#T3");
+        Assert.That((object?)mtb.TextMaskFormat, Is.EqualTo(MaskFormat.IncludePromptAndLiterals));
         mtb.TextMaskFormat = MaskFormat.IncludePrompt;
-        Assert.AreEqual (MaskFormat.IncludePrompt, mtb.TextMaskFormat, "#T4");
+        Assert.That((object?)mtb.TextMaskFormat, Is.EqualTo(MaskFormat.IncludePrompt));
         mtb.TextMaskFormat = MaskFormat.IncludeLiterals;
-        Assert.AreEqual (MaskFormat.IncludeLiterals, mtb.TextMaskFormat, "#T4");
-        mtb.Dispose ();
+        Assert.That((object?)mtb.TextMaskFormat, Is.EqualTo(MaskFormat.IncludeLiterals));
+        mtb.Dispose();
     }
-		
+
     [Test]
-    public void TextMaskFormatExceptionTestException ()
+    public void TextMaskFormatExceptionTestException()
     {
         Assert.Throws<InvalidEnumArgumentException>(() =>
         {
-            MaskedTextBox mtb;
-
-            mtb = new MaskedTextBox();
+            var mtb = new MaskedTextBox();
             mtb.TextMaskFormat = (MaskFormat)123;
             mtb.Dispose();
         });
     }
-		
+
     [Test]
-    public void TextTest ()
+    public void TextTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.AreEqual ("", mtb.Text, "#T1");
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.Text, Is.EqualTo(string.Empty));
         mtb.Text = "abc";
-        Assert.AreEqual ("abc", mtb.Text, "#T2");
+        Assert.That((object?)mtb.Text, Is.EqualTo("abc"));
         mtb.Text = "ABC";
-        Assert.AreEqual ("ABC", mtb.Text, "#T3");
+        Assert.That((object?)mtb.Text, Is.EqualTo("ABC"));
         mtb.Mask = "abc";
         mtb.Text = "abc";
-        Assert.AreEqual ("abc", mtb.Text, "#T4");
+        Assert.That((object?)mtb.Text, Is.EqualTo("abc"));
         mtb.Text = "ABC";
-        Assert.AreEqual ("Abc", mtb.Text, "#T5");
+        Assert.That((object?)mtb.Text, Is.EqualTo("Abc"));
         mtb.Text = "123";
-        Assert.AreEqual ("1bc", mtb.Text, "#T6");
-        mtb.Dispose ();
+        Assert.That((object?)mtb.Text, Is.EqualTo("1bc"));
+        mtb.Dispose();
     }
 
     [Test]
-    public void TextTest2 ()
+    public void TextTest2()
     {
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox();
         mtb.Mask = "99 99";
 
         mtb.Text = "23 34";
-        Assert.AreEqual ("23 34", mtb.Text, "#T1");
+        Assert.That((object?)mtb.Text, Is.EqualTo("23 34"));
 
-        mtb.Dispose ();
+        mtb.Dispose();
     }
 
     [Test]
-    public void TextTest3 ()
+    public void TextTest3()
     {
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox();
         mtb.Mask = "00-00";
         mtb.Text = "12 3";
-        Assert.AreEqual ("12- 3", mtb.Text, "#T1");
+        Assert.That((object?)mtb.Text, Is.EqualTo("12- 3"));
 
         mtb.Text = "b31i4";
-        Assert.AreEqual ("31-4", mtb.Text, "#T2");
+        Assert.That((object?)mtb.Text, Is.EqualTo("31-4"));
 
         mtb.Text = "1234";
-        Assert.AreEqual ("12-34", mtb.Text, "#T3");
+        Assert.That((object?)mtb.Text, Is.EqualTo("12-34"));
 
-        mtb.Dispose ();
+        mtb.Dispose();
     }
 
     [Test]
-    public void ReadOnlyTest ()
+    public void ReadOnlyTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.AreEqual (false, mtb.ReadOnly, "#R1");
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.ReadOnly, Is.EqualTo(false));
         mtb.ReadOnly = true;
-        Assert.AreEqual (true, mtb.ReadOnly, "#R2");
-        mtb.Dispose ();
+        Assert.That((object?)mtb.ReadOnly, Is.EqualTo(true));
+        mtb.Dispose();
     }
-		
+
     [Test]
-    public void PasswordCharTest ()
+    public void PasswordCharTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.AreEqual ('\0', mtb.PasswordChar, "#P1");
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.PasswordChar, Is.EqualTo('\0'));
         mtb.PasswordChar = '*';
-        Assert.AreEqual ('*', mtb.PasswordChar, "#P2");
-        mtb.Dispose ();
+        Assert.That((object?)mtb.PasswordChar, Is.EqualTo('*'));
+        mtb.Dispose();
     }
 
     [Test]
-    public void MultilineTest ()
+    public void MultilineTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.AreEqual (false, mtb.Multiline, "#M1");
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.Multiline, Is.EqualTo(false));
         mtb.Multiline = true;
-        Assert.AreEqual (false, mtb.Multiline, "#M2");
-        mtb.Dispose ();
+        Assert.That((object?)mtb.Multiline, Is.EqualTo(false));
+        mtb.Dispose();
     }
-		
+
     [Test]
-    public void MaskTest ()
+    public void MaskTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.AreEqual ("", mtb.Mask, "#M1");
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.Mask, Is.EqualTo(string.Empty));
         mtb.Mask = "abc";
-        Assert.AreEqual ("abc", mtb.Mask, "#M2");
-        mtb.Mask = "";
-        Assert.AreEqual ("", mtb.Mask, "#M3");
-        mtb.Mask = null;
-        Assert.AreEqual ("", mtb.Mask, "#M4");
-        mtb.Mask = "";
-        Assert.AreEqual ("", mtb.Mask, "#M5");
-        mtb.Dispose ();
+        Assert.That((object?)mtb.Mask, Is.EqualTo("abc"));
+        mtb.Mask = string.Empty;
+        Assert.That((object?)mtb.Mask, Is.EqualTo(string.Empty));
+        mtb.Mask = null!;
+        Assert.That((object?)mtb.Mask, Is.EqualTo(string.Empty));
+        mtb.Mask = string.Empty;
+        Assert.That((object?)mtb.Mask, Is.EqualTo(string.Empty));
+        mtb.Dispose();
     }
 
     [Test]
-    public void LinesTest ()
+    public void LinesTest()
     {
-
-        MaskedTextBox mtb;
-
-        mtb = new MaskedTextBox ();
-        Assert.AreEqual (0, mtb.Lines.Length, "#L1");
+        var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.Lines.Length, Is.EqualTo(0));
         mtb.Text = "abc";
-        Assert.AreEqual (1, mtb.Lines.Length, "#L2");
-        Assert.AreEqual ("abc", mtb.Lines [0], "#L2a");
+        Assert.That((object?)mtb.Lines.Length, Is.EqualTo(1));
+        Assert.That((object?)mtb.Lines[0], Is.EqualTo("abc"), "#L2a");
         mtb.Text = "abc\nabc";
-        Assert.AreEqual (2, mtb.Lines.Length, "#L3");
-        Assert.AreEqual ("abc", mtb.Lines [0], "#L3a");
-        Assert.AreEqual ("abc", mtb.Lines [1], "#L3b");
-        mtb.Dispose ();
+        Assert.That((object?)mtb.Lines.Length, Is.EqualTo(2));
+        Assert.That((object?)mtb.Lines[0], Is.EqualTo("abc"), "#L3a");
+        Assert.That((object?)mtb.Lines[1], Is.EqualTo("abc"), "#L3b");
+        mtb.Dispose();
     }
 
     [Test]
-    public void CreateHandleTest ()
+    public void CreateHandleTest()
     {
-        using var mtb = new MaskedTextBox ();
-        Assert.AreEqual (false, mtb.IsHandleCreated, "#A1");
-        typeof (MaskedTextBox).GetMethod ("CreateHandle", BindingFlags.Instance | BindingFlags.NonPublic).Invoke (mtb, new object [] { });
-        Assert.AreEqual (true, mtb.IsHandleCreated, "#A2");
+        using var mtb = new MaskedTextBox();
+        Assert.That((object?)mtb.IsHandleCreated, Is.EqualTo(false));
+        typeof(MaskedTextBox).GetMethod("CreateHandle", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(mtb,
+            []);
+        Assert.That((object?)mtb.IsHandleCreated, Is.EqualTo(true));
     }
-		
+
     [Test]
-    public void IsInputKeyTest ()
+    public void IsInputKeyTest()
     {
-        using var f = new Form ();
-        using var mtb = new MaskedTextBox ();
-        f.Controls.Add (mtb);
-        f.Show ();
-        var IsInputKey = typeof (MaskedTextBox).GetMethod ("IsInputKey", BindingFlags.NonPublic | BindingFlags.Instance);
-				
-        for (var i = 0; i <= 0xFF; i++) {
-            var key = (Keys) i;
+        using var f = new Form();
+        using var mtb = new MaskedTextBox();
+        f.Controls.Add(mtb);
+        f.Show();
+        var IsInputKey = typeof(MaskedTextBox).GetMethod("IsInputKey", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        for (var i = 0; i <= 0xFF; i++)
+        {
+            var key = (Keys)i;
             var key_ALT = key | Keys.Alt;
             var key_SHIFT = key | Keys.Shift;
             var key_CTRL = key | Keys.Control;
@@ -243,8 +218,9 @@ public class MaskedTextBoxTest : TestHelper
             var key_ALT_SHIFT_CTLR = key | Keys.Alt | Keys.Shift | Keys.Control;
 
             var is_input = false;
-					
-            switch (key) {
+
+            switch (key)
+            {
                 case Keys.PageDown:
                 case Keys.PageUp:
                 case Keys.End:
@@ -258,26 +234,26 @@ public class MaskedTextBoxTest : TestHelper
                     break;
             }
 
-            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key }));
-            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT }));
-            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_SHIFT }));
-            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_CTRL }));
-            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_SHIFT }));
-            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_CTRL }));
-            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_SHIFT_CTLR }));
-            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_SHIFT_CTLR }));
+            Assert.That((object?)(bool)IsInputKey!.Invoke(mtb, [key])!, Is.EqualTo(is_input));
+            Assert.That((object?)(bool)IsInputKey.Invoke(mtb, [key_ALT])!, Is.EqualTo(false));
+            Assert.That((object?)(bool)IsInputKey.Invoke(mtb, [key_SHIFT])!, Is.EqualTo(is_input));
+            Assert.That((object?)(bool)IsInputKey.Invoke(mtb, [key_CTRL])!, Is.EqualTo(is_input));
+            Assert.That((object?)(bool)IsInputKey.Invoke(mtb, [key_ALT_SHIFT])!, Is.EqualTo(false));
+            Assert.That((object?)(bool)IsInputKey.Invoke(mtb, [key_ALT_CTRL])!, Is.EqualTo(false));
+            Assert.That((object?)(bool)IsInputKey.Invoke(mtb, [key_SHIFT_CTLR])!, Is.EqualTo(is_input));
+            Assert.That((object?)(bool)IsInputKey.Invoke(mtb, [key_ALT_SHIFT_CTLR])!, Is.EqualTo(false));
         }
     }
-		
+
     [Test]
-    public void ValidateTextTest ()
+    public void ValidateTextTest()
     {
-        Assert.Ignore ("Pending implementation");
+        Assert.Ignore("Pending implementation");
     }
-		
+
     [Test]
-    public void ToStringTest ()
+    public void ToStringTest()
     {
-        Assert.Ignore ("Pending implementation");
+        Assert.Ignore("Pending implementation");
     }
 }

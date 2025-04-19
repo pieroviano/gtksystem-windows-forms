@@ -5,6 +5,7 @@ namespace System.Windows.Forms;
 public sealed class SplitContainerBase : Gtk.Paned, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+    
     public SplitContainerBase() : base(Gtk.Orientation.Vertical)
     {
         Override = new GtkFormsControlOverride(this);
@@ -20,11 +21,13 @@ public sealed class SplitContainerBase : Gtk.Paned, IControlGtk
     {
         Override.AddClass(cssClass);
     }
+    
     protected override void OnShown()
     {
         Override.OnAddClass();
         base.OnShown();
     }
+    
     protected override bool OnDrawn(Context? cr)
     {
         var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);

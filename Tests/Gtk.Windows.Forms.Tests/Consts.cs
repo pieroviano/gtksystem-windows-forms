@@ -27,18 +27,22 @@
 
 using Microsoft.Build.Utilities;
 
-public static class Consts {
+public static class Consts
+{
     public const string AssemblySystem_Windows_Forms = "Gtk.Windows.Forms";
     public static string AssemblyCorlib { get; } = "mscorlib";
 
-    public static bool RunningOnMono ()
-	{
-		return Type.GetType ("Mono.Runtime") != null;
-	}
-	
-	public static string BinPath {
-		get {
-			if (RunningOnMono ()) {
+    public static bool RunningOnMono()
+    {
+        return Type.GetType("Mono.Runtime") != null;
+    }
+
+    public static string BinPath
+    {
+        get
+        {
+            if (RunningOnMono())
+            {
 #if XBUILD_14
 				string profile = "xbuild_14";
 #elif XBUILD_12
@@ -48,10 +52,12 @@ public static class Consts {
 #else
                 var profile = "netstandard2_0";
 #endif
-                var corlib = typeof (object).Assembly.Location;
-				var lib = Path.GetDirectoryName (Path.GetDirectoryName (corlib));
-				return Path.Combine (lib, profile);
-			} else {
+                var corlib = typeof(object).Assembly.Location;
+                var lib = Path.GetDirectoryName(Path.GetDirectoryName(corlib));
+                return Path.Combine(lib!, profile);
+            }
+            else
+            {
 #if XBUILD_14
 				return ToolLocationHelper.GetPathToBuildTools ("14.0");
 #elif XBUILD_12
@@ -61,14 +67,16 @@ public static class Consts {
 #elif NET_4_0
 				return ToolLocationHelper.GetPathToDotNetFramework (TargetDotNetFrameworkVersion.Version40);
 #else
-				return ToolLocationHelper.GetPathToDotNetFramework (TargetDotNetFrameworkVersion.VersionLatest);
+                return ToolLocationHelper.GetPathToDotNetFramework(TargetDotNetFrameworkVersion.VersionLatest);
 #endif
-			}
-		}
-	}
+            }
+        }
+    }
 
-	public static string ToolsVersionString {
-		get {
+    public static string ToolsVersionString
+    {
+        get
+        {
 #if XBUILD_14
 			return " ToolsVersion='14.0'";
 #elif XBUILD_12
@@ -76,13 +84,13 @@ public static class Consts {
 #elif NET_4_0
 			return " ToolsVersion='4.0'";
 #else
-			return String.Empty;
+            return string.Empty;
 #endif
-		}
-	}
+        }
+    }
 
-	public static string GetTasksAsmPath ()
-	{
+    public static string GetTasksAsmPath()
+    {
 #if XBUILD_14
 		return Path.Combine (BinPath, "Microsoft.Build.Tasks.Core.dll");
 #elif XBUILD_12
@@ -90,7 +98,7 @@ public static class Consts {
 #elif NET_4_0
 		return Path.Combine (BinPath, "Microsoft.Build.Tasks.v4.0.dll");
 #else
-		return Path.Combine (BinPath, "Microsoft.Build.Tasks.dll");
+        return Path.Combine(BinPath, "Microsoft.Build.Tasks.dll");
 #endif
-	}
+    }
 }

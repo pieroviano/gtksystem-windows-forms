@@ -26,6 +26,7 @@
 //	Jonathan Pobst (monkey@jpobst.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -38,17 +39,18 @@ public class ToolStripProgressBarTests : TestHelper
     {
         var tsi = new ToolStripProgressBar ();
 
-        Assert.AreEqual (100, tsi.MarqueeAnimationSpeed, "A1");
-        Assert.AreEqual (100, tsi.Maximum, "A2");
-        Assert.AreEqual (0, tsi.Minimum, "A3");
-        Assert.AreEqual ("System.Windows.Forms.ProgressBar", tsi.ProgressBar.GetType ().ToString (), "A4");
-        Assert.AreEqual (10, tsi.Step, "A6");
-        Assert.AreEqual (ProgressBarStyle.Blocks, tsi.Style, "A7");
-        Assert.AreEqual (string.Empty, tsi.Text, "A8");
-        Assert.AreEqual (0, tsi.Value, "A9");
+        Assert.That((object?)tsi.MarqueeAnimationSpeed, Is.EqualTo(100));
+        Assert.That((object?)tsi.Maximum, Is.EqualTo(100));
+        Assert.That((object?)tsi.Minimum, Is.EqualTo(0));
+        Assert.That((object?)tsi.ProgressBar.GetType ().ToString (), Is.EqualTo("System.Windows.Forms.ProgressBar"));
+        Assert.That((object?)tsi.Step, Is.EqualTo(10));
+        Assert.That((object?)tsi.Style, Is.EqualTo(ProgressBarStyle.Blocks));
+        object expected = string.Empty;
+        Assert.That((object?)tsi.Text, Is.EqualTo(expected));
+        Assert.That((object?)tsi.Value, Is.EqualTo(0));
 
         tsi = new ToolStripProgressBar ("Bob");
-        Assert.AreEqual ("Bob", tsi.Name, "A10");
+        Assert.That((object?)tsi.Name, Is.EqualTo("Bob"));
     }
 	
     [Test]
@@ -58,12 +60,14 @@ public class ToolStripProgressBarTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.MarqueeAnimationSpeed = 200;
-        Assert.AreEqual (200, tsi.MarqueeAnimationSpeed, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.MarqueeAnimationSpeed, Is.EqualTo(200));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.MarqueeAnimationSpeed = 200;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -73,12 +77,14 @@ public class ToolStripProgressBarTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.Maximum = 200;
-        Assert.AreEqual (200, tsi.Maximum, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.Maximum, Is.EqualTo(200));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.Maximum = 200;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -88,12 +94,14 @@ public class ToolStripProgressBarTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.Minimum = 200;
-        Assert.AreEqual (200, tsi.Minimum, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.Minimum, Is.EqualTo(200));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.Minimum = 200;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -103,12 +111,14 @@ public class ToolStripProgressBarTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.Step = 200;
-        Assert.AreEqual (200, tsi.Step, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.Step, Is.EqualTo(200));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.Step = 200;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -118,12 +128,14 @@ public class ToolStripProgressBarTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.Style = ProgressBarStyle.Continuous;
-        Assert.AreEqual (ProgressBarStyle.Continuous, tsi.Style, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.Style, Is.EqualTo(ProgressBarStyle.Continuous));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.Style = ProgressBarStyle.Continuous;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -133,13 +145,15 @@ public class ToolStripProgressBarTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.Text = "Hi";
-        Assert.AreEqual ("Hi", tsi.Text, "B1");
-        Assert.AreEqual ("Hi", tsi.ProgressBar.Text, "B2");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        Assert.That((object?)tsi.Text, Is.EqualTo("Hi"));
+        Assert.That((object?)tsi.ProgressBar.Text, Is.EqualTo("Hi"));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.Text = "Hi";
-        Assert.AreEqual (string.Empty, ew.ToString (), "B4");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -149,12 +163,14 @@ public class ToolStripProgressBarTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.Value = 30;
-        Assert.AreEqual (30, tsi.Value, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.Value, Is.EqualTo(30));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.Value = 30;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -174,13 +190,13 @@ public class ToolStripProgressBarTests : TestHelper
         var tsi = new ToolStripProgressBar ();
 			
         tsi.Increment (14);
-        Assert.AreEqual (14, tsi.Value, "B1");
+        Assert.That((object?)tsi.Value, Is.EqualTo(14));
 
         tsi.Increment (104);
-        Assert.AreEqual (100, tsi.Value, "B2");
+        Assert.That((object?)tsi.Value, Is.EqualTo(100));
 
         tsi.Increment (-245);
-        Assert.AreEqual (0, tsi.Value, "B3");
+        Assert.That((object?)tsi.Value, Is.EqualTo(0));
     }
 
     [Test]
@@ -189,7 +205,7 @@ public class ToolStripProgressBarTests : TestHelper
         var tsi = new ToolStripProgressBar ();
 
         tsi.PerformStep ();
-        Assert.AreEqual (10, tsi.Value, "B1");
+        Assert.That((object?)tsi.Value, Is.EqualTo(10));
     }
 
     private class EventWatcher

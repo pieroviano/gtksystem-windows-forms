@@ -4,11 +4,9 @@ using System.ComponentModel;
 namespace System.Windows.Forms;
 
 [DefaultEvent("CollectionChanged")]
-public class BindingsCollection : BaseCollection
+public partial class BindingsCollection : BaseCollection
 {
     private readonly List<Binding> _list = [];
-    private CollectionChangeEventHandler? _collectionChanging;
-    private CollectionChangeEventHandler? _collectionChanged;
 
     internal BindingsCollection()
     {
@@ -33,18 +31,6 @@ public class BindingsCollection : BaseCollection
         // ArgumentNullException.ThrowIfNull(dataBinding);
         _list.Add(dataBinding);
     }
-    public event CollectionChangeEventHandler? CollectionChanging
-    {
-        add => _collectionChanging += value;
-        remove => _collectionChanging -= value;
-    }
-
-    public event CollectionChangeEventHandler? CollectionChanged
-    {
-        add => _collectionChanged += value;
-        remove => _collectionChanged -= value;
-    }
-
     protected internal void Clear()
     {
         var eventArgs = new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null);
@@ -53,16 +39,6 @@ public class BindingsCollection : BaseCollection
         OnCollectionChanged(eventArgs);
     }
     protected virtual void ClearCore() => _list.Clear();
-
-    protected virtual void OnCollectionChanging(CollectionChangeEventArgs e)
-    {
-        _collectionChanging?.Invoke(this, e);
-    }
-
-    protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
-    {
-        _collectionChanged?.Invoke(this, e);
-    }
 
     protected internal void Remove(Binding binding)
     {

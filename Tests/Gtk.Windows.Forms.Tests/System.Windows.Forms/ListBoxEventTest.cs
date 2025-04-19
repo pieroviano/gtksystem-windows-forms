@@ -5,6 +5,7 @@
 //      Ritvik Mayank (mritvik@novell.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -12,8 +13,8 @@ namespace GtkTests.System.Windows.Forms;
 [TestFixture]
 [Ignore ("This test has to be completly reviewed")]
 public class ListBoxDrawItemEvent : TestHelper
-{	
-    static bool eventhandled = false;
+{
+    private static bool eventhandled;
     public void DrawItem_EventHandler (object sender,DrawItemEventArgs e)
     {
         eventhandled = true;
@@ -30,7 +31,7 @@ public class ListBoxDrawItemEvent : TestHelper
         lb1.DrawMode = DrawMode.OwnerDrawFixed;
         myform.Controls.Add (lb1);
         myform.Show ();
-        Assert.AreEqual (true, eventhandled, "#A1");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         myform.Dispose();
     }
 
@@ -38,7 +39,7 @@ public class ListBoxDrawItemEvent : TestHelper
     [Ignore ("This test has to be completly reviewed")]
     public class ListBoxMeasureItemEvent : TestHelper
     {
-        static bool eventhandled = false;
+        private static bool eventhandled;
         public void MeasureItem_EventHandler (object sender,MeasureItemEventArgs e)
         {
             eventhandled = true;
@@ -56,7 +57,7 @@ public class ListBoxDrawItemEvent : TestHelper
             myform.Controls.Add (lb1);
             // Test MeasureItem Event
             lb1.DrawMode = DrawMode.OwnerDrawVariable;
-            Assert.AreEqual (true, eventhandled, "#A2");
+            Assert.That((object?)eventhandled, Is.EqualTo(true));
             myform.Dispose();
         }
     }

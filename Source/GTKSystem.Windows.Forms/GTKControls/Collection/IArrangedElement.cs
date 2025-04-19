@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Size = Drawing.Size;
+using Rectangle = Drawing.Rectangle;
 
 internal interface IArrangedElement : IComponent
 {

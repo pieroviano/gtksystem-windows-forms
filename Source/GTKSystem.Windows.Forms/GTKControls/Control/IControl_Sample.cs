@@ -3,6 +3,10 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Size = Size;
+using Rectangle = Rectangle;
+using Point = Point;
+
 public interface IControlSample
 {
     bool UseVisualStyleBackColor { get; set; }

@@ -3,6 +3,7 @@
 public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+
     public ToolStripBase()
     {
         Override = new GtkFormsControlOverride(this);
@@ -13,10 +14,12 @@ public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
         Halign = Gtk.Align.Fill;
         HeightRequest = 20;
     }
+    
     public void AddClass(string cssClass)
     {
         Override.AddClass(cssClass);
     }
+    
     protected override void OnShown()
     {
         Override.OnAddClass();

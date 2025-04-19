@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.Collections;
@@ -13,12 +13,17 @@ using Container = Gtk.Container;
 
 namespace System.Windows.Forms;
 
+using Size = Size;
+using Rectangle = Rectangle;
+using Point = Point;
+
 public partial class Control
 {
     public class ControlCollection : ArrangedElementCollection, IList, ICloneable
     {
-        readonly Container? _ownerControl;
-        readonly Control? _owner;
+        private readonly Container? _ownerControl;
+        private readonly Control? _owner;
+
         public ControlCollection(Control? owner)
         {
             _ownerControl = owner?.GtkControl as Container;
@@ -40,6 +45,7 @@ public partial class Control
                 _ownerControl.ResizeChecked += OwnerControl_ResizeChecked;
             }
         }
+
         //ResizeChecked resettable layout
         private void OwnerControl_ResizeChecked(object? sender, EventArgs e)
         {
@@ -50,6 +56,7 @@ public partial class Control
         }
 
         private bool _isOwnerControlMapped;
+
         private void OwnerControl_Mapped(object? sender, EventArgs e)
         {
             if (_isOwnerControlMapped == false)
@@ -61,6 +68,7 @@ public partial class Control
                 }
             }
         }
+
         private void ResizeMapped(Overlay lay)
         {
             foreach (var item in this)
@@ -76,6 +84,7 @@ public partial class Control
                     widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
                 }
             }
+
             foreach (var item in this)
             {
                 if (item is Control control)
@@ -95,6 +104,7 @@ public partial class Control
                 {
                     icontrol.Parent = _owner;
                 }
+
                 if (_ownerControl is Overlay lay)
                 {
                     if (item is StatusStrip statusbar)
@@ -169,6 +179,7 @@ public partial class Control
                 SetMarginEnd(lay, control);
             }
         }
+
         private void Control_DockChanged(object? sender, EventArgs e)
         {
             var control = sender as Control;
@@ -177,18 +188,23 @@ public partial class Control
                 SetMarginEnd(lay, control);
             }
         }
+
         private void SetMarginEnd(Overlay lay, Control control)
         {
             if (_owner is Form)
             {
-                lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
-                lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
+                lay.WidthRequest = Math.Max(-1,
+                    Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
+                lay.HeightRequest = Math.Max(-1,
+                    Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
             }
             else
             {
                 lay.WidthRequest = Math.Max(-1, Math.Max((_owner?.Width ?? 0) - 4, control.Location.X + control.Width));
-                lay.HeightRequest = Math.Max(-1, Math.Max((_owner?.Height ?? 0) - 4, control.Location.Y + control.Height));
+                lay.HeightRequest = Math.Max(-1,
+                    Math.Max((_owner?.Height ?? 0) - 4, control.Location.Y + control.Height));
             }
+
             if (lay.IsMapped)
             {
                 var widget = control.Widget;
@@ -204,14 +220,17 @@ public partial class Control
                     if (control.Dock == DockStyle.Fill)
                         widget.MarginEnd = 0;
                     else if (widget.WidthRequest > 0)
-                        widget.MarginEnd = Math.Max(control.Padding.Right, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                        widget.MarginEnd = Math.Max(control.Padding.Right,
+                            lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
                     else
                         widget.MarginEnd = 0;
                 }
+
                 if (widget.Valign == Align.End)
                 {
                     if (widget.HeightRequest > 0)
-                        widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                        widget.MarginBottom =
+                            Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
                     else
                         widget.MarginBottom = 0;
                 }
@@ -220,13 +239,15 @@ public partial class Control
                     if (control.Dock == DockStyle.Fill)
                         widget.MarginBottom = 0;
                     else if (widget.HeightRequest > 0)
-                        widget.MarginBottom = Math.Max(control.Padding.Bottom, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                        widget.MarginBottom = Math.Max(control.Padding.Bottom,
+                            lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
                     else
                         widget.MarginBottom = 0;
                 }
             }
         }
-        private Widget GetFrame(Widget widget)
+
+        private Widget? GetFrame(Widget widget)
         {
             var parent = widget.Parent;
             while (parent != null)
@@ -238,20 +259,24 @@ public partial class Control
                 else
                     parent = parent.Parent;
             }
+
             return null;
         }
+
         public virtual void Add(Widget value)
         {
             NativeAdd(value);
         }
+
         public void AddWidget(Widget item, Control control)
         {
             control.Parent = _owner;
             InnerList.Add(new ArrangedElementWidget(item));
         }
+
         public virtual void Add(Type itemType, Control item)
         {
-            //重载处理
+            // Overload handling
             Add(item);
         }
 
@@ -274,8 +299,10 @@ public partial class Control
             {
                 return;
             }
+
             NativeAdd(value);
             InnerList.Add(value);
+            _owner?.OnControlAdded(new ControlEventArgs(value));
         }
 
         int IList.Add(object? control)
@@ -301,6 +328,7 @@ public partial class Control
             {
                 return;
             }
+
             foreach (var item in controls)
             {
                 Add(item);
@@ -322,6 +350,7 @@ public partial class Control
             {
                 throw new ArgumentNullException(nameof(key));
             }
+
             var foundControls = InnerList.FindAll(o =>
             {
                 if (o is Control con)
@@ -333,10 +362,11 @@ public partial class Control
                 {
                     return string.Equals(widget.GetWidget?.Name, key, StringComparison.InvariantCultureIgnoreCase);
                 }
+
                 return false;
             });
             List<Control?> controls = [];
-            if (!foundControls.Any())
+            if (foundControls.Any())
             {
                 controls = foundControls.ConvertAll(o => o as Control).ToList();
             }
@@ -355,6 +385,7 @@ public partial class Control
                     }
                 }
             }
+
             return controls.ToArray();
         }
 
@@ -371,6 +402,7 @@ public partial class Control
             {
                 return -1;
             }
+
             return InnerList.FindIndex(o =>
             {
                 if (o is Control con)
@@ -382,6 +414,7 @@ public partial class Control
                 {
                     return string.Equals(widget.GetWidget?.Name, key, StringComparison.InvariantCultureIgnoreCase);
                 }
+
                 return false;
             });
         }
@@ -399,9 +432,11 @@ public partial class Control
             {
                 return;
             }
+
             InnerList.Remove(value);
             if (value.Widget is Widget widget)
                 _ownerControl?.Remove(widget);
+            _owner?.OnControlRemoved(new ControlEventArgs(value));
         }
 
         void IList.Remove(object? element)
@@ -497,51 +532,51 @@ public partial class Control
 
         public virtual void SetChildIndex(Control child, int newIndex) => SetChildIndexInternal(child, newIndex);
     }
+}
 
-    internal class ArrangedElementWidget : IArrangedElement
+internal partial class ArrangedElementWidget : IArrangedElement
+{
+    private Widget? _widget;
+    internal ArrangedElementWidget(Widget? widget)
     {
-        Widget? _widget;
-        internal ArrangedElementWidget(Widget? widget)
+        _widget = widget;
+    }
+    public Widget? GetWidget => _widget;
+    public Rectangle Bounds => throw new NotImplementedException();
+
+    public Rectangle DisplayRectangle => throw new NotImplementedException();
+
+    public bool ParticipatesInLayout => throw new NotImplementedException();
+
+    public PropertyStore Properties => throw new NotImplementedException();
+
+    public IArrangedElement Container => throw new NotImplementedException();
+
+    public ArrangedElementCollection Children => throw new NotImplementedException();
+
+    public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public void Dispose()
+    {
+        if (_widget != null)
         {
-            _widget = widget;
+            _widget.Dispose();
+            _widget = null;
         }
-        public Widget? GetWidget => _widget;
-        public Rectangle Bounds => throw new NotImplementedException();
+        OnDisposed(EventArgs.Empty);
+        GC.SuppressFinalize(this);
+    }
 
-        public Rectangle DisplayRectangle => throw new NotImplementedException();
+    public Size GetPreferredSize(Size proposedSize)
+    {
+        return proposedSize;
+    }
 
-        public bool ParticipatesInLayout => throw new NotImplementedException();
+    public void PerformLayout(IArrangedElement affectedElement, string? propertyName)
+    {
+    }
 
-        public PropertyStore Properties => throw new NotImplementedException();
-
-        public IArrangedElement Container => throw new NotImplementedException();
-
-        public ArrangedElementCollection? Children => throw new NotImplementedException();
-
-        public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public event EventHandler? Disposed;
-
-        public void Dispose()
-        {
-            if (_widget != null)
-            {
-                _widget.Dispose();
-                _widget = null;
-            }
-        }
-
-        public Size GetPreferredSize(Size proposedSize)
-        {
-            return proposedSize;
-        }
-
-        public void PerformLayout(IArrangedElement affectedElement, string? propertyName)
-        {
-        }
-
-        public void SetBounds(Rectangle bounds, BoundsSpecified specified)
-        {
-        }
+    public void SetBounds(Rectangle bounds, BoundsSpecified specified)
+    {
     }
 }

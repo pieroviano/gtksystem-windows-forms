@@ -21,6 +21,7 @@
 // (C) 2006 Novell, Inc.
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -32,8 +33,8 @@ public class RowStyleTest : TestHelper {
     public void CtorTest1 ()
     {
         var rs = new RowStyle ();
-        Assert.AreEqual (0.0f, rs.Height, "1");
-        Assert.AreEqual (SizeType.AutoSize, rs.SizeType, "2");
+        Assert.That((object?)rs.Height, Is.EqualTo(0.0f), "1");
+        Assert.That((object?)rs.SizeType, Is.EqualTo(SizeType.AutoSize), "2");
     }
 
     [Test]
@@ -41,8 +42,8 @@ public class RowStyleTest : TestHelper {
     {
         var rs = new RowStyle (SizeType.Absolute);
 			
-        Assert.AreEqual (0.0f, rs.Height, "1");
-        Assert.AreEqual (SizeType.Absolute, rs.SizeType, "2");
+        Assert.That((object?)rs.Height, Is.EqualTo(0.0f), "1");
+        Assert.That((object?)rs.SizeType, Is.EqualTo(SizeType.Absolute), "2");
     }
 
     [Test]
@@ -50,8 +51,8 @@ public class RowStyleTest : TestHelper {
     {
         var rs = new RowStyle (SizeType.Absolute, 5.0f);
 			
-        Assert.AreEqual (5.0, rs.Height, "1");
-        Assert.AreEqual (SizeType.Absolute, rs.SizeType, "2");
+        Assert.That((object?)rs.Height, Is.EqualTo(5.0), "1");
+        Assert.That((object?)rs.SizeType, Is.EqualTo(SizeType.Absolute), "2");
     }
 
     [Test]
@@ -68,9 +69,11 @@ public class RowStyleTest : TestHelper {
     [Test]
     public void HeightTest1 ()
     {
-        var rs = new RowStyle ();
-        rs.Height = 1.0f;
-        Assert.AreEqual (1.0f, rs.Height, "1");
+        var rs = new RowStyle
+        {
+            Height = 1.0f
+        };
+        Assert.That((object?)rs.Height, Is.EqualTo(1.0f), "1");
     }
 
     [Test]
@@ -78,8 +81,10 @@ public class RowStyleTest : TestHelper {
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            var rs = new RowStyle();
-            rs.Height = -1.0f;
+            var rs = new RowStyle
+            {
+                Height = -1.0f
+            };
         });
     }
 }

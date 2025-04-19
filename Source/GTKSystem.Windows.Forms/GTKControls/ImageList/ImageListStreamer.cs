@@ -27,36 +27,50 @@
 //   Dennis Hayes (dennish@Raytek.com)
 //   Aleksey Ryabchuk (ryabchuk@yahoo.com)
 
-using System.IO;
 using System.Drawing;
-using System.Collections;
 using System.Drawing.Imaging;
 using System.Runtime.Serialization;
-using System.Runtime.InteropServices;
 using System.Resources;
-using Gtk;
 using Image = System.Drawing.Image;
 
 namespace System.Windows.Forms;
 
+using GtkColor = System.Drawing.Color;
+using GtkSize = System.Drawing.Size;
+using GtkRectangle = System.Drawing.Rectangle;
+
 [Serializable]
 public sealed class ImageListStreamer : ISerializable
 {
-    readonly ImageList.ImageCollection? imageCollection;
-    Image[]? images;
-    Size image_size;
-    Color back_color;
+    private ImageList.ImageCollection? imageCollection;
+    private Image[]? images;
+    private GtkSize image_size;
+    private GtkColor back_color;
+
+    public static implicit operator ImageListStreamer(Image source)
+    {
+        var imageListStreamer = new ImageListStreamer
+        {
+            images = [source]
+        };
+        return imageListStreamer;
+    }
+
+    private ImageListStreamer()
+    {
+
+    }
 
     internal ImageListStreamer(ImageList.ImageCollection? imageCollection)
     {
         this.imageCollection = imageCollection;
     }
 
-    internal ImageListStreamer(SerializationInfo info, StreamingContext context):this((byte[])info.GetValue("Data", typeof(byte[])))
+    internal ImageListStreamer(SerializationInfo info, StreamingContext context):this((byte[]?)info.GetValue("Data", typeof(byte[])))
     {
     }
 
-    internal ImageListStreamer(byte[] data)
+    internal ImageListStreamer(byte[]? data)
     {
         if (data == null || data.Length <= 4)
         { // 4 is the signature
@@ -79,7 +93,7 @@ public sealed class ImageListStreamer : ISerializable
         var cx = reader.ReadUInt16();
         var cy = reader.ReadUInt16();
         var bkcolor = reader.ReadUInt32();
-        back_color = Color.FromArgb((int)bkcolor);
+        back_color = GtkColor.FromArgb((int)bkcolor);
         reader.ReadUInt16();    // flags
 
         var ovls = new short[4];
@@ -99,9 +113,8 @@ public sealed class ImageListStreamer : ISerializable
 
         var bmp_length = imagesize + filesize;
         var bmpms = new MemoryStream(decoded_buffer, bmp_offset, bmp_length);
-        Bitmap? bmp = null;
         Bitmap? mask = null;
-        bmp = new Bitmap(bmpms);
+        var bmp = new Bitmap(bmpms);
         var mask_stream = new MemoryStream(decoded_buffer,
             bmp_offset + bmp_length,
             (int)(decoded.Length - bmp_offset - bmp_length));
@@ -124,18 +137,17 @@ public sealed class ImageListStreamer : ISerializable
                     var mcolor = mask.GetPixel(x, y);
                     if (mcolor.B != 0)
                     {
-                        newbmp.SetPixel(x, y, Color.Transparent);
+                        newbmp.SetPixel(x, y, GtkColor.Transparent);
                     }
                 }
             }
             bmp.Dispose();
             bmp = newbmp;
             mask.Dispose();
-            mask = null;
         }
         images = new Image[nimages];
-        image_size = new Size(cx, cy);
-        var dest_rect = new Rectangle(0, 0, cx, cy);
+        image_size = new GtkSize(cx, cy);
+        var dest_rect = new GtkRectangle(0, 0, cx, cy);
         if (grow * bmp.Width > cx) // Some images store a wrong 'grow' factor
             grow = (ushort)(bmp.Width / cx);
 
@@ -143,7 +155,7 @@ public sealed class ImageListStreamer : ISerializable
         {
             var col = r % grow;
             var row = r / grow;
-            var area = new Rectangle(col * cx, row * cy, cx, cy);
+            var area = new GtkRectangle(col * cx, row * cy, cx, cy);
             var b = new Bitmap(cx, cy);
             using (var g = Graphics.FromImage(b))
             {
@@ -166,24 +178,24 @@ public sealed class ImageListStreamer : ISerializable
     }
     */
 
-    static byte[] header = new byte[] { 77, 83, 70, 116, 73, 76, 1, 1 };
+    private static byte[] header = [77, 83, 70, 116, 73, 76, 1, 1];
     public void GetObjectData(SerializationInfo si, StreamingContext context)
     {
         var stream = new MemoryStream();
         var writer = new BinaryWriter(stream);
         writer.Write(header);
 
-        Image[]? images = (imageCollection != null) ? imageCollection.ToArray() : this.images;
+        Image[]? imagesValue = (imageCollection != null) ? imageCollection.ToArray() : images;
         var cols = 4;
-        var rows = images.Length / cols;
-        if (images.Length % cols > 0)
+        var rows = imagesValue?.Length??0 / cols;
+        if ((imagesValue?.Length??0) % cols > 0)
             ++rows;
 
-        writer.Write((ushort)images.Length);
-        writer.Write((ushort)images.Length);
+        writer.Write((ushort)(imagesValue?.Length??0));
+        writer.Write((ushort)(imagesValue?.Length ?? 0));
         writer.Write((ushort)0x4);
-        writer.Write((ushort)(images[0].Width));
-        writer.Write((ushort)(images[0].Height));
+        writer.Write((ushort)(imagesValue?[0].Width??0));
+        writer.Write((ushort)(imagesValue?[0].Height??0));
         writer.Write(0xFFFFFFFF); //BackColor.ToArgb ()); //FIXME: should set the right one here.
         writer.Write((ushort)0x21);
         for (var i = 0; i < 4; i++)
@@ -197,10 +209,14 @@ public sealed class ImageListStreamer : ISerializable
             {
                 g.FillRectangle(new SolidBrush(BackColor), 0, 0,
                     main.Width, main.Height);
-                for (var i = 0; i < this.images.Length; i++)
+                for (var i = 0; i < (images?.Length??0); i++)
                 {
-                    g.DrawImage(this.images[i], (i % cols) * ImageSize.Width,
-                        (i / cols) * ImageSize.Height);
+                    var o = images;
+                    if (o != null)
+                    {
+                        g.DrawImage(o[i], (i % cols) * ImageSize.Width,
+                            (i / cols) * ImageSize.Height);
+                    }
                 }
             }
         }
@@ -211,7 +227,6 @@ public sealed class ImageListStreamer : ISerializable
 
         var mask = Get1bppMask(main);
         main.Dispose();
-        main = null;
 
         tmp = new MemoryStream();
         mask.Save(tmp, ImageFormat.Bmp);
@@ -222,25 +237,33 @@ public sealed class ImageListStreamer : ISerializable
         si.AddValue("Data", stream.ToArray(), typeof(byte[]));
     }
 
-    unsafe Bitmap Get1bppMask(Bitmap? main)
+    private unsafe Bitmap Get1bppMask(Bitmap main)
     {
-        var rect = new Rectangle(0, 0, main.Width, main.Height);
+        var rect = new GtkRectangle(0, 0, main.Width, main.Height);
         var result = new Bitmap(main.Width, main.Height, PixelFormat.Format1BppIndexed);
         var dresult = result.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format1BppIndexed);
 
-        var w = images[0].Width;
-        var h = images[0].Height;
+        var w = images?[0].Width??0;
+        var h = images?[0].Height??0;
         var scan = (byte*)dresult.Scan0.ToPointer();
         var stride = dresult.Stride;
         Bitmap? current = null;
-        for (var idx = 0; idx < images.Length; idx++)
+        for (var idx = 0; idx < (images?.Length??0); idx++)
         {
-            current = (Bitmap)images[idx];
+            if (images != null)
+            {
+                current = (Bitmap)images[idx];
+            }
+
             // Hack for newly added images.
             // Probably has to be done somewhere else.
-            var c1 = current.GetPixel(0, 0);
-            if (c1.A != 0 && c1 == back_color)
-                current.MakeTransparent(back_color);
+            if (current != null)
+            {
+                var c1 = current.GetPixel(0, 0);
+                if (c1.A != 0 && c1 == back_color)
+                    current.MakeTransparent(back_color);
+            }
+
             //
         }
 
@@ -267,18 +290,26 @@ public sealed class ImageListStreamer : ISerializable
                     factor_x++;
                 }
                 imgidx = factor_y + factor_x;
-                if (imgidx >= images.Length)
+                if (imgidx >= (images?.Length ?? 0))
                     break;
-                current = (Bitmap)images[imgidx];
-                var color = current.GetPixel(localx, localy);
-                if (color.A == 0)
+                if (images != null)
                 {
-                    var ptridx = yidx + (x >> 3);
-                    scan[ptridx] |= (byte)(0x80 >> (x & 7));
+                    current = (Bitmap)images[imgidx];
                 }
+
+                if (current != null)
+                {
+                    var color = current.GetPixel(localx, localy);
+                    if (color.A == 0)
+                    {
+                        var ptridx = yidx + (x >> 3);
+                        scan[ptridx] |= (byte)(0x80 >> (x & 7));
+                    }
+                }
+
                 localx++;
             }
-            if (imgidx >= images.Length)
+            if (imgidx >= (images?.Length ?? 0))
                 break;
             yidx += stride;
             localy++;
@@ -288,7 +319,7 @@ public sealed class ImageListStreamer : ISerializable
         return result;
     }
 
-    static MemoryStream GetDecodedStream(byte[] bytes, int offset, int size)
+    private static MemoryStream GetDecodedStream(byte[] bytes, int offset, int size)
     {
         var buffer = new byte[512];
         var position = 0;
@@ -296,8 +327,8 @@ public sealed class ImageListStreamer : ISerializable
         var result = new MemoryStream();
         while (size > 0)
         {
-            count = (int)bytes[offset++];
-            data = (int)bytes[offset++];
+            count = bytes[offset++];
+            data = bytes[offset++];
             if ((512 - count) < position)
             {
                 result.Write(buffer, 0, position);
@@ -317,7 +348,7 @@ public sealed class ImageListStreamer : ISerializable
     }
 
     //TODO: OptimizeMe
-    static MemoryStream GetRLEStream(MemoryStream input, int start)
+    private static MemoryStream GetRLEStream(MemoryStream input, int start)
     {
         var result = new MemoryStream();
         var ibuffer = input.GetBuffer();
@@ -351,25 +382,13 @@ public sealed class ImageListStreamer : ISerializable
         return result;
     }
 
-    internal Image[]? Images
-    {
-        get { return images; }
-    }
+    internal Image[]? Images => images;
 
-    internal Size ImageSize
-    {
-        get { return image_size; }
-    }
+    internal GtkSize ImageSize => image_size;
 
-    internal ColorDepth ColorDepth
-    {
-        get { return ColorDepth.Depth32Bit; }
-    }
+    internal ColorDepth ColorDepth => ColorDepth.Depth32Bit;
 
-    internal Color BackColor
-    {
-        get { return back_color; }
-    }
+    internal GtkColor BackColor => back_color;
 
     public GtkResourceManager.ResourceInfo? ResourceInfo { get; set; }
 }

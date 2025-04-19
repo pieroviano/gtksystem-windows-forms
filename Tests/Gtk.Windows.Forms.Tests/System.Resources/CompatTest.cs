@@ -10,7 +10,7 @@ using GtkTests.Helpers;
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class CompatTest : Windows.Forms.TestHelper
+public class CompatTest : TestHelper
 {
     [Test]
     public void TestReader ()

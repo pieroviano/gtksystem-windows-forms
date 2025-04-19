@@ -20,25 +20,29 @@
 using System.Windows.Forms;
 using System.Collections;
 using Timer = System.Windows.Forms.Timer;
+using GtkTests.Helpers;
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 
 namespace GtkTests.System.Windows.Forms;
 
-[TestFixture]	
+[TestFixture]
 [Category("NotDotNet")]
 [Category("NotWithXvfb")]
 [Category("Interactive")]
-public class SendKeysTest  : TestHelper {
+public class SendKeysTest : TestHelper
+{
+    private static readonly Queue keys = new();
 
-    static readonly Queue keys = new();
-
-    internal struct Keys {
+    internal struct Keys
+    {
         public string key;
         public bool up;
         public bool shift;
         public bool ctrl;
         public bool alt;
 
-        public Keys(string key, bool up, bool shift, bool ctrl, bool alt) {
+        public Keys(string key, bool up, bool shift, bool ctrl, bool alt)
+        {
             this.key = key;
             this.up = up;
             this.shift = shift;
@@ -47,164 +51,167 @@ public class SendKeysTest  : TestHelper {
         }
     }
 
-    internal class Custom: TextBox {
+    internal class Custom : TextBox
+    {
 
-        protected override void OnKeyDown(KeyEventArgs e) {
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
             keys.Enqueue(new Keys(e.KeyData.ToString(), false, e.Shift, e.Control, e.Alt));
-            base.OnKeyDown (e);
+            base.OnKeyDown(e);
         }
 
-        protected override void OnKeyUp(KeyEventArgs e) {
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
             keys.Enqueue(new Keys(e.KeyData.ToString(), true, e.Shift, e.Control, e.Alt));
-            base.OnKeyUp (e);
+            base.OnKeyUp(e);
         }
     }
 
-		
-		
-    public SendKeysTest() {
-    }
-
-    Form f;
-    Timer t;
-    Custom c;
+    private Form f;
+    private Timer t;
+    private Custom c;
 
     [TearDown]
-    public void TearDown()
+    protected override void TearDown()
     {
         f?.Dispose();
         t.Dispose();
         c.Dispose();
     }
 
-    private void SendKeysTest1_tick(object? sender, EventArgs e) {
-        if (f.InvokeRequired) {
-            f.Invoke (new EventHandler (SendKeysTest1_tick), new object [] { sender, e });
+    private void SendKeysTest1_tick(object? sender, EventArgs e)
+    {
+        if (f.InvokeRequired)
+        {
+            f.Invoke(new EventHandler(SendKeysTest1_tick), sender!, e);
             return;
         }
         t.Stop();
-        Assert.AreEqual(2, keys.Count, "#A1");
-        var k = (Keys)keys.Dequeue();
-        Assert.IsFalse(k.up, "#A2");
-        Assert.IsFalse(k.shift, "#A3");
-        Assert.IsFalse(k.ctrl, "#A4");
-        Assert.IsFalse(k.alt, "#A5");
-        Assert.AreEqual("A", k.key, "#A6");
+        Assert.That((object?)keys.Count, Is.EqualTo(2));
+        var k = (Keys)keys.Dequeue()!;
+        Assert.IsFalse(k.up);
+        Assert.IsFalse(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("A"));
 
-        k = (Keys)keys.Dequeue();
-        Assert.IsTrue(k.up, "#A2");
-        Assert.IsFalse(k.shift, "#A3");
-        Assert.IsFalse(k.ctrl, "#A4");
-        Assert.IsFalse(k.alt, "#A5");
-        Assert.AreEqual("A", k.key, "#A6");
-			
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsTrue(k.up);
+        Assert.IsFalse(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("A"));
+
         t.Dispose();
-        f.Close ();
+        f.Close();
     }
 
     [SetUp]
-    protected override void SetUp () {
+    protected override void SetUp()
+    {
         keys.Clear();
-        base.SetUp ();
+        base.SetUp();
     }
 
-    private void SendKeysTest2_tick(object? sender, EventArgs e) {
+    private void SendKeysTest2_tick(object? sender, EventArgs e)
+    {
         t.Stop();
-        if (f.InvokeRequired) {
-            f.Invoke (new EventHandler (SendKeysTest2_tick), new object [] {sender, e});
+        if (f.InvokeRequired)
+        {
+            f.Invoke(new EventHandler(SendKeysTest2_tick), [sender!, e]!);
             return;
         }
-        Assert.AreEqual(12, keys.Count, "#A1");
+        Assert.That((object?)keys.Count, Is.EqualTo(12));
 
-        var k = (Keys)keys.Dequeue();
-        Assert.IsFalse(k.up, "#A2");
-        Assert.IsTrue(k.shift, "#A3");
-        Assert.IsFalse(k.ctrl, "#A4");
-        Assert.IsFalse(k.alt, "#A5");
+        var k = (Keys)keys.Dequeue()!;
+        Assert.IsFalse(k.up);
+        Assert.IsTrue(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
 
-        k = (Keys)keys.Dequeue();
-        Assert.IsFalse(k.up, "#A7");
-        Assert.IsTrue(k.shift, "#A8");
-        Assert.IsFalse(k.ctrl, "#A9");
-        Assert.IsFalse(k.alt, "#A10");
-        Assert.AreEqual("A, Shift", k.key, "#A11");
-			
-        k = (Keys)keys.Dequeue();
-        Assert.IsTrue(k.up, "#A12");
-        Assert.IsTrue(k.shift, "#A13");
-        Assert.IsFalse(k.ctrl, "#A14");
-        Assert.IsFalse(k.alt, "#A15");
-        Assert.AreEqual("A, Shift", k.key, "#A16");
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsFalse(k.up);
+        Assert.IsTrue(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("A, Shift"));
 
-        k = (Keys)keys.Dequeue();
-        Assert.IsFalse(k.up, "#A17");
-        Assert.IsTrue(k.shift, "#A18");
-        Assert.IsFalse(k.ctrl, "#A19");
-        Assert.IsFalse(k.alt, "#A20");
-        Assert.AreEqual("B, Shift", k.key, "#A21");
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsTrue(k.up);
+        Assert.IsTrue(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("A, Shift"));
 
-        k = (Keys)keys.Dequeue();
-        Assert.IsTrue(k.up, "#A22");
-        Assert.IsTrue(k.shift, "#A23");
-        Assert.IsFalse(k.ctrl, "#A24");
-        Assert.IsFalse(k.alt, "#A25");
-        Assert.AreEqual("B, Shift", k.key, "#A26");
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsFalse(k.up);
+        Assert.IsTrue(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("B, Shift"));
 
-        k = (Keys)keys.Dequeue();
-        Assert.IsFalse(k.up, "#A27");
-        Assert.IsTrue(k.shift, "#A28");
-        Assert.IsFalse(k.ctrl, "#A28");
-        Assert.IsFalse(k.alt, "#A29");
-        Assert.AreEqual("C, Shift", k.key, "#A30");
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsTrue(k.up);
+        Assert.IsTrue(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("B, Shift"));
 
-        k = (Keys)keys.Dequeue();
-        Assert.IsTrue(k.up, "#A31");
-        Assert.IsTrue(k.shift, "#A32");
-        Assert.IsFalse(k.ctrl, "#A33");
-        Assert.IsFalse(k.alt, "#A34");
-        Assert.AreEqual("C, Shift", k.key, "#A35");
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsFalse(k.up);
+        Assert.IsTrue(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("C, Shift"));
 
-        k = (Keys)keys.Dequeue();
-        Assert.IsTrue(k.up, "#A36");
-        Assert.IsFalse(k.shift, "#A37");
-        Assert.IsFalse(k.ctrl, "#A38");
-        Assert.IsFalse(k.alt, "#A39");
-        Assert.AreEqual("ShiftKey", k.key, "#A40");
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsTrue(k.up);
+        Assert.IsTrue(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("C, Shift"));
 
-        k = (Keys)keys.Dequeue();
+        k = (Keys)keys.Dequeue()!;
+        Assert.IsTrue(k.up);
+        Assert.IsFalse(k.shift);
+        Assert.IsFalse(k.ctrl);
+        Assert.IsFalse(k.alt);
+        Assert.That((object?)k.key, Is.EqualTo("ShiftKey"));
+
+        k = (Keys)keys.Dequeue()!;
         Assert.IsFalse(k.up, "#b1");
         Assert.IsFalse(k.shift, "#b2");
         Assert.IsFalse(k.ctrl, "#b3");
         Assert.IsFalse(k.alt, "#b4");
-        Assert.AreEqual("Back", k.key, "#b5");
+        Assert.That((object?)k.key, Is.EqualTo("Back"), "#b5");
 
-        k = (Keys)keys.Dequeue();
+        k = (Keys)keys.Dequeue()!;
         Assert.IsTrue(k.up, "#b6");
         Assert.IsFalse(k.shift, "#b7");
         Assert.IsFalse(k.ctrl, "#b8");
         Assert.IsFalse(k.alt, "#b9");
-        Assert.AreEqual("Back", k.key, "#b10");
+        Assert.That((object?)k.key, Is.EqualTo("Back"), "#b10");
 
-        k = (Keys)keys.Dequeue();
+        k = (Keys)keys.Dequeue()!;
         Assert.IsFalse(k.up, "#c1");
         Assert.IsFalse(k.shift, "#c2");
         Assert.IsFalse(k.ctrl, "#c3");
         Assert.IsFalse(k.alt, "#c4");
-        Assert.AreEqual("Back", k.key, "#c5");
+        Assert.That((object?)k.key, Is.EqualTo("Back"), "#c5");
 
-        k = (Keys)keys.Dequeue();
+        k = (Keys)keys.Dequeue()!;
         Assert.IsTrue(k.up, "#c6");
         Assert.IsFalse(k.shift, "#c7");
         Assert.IsFalse(k.ctrl, "#c8");
         Assert.IsFalse(k.alt, "#c9");
-        Assert.AreEqual("Back", k.key, "#c10");
+        Assert.That((object?)k.key, Is.EqualTo("Back"), "#c10");
 
-        Assert.AreEqual(0, keys.Count, "#d1");
+        Assert.That((object?)keys.Count, Is.EqualTo(0), "#d1");
 
-        Assert.AreEqual("A", c.Text, "#e1");
+        Assert.That((object?)c.Text, Is.EqualTo("A"), "#e1");
 
         t.Dispose();
-        f.Close ();
+        f.Close();
     }
 
 }

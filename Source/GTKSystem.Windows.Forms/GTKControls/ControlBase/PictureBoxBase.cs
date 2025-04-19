@@ -5,6 +5,7 @@ namespace System.Windows.Forms;
 public sealed class PictureBoxBase : Gtk.Image, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+    
     public PictureBoxBase()
     {
         Override = new GtkFormsControlOverride(this);
@@ -15,11 +16,13 @@ public sealed class PictureBoxBase : Gtk.Image, IControlGtk
         Xalign = 0;
         Yalign = 0;
     }
+
     protected override void OnShown()
     {
         Override.OnAddClass();
         base.OnShown();
     }
+    
     protected override bool OnDrawn(Context? cr)
     {
         if (Pixbuf != null)

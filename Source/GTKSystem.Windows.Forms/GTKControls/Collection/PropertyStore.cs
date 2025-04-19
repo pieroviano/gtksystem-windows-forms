@@ -2,9 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics;
-using System.Drawing;
 
 namespace System.Windows.Forms;
+
+using Color = Drawing.Color;
+using Size = Drawing.Size;
+using Rectangle = Drawing.Rectangle;
 
 /// <summary>
 ///  This is a small class that can efficiently store property values.
@@ -65,7 +68,7 @@ internal partial class PropertyStore
                 return wrapper.Color;
             }
 
-            Debug.Assert(storedObject is null,
+            Trace.Assert(storedObject is null,
                 $"Have non-null object that isn't a color wrapper stored in a color entry!{Environment.NewLine}Did someone SetObject instead of SetColor?");
         }
 
@@ -86,7 +89,7 @@ internal partial class PropertyStore
                 return wrapper.Padding;
             }
 
-            Debug.Assert(storedObject is null,
+            Trace.Assert(storedObject is null,
                 $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
@@ -107,7 +110,7 @@ internal partial class PropertyStore
                 return wrapper.Size;
             }
 
-            Debug.Assert(storedObject is null,
+            Trace.Assert(storedObject is null,
                 $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
@@ -128,7 +131,7 @@ internal partial class PropertyStore
                 return wrapper.Rectangle;
             }
 
-            Debug.Assert(storedObject is null,
+            Trace.Assert(storedObject is null,
                 $"Have non-null object that isn't a Rectangle wrapper stored in a Rectangle entry!{Environment.NewLine}Did someone SetObject instead of SetRectangle?");
         }
 
@@ -204,7 +207,7 @@ internal partial class PropertyStore
     public bool TryGetObject<T>(int key, out T? value)
     {
         var entry = GetObject(key, out var found);
-        Debug.Assert(!found || entry is null || entry is T, $"Entry is not of type {typeof(T)}, but of type {entry?.GetType()}");
+        Trace.Assert(!found || entry is null || entry is T, $"Entry is not of type {typeof(T)}, but of type {entry?.GetType()}");
         if (typeof(T).IsValueType || typeof(T).IsEnum || typeof(T).IsPrimitive)
         {
             value = found && entry is not null ? (T?)entry : default;
@@ -334,7 +337,7 @@ internal partial class PropertyStore
 
                 if (index < newEntries.Length)
                 {
-                    Debug.Assert(_objEntries.Length - index - 1 > 0);
+                    Trace.Assert(_objEntries.Length - index - 1 > 0);
                     Array.Copy(_objEntries, index + 1, newEntries, index, _objEntries.Length - index - 1);
                 }
 
@@ -385,7 +388,7 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null,
+                Trace.Assert(storedObject is null,
                     "object should either be null or ColorWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new ColorWrapper(value));
             }
@@ -408,7 +411,7 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null,
+                Trace.Assert(storedObject is null,
                     "object should either be null or PaddingWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new PaddingWrapper(value));
             }
@@ -431,7 +434,7 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null,
+                Trace.Assert(storedObject is null,
                     "object should either be null or RectangleWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new RectangleWrapper(value));
             }
@@ -454,7 +457,7 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null,
+                Trace.Assert(storedObject is null,
                     "object should either be null or SizeWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new SizeWrapper(value));
             }
@@ -489,7 +492,7 @@ internal partial class PropertyStore
             else
             {
                 _intEntries = new IntegerEntry[1];
-                Debug.Assert(index == 0, "LocateIntegerEntry should have given us a zero index.");
+                Trace.Assert(index == 0, "LocateIntegerEntry should have given us a zero index.");
             }
 
             _intEntries[index].Key = entryKey;
@@ -553,7 +556,7 @@ internal partial class PropertyStore
             else
             {
                 _objEntries = new ObjectEntry[1];
-                Debug.Assert(index == 0, "LocateObjectEntry should have given us a zero index.");
+                Trace.Assert(index == 0, "LocateObjectEntry should have given us a zero index.");
             }
 
             _objEntries[index].Key = entryKey;

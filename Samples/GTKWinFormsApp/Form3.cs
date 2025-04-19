@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using GTKWinFormsApp.Properties;
 
@@ -31,6 +30,7 @@ public partial class GtkMainForm : Form
         button2.Text = Resources.GtkMainForm_GtkMainForm_Split_Container_Layout;
         button3.Text = Resources.GtkMainForm_GtkMainForm_Print;
         label2.Text = Resources.GtkMainForm_GtkMainForm_This_is_a_UserControl_placeholder;
+        Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
         PreLoad += (_, _) =>
         {
             Text = Resources.GtkMainForm_GtkMainForm_Default_Style_Interface;
@@ -142,7 +142,7 @@ public partial class GtkMainForm : Form
         var brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
         //g.TranslateTransform(30, 0);
         //g.RotateTransform(20);
-        g.DrawPath(new Pen(brush, 2), path);
+        g!.DrawPath(new Pen(brush, 2), path);
 
         //PathGradientBrush gradientBrush = new PathGradientBrush(path);
         //gradientBrush.CenterColor = Color.Red;

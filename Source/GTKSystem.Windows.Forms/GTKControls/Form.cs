@@ -2,48 +2,60 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
-#if NETSTANDARD
-extern alias sdc;
-#else
-extern alias sd;
-#endif
-
-using Gtk;
 using System.Collections;
+using Gtk;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
 using Icon = System.Drawing.Icon;
-#if NETSTANDARD
-using SdcColor = sdc::System.Drawing.SystemColors;
+using SdSystemColors = System.Drawing.
+#if NET462_OR_GREATER
+                                      SystemColors;
 #else
-using SdcColor = sd::System.Drawing.SystemColors;
+                                      GtkSystemColors;
 #endif
 
+using SdSize = System.Drawing.Size;
+using SdSizeF = System.Drawing.SizeF;
+using GtkApplication = System.Windows.Forms.Application;
+
 namespace System.Windows.Forms;
+using SdColor = Drawing.Color;
 
 [DesignerCategory("Form")]
-[DefaultEvent(nameof(Load)),
- InitializationEvent(nameof(Load))]
+[DefaultEvent(nameof(Load)), InitializationEvent(nameof(Load))]
 public partial class Form : ContainerControl, IWin32Window
 {
-    private Gtk.Application app = System.Windows.Forms.Application.Init();
-    public FormBase self = new();
+    public FormBase self;
 
-    public override object GtkControl
+    internal FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
+    private bool isControlShown;
+    private FormWindowState windowState = FormWindowState.Normal;
+    private ObjectCollection objectCollection;
+
+    public override object GtkControl => self;
+
+    private readonly Overlay contanter;
+    [ThreadStatic]
+    private static bool threadInitialized;
+
+    public static bool ThreadInitialized
     {
-        get => self;
+        get => threadInitialized;
+        set => threadInitialized = value;
     }
 
-    private readonly Overlay contanter = new();
-    public event EventHandler<WindowStateArgs>? WindowStateChanging;
-
-    public Form() : base()
+    public Form()
     {
+        if (!ThreadInitialized)
+        {
+            ThreadInitialized = true;
+            GtkApplication.Init();
+        }
+        self = new FormBase();
+        contanter = new Overlay();
         objectCollection = new ObjectCollection(this, contanter);
         Init();
     }
@@ -55,8 +67,8 @@ public partial class Form : ContainerControl, IWin32Window
 
     private void Init()
     {
-        var systemColors = SdcColor.Window;
-        BackColor = Color.FromArgb(systemColors.ToArgb());
+        var systemColors = SdSystemColors.Window;
+        BackColor = SdColor.FromArgb(systemColors.ToArgb());
         SetScrolledWindow(self);
         contanter.Valign = Align.Fill;
         contanter.Halign = Align.Fill;
@@ -74,19 +86,16 @@ public partial class Form : ContainerControl, IWin32Window
 
     public FormWindowState WindowState
     {
-        get { return this.windowState; }
+        get => windowState;
         set
         {
-            if (this.windowState != value)
+            if (windowState != value)
             {
                 var windowStateArg = new WindowStateArgs(value);
                 EventHandler<WindowStateArgs>? eventHandler = WindowStateChanging;
                 if (eventHandler != null)
                 {
                     eventHandler(this, windowStateArg);
-                }
-                else
-                {
                 }
 
                 if (windowStateArg.Cancel)
@@ -95,7 +104,7 @@ public partial class Form : ContainerControl, IWin32Window
                 }
             }
 
-            this.windowState = value;
+            windowState = value;
             if (self.IsMapped)
             {
                 if (value == FormWindowState.Maximized)
@@ -117,7 +126,7 @@ public partial class Form : ContainerControl, IWin32Window
         OnSizeChanged(e);
     }
 
-    private bool Self_CloseWindowEvent(object? sender, EventArgs e)
+    private void Self_CloseWindowEvent(object? sender, CloseWindowArgs e)
     {
         var closing = new FormClosingEventArgs(CloseReason.UserClosing, false);
         OnFormClosing(closing);
@@ -127,20 +136,8 @@ public partial class Form : ContainerControl, IWin32Window
             OnFormClosed(new FormClosedEventArgs(CloseReason.UserClosing));
         }
 
-        return closing.Cancel == false;
+        e.ReturnValue = closing.Cancel == false;
     }
-
-    protected void OnFormClosed(FormClosedEventArgs e)
-    {
-        FormClosed?.Invoke(this, e);
-    }
-
-    protected virtual void OnFormClosing(FormClosingEventArgs e)
-    {
-        FormClosing?.Invoke(this, e);
-    }
-
-    private bool isControlShown;
 
     private void Control_Shown(object? sender, EventArgs e)
     {
@@ -160,7 +157,10 @@ public partial class Form : ContainerControl, IWin32Window
                     {
                         var maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar)
                         {
-                            Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center,
+                            Name = "maximize",
+                            Visible = true,
+                            Relief = ReliefStyle.None,
+                            Valign = Align.Center,
                             Halign = Align.Center
                         };
                         maximize.StyleContext.AddClass("maximize");
@@ -173,7 +173,10 @@ public partial class Form : ContainerControl, IWin32Window
                     {
                         var minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar)
                         {
-                            Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center,
+                            Name = "minimize",
+                            Visible = true,
+                            Relief = ReliefStyle.None,
+                            Valign = Align.Center,
                             Halign = Align.Center
                         };
                         minimize.StyleContext.AddClass("minimize");
@@ -184,15 +187,10 @@ public partial class Form : ContainerControl, IWin32Window
                 }
             }
 
-            OnLoadHandler();
+            OnLoad(EventArgs.Empty);
         }
 
-        OnShownHandler();
-    }
-
-    private void Close_Clicked(object? sender, EventArgs e)
-    {
-        self.CloseWindow();
+        OnShown(EventArgs.Empty);
     }
 
     private void Maximize_Clicked(object? sender, EventArgs e)
@@ -220,47 +218,19 @@ public partial class Form : ContainerControl, IWin32Window
         self.Iconify();
     }
 
-    public override event ScrollEventHandler? Scroll
+    protected override void RemoveScrollHandler(ScrollEventHandler? value)
     {
-        add
+        if (value != null)
         {
-            if (value != null)
-            {
-                self.Scroll += value;
-            }
-        }
-        remove
-        {
-            if (value != null)
-            {
-                self.Scroll += value;
-            }
+            self.Scroll += value;
         }
     }
 
-    private void OnLoadHandler()
+    protected override void AddScrollHandler(ScrollEventHandler? value)
     {
-        var e = EventArgs.Empty;
-        OnLoad(e);
-    }
-
-    private void OnShownHandler()
-    {
-        var e = EventArgs.Empty;
-        OnShown(e);
-    }
-
-    protected internal virtual void OnShown(EventArgs e)
-    {
-        Shown?.Invoke(this, e);
-        if (!bindingContextSet)
+        if (value != null)
         {
-            OnBindingContextChanged(e);
-        }
-
-        foreach (Control control in Controls)
-        {
-            control.OnLoad(e);
+            self.Scroll += value;
         }
     }
 
@@ -332,7 +302,7 @@ public partial class Form : ContainerControl, IWin32Window
                         }
 
                         var titlebar = (HeaderBar)self.Titlebar;
-                        var flag = new Gtk.Image(self.Icon);
+                        var flag = new Image(self.Icon);
                         flag.Visible = true;
                         titlebar.PackStart(flag);
                     }
@@ -341,17 +311,36 @@ public partial class Form : ContainerControl, IWin32Window
                         self.Icon = new Gdk.Pixbuf(GetType().Assembly,
                             "System.Windows.Forms.Resources.System.view-more.png");
                     }
-
                 }
                 catch (Exception ex)
                 {
                     Trace.Write(ex);
                 }
             }
+
+            FakeHandle = (IntPtr)int.MaxValue;
         }
 
         OnLoad(EventArgs.Empty);
-        self.ShowAll();
+        OnBindingContextChanged(EventArgs.Empty);
+        SetFakeHandle(Controls);
+        GLib.Idle.Add(() =>
+        {
+            self.ShowAll();
+            return false;
+        });
+    }
+
+    private void SetFakeHandle(IEnumerable collection)
+    {
+        foreach (var item in collection)
+        {
+            if (item is Control control)
+            {
+                control.FakeHandle = (IntPtr)int.MaxValue;
+                SetFakeHandle(control.Controls);
+            }
+        }
     }
 
     public DialogResult ShowDialog()
@@ -382,17 +371,17 @@ public partial class Form : ContainerControl, IWin32Window
         return DialogResult;
     }
 
-    public event EventHandler? Shown;
-    public event FormClosingEventHandler? FormClosing;
-    public event FormClosedEventHandler? FormClosed;
-
     public override string Text
     {
         get => self.Title;
-        set => self.Title = value;
+        set
+        {
+            self.Title = value;
+            base.Text = value ?? string.Empty;
+        }
     }
 
-    public override Size ClientSize
+    public override SdSize ClientSize
     {
         get => new(self.AllocatedWidth, self.AllocatedHeight);
         set
@@ -403,9 +392,9 @@ public partial class Form : ContainerControl, IWin32Window
         }
     }
 
-    public SizeF AutoScaleDimensions { get; set; }
+    public SdSizeF AutoScaleDimensions { get; set; }
+
     public AutoScaleMode AutoScaleMode { get; set; }
-    public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
 
     public FormBorderStyle FormBorderStyle
     {
@@ -416,7 +405,7 @@ public partial class Form : ContainerControl, IWin32Window
             self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow;
             if (value == FormBorderStyle.None)
             {
-                self.Decorated = false; //删除工具栏
+                self.Decorated = false; // Delete toolbar
             }
             else if (value == FormBorderStyle.FixedToolWindow)
             {
@@ -437,8 +426,6 @@ public partial class Form : ContainerControl, IWin32Window
     }
 
     public FormStartPosition StartPosition { get; set; }
-    private FormWindowState windowState = FormWindowState.Normal;
-    private ObjectCollection objectCollection;
 
     public DialogResult DialogResult { get; set; }
 
@@ -446,7 +433,6 @@ public partial class Form : ContainerControl, IWin32Window
     {
         self?.CloseWindow();
         OnFormClosed(new FormClosedEventArgs(CloseReason.None));
-        OnDisposed(new FormClosedEventArgs(CloseReason.None));
     }
 
     public override void Hide()
@@ -470,6 +456,7 @@ public partial class Form : ContainerControl, IWin32Window
     }
 
     public bool MaximizeBox { get; set; } = true;
+
     public bool MinimizeBox { get; set; } = true;
 
     public double Opacity
@@ -514,231 +501,11 @@ public partial class Form : ContainerControl, IWin32Window
 
     public class ObjectCollection : ControlCollection
     {
-        Gtk.Container? owner;
+        private Gtk.Container? owner;
 
         public ObjectCollection(Control? control, Gtk.Container? owner) : base(control, owner)
         {
             this.owner = owner;
-        }
-
-    }
-
-    public class MdiLayout;
-}
-
-public class BindingContext : ContextBoundObject
-{
-    internal class HashKey
-    {
-        private readonly WeakReference wRef;
-
-        private readonly int dataSourceHashCode;
-
-        private readonly string dataMember;
-
-        internal HashKey(object? dataSource, string? dataMember)
-        {
-            if (dataSource == null)
-            {
-                throw new ArgumentNullException("dataSource");
-            }
-
-            if (dataMember == null)
-            {
-                dataMember = "";
-            }
-
-            wRef = new WeakReference(dataSource, false);
-            dataSourceHashCode = dataSource.GetHashCode();
-            this.dataMember = dataMember.ToLower(CultureInfo.InvariantCulture);
-        }
-
-        public override bool Equals(object? target)
-        {
-            if (!(target is HashKey))
-            {
-                return false;
-            }
-
-            var hashKey = (HashKey)target;
-            if (wRef.Target != hashKey.wRef.Target)
-            {
-                return false;
-            }
-
-            return dataMember == hashKey.dataMember;
-        }
-
-        public override int GetHashCode()
-        {
-            return dataSourceHashCode * dataMember.GetHashCode();
-        }
-    }
-
-
-    public static void UpdateBinding(BindingContext? newBindingContext, Binding binding)
-    {
-        var bindingManagerBase = binding.BindingManagerBase;
-        bindingManagerBase?.Bindings.Remove(binding);
-        if (newBindingContext != null)
-        {
-            if (binding.BindToObject?.BindingManagerBase is PropertyManager)
-            {
-                CheckPropertyBindingCycles(newBindingContext, binding);
-            }
-
-            var bindToObject = binding.BindToObject;
-            if (bindToObject != null)
-            {
-                var bindingManagerBase1 = newBindingContext.EnsureListManager(bindToObject.DataSource,
-                    bindToObject.BindingMemberInfo.BindingPath);
-                if (bindingManagerBase1 != null)
-                {
-                    bindingManagerBase1.Bindings.Add(binding);
-                }
-            }
-        }
-    }
-
-    internal BindingManagerBase EnsureListManager(object? dataSource, string? dataMember)
-    {
-        BindingManagerBase? relatedCurrencyManager = null;
-        if (dataMember == null)
-        {
-            dataMember = "";
-        }
-
-        if (dataSource is ICurrencyManagerProvider)
-        {
-            relatedCurrencyManager =
-                (dataSource as ICurrencyManagerProvider)?.GetRelatedCurrencyManager(dataMember);
-            if (relatedCurrencyManager != null)
-            {
-                return relatedCurrencyManager;
-            }
-        }
-
-        var key = GetKey(dataSource, dataMember);
-        var item = listManagers[key] as WeakReference;
-        if (item != null)
-        {
-            relatedCurrencyManager = (BindingManagerBase)item.Target;
-        }
-
-        if (relatedCurrencyManager != null)
-        {
-            return relatedCurrencyManager;
-        }
-
-        if (dataMember.Length != 0)
-        {
-            var num = dataMember.LastIndexOf(".", StringComparison.Ordinal);
-            var str = num == -1 ? "" : dataMember.Substring(0, num);
-            var str1 = dataMember.Substring(num + 1);
-            var bindingManagerBase = EnsureListManager(dataSource, str);
-            var propertyDescriptor = bindingManagerBase.GetItemProperties()?.Find(str1, true);
-            if (propertyDescriptor == null)
-            {
-                throw new ArgumentException("RelatedListManagerChild");
-            }
-
-            if (!typeof(IList).IsAssignableFrom(propertyDescriptor.PropertyType))
-            {
-                relatedCurrencyManager = new RelatedPropertyManager(bindingManagerBase, str1);
-            }
-            else
-            {
-                relatedCurrencyManager = new RelatedCurrencyManager(bindingManagerBase, str1);
-            }
-        }
-        else if (dataSource is IList || dataSource is IListSource)
-        {
-            relatedCurrencyManager = new CurrencyManager(dataSource);
-        }
-        else
-        {
-            relatedCurrencyManager = new PropertyManager(dataSource);
-        }
-
-        if (item != null)
-        {
-            item.Target = relatedCurrencyManager;
-        }
-        else
-        {
-            listManagers.Add(key, new WeakReference(relatedCurrencyManager, false));
-        }
-
-        ScrubWeakRefs();
-        return relatedCurrencyManager;
-    }
-
-    private void ScrubWeakRefs()
-    {
-        ArrayList? arrayLists = null;
-        foreach (DictionaryEntry listManager in listManagers)
-        {
-            if (((WeakReference)listManager.Value).Target != null)
-            {
-                continue;
-            }
-
-            if (arrayLists == null)
-            {
-                arrayLists = new ArrayList();
-            }
-
-            arrayLists.Add(listManager.Key);
-        }
-
-        if (arrayLists != null)
-        {
-            foreach (var arrayList in arrayLists)
-            {
-                listManagers.Remove(arrayList);
-            }
-        }
-    }
-
-    private readonly Hashtable listManagers = new();
-
-    public bool Contains(object? dataSource, string? dataMember)
-    {
-        return listManagers.ContainsKey(GetKey(dataSource, dataMember));
-    }
-
-    internal HashKey GetKey(object? dataSource, string? dataMember)
-    {
-        return new HashKey(dataSource, dataMember);
-    }
-
-
-    private static void CheckPropertyBindingCycles(BindingContext? newBindingContext, Binding propBinding)
-    {
-        if (newBindingContext == null || propBinding == null)
-        {
-            return;
-        }
-
-        if (newBindingContext.Contains(propBinding.BindableComponent, ""))
-        {
-            var bindingManagerBase = newBindingContext.EnsureListManager(propBinding.BindableComponent, "");
-            for (var i = 0; i < bindingManagerBase.Bindings.Count; i++)
-            {
-                var item = bindingManagerBase.Bindings[i];
-                if (item.DataSource == propBinding.BindableComponent)
-                {
-                    if (propBinding.BindToObject?.BindingMemberInfo.BindingMember.Equals(item.PropertyName) ??
-                        false)
-                    {
-                        throw new ArgumentException(@"DataBindingCycle", "propBinding");
-                    }
-                }
-                else if (propBinding.BindToObject?.BindingManagerBase is PropertyManager)
-                {
-                    CheckPropertyBindingCycles(newBindingContext, item);
-                }
-            }
         }
     }
 }

@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Microsoft.Win32;
@@ -11,17 +11,17 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms.ComponentModel;
 using System.Windows.Forms.Design;
-using System.Windows.Forms.PropertyGridInternal;
 
 namespace System.Windows.Forms;
 
-/// <summary>
-/// 
-/// </summary>
+using Color = Color;
+using Size = Size;
+using Point = Point;
+
 [Designer($"System.Windows.Forms.Design.PropertyGridDesigner, {AssemblyRef.SystemDesign}")]
 public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
 {
-    public readonly PropertyGridBase self = new();
+    public readonly PropertyGridBase self;
     public override object GtkControl => self;
     private static readonly object s_propertyValueChangedEvent = new();
     private static readonly object s_comComponentNameChangedEvent = new();
@@ -33,9 +33,11 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     private readonly List<TabInfo> _tabs = new();
 
     private readonly PropertyGridView _propertyView;
+    private string? _text;
 
     public PropertyGrid()
     {
+        self = new PropertyGridBase();
         _propertyView = new PropertyGridView(this);
         self.child1.Add(_propertyView.tree);
         _propertyView.PropertyValueChanged += Self_PropertyValueChanged;
@@ -182,7 +184,15 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public override string Text { get; set; }
+    public override string Text
+    {
+        get => _text ?? string.Empty;
+        set
+        {
+            _text = value;
+            base.Text = value ?? string.Empty;
+        }
+    }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -237,53 +247,6 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
 
     protected override Size DefaultSize { get; set; }
     protected internal override bool ShowFocusCues { get; set; }
-    public event ComponentRenameEventHandler ComComponentNameChanged;
-
-    public event EventHandler SelectedObjectsChanged
-    {
-        add => Events.AddHandler(s_selectedObjectsChangedEvent, value);
-        remove => Events.RemoveHandler(s_selectedObjectsChangedEvent, value);
-    }
-
-    public event SelectedGridItemChangedEventHandler SelectedGridItemChanged
-    {
-        add => Events.AddHandler(s_selectedGridItemChangedEvent, value);
-        remove => Events.RemoveHandler(s_selectedGridItemChangedEvent, value);
-    }
-
-    public event EventHandler PropertySortChanged
-    {
-        add => Events.AddHandler(s_propertySortChangedEvent, value);
-        remove => Events.RemoveHandler(s_propertySortChangedEvent, value);
-    }
-
-    public event PropertyValueChangedEventHandler PropertyValueChanged
-    {
-        add => Events.AddHandler(s_propertyValueChangedEvent, value);
-        remove => Events.RemoveHandler(s_propertyValueChangedEvent, value);
-    }
-
-    public event PropertyTabChangedEventHandler PropertyTabChanged
-    {
-        add => Events.AddHandler(s_propertyTabChangedEvent, value);
-        remove => Events.RemoveHandler(s_propertyTabChangedEvent, value);
-    }
-
-    [Browsable(false)]
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public new event EventHandler MouseLeave
-    {
-        add => base.MouseLeave += value;
-        remove => base.MouseLeave -= value;
-    }
-
-    [Browsable(false)]
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public new event EventHandler MouseEnter
-    {
-        add => base.MouseEnter += value;
-        remove => base.MouseEnter -= value;
-    }
 
     public void CollapseAllGridItems()
     {
@@ -301,7 +264,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     {
     }
 
-    void SaveState(RegistryKey key)
+    private void SaveState(RegistryKey key)
     {
         throw new NotImplementedException();
     }

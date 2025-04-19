@@ -34,44 +34,42 @@ using Newtonsoft.Json;
 
 namespace GtkTests.Resources;
 
-class notserializable
+#pragma warning disable CS0649 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
+
+internal class NotSerializable
 {
     public object test;
-    public notserializable()
-    {
-
-    }
 }
 
 [Serializable]
-public class serializable : ISerializable
+public class Serializable : ISerializable
 {
     public string name;
     public string value;
 
-    public serializable()
+    public Serializable()
     {
     }
 
-    public serializable(string name, string value)
+    public Serializable(string name, string value)
     {
         this.name = name;
         this.value = value;
     }
 
-    public serializable(SerializationInfo info, StreamingContext ctxt)
+    public Serializable(SerializationInfo info, StreamingContext ctxt)
     {
-        name = (string)info.GetValue("sername", typeof(string));
-        value = (string)info.GetValue("servalue", typeof(string));
+        name = (string)info.GetValue("sername", typeof(string))!;
+        value = (string)info.GetValue("servalue", typeof(string))!;
     }
 
-    public serializable(Stream stream)
+    public Serializable(Stream stream)
     {
         var streamReader = new StreamReader(stream);
-        var deser = JsonConvert.DeserializeObject<serializable>(streamReader.ReadToEnd());
+        var deser = JsonConvert.DeserializeObject<Serializable>(streamReader.ReadToEnd());
         stream.Close();
 
-        name = deser.name;
+        name = deser!.name;
         value = deser.value;
     }
 
@@ -83,37 +81,36 @@ public class serializable : ISerializable
 
     public override string ToString()
     {
-        return string.Format("name={0};value={1}", name, value);
+        return $"name={name};value={value}";
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        var o = obj as serializable;
-        if (o == null)
+        if (obj is not Serializable o)
             return false;
         return name.Equals(o.name) && value.Equals(o.value);
     }
 }
 
 [Serializable]
-public class serializableSubClass : serializable
+public class SerializableSubClass : Serializable
 {
-    public serializableSubClass()
+    public SerializableSubClass()
     {
     }
 
-    public serializableSubClass(SerializationInfo info, StreamingContext ctxt)
+    public SerializableSubClass(SerializationInfo info, StreamingContext ctxt)
         : base(info, ctxt)
     {
     }
 
-    public serializableSubClass(Stream stream)
+    public SerializableSubClass(Stream stream)
     {
         var streamReader = new StreamReader(stream);
-        var deser = JsonConvert.DeserializeObject<serializable>(streamReader.ReadToEnd());
+        var deser = JsonConvert.DeserializeObject<Serializable>(streamReader.ReadToEnd());
         stream.Close();
 
-        name = deser.name;
+        name = deser!.name;
         value = deser.value;
     }
 }
@@ -135,7 +132,7 @@ public class ThisAssemblyConvertable
         this.value = value;
     }
 
-    public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
+    public void GetObjectData(SerializationInfo info, StreamingContext _)
     {
         info.AddValue("sername", name);
         info.AddValue("servalue", value);
@@ -143,35 +140,30 @@ public class ThisAssemblyConvertable
 
     public override string ToString()
     {
-        return string.Format("{0}\t{1}", name, value);
+        return $"{name}\t{value}";
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        var o = obj as ThisAssemblyConvertable;
-        if (o == null)
+        if (obj is not ThisAssemblyConvertable o)
             return false;
         return name.Equals(o.name) && value.Equals(o.value);
     }
 }
 
-class ThisAssemblyConvertableConverter : TypeConverter
+internal class ThisAssemblyConvertableConverter : TypeConverter
 {
-    public ThisAssemblyConvertableConverter()
-    {
-    }
-
-    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
     {
         return sourceType == typeof(string);
     }
 
-    public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
     {
         return destinationType == typeof(string);
     }
 
-    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         if (value.GetType() != typeof(string))
             throw new Exception("value not string");
@@ -187,13 +179,13 @@ class ThisAssemblyConvertableConverter : TypeConverter
         return convertable;
     }
 
-    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
         if (destinationType != typeof(string))
         {
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        return ((ThisAssemblyConvertable)value).ToString();
+        return ((ThisAssemblyConvertable)value!).ToString();
     }
 }

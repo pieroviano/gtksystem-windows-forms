@@ -9,7 +9,15 @@
 		<IsPublishable>False</IsPublishable>
 		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
 		<LangVersion>latest</LangVersion>
+		<NoWarn>CS0109;CS0115;CS0618;CS0436;MSB3825;IDE1006;IDE0044</NoWarn>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Gtk.Windows.Forms.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100518ef14d1a0c9efc88ac39397509c94a703ec7a674ed0414a18d3bad86b3618863d9d20204b50c28a13c56df0493d2943f2013a9b4f2bd5a829217698fa2444fbbebd449d6a8942a1278c87fe9ccba10535b9b2b1f47295168308a2b2a85af1fc655f8c736b51fe1d457d1b7be6c807516f58d5d981b112929c5c24f3ff1c0ce" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="..\GtkWinFormsApp\Resources\010.jpg" Link="Resources\010.jpg">
@@ -52,13 +60,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\GtkWinFormsApp\Form1.cs" Link="TestDataForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form1.cs" Link="TestDataForm.cs" />
 		<Compile Include="..\GtkWinFormsApp\Form1.Designer.cs" Link="TestDataForm.Designer.cs" />
 		<Compile Include="..\GtkWinFormsApp\Program.cs" Link="Program.cs" />
 		<Compile Include="..\GtkWinFormsApp\Properties\Resources.Designer.cs" Link="Properties\Resources.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
-		  <DependentUpon>..\GtkWinFormsApp\Properties\Resources.resx</DependentUpon>
+		  <DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
@@ -75,7 +83,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\GtkWinFormsApp\Form2.cs" Link="ListViewForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form2.cs" Link="ListViewForm.cs" />
 		<Compile Include="..\GtkWinFormsApp\Form2.Designer.cs" Link="ListViewForm.Designer.cs" />
 	</ItemGroup>
 
@@ -84,7 +92,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\GtkWinFormsApp\Form3.cs" Link="GtkMainForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form3.cs" Link="GtkMainForm.cs" />
 		<Compile Include="..\GtkWinFormsApp\Form3.Designer.cs" Link="GtkMainForm.Designer.cs" />
 	</ItemGroup>
 
@@ -93,7 +101,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\GtkWinFormsApp\Form4.cs" Link="CommonDialogsForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form4.cs" Link="CommonDialogsForm.cs" />
 		<Compile Include="..\GtkWinFormsApp\Form4.Designer.cs" Link="CommonDialogsForm.Designer.cs" />
 	</ItemGroup>
 
@@ -110,6 +118,7 @@
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
 		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" IncludeAssets="All" Condition="'$(TargetFramework)'=='net8.0'" />
 		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" Aliases="sre" PrivateAssets="All" IncludeAssets="All" />
+		<PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -125,6 +134,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms.Extensions\GTKSystem.Windows.Forms.Extensions.csproj" />
 		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 

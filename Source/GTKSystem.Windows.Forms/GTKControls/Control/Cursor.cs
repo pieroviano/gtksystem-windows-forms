@@ -6,6 +6,10 @@ using System.Runtime.Serialization;
 
 namespace System.Windows.Forms;
 
+using Size = Size;
+using Rectangle = Rectangle;
+using Point = Point;
+
 public sealed class Cursor : IDisposable, ISerializable
 {
     private static Size cursorSize = Size.Empty;
@@ -14,15 +18,25 @@ public sealed class Cursor : IDisposable, ISerializable
     private readonly IntPtr _handle;
     private readonly Point hotSpot = default;
     private readonly Size size = default;
+    
     internal string? CursorsProperty { get; }
+    
     internal Gdk.CursorType CursorType { get; set; }
+    
     internal Gdk.Pixbuf? CursorPixbuf { get; set; }
+    
     internal Point CursorsXy { get; }
+    
     internal Cursor(string resource, string cursorsProperty)
         : this(typeof(Cursors).Assembly.GetManifestResourceStream(resource)!)
     {
         CursorsProperty = cursorsProperty;
         FreeHandle = false;
+    }
+
+    static Cursor()
+    {
+        Current = new Cursor(Gdk.CursorType.LeftPtr);
     }
 
     public Cursor(IntPtr handle)
@@ -32,11 +46,13 @@ public sealed class Cursor : IDisposable, ISerializable
         var cur = new Gdk.Cursor(handle);
         _cursorData = cur.Image.ReadPixelBytes().Data;
     }
+    
     public Cursor(Gdk.CursorType cursorType)
     {
         FreeHandle = false;
         CursorType = cursorType;
     }
+
     public Cursor(string fileName)
     {
         _cursorData = File.ReadAllBytes(fileName);
@@ -52,6 +68,7 @@ public sealed class Cursor : IDisposable, ISerializable
         CursorsXy = new Point(x, y);
         FreeHandle = false;
     }
+
     public Cursor(Stream stream)
     {
         FreeHandle = true;
@@ -61,11 +78,11 @@ public sealed class Cursor : IDisposable, ISerializable
 
     public static Rectangle Clip => new(0, 0, 16, 16);
 
-    public static Cursor? Current
+    public static Cursor Current
     {
         get;
         set;
-    }
+    } = null!;
 
     public IntPtr Handle => IntPtr.Zero;
 
@@ -162,4 +179,14 @@ public sealed class Cursor : IDisposable, ISerializable
     }
 
     public override bool Equals(object? obj) => obj is Cursor cursor && this == cursor;
+
+    public static Cursor FromFile(string path)
+    {
+        return new Cursor(path);
+    }
+
+    public static Cursor FromStream(Stream bytes)
+    {
+        return new Cursor(bytes);
+    }
 }

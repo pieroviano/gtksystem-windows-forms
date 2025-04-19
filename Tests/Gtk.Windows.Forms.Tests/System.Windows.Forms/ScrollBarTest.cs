@@ -24,45 +24,45 @@ public class ScrollBarTest : TestHelper
 
         // B
         myscrlbar.BackColor = Color.Red;
-        Assert.AreEqual(255, myscrlbar.BackColor.R, "B2");
+        Assert.That((object?)myscrlbar.BackColor.R, Is.EqualTo(255));
         myscrlbar.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
-        Assert.AreEqual(16, myscrlbar.BackgroundImage.Height, "B3");
+        Assert.That((object?)myscrlbar.BackgroundImage.Height, Is.EqualTo(16));
 
         // F
-        Assert.AreEqual("ControlText", myscrlbar.ForeColor.Name, "F1");
+        Assert.That((object?)myscrlbar.ForeColor.Name, Is.EqualTo("ControlText"));
 
         // I
-        //Assert.AreEqual (ImeMode.Disable, myscrlbar.ImeMode, "I1");
+        //Assert1.AreEqual(ImeMode.Disable, myscrlbar.ImeMode);
 
         // L
-        Assert.AreEqual(10, myscrlbar.LargeChange, "L1");
+        Assert.That((object?)myscrlbar.LargeChange, Is.EqualTo(10));
 
         // M
-        Assert.AreEqual(100, myscrlbar.Maximum, "M1");
-        Assert.AreEqual(0, myscrlbar.Minimum, "M2");
+        Assert.That((object?)myscrlbar.Maximum, Is.EqualTo(100));
+        Assert.That((object?)myscrlbar.Minimum, Is.EqualTo(0));
         myscrlbar.Maximum = 300;
         myscrlbar.Minimum = 100;
-        Assert.AreEqual(300, myscrlbar.Maximum, "M3");
-        Assert.AreEqual(100, myscrlbar.Minimum, "M4");
+        Assert.That((object?)myscrlbar.Maximum, Is.EqualTo(300));
+        Assert.That((object?)myscrlbar.Minimum, Is.EqualTo(100));
 
         // S
-        Assert.AreEqual(null, myscrlbar.Site, "S1");
-        Assert.AreEqual(1, myscrlbar.SmallChange, "S2");
+        Assert.That((object?)myscrlbar.Site, Is.EqualTo(null));
+        Assert.That((object?)myscrlbar.SmallChange, Is.EqualTo(1));
         myscrlbar.SmallChange = 10;
-        Assert.AreEqual(10, myscrlbar.SmallChange, "S3");
+        Assert.That((object?)myscrlbar.SmallChange, Is.EqualTo(10));
 
         // T
-        Assert.AreEqual(false, myscrlbar.TabStop, "T1");
+        Assert.That((object?)myscrlbar.TabStop, Is.EqualTo(false));
         myscrlbar.TabStop = true;
-        Assert.AreEqual(true, myscrlbar.TabStop, "T2");
-        Assert.AreEqual("", myscrlbar.Text, "T3");
+        Assert.That((object?)myscrlbar.TabStop, Is.EqualTo(true));
+        Assert.That((object?)myscrlbar.Text, Is.EqualTo(string.Empty));
         myscrlbar.Text = "MONO SCROLLBAR";
-        Assert.AreEqual("MONO SCROLLBAR", myscrlbar.Text, "T4");
+        Assert.That((object?)myscrlbar.Text, Is.EqualTo("MONO SCROLLBAR"));
 
         // V
-        Assert.AreEqual(100, myscrlbar.Value, "V1");
+        Assert.That((object?)myscrlbar.Value, Is.EqualTo(100));
         myscrlbar.Value = 150;
-        Assert.AreEqual(150, myscrlbar.Value, "V2");
+        Assert.That((object?)myscrlbar.Value, Is.EqualTo(150));
     }
 
     [Test]
@@ -103,15 +103,15 @@ public class ScrollBarTest : TestHelper
     {
         var myscrlbar = new MyScrollBar();
         myscrlbar.Text = "New HScrollBar";
-        Assert.AreEqual("MonoTests.System.Windows.Forms.MyScrollBar, Minimum: 0, Maximum: 100, Value: 0",
-            myscrlbar.ToString(), "T5");
+        Assert.That((object?)myscrlbar.ToString(), Is.EqualTo("MonoTests.System.Windows.Forms.MyScrollBar, Minimum: 0, Maximum: 100, Value: 0"));
     }
 
     [Test]
     public void DefaultMarginTest()
     {
         var s = new MyScrollBar();
-        Assert.AreEqual(new Padding(0), s.PublicDefaultMargin, "A1");
+        object expected = new Padding(0);
+        Assert.That((object?)s.PublicDefaultMargin, Is.EqualTo(expected));
     }
 
     [Test]
@@ -124,9 +124,9 @@ public class ScrollBarTest : TestHelper
         s.Value = 20;
         s.Maximum = 0;
 
-        Assert.AreEqual(0, s.LargeChange, "A1");
-        Assert.AreEqual(0, s.Maximum, "A2");
-        Assert.AreEqual(0, s.Value, "A3");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(0));
+        Assert.That((object?)s.Maximum, Is.EqualTo(0));
+        Assert.That((object?)s.Value, Is.EqualTo(0));
     }
 
     [Test]
@@ -136,23 +136,23 @@ public class ScrollBarTest : TestHelper
 
         s.LargeChange = 0;
 
-        Assert.AreEqual(0, s.LargeChange, "A1");
-        Assert.AreEqual(0, s.SmallChange, "A2");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(0));
+        Assert.That((object?)s.SmallChange, Is.EqualTo(0));
 
         s.SmallChange = 10;
 
-        Assert.AreEqual(0, s.LargeChange, "A3");
-        Assert.AreEqual(0, s.SmallChange, "A4");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(0));
+        Assert.That((object?)s.SmallChange, Is.EqualTo(0));
 
         s.LargeChange = 15;
 
-        Assert.AreEqual(15, s.LargeChange, "A5");
-        Assert.AreEqual(10, s.SmallChange, "A6");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(15));
+        Assert.That((object?)s.SmallChange, Is.EqualTo(10));
 
         s.LargeChange = 5;
 
-        Assert.AreEqual(5, s.LargeChange, "A7");
-        Assert.AreEqual(5, s.SmallChange, "A8");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(5));
+        Assert.That((object?)s.SmallChange, Is.EqualTo(5));
     }
 
     [Test]
@@ -164,25 +164,25 @@ public class ScrollBarTest : TestHelper
         s.Maximum = 50;
         s.LargeChange = 1000;
 
-        Assert.AreEqual(101, s.LargeChange, "A1");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(101));
 
         s.Maximum = 200;
         s.Minimum = 199;
         s.LargeChange = 1000;
 
-        Assert.AreEqual(2, s.LargeChange, "A2");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(2));
 
         s.Minimum = 200;
         s.LargeChange = 1000;
 
-        Assert.AreEqual(1, s.LargeChange, "A3");
+        Assert.That((object?)s.LargeChange, Is.EqualTo(1));
     }
 }
 
 [TestFixture]
 public class ScrollBarEventTest : TestHelper
 {
-    static bool eventhandled = false;
+    private static bool eventhandled;
     public void ScrollBar_EventHandler(object? sender, EventArgs e)
     {
         eventhandled = true;
@@ -213,7 +213,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.BackColorChanged += ScrollBar_EventHandler;
         myHscrlbar.BackColor = Color.Red;
-        Assert.AreEqual(true, eventhandled, "B4");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         eventhandled = false;
         myform.Dispose();
     }
@@ -228,7 +228,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.BackgroundImageChanged += ScrollBar_EventHandler;
         myHscrlbar.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
-        Assert.AreEqual(true, eventhandled, "B5");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         eventhandled = false;
         myform.Dispose();
     }
@@ -245,7 +245,7 @@ public class ScrollBarEventTest : TestHelper
         myHscrlbar.FontChanged += ScrollBar_EventHandler;
         var myFontDialog = new FontDialog();
         myHscrlbar.Font = myFontDialog.Font;
-        Assert.AreEqual(true, eventhandled, "F2");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         eventhandled = false;
         myform.Dispose();
     }
@@ -260,7 +260,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.ForeColorChanged += ScrollBar_EventHandler;
         myHscrlbar.ForeColor = Color.Azure;
-        Assert.AreEqual(true, eventhandled, "F3");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         eventhandled = false;
         myform.Dispose();
     }
@@ -277,7 +277,7 @@ public class ScrollBarEventTest : TestHelper
         myHscrlbar.Scroll += ScrollBarScroll_EventHandler;
         myHscrlbar.ScrollNow();
 
-        Assert.AreEqual(true, eventhandled, "S4");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         eventhandled = false;
         myform.Dispose();
     }
@@ -293,7 +293,7 @@ public class ScrollBarEventTest : TestHelper
         myHscrlbar.TextChanged += ScrollBar_EventHandler;
         myHscrlbar.Text = "foo";
 
-        Assert.AreEqual(true, eventhandled, "T6");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         eventhandled = false;
         myform.Dispose();
     }
@@ -309,7 +309,7 @@ public class ScrollBarEventTest : TestHelper
         myHscrlbar.Value = 40;
         myHscrlbar.ValueChanged += ScrollBar_EventHandler;
         myHscrlbar.Value = 50;
-        Assert.AreEqual(true, eventhandled, "V3");
+        Assert.That((object?)eventhandled, Is.EqualTo(true));
         eventhandled = false;
         myform.Dispose();
     }
@@ -317,19 +317,9 @@ public class ScrollBarEventTest : TestHelper
 
 public class MyHScrollBar : HScrollBar
 {
-    public MyHScrollBar() : base()
-    {
-    }
+    public Size MyDefaultSize => DefaultSize;
 
-    public Size MyDefaultSize
-    {
-        get { return DefaultSize; }
-    }
-
-    public CreateParams MyCreateParams
-    {
-        get { return CreateParams; }
-    }
+    public CreateParams MyCreateParams => CreateParams;
 }
 
 [TestFixture]
@@ -340,27 +330,17 @@ public class MyHScrollBarTest : TestHelper
     {
         var msbar = new MyHScrollBar();
 
-        Assert.AreEqual(80, msbar.MyDefaultSize.Width, "D1");
+        Assert.That((object?)msbar.MyDefaultSize.Width, Is.EqualTo(80));
         // this is environment dependent.
-        //Assert.AreEqual (21, msbar.MyDefaultSize.Height, "D2");
+        //Assert1.AreEqual(21, msbar.MyDefaultSize.Height);
     }
 }
 
 public class MyVScrollBar : VScrollBar
 {
-    public MyVScrollBar() : base()
-    {
-    }
+    public Size MyDefaultSize => DefaultSize;
 
-    public Size MyDefaultSize
-    {
-        get { return DefaultSize; }
-    }
-
-    public CreateParams MyCreateParams
-    {
-        get { return CreateParams; }
-    }
+    public CreateParams MyCreateParams => CreateParams;
 }
 
 [TestFixture]
@@ -371,7 +351,7 @@ public class MyVScrollBarTest : TestHelper
     {
         var msbar = new MyVScrollBar();
 
-        Assert.AreEqual(RightToLeft.No, msbar.RightToLeft, "R1");
+        Assert.That((object?)msbar.RightToLeft, Is.EqualTo(RightToLeft.No));
 
     }
 
@@ -381,8 +361,8 @@ public class MyVScrollBarTest : TestHelper
         var msbar = new MyVScrollBar();
 
         // This is environment dependent.
-        //Assert.AreEqual (21, msbar.MyDefaultSize.Width, "D3");
-        Assert.AreEqual(80, msbar.MyDefaultSize.Height, "D4");
+        //Assert1.AreEqual(21, msbar.MyDefaultSize.Width);
+        Assert.That((object?)msbar.MyDefaultSize.Height, Is.EqualTo(80));
     }
 }
 
@@ -394,38 +374,40 @@ public class HScrollBarTestEventsOrder : TestHelper
     {
         string[] retval = new string[arrlist.Count];
         for (var i = 0; i < arrlist.Count; i++)
-            retval[i] = (string)arrlist[i];
+            retval[i] = (string)arrlist[i]!;
         return retval;
     }
 
     [Test]
     public void CreateEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         var s = new MyScrollBar();
         myform.Controls.Add(s);
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void BackColorChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnBackColorChanged",
             "OnInvalidated"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -433,20 +415,21 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.BackColor = Color.Aqua;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void BackgroundImageChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnBackgroundImageChanged",
             "OnInvalidated"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -454,7 +437,7 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
@@ -473,7 +456,7 @@ public class HScrollBarTestEventsOrder : TestHelper
     //           myform.Controls.Add (s);
     //           s.MouseClick ();
 
-    //           Assert.AreEqual (EventsWanted, ArrayListToString (s.Results));
+    //           Assert1.AreEqual(EventsWanted, ArrayListToString (s.Results));
     //           myform.Dispose ();
     //   }
 
@@ -492,18 +475,19 @@ public class HScrollBarTestEventsOrder : TestHelper
     //           myform.Controls.Add (s);
     //           s.MouseDoubleClick ();
 
-    //           Assert.AreEqual (EventsWanted, ArrayListToString (s.Results));
+    //           Assert1.AreEqual(EventsWanted, ArrayListToString (s.Results));
     //           myform.Dispose ();
     //   }
 
     [Test]
     public void FontChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -512,20 +496,21 @@ public class HScrollBarTestEventsOrder : TestHelper
         var myFontDialog = new FontDialog();
         s.Font = myFontDialog.Font;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ForeColorChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnForeColorChanged",
             "OnInvalidated"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -533,19 +518,20 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.ForeColor = Color.Aqua;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ImeModeChangedChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnImeModeChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -553,19 +539,20 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.ImeMode = ImeMode.Katakana;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void PaintEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnInvalidated"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -573,20 +560,21 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.Visible = true;
         s.Refresh();
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ScrollEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnScroll",
             "OnValueChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -594,19 +582,20 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.ScrollNow();
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void TextChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnTextChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -614,19 +603,20 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.Text = "foobar";
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ValueChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "OnHandleCreated",
             "OnBindingContextChanged",
             "OnBindingContextChanged",
             "OnValueChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -634,7 +624,7 @@ public class HScrollBarTestEventsOrder : TestHelper
         myform.Controls.Add(s);
         s.Value = 10;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 }
@@ -772,10 +762,7 @@ public class MyScrollBar2 : HScrollBar
         results.Add("ValueChanged");
     }
 
-    public ArrayList Results
-    {
-        get { return results; }
-    }
+    public ArrayList Results => results;
 
     //public void MoveMouse ()
     // {
@@ -863,14 +850,14 @@ public class MyScrollBar2 : HScrollBar
 
     public void ScrollNow()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = 8468,
+            HWnd = Handle,
+            WParam = (IntPtr)0x1,
+            LParam = (IntPtr)0x1a051a
+        };
 
-        m = new Message();
-
-        m.Msg = 8468;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x1;
-        m.LParam = (IntPtr)0x1a051a;
         WndProc(ref m);
 
         m.Msg = 233;
@@ -889,38 +876,40 @@ public class HScrollBarTestEventsOrder2 : TestHelper
     {
         string[] retval = new string[arrlist.Count];
         for (var i = 0; i < arrlist.Count; i++)
-            retval[i] = (string)arrlist[i];
+            retval[i] = (string)arrlist[i]!;
         return retval;
     }
 
     [Test]
     public void CreateEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         var s = new MyScrollBar2();
         myform.Controls.Add(s);
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void BackColorChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "Invalidated",
             "BackColorChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -928,21 +917,22 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         myform.Controls.Add(s);
         s.BackColor = Color.Aqua;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void BackgroundImageChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "Invalidated",
             "BackgroundImageChanged"
 
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -950,7 +940,7 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         myform.Controls.Add(s);
         s.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
@@ -969,7 +959,7 @@ public class HScrollBarTestEventsOrder2 : TestHelper
     //           myform.Controls.Add (s);
     //           s.MouseClick ();
 
-    //           Assert.AreEqual (EventsWanted, ArrayListToString (s.Results));
+    //           Assert1.AreEqual(EventsWanted, ArrayListToString (s.Results));
     //           myform.Dispose ();
     //   }
 
@@ -988,18 +978,19 @@ public class HScrollBarTestEventsOrder2 : TestHelper
     //           myform.Controls.Add (s);
     //           s.MouseDoubleClick ();
 
-    //           Assert.AreEqual (EventsWanted, ArrayListToString (s.Results));
+    //           Assert1.AreEqual(EventsWanted, ArrayListToString (s.Results));
     //           myform.Dispose ();
     //   }
 
     [Test]
     public void FontChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -1008,20 +999,21 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         var myFontDialog = new FontDialog();
         s.Font = myFontDialog.Font;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ForeColorChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "Invalidated",
             "ForeColorChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -1029,19 +1021,20 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         myform.Controls.Add(s);
         s.ForeColor = Color.Aqua;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ImeModeChangedChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "ImeModeChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -1049,19 +1042,20 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         myform.Controls.Add(s);
         s.ImeMode = ImeMode.Katakana;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void PaintEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "Invalidated"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -1070,20 +1064,21 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         s.Visible = true;
         s.Refresh();
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ScrollEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "Scroll",
             "ValueChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -1091,19 +1086,20 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         myform.Controls.Add(s);
         s.ScrollNow();
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void TextChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "TextChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -1111,19 +1107,20 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         myform.Controls.Add(s);
         s.Text = "foobar";
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 
     [Test]
     public void ValueChangedEventsOrder()
     {
-        string[] EventsWanted = {
+        string[] EventsWanted =
+        [
             "HandleCreated",
             "BindingContextChanged",
             "BindingContextChanged",
             "ValueChanged"
-        };
+        ];
         var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
@@ -1131,7 +1128,7 @@ public class HScrollBarTestEventsOrder2 : TestHelper
         myform.Controls.Add(s);
         s.Value = 10;
 
-        Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
+        Assert.That((object?)ArrayListToString(s.Results), Is.EqualTo(EventsWanted));
         myform.Dispose();
     }
 }
@@ -1144,31 +1141,31 @@ public class ScrollEventArgsTest : TestHelper
     {
         var e = new ScrollEventArgs(ScrollEventType.EndScroll, 5);
 
-        Assert.AreEqual(5, e.NewValue, "A1");
-        Assert.AreEqual(-1, e.OldValue, "A2");
-        Assert.AreEqual(ScrollOrientation.HorizontalScroll, e.ScrollOrientation, "A3");
-        Assert.AreEqual(ScrollEventType.EndScroll, e.Type, "A4");
+        Assert.That((object?)e.NewValue, Is.EqualTo(5));
+        Assert.That((object?)e.OldValue, Is.EqualTo(-1));
+        Assert.That((object?)e.ScrollOrientation, Is.EqualTo(ScrollOrientation.HorizontalScroll));
+        Assert.That((object?)e.Type, Is.EqualTo(ScrollEventType.EndScroll));
 
         e = new ScrollEventArgs(ScrollEventType.EndScroll, 5, 10);
 
-        Assert.AreEqual(10, e.NewValue, "A5");
-        Assert.AreEqual(5, e.OldValue, "A6");
-        Assert.AreEqual(ScrollOrientation.HorizontalScroll, e.ScrollOrientation, "A7");
-        Assert.AreEqual(ScrollEventType.EndScroll, e.Type, "A8");
+        Assert.That((object?)e.NewValue, Is.EqualTo(10));
+        Assert.That((object?)e.OldValue, Is.EqualTo(5));
+        Assert.That((object?)e.ScrollOrientation, Is.EqualTo(ScrollOrientation.HorizontalScroll));
+        Assert.That((object?)e.Type, Is.EqualTo(ScrollEventType.EndScroll));
 
         e = new ScrollEventArgs(ScrollEventType.EndScroll, 5, ScrollOrientation.VerticalScroll);
 
-        Assert.AreEqual(5, e.NewValue, "A9");
-        Assert.AreEqual(-1, e.OldValue, "A10");
-        Assert.AreEqual(ScrollOrientation.VerticalScroll, e.ScrollOrientation, "A11");
-        Assert.AreEqual(ScrollEventType.EndScroll, e.Type, "A12");
+        Assert.That((object?)e.NewValue, Is.EqualTo(5));
+        Assert.That((object?)e.OldValue, Is.EqualTo(-1));
+        Assert.That((object?)e.ScrollOrientation, Is.EqualTo(ScrollOrientation.VerticalScroll));
+        Assert.That((object?)e.Type, Is.EqualTo(ScrollEventType.EndScroll));
 
         e = new ScrollEventArgs(ScrollEventType.EndScroll, 5, 10, ScrollOrientation.VerticalScroll);
 
-        Assert.AreEqual(10, e.NewValue, "A13");
-        Assert.AreEqual(5, e.OldValue, "A14");
-        Assert.AreEqual(ScrollOrientation.VerticalScroll, e.ScrollOrientation, "A15");
-        Assert.AreEqual(ScrollEventType.EndScroll, e.Type, "A16");
+        Assert.That((object?)e.NewValue, Is.EqualTo(10));
+        Assert.That((object?)e.OldValue, Is.EqualTo(5));
+        Assert.That((object?)e.ScrollOrientation, Is.EqualTo(ScrollOrientation.VerticalScroll));
+        Assert.That((object?)e.Type, Is.EqualTo(ScrollEventType.EndScroll));
     }
 }
 
@@ -1205,7 +1202,7 @@ public class MyScrollBar : HScrollBar
 
     }
 
-    public Padding PublicDefaultMargin { get { return base.DefaultMargin; } }
+    public Padding PublicDefaultMargin => base.DefaultMargin;
 
     protected void OnBackColorChanged(object? sender, EventArgs e)
     {
@@ -1327,10 +1324,7 @@ public class MyScrollBar : HScrollBar
         results.Add("OnPaint");
     }
 
-    public ArrayList Results
-    {
-        get { return results; }
-    }
+    public ArrayList Results => results;
 
     //public void MoveMouse ()
     // {
@@ -1418,14 +1412,14 @@ public class MyScrollBar : HScrollBar
 
     public void ScrollNow()
     {
-        Message m;
+        var m = new Message
+        {
+            Msg = 8468,
+            HWnd = Handle,
+            WParam = (IntPtr)0x1,
+            LParam = (IntPtr)0x1a051a
+        };
 
-        m = new Message();
-
-        m.Msg = 8468;
-        m.HWnd = Handle;
-        m.WParam = (IntPtr)0x1;
-        m.LParam = (IntPtr)0x1a051a;
         WndProc(ref m);
 
         m.Msg = 233;

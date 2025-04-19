@@ -29,6 +29,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
+using GtkTests.Helpers;
 
 namespace GtkTests.System.Windows.Forms;
 
@@ -40,13 +41,13 @@ public class ToolStripButtonTests : TestHelper
     {
         var tsi = new ToolStripButton ();
 
-        Assert.AreEqual (true, tsi.AutoToolTip, "A1");
-        Assert.AreEqual (false, tsi.Checked, "A3");
-        Assert.AreEqual (false, tsi.CheckOnClick, "A4");
-        Assert.AreEqual (CheckState.Unchecked, tsi.CheckState, "A5");
+        Assert.That((object?)tsi.AutoToolTip, Is.EqualTo(true));
+        Assert.That((object?)tsi.Checked, Is.EqualTo(false));
+        Assert.That((object?)tsi.CheckOnClick, Is.EqualTo(false));
+        Assert.That((object?)tsi.CheckState, Is.EqualTo(CheckState.Unchecked));
 
         var count = 0;
-        var oc = new EventHandler (delegate (object _, EventArgs _) { count++; });
+        var oc = new EventHandler (delegate { count++; });
         Image i = new Bitmap (1,1);
 			
     }
@@ -56,7 +57,7 @@ public class ToolStripButtonTests : TestHelper
     {
         var epp = new ExposeProtectedProperties ();
 
-        Assert.AreEqual (true, epp.DefaultAutoToolTip, "C1");
+        Assert.That((object?)epp.DefaultAutoToolTip, Is.EqualTo(true));
     }
 
     [Test]
@@ -66,12 +67,14 @@ public class ToolStripButtonTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.AutoToolTip = true;
-        Assert.AreEqual (true, tsi.AutoToolTip, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.AutoToolTip, Is.EqualTo(true));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.AutoToolTip = true;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -81,12 +84,13 @@ public class ToolStripButtonTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.Checked = true;
-        Assert.AreEqual (true, tsi.Checked, "B1");
-        Assert.AreEqual ("CheckedChanged;CheckStateChanged", ew.ToString (), "B2");
+        Assert.That((object?)tsi.Checked, Is.EqualTo(true));
+        Assert.That((object?)ew.ToString (), Is.EqualTo("CheckedChanged;CheckStateChanged"));
 
         ew.Clear ();
         tsi.Checked = true;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
     }
 
     [Test]
@@ -96,12 +100,14 @@ public class ToolStripButtonTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.CheckOnClick = true;
-        Assert.AreEqual (true, tsi.CheckOnClick, "B1");
-        Assert.AreEqual (string.Empty, ew.ToString (), "B2");
+        Assert.That((object?)tsi.CheckOnClick, Is.EqualTo(true));
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
 
         ew.Clear ();
         tsi.CheckOnClick = true;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected1 = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected1));
     }
 
     [Test]
@@ -111,12 +117,13 @@ public class ToolStripButtonTests : TestHelper
         var ew = new EventWatcher (tsi);
 
         tsi.CheckState = CheckState.Checked;
-        Assert.AreEqual (CheckState.Checked, tsi.CheckState, "B1");
-        Assert.AreEqual ("CheckedChanged;CheckStateChanged", ew.ToString (), "B2");
+        Assert.That((object?)tsi.CheckState, Is.EqualTo(CheckState.Checked));
+        Assert.That((object?)ew.ToString (), Is.EqualTo("CheckedChanged;CheckStateChanged"));
 
         ew.Clear ();
         tsi.CheckState = CheckState.Checked;
-        Assert.AreEqual (string.Empty, ew.ToString (), "B3");
+        object expected = string.Empty;
+        Assert.That((object?)ew.ToString (), Is.EqualTo(expected));
     }
 
     [Test]
@@ -135,8 +142,8 @@ public class ToolStripButtonTests : TestHelper
 			
         public EventWatcher (ToolStripButton tsi)
         {
-            tsi.CheckedChanged += delegate (Object _, EventArgs _) { events += ("CheckedChanged;"); };
-            tsi.CheckStateChanged += delegate (Object _, EventArgs _) { events += ("CheckStateChanged;"); };
+            tsi.CheckedChanged += delegate { events += ("CheckedChanged;"); };
+            tsi.CheckStateChanged += delegate { events += ("CheckStateChanged;"); };
         }
 
         public override string ToString ()
@@ -152,6 +159,6 @@ public class ToolStripButtonTests : TestHelper
 		
     private class ExposeProtectedProperties : ToolStripButton
     {
-        public new bool DefaultAutoToolTip { get { return base.DefaultAutoToolTip; } }
+        public new bool DefaultAutoToolTip => base.DefaultAutoToolTip;
     }
 }

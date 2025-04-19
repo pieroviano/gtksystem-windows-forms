@@ -16,7 +16,7 @@ public class DragEventArgs : EventArgs
     /// <summary>
     ///  Initializes a new instance of the <see cref='DragEventArgs'/> class.
     /// </summary>
-    public DragEventArgs(IDataObject data, int keyState, int x, int y, DragDropEffects allowedEffect, DragDropEffects effect)
+    public DragEventArgs(IDataObject? data, int keyState, int x, int y, DragDropEffects allowedEffect, DragDropEffects effect)
     {
         Data = data;
         KeyState = keyState;
@@ -30,7 +30,7 @@ public class DragEventArgs : EventArgs
     ///  The <see cref='IDataObject'/> that contains the data associated
     ///  with this event.
     /// </summary>
-    public IDataObject Data { get; }
+    public IDataObject? Data { get; }
 
     /// <summary>
     ///  Gets the current state of the SHIFT, CTRL, and ALT keys.

@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using System.ComponentModel;
@@ -11,14 +11,15 @@ using Gtk;
 namespace System.Windows.Forms;
 
 [DesignerCategory("Component")]
-public class TrackBar : Control
+public partial class TrackBar : Control
 {
-    public readonly TrackBarBase self = new();
+    public readonly TrackBarBase self;
     public override object GtkControl => self;
-    readonly Adjustment adjustment = new(10, 0, 100, 1, 1, 0);
-    Scale? scale;
+    private readonly Adjustment adjustment = new(10, 0, 100, 1, 1, 0);
+    private Scale? scale;
     public TrackBar()
     {
+        self = new TrackBarBase();
         self.Realized += Control_Realized;
     }
 
@@ -43,11 +44,6 @@ public class TrackBar : Control
         OnScroll(e);
     }
 
-    protected virtual void OnScroll(EventArgs e)
-    {
-        Scroll?.Invoke(this, e);
-    }
-
     public int LargeChange { get; set; } = 5;
     public int Maximum { get; set; }
     public int Minimum { get; set; }
@@ -56,5 +52,4 @@ public class TrackBar : Control
     public Orientation Orientation { get; set; }
     public int TickFrequency { get; set; }
     public TickStyle TickStyle { get; set; }
-    public event EventHandler? Scroll;
 }

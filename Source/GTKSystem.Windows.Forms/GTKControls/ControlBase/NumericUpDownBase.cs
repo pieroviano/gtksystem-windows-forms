@@ -5,6 +5,7 @@ namespace System.Windows.Forms;
 public sealed class NumericUpDownBase : Gtk.SpinButton, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
+    
     public NumericUpDownBase() : base(0, 100, 1)
     {
         Override = new GtkFormsControlOverride(this);
@@ -14,10 +15,12 @@ public sealed class NumericUpDownBase : Gtk.SpinButton, IControlGtk
         Valign = Gtk.Align.Start;
         Halign = Gtk.Align.Start;
     }
+
     public void AddClass(string cssClass)
     {
         Override.AddClass(cssClass);
     }
+    
     protected override void OnShown()
     {
         Override.OnAddClass();

@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -12,15 +12,19 @@ using System.Drawing;
 
 namespace System.Windows.Forms;
 
+using Size = Size;
+using Rectangle = Rectangle;
+
 [DesignerCategory("Component")]
-public class TabControl : ContainerControl
+public partial class TabControl : ContainerControl
 {
-    public readonly TabControlBase self = new();
+    public readonly TabControlBase self;
     public override object GtkControl => self;
     private readonly ControlCollection _controls;
     private readonly TabPageCollection _tabPageControls;
     public TabControl()
     {
+        self = new TabControlBase();
         _controls = new ControlCollection(this);
         _tabPageControls = new TabPageCollection(this);
         self.SwitchPage += Self_SwitchPage;
@@ -29,11 +33,6 @@ public class TabControl : ContainerControl
     {
         if (SelectedIndexChanged != null && self.IsMapped)
             OnSelectedIndexChanged(EventArgs.Empty);
-    }
-
-    protected virtual void OnSelectedIndexChanged(EventArgs e)
-    {
-        SelectedIndexChanged?.Invoke(this, e);
     }
 
     /// <summary>
@@ -104,13 +103,10 @@ public class TabControl : ContainerControl
     }
 
     public new ControlCollection Controls => _controls;
-    public event EventHandler? SelectedIndexChanged;
 
-    public event DrawItemEventHandler? DrawItem;
-
-    public new class ControlCollection : List<TabPage>
+    public new partial class ControlCollection : List<TabPage>
     {
-        readonly TabControl _owner;
+        private readonly TabControl _owner;
         public ControlCollection(TabControl owner)
         {
             _owner = owner;
@@ -154,7 +150,9 @@ public class TabControl : ContainerControl
                         args.Cr.ResetClip();
                         var width = allocation.Width + 24;
                         var height = allocation.Height + 2;
-                        OnDrawItem(new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { DiffLeft = -12, DiffTop = -2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+                        OnDrawItem(new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { DiffLeft = -12, DiffTop = -2 }, _owner.Font,
+                            new Rectangle(0, 0, width, height),
+                            Convert.ToInt32(tab.Name), DrawItemState.Default));
 
                     }
                 };
@@ -166,11 +164,6 @@ public class TabControl : ContainerControl
                 if (_owner.Widget.IsRealized)
                     item.Widget.ShowAll();
             }
-        }
-
-        protected virtual void OnDrawItem(DrawItemEventArgs e)
-        {
-            _owner.DrawItem?.Invoke(this, e);
         }
 
         public new void RemoveAt(int index)
@@ -217,8 +210,8 @@ public class TabControl : ContainerControl
         public void Add(string? key, string? text, string? imageKey)
         {
             var tp = new TabPage();
-            tp.Name = key;
-            tp.Text = text??string.Empty;
+            tp.Name = key ?? string.Empty;
+            tp.Text = text ?? string.Empty;
             Add(tp);
         }
 
@@ -258,7 +251,7 @@ public class TabControl : ContainerControl
             throw new NotImplementedException();
         }
 
-        void CopyTo(Array array, int index)
+        private void CopyTo(Array array, int index)
         {
             throw new NotImplementedException();
         }
@@ -301,7 +294,7 @@ public class TabControl : ContainerControl
 
         public void Insert(int index, string key, string text, int imageIndex)
         {
-            _owner.Controls.Insert(index, new TabPage { Name = key, Text = text }); 
+            _owner.Controls.Insert(index, new TabPage { Name = key, Text = text });
         }
 
         public void Insert(int index, string key, string text)

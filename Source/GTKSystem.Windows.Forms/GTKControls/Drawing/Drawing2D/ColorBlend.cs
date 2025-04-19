@@ -1,5 +1,6 @@
-#pragma warning disable CS8597 // Thrown value may be null.
 namespace System.Drawing.Drawing2D;
+
+using Color = System.Drawing.Color;
 
 /// <summary>Defines arrays of colors and positions used for interpolating color blending in a multicolor gradient. This class cannot be inherited.</summary>
 public sealed class ColorBlend

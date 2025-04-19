@@ -2,24 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics;
+using GtkKnownColor = System.Drawing.KnownColor;
 
-#if NET462_OR_GREATER
-namespace System.Drawing
-#else
-namespace System.Drawing.Gtk
-#endif
+namespace System.Drawing;
+
+internal static class KnownColorTable
 {
-    internal static class KnownColorTable
-    {
-        public const byte KnownColorKindSystem = 0;
-        public const byte KnownColorKindWeb = 1;
-        public const byte KnownColorKindUnknown = 2;
+    public const byte KnownColorKindSystem = 0;
+    public const byte KnownColorKindWeb = 1;
+    public const byte KnownColorKindUnknown = 2;
 
-        // All known color values (in order of definition in the KnownColor enum).
-        public static ReadOnlySpan<uint> ColorValueTable =>
-        [
-            // "not a known color"
-            0,
+    // All known color values (in order of definition in the KnownColor enum).
+    public static ReadOnlySpan<uint> ColorValueTable =>
+    [
+        // "not a known color"
+        0,
             // "System" colors, Part 1
 #if FEATURE_WINDOWS_SYSTEM_COLORS
             (uint)(byte)Interop.User32.Win32SystemColors.ActiveBorder,
@@ -241,11 +238,11 @@ namespace System.Drawing.Gtk
             0xFF663399,     // RebeccaPurple
         ];
 
-        // All known color kinds (in order of definition in the KnownColor enum).
-        public static ReadOnlySpan<byte> ColorKindTable =>
-        [
-            // "not a known color"
-            KnownColorKindUnknown,
+    // All known color kinds (in order of definition in the KnownColor enum).
+    public static ReadOnlySpan<byte> ColorKindTable =>
+    [
+        // "not a known color"
+        KnownColorKindUnknown,
             // "System" colors, Part 1
 #if FEATURE_WINDOWS_SYSTEM_COLORS
             KnownColorKindSystem,       // ActiveBorder
@@ -467,47 +464,64 @@ namespace System.Drawing.Gtk
             KnownColorKindWeb,      // RebeccaPurple
         ];
 
-        internal static Color ArgbToKnownColor(uint argb)
-        {
-            Debug.Assert((argb & Color.ARGBAlphaMask) == Color.ARGBAlphaMask);
-            Debug.Assert(ColorValueTable.Length == ColorKindTable.Length);
+    internal static Color ArgbToKnownColor(uint argb)
+    {
+        Trace.Assert((argb & ColorConstants.ARGBAlphaMask) == ColorConstants.ARGBAlphaMask);
+        Trace.Assert(ColorValueTable.Length == ColorKindTable.Length);
 
-            var colorValueTable = ColorValueTable;
-            for (var index = 1; index < colorValueTable.Length; ++index)
+        var colorValueTable = ColorValueTable;
+        for (var index = 1; index < colorValueTable.Length; ++index)
+        {
+            if (ColorKindTable[index] == KnownColorKindWeb && colorValueTable[index] == argb)
             {
-                if (ColorKindTable[index] == KnownColorKindWeb && colorValueTable[index] == argb)
-                {
-                    return Color.FromKnownColor((KnownColor)index);
-                }
+                return ((GtkKnownColor)index).FromKnownColor();
             }
-
-            // Not a known color
-            return Color.FromArgb((int)argb);
         }
 
-        public static uint KnownColorToArgb(KnownColor color)
+        // Not a known color
+        return Color.FromArgb((int)argb);
+    }
+
+    internal static GtkKnownColor ArgbToGtkKnownColor(uint argb)
+    {
+        Trace.Assert((argb & ColorConstants.ARGBAlphaMask) == ColorConstants.ARGBAlphaMask);
+        Trace.Assert(ColorValueTable.Length == ColorKindTable.Length);
+
+        var colorValueTable = ColorValueTable;
+        for (var index = 1; index < colorValueTable.Length; ++index)
         {
-            Debug.Assert(color is > 0 and <= KnownColor.RebeccaPurple);
-
-            return ColorKindTable[(int)color] == KnownColorKindSystem
-                 ? GetSystemColorArgb(color)
-                 : ColorValueTable[(int)color];
+            if (ColorKindTable[index] == KnownColorKindWeb && colorValueTable[index] == argb)
+            {
+                return ((GtkKnownColor)index);
+            }
         }
+
+        // Not a known color
+        return default;
+    }
+
+    public static uint KnownColorToArgb(GtkKnownColor color)
+    {
+        Trace.Assert(color is > 0 and <= GtkKnownColor.RebeccaPurple);
+
+        return ColorKindTable[(int)color] == KnownColorKindSystem
+             ? GetSystemColorArgb(color)
+             : ColorValueTable[(int)color];
+    }
 
 #if FEATURE_WINDOWS_SYSTEM_COLORS
-        public static uint GetSystemColorArgb(KnownColor color)
-        {
-            Debug.Assert(Color.IsKnownColorSystem(color));
+    public static uint GetSystemColorArgb(KnownColor color)
+    {
+        Trace.Assert(Color.IsKnownColorSystem(color));
 
-            return ColorTranslator.COLORREFToARGB(Interop.User32.GetSysColor((byte)ColorValueTable[(int)color]));
-        }
-#else
-        public static uint GetSystemColorArgb(KnownColor color)
-        {
-            Debug.Assert(Color.IsKnownColorSystem(color));
-
-            return ColorValueTable[(int)color];
-        }
-#endif
+        return ColorTranslator.COLORREFToARGB(Interop.User32.GetSysColor((byte)ColorValueTable[(int)color]));
     }
+#else
+    public static uint GetSystemColorArgb(GtkKnownColor color)
+    {
+        Trace.Assert(color.IsKnownColorSystem());
+
+        return ColorValueTable[(int)color];
+    }
+#endif
 }

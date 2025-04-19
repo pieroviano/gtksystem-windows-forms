@@ -214,4 +214,10 @@
   <data name="FontDialog_RunDialog_Select_Font" xml:space="preserve">
     <value>Sélectionner une police</value>
   </data>
+  <data name="PrintPreviewDialog_Init_Print_preview" xml:space="preserve">
+	  <value>Aperçu avant impression</value>
+  </data>
+  <data name="PrintPreviewDialog_Init_Print" xml:space="preserve">
+	  <value>Imprimer</value>
+  </data>
 </root>

@@ -3,15 +3,16 @@ using System.Reflection;
 
 namespace Logger;
 
-class LogGenerator
+internal class LogGenerator
 {
-    [STAThread()]
-		static int Main2(string[] args)
+    [STAThread]
+    private static int Main2(string[] args)
     {
-        Type type = null;
-        var code = new StringBuilder ();
-			
-        try {
+        Type? type = null;
+        var code = new StringBuilder();
+
+        try
+        {
             //if (args.Length >= 1 && args [0].ToLower () == "all") {
             //        if (args.Length == 1) {
             //                GenerateAll ();
@@ -21,57 +22,62 @@ class LogGenerator
             //                return 0;
             //        }
             //}
-				
-            if (args.Length != 2 && args.Length != 3) {
+
+            if (args.Length != 2 && args.Length != 3)
+            {
                 Console.WriteLine("Must supply at least two arguments: ");
                 Console.WriteLine("\t Type to log ('all' to log all overrides and events for all types in System.Windows.Forms.dll)");
                 Console.WriteLine("\t What to log [overrides|events|overridesevents]");
                 Console.WriteLine("\t [output filename]");
                 return 1;
             }
-				
-            var a = typeof(System.Windows.Forms.Control).Assembly;
-            type = a.GetType (args [0]);
-				
-            if (type == null)
-                throw new Exception (String.Format("Type '{0}' not found.", args[0]));
 
-            code.Append ("// Automatically generated for assembly: " + a.FullName + Environment.NewLine);
-            code.Append ("// To regenerate:" + Environment.NewLine);
-            code.Append ("// mcs -r:System.Windows.Forms.dll LogGenerator.cs && mono LogGenerator.exe " + type.FullName + " " + args [1] + " " + (args.Length > 2 ? args [2] : " outfile.cs") + Environment.NewLine);
-					
+            var a = typeof(System.Windows.Forms.Control).Assembly;
+            type = a.GetType(args[0]);
+
+            if (type == null)
+                throw new Exception($"Type '{args[0]}' not found.");
+
+            code.Append("// Automatically generated for assembly: " + a.FullName + Environment.NewLine);
+            code.Append("// To regenerate:" + Environment.NewLine);
+            code.Append("// mcs -r:System.Windows.Forms.dll LogGenerator.cs && mono LogGenerator.exe " + type.FullName + " " + args[1] + " " + (args.Length > 2 ? args[2] : " outfile.cs") + Environment.NewLine);
+
             if (args[1] == "overrides" || args[1] == "overridesevents")
             {
-                code.Append (override_logger.GenerateLog (type));
+                code.Append(override_logger.GenerateLog(type));
             }
             if (args[1] == "events" || args[1] == "overridesevents")
             {
-                code.Append (event_logger.GenerateLog (type));
+                code.Append(event_logger.GenerateLog(type));
             }
 
             if (args.Length > 2)
             {
                 using var writer = new StreamWriter(args[2], false);
                 writer.Write(code);
-            } else {
+            }
+            else
+            {
                 Console.WriteLine(code);
             }
 
             return 0;
-        } catch (Exception ex) {
-            Console.WriteLine (ex.Message);
-            Console.WriteLine (ex.StackTrace);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
             return 1;
         }
     }
-	
+
 }
 
-class override_logger
+internal class override_logger
 {
-    public static string GenerateLog (Type type)
+    public static string GenerateLog(Type type)
     {
-        var members = new StringBuilder ();
+        var members = new StringBuilder();
 
         var code =
             @"
@@ -133,8 +139,10 @@ namespace GtkTests.System.Windows.Forms
 ";
 
 
-        foreach (var member in type.GetMembers (BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)) {
-            switch (member.MemberType) {
+        foreach (var member in type.GetMembers(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+        {
+            switch (member.MemberType)
+            {
                 case MemberTypes.Constructor:
                 case MemberTypes.Event:
                 case MemberTypes.Field:
@@ -154,58 +162,61 @@ namespace GtkTests.System.Windows.Forms
             string returnType;
             string access;
             string parameters;
-            var message = "";
+            var message = string.Empty;
             string membercode;
             string basecall;
 
-            if (method != null) {
-                if (!getData (method, out returnType, out access, out parameters, ref message, out basecall, false))
+            if (method != null)
+            {
+                if (!getData(method, out returnType, out access, out parameters, ref message, out basecall, false))
                     continue;
-                membercode = string.Format (method_impl, method.Name, access, returnType, parameters, message, basecall);
+                membercode = string.Format(method_impl, method.Name, access, returnType, parameters, message, basecall);
 
-            } else {
-                var getstr = "";
-                var setstr = "";
+            }
+            else
+            {
+                var getstr = string.Empty;
+                var setstr = string.Empty;
 
-                var get = (property.CanRead ? property.GetGetMethod () : null);
+                var get = (property!.CanRead ? property.GetGetMethod() : null);
 
                 if (get == null)
                     continue;
 
-                if (!getData (get, out returnType, out access, out parameters, ref message, out basecall, true))
+                if (!getData(get, out returnType, out access, out parameters, ref message, out basecall, true))
                     continue;
 
-                getstr = string.Format (get_impl, property.Name, message);
-                setstr = string.Format (set_impl, property.Name, message);
+                getstr = string.Format(get_impl, property.Name, message);
+                setstr = string.Format(set_impl, property.Name, message);
 
                 if (!property.CanRead)
-                    getstr = "";
+                    getstr = string.Empty;
                 if (!property.CanWrite)
-                    setstr = "";
+                    setstr = string.Empty;
 
-                membercode = string.Format (property_impl, property.Name, access, returnType, getstr, setstr);
+                membercode = string.Format(property_impl, property.Name, access, returnType, getstr, setstr);
             }
 
-            members.Append (membercode + "\n");
+            members.Append(membercode + "\n");
         }
-        code = String.Format (code, type.Name, members.ToString (), "");
+        code = string.Format(code, type.Name, members.ToString(), string.Empty);
 
         return code;
     }
 
-    static bool getData (MethodInfo method, out string returnType, out string access, out string parameters, ref string message, out string basecall, bool allow_specialname)
+    private static bool getData(MethodInfo method, out string returnType, out string access, out string parameters, ref string message, out string basecall, bool allow_specialname)
     {
-        returnType = "";
-        access = "";
-        parameters = "";
-        message = "";
-        basecall = "";
+        returnType = string.Empty;
+        access = string.Empty;
+        parameters = string.Empty;
+        message = string.Empty;
+        basecall = string.Empty;
 
         if (method.IsPrivate)
             return false;
         if (method.IsAssembly)
             return false;
-				
+
         if (!method.IsVirtual)
             return false;
         if (method.IsFinal)
@@ -222,7 +233,7 @@ namespace GtkTests.System.Windows.Forms
         if (method.Name == "GetLifetimeService")
             return false;
 
-        returnType = method.ReturnType.FullName.Replace ("+", ".");
+        returnType = method.ReturnType.FullName!.Replace("+", ".");
         returnType = method.ReturnType.Name;//.Replace ("+", ".");
         if (returnType == "Void")
             returnType = "void";
@@ -236,51 +247,57 @@ namespace GtkTests.System.Windows.Forms
         else
             access = "?";
 
-        var msgParams = "";
-        var baseParams = "";
-        var formatParams = "";
-        ParameterInfo [] ps = method.GetParameters ();
-        parameters = "";
-        for (var i = 0; i < ps.Length; i++) {
-            var param = ps [i];
+        var msgParams = string.Empty;
+        var baseParams = string.Empty;
+        var formatParams = string.Empty;
+        ParameterInfo[] ps = method.GetParameters();
+        parameters = string.Empty;
+        for (var i = 0; i < ps.Length; i++)
+        {
+            var param = ps[i];
 
-            if (parameters != "") {
+            if (parameters != string.Empty)
+            {
                 parameters += ", ";
                 msgParams += ", ";
                 formatParams += ", ";
                 baseParams += ", ";
             }
-				
+
             string parameterType;
-				
-            if (param.ParameterType.IsByRef) {
-                parameterType = param.ParameterType.GetElementType ().Name + " ";//sparam.ParameterType.FullName.Replace ("+", ".") + " ";
+
+            if (param.ParameterType.IsByRef)
+            {
+                parameterType = param.ParameterType.GetElementType()?.Name + " ";//sparam.ParameterType.FullName.Replace ("+", ".") + " ";
                 baseParams += "ref ";
                 parameters += "ref ";
-            } else {
+            }
+            else
+            {
                 parameterType = param.ParameterType.Name + " ";
             }
-								
+
             parameters += parameterType;
 
             string name;
-            if (param.Name != null && param.Name != "")
+            if (param.Name != null && param.Name != string.Empty)
                 name = param.Name;
             else
-                name = "parameter" + (i + 1).ToString ();
+                name = "parameter" + (i + 1).ToString();
 
             parameters += param.Name + " ";
             msgParams += param.Name;
             baseParams += param.Name;
-            formatParams += param.Name + "=<{" + i.ToString () + "}>";
+            formatParams += param.Name + "=<{" + i.ToString() + "}>";
         }
-			
-        if (!method.IsAbstract) {
+
+        if (!method.IsAbstract)
+        {
             basecall = "base." + method.Name + "(" + baseParams + ");";
             if (returnType != "void")
                 basecall = "return " + basecall;
         }
-        if (msgParams != "")
+        if (msgParams != string.Empty)
             msgParams = ", " + msgParams;
         message = "ShowLocation (string.Format(\"" + method.Name + " (" + formatParams + ") \"" + msgParams + "))";
 
@@ -288,12 +305,12 @@ namespace GtkTests.System.Windows.Forms
     }
 }
 
-class event_logger
+internal class event_logger
 {
-    public static string GenerateLog (Type type)
+    public static string GenerateLog(Type type)
     {
-        var adders = new StringBuilder ();
-        var handlers = new StringBuilder ();
+        var adders = new StringBuilder();
+        var handlers = new StringBuilder();
 
         var code =
             @"
@@ -333,18 +350,16 @@ namespace GtkTests.System.Windows.Forms
 		}}
 ";
 
-        foreach (var ev in type.GetEvents ()) {
-            string handler;
-            string adder;
+        foreach (var ev in type.GetEvents())
+        {
+            ParameterInfo[] ps = ev.EventHandlerType!.GetMethod("Invoke")!.GetParameters();
+            var handler = string.Format(method, ev.Name, ps[0].ParameterType.Name, ps[1].ParameterType.Name);
+            var adder = "\t\t_obj." + ev.Name + " += new " + ev.EventHandlerType.Name + " (_obj_" + ev.Name + ");";
 
-            ParameterInfo [] ps = ev.EventHandlerType.GetMethod ("Invoke").GetParameters ();
-            handler = string.Format (method, ev.Name, ps [0].ParameterType.Name, ps [1].ParameterType.Name);
-            adder = "\t\t_obj." + ev.Name + " += new " + ev.EventHandlerType.Name + " (_obj_" + ev.Name + ");";
-
-            adders.Append (adder + Environment.NewLine);
-            handlers.Append (handler);
+            adders.Append(adder + Environment.NewLine);
+            handlers.Append(handler);
         }
-        code = String.Format (code, type.Name, adders.ToString (), handlers.ToString (), "");//type.Namespace + ".");
+        code = string.Format(code, type.Name, adders.ToString(), handlers.ToString(), "");//type.Namespace + ".");
 
         return code;
     }

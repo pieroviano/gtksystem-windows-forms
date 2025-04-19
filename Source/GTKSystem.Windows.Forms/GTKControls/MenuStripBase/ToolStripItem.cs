@@ -6,10 +6,14 @@ using Region = System.Drawing.Region;
 
 namespace System.Windows.Forms;
 
+using Color = Color;
+using Size = Size;
+using Rectangle = Rectangle;
+
 /// <summary>
 ///  A non selectable ToolStrip item
 /// </summary>
-public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IKeyboardToolTip
+public partial class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IKeyboardToolTip, ITextControl
 {
     public virtual string? UniqueKey { get; protected set; }
     public virtual Widget? Widget { get; protected set; }
@@ -33,7 +37,7 @@ public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArr
     protected ToolStripItem(string? text, Image? image, EventHandler? onClick, string? name) : this()
     {
         Name = name;
-        Text = text;
+        Text = text??string.Empty;
         if (image is { PixbufData: not null })
             Image = image;
 
@@ -44,13 +48,11 @@ public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArr
     public virtual ToolStripItemCollection Items => dropDownItems;
     private readonly ToolStripItemCollection dropDownItems;
 
-    //public virtual event EventHandler? Disposed;
-
     public virtual ToolStripItemCollection DropDownItems => dropDownItems;
 
     public virtual string? Name { get; set; }
     //public virtual string Text { get { return base.Label; } set { base.Label = value; } }
-    public virtual string? Text { get; set; }
+    public virtual string Text { get; set; } = null!;
     public virtual Color ImageTransparentColor { get; set; }
     public virtual ToolStripItemDisplayStyle DisplayStyle { get; set; }
     //public virtual Size Size { get; set; }
@@ -178,10 +180,5 @@ public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArr
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-    public ArrangedElementCollection? Children => throw new NotImplementedException();
-
-    public virtual event EventHandler? Click;
-    public virtual event EventHandler? CheckedChanged;
-    public virtual event EventHandler? CheckStateChanged;
-    public virtual event ToolStripItemClickedEventHandler? DropDownItemClicked;
+    public ArrangedElementCollection Children => throw new NotImplementedException();
 }

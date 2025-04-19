@@ -12,7 +12,7 @@ namespace System.Windows.Forms;
 [DefaultProperty("DataSource")]
 [Designer("System.Windows.Forms.Design.BindingSourceDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 [Description("DescriptionBindingSource")]
-public class BindingSource : Component, IBindingListView, ITypedList, ICancelAddNew, ISupportInitializeNotification, ICurrencyManagerProvider
+public partial class BindingSource : Component, IBindingListView, ITypedList, ICancelAddNew, ISupportInitializeNotification, ICurrencyManagerProvider
 {
     internal static readonly object EventAddingNew;
 
@@ -1176,123 +1176,6 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.AddingNew" /> event.</summary>
     /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
-    protected virtual void OnAddingNew(AddingNewEventArgs e)
-    {
-        var item = (AddingNewEventHandler)Events[EventAddingNew];
-        if (item != null)
-        {
-            item(this, e);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.BindingComplete" /> event. </summary>
-    /// <param name="e">A <see cref="T:System.Windows.Forms.BindingCompleteEventArgs" />  that contains the event data. </param>
-    protected virtual void OnBindingComplete(BindingCompleteEventArgs e)
-    {
-        var item = (BindingCompleteEventHandler)Events[EventBindingComplete];
-        if (item != null)
-        {
-            item(this, e);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.CurrentChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-    protected virtual void OnCurrentChanged(EventArgs e)
-    {
-        UnhookItemChangedEventsForOldCurrent();
-        HookItemChangedEventsForNewCurrent();
-        var item = (EventHandler)Events[EventCurrentChanged];
-        if (item != null)
-        {
-            item(this, e);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.CurrentItemChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-    protected virtual void OnCurrentItemChanged(EventArgs e)
-    {
-        var item = (EventHandler)Events[EventCurrentItemChanged];
-        if (item != null)
-        {
-            item(this, e);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.DataError" /> event.</summary>
-    /// <param name="e">A <see cref="T:System.Windows.Forms.BindingManagerDataErrorEventArgs" /> that contains the event data. </param>
-    protected virtual void OnDataError(BindingManagerDataErrorEventArgs e)
-    {
-        if (Events[EventDataError] is BindingManagerDataErrorEventHandler item)
-        {
-            item(this, e);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.DataMemberChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-    protected virtual void OnDataMemberChanged(EventArgs e)
-    {
-        if (Events[EventDataMemberChanged] is EventHandler item)
-        {
-            item(this, e);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.DataSourceChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-    protected virtual void OnDataSourceChanged(EventArgs e)
-    {
-        if (Events[EventDataSourceChanged] is EventHandler item)
-        {
-            item(this, e);
-        }
-    }
-
-    private void OnInitialized()
-    {
-        var item = (EventHandler)Events[EventInitialized];
-        if (item != null)
-        {
-            item(this, EventArgs.Empty);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.ListChanged" /> event.</summary>
-    /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-    protected virtual void OnListChanged(ListChangedEventArgs e)
-    {
-        if (!_raiseListChangedEvents || _initializing)
-        {
-            return;
-        }
-        var item = (ListChangedEventHandler)Events[EventListChanged];
-        if (item != null)
-        {
-            item(this, e);
-        }
-    }
-
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.PositionChanged" /> event.</summary>
-    /// <param name="e">A <see cref="T:System.ComponentModel.ListChangedEventArgs" /> that contains the event data.</param>
-    protected virtual void OnPositionChanged(EventArgs e)
-    {
-        var item = (EventHandler)Events[EventPositionChanged];
-        if (item != null)
-        {
-            item(this, e);
-        }
-    }
-
-    private void OnSimpleListChanged(ListChangedType listChangedType, int newIndex)
-    {
-        if (!_isBindingList)
-        {
-            OnListChanged(new ListChangedEventArgs(listChangedType, newIndex));
-        }
-    }
-
     private void ParentCurrencyManager_CurrentItemChanged(object? sender, EventArgs e)
     {
         if (_initializing)
@@ -1317,7 +1200,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         {
             object? list = null;
             IList? lists = null;
-            if (manager.Count > 0)
+            if (manager is { Count: > 0 })
             {
                 if (_dataMember != null)
                 {
@@ -1346,8 +1229,8 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             {
                 SetList(WrapObjectInBindingList(list), false, false);
             }
-            var flag1 = _lastCurrentItem == null || manager.Count == 0 || _lastCurrentItem != manager.Current ? true : Position >= Count;
-            _lastCurrentItem = manager.Count > 0 ? manager.Current : null;
+            var flag1 = manager != null && (_lastCurrentItem == null || manager.Count == 0 || _lastCurrentItem != manager.Current || Position >= Count);
+            _lastCurrentItem = manager?.Count > 0 ? manager.Current : null;
             if (flag1)
             {
                 Position = Count > 0 ? 0 : -1;
@@ -1788,95 +1671,5 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         var lists = CreateBindingList(obj?.GetType());
         lists?.Add(obj);
         return lists;
-    }
-
-    /// <summary>Occurs before an item is added to the underlying list.</summary>
-    /// <exception cref="T:System.InvalidOperationException">
-    ///   <see cref="P:System.ComponentModel.AddingNewEventArgs.NewObject" /> is not the same type as the type contained in the list.</exception>
-    [Category("CatData")]
-    [Description("BindingSourceAddingNewEventHandlerDescr")]
-    public event AddingNewEventHandler AddingNew
-    {
-        add => Events.AddHandler(EventAddingNew, value);
-        remove => Events.RemoveHandler(EventAddingNew, value);
-    }
-
-    /// <summary>Occurs when all the clients have been bound to this <see cref="T:System.Windows.Forms.BindingSource" />.</summary>
-    [Category("CatData")]
-    [Description("BindingSourceBindingCompleteEventHandlerDescr")]
-    public event BindingCompleteEventHandler BindingComplete
-    {
-        add => Events.AddHandler(EventBindingComplete, value);
-        remove => Events.RemoveHandler(EventBindingComplete, value);
-    }
-
-    /// <summary>Occurs when the currently bound item changes.</summary>
-    [Category("CatData")]
-    [Description("BindingSourceCurrentChangedEventHandlerDescr")]
-    public event EventHandler CurrentChanged
-    {
-        add => Events.AddHandler(EventCurrentChanged, value);
-        remove => Events.RemoveHandler(EventCurrentChanged, value);
-    }
-
-    /// <summary>Occurs when a property value of the <see cref="P:System.Windows.Forms.BindingSource.Current" /> property has changed.</summary>
-    [Category("CatData")]
-    [Description("BindingSourceCurrentItemChangedEventHandlerDescr")]
-    public event EventHandler CurrentItemChanged
-    {
-        add => Events.AddHandler(EventCurrentItemChanged, value);
-        remove => Events.RemoveHandler(EventCurrentItemChanged, value);
-    }
-
-    /// <summary>Occurs when a currency-related exception is silently handled by the <see cref="T:System.Windows.Forms.BindingSource" />.</summary>
-    [Category("CatData")]
-    [Description("BindingSourceDataErrorEventHandlerDescr")]
-    public event BindingManagerDataErrorEventHandler DataError
-    {
-        add => Events.AddHandler(EventDataError, value);
-        remove => Events.RemoveHandler(EventDataError, value);
-    }
-
-    /// <summary>Occurs when the <see cref="P:System.Windows.Forms.BindingSource.DataMember" /> property value has changed.</summary>
-    [Category("CatData")]
-    [Description("BindingSourceDataMemberChangedEventHandlerDescr")]
-    public event EventHandler DataMemberChanged
-    {
-        add => Events.AddHandler(EventDataMemberChanged, value);
-        remove => Events.RemoveHandler(EventDataMemberChanged, value);
-    }
-
-    /// <summary>Occurs when the <see cref="P:System.Windows.Forms.BindingSource.DataSource" /> property value has changed.</summary>
-    [Category("CatData")]
-    [Description("BindingSourceDataSourceChangedEventHandlerDescr")]
-    public event EventHandler DataSourceChanged
-    {
-        add => Events.AddHandler(EventDataSourceChanged, value);
-        remove => Events.RemoveHandler(EventDataSourceChanged, value);
-    }
-
-    /// <summary>Occurs when the underlying list changes or an item in the list changes.</summary>
-    [Category("CatData")]
-    [Description("BindingSourceListChangedEventHandlerDescr")]
-    public event ListChangedEventHandler ListChanged
-    {
-        add => Events.AddHandler(EventListChanged, value);
-        remove => Events.RemoveHandler(EventListChanged, value);
-    }
-
-    /// <summary>Occurs after the value of the <see cref="P:System.Windows.Forms.BindingSource.Position" /> property has changed.</summary>
-    [Category("CatData")]
-    [Description("BindingSourcePositionChangedEventHandlerDescr")]
-    public event EventHandler PositionChanged
-    {
-        add => Events.AddHandler(EventPositionChanged, value);
-        remove => Events.RemoveHandler(EventPositionChanged, value);
-    }
-
-    /// <summary>Occurs when the <see cref="T:System.Windows.Forms.BindingSource" /> is initialized.</summary>
-    event EventHandler ISupportInitializeNotification.Initialized
-    {
-        add => Events.AddHandler(EventInitialized, value);
-        remove => Events.RemoveHandler(EventInitialized, value);
     }
 }

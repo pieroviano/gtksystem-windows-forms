@@ -1,15 +1,16 @@
 ﻿using Cairo;
 using Gtk;
-using Color = System.Drawing.Color;
-using Image = System.Drawing.Image;
 
 namespace System.Windows.Forms;
+
+using Color = System.Drawing.Color;
+using Image = System.Drawing.Image;
 
 public interface IGtkControlOverride
 {
     event DrawnHandler? DrawnBackground;
     event PaintEventHandler? Paint;
-    event PaintGraphicsEventHandler? PaintGraphics;
+    event EventHandler<PaintGraphicsEventArgs> PaintGraphics;
     Color? BackColor { get; set; }
     Image? BackgroundImage { get; set; }
     ImageLayout BackgroundImageLayout { get; set; }

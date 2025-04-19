@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -12,17 +12,27 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms.Design;
 using Cairo;
-using Color = System.Drawing.Color;
+using Context = Cairo.Context;
 using Font = System.Drawing.Font;
+using FontFamily = System.Drawing.FontFamily;
 using Graphics = System.Drawing.Graphics;
 using Image = System.Drawing.Image;
-using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
+using Menu = Gtk.Menu;
 using Region = System.Drawing.Region;
 using Size = System.Drawing.Size;
 using Task = System.Threading.Tasks.Task;
+using Window = Gtk.Window;
+#if NET462_OR_GREATER
+using GtkSystemColors = System.Drawing.SystemColors;
+#endif
 
 namespace System.Windows.Forms;
+
+using Color = Drawing.Color;
+using Size = Size;
+using SizeF = SizeF;
+using Rectangle = Drawing.Rectangle;
+using Point = Drawing.Point;
 
 [DefaultEvent("Click")]
 [DefaultProperty("Text")]
@@ -30,42 +40,61 @@ namespace System.Windows.Forms;
 [ToolboxItemFilter("System.Windows.Forms")]
 public partial class Control : Component, IControl, ISynchronizeInvoke, ISupportInitialize, IArrangedElement, IBindableComponent
 {
-    public Gtk.Application Application { get; } = Forms.Application.Init();
+    public Gtk.Application Application { get; }
+
     public string? UniqueKey { get; protected set; }
 
     public virtual IWidget Widget => (IWidget)GtkControl!;
+
     public virtual IControlGtk Self => (IControlGtk)GtkControl!;
 
-    public virtual object? GtkControl { get; set; }
+    public virtual object? GtkControl
+    {
+        get => gtkControl ??= new ControlWidget();
+        set => gtkControl = value;
+    }
 
     public static event EventHandler? BeforeInit;
+
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+    private ArrangedElementCollection? arrangedElementCollection;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
     private Cursor? cursor;
     private ImeMode imeMode;
     private ContextMenuStrip? _contextMenuStrip;
     private Padding margin;
+    private AnchorStyles _anchor;
+    private bool _autoSize;
+    private BorderStyle _borderStyle;
     private bool _capture;
     private bool causesValidation;
     private AccessibleObject? accessibilityObject;
     private BindingContext? bindingContext;
+    private int sizeWidth;
+    private int sizeHeight;
+    private int locationX;
+    private int locationY;
+    private bool widgetRealized;
+    private ImageSurface? image;
+    private Surface? surface;
+    private Context? context;
 
     public Control()
     {
+        if (!Form.ThreadInitialized)
+        {
+            Form.ThreadInitialized = true;
+        }
+
+        ForeColor = GtkSystemColors.WindowText;
+        Application = Forms.Application.Init();
+
         Init();
-    }
-
-    public virtual void PerformClick()
-    {
-        OnClick(EventArgs.Empty);
-    }
-
-    protected virtual void OnBeforeInit(EventArgs e)
-    {
-        BeforeInit?.Invoke(this, e);
     }
 
     private ControlStyles controlStyle;
 
-    protected bool GetStyle(ControlStyles flag)
+    protected internal bool GetStyle(ControlStyles flag)
     {
         return (controlStyle & flag) == flag;
     }
@@ -126,6 +155,18 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             SetStyle(ControlStyles.UseTextForAccessibility, true);
         }
+
+        if (Self != null)
+        {
+            Self.Shown += (_, _) =>
+            {
+                var useAsyncInvokeArgs = new UseAsyncInvokeArgs(System.Windows.Forms.Application.UseAsyncInvoke);
+                OnSetUseAsyncInvoke(useAsyncInvokeArgs);
+                UseAsyncInvoke = useAsyncInvokeArgs.UseAsyncInvoke;
+                FakeHandle = (IntPtr)int.MaxValue;
+            };
+        }
+        Visible = true;
     }
 
     private void Control_Disposed(object? sender, EventArgs e)
@@ -136,10 +177,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    private int sizeWidth;
-    private int sizeHeight;
-    private int locationX;
-    private int locationY;
     private void Widget_SizeAllocated(object? o, SizeAllocatedArgs args)
     {
         if (args.Allocation.Width != sizeWidth || args.Allocation.Height != sizeHeight)
@@ -156,22 +193,11 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnLocationChanged(EventArgs e)
-    {
-        LocationChanged?.Invoke(this, e);
-    }
-
     private void Widget_ConfigureEvent(object? o, ConfigureEventArgs args)
     {
         OnMove(args);
     }
 
-    protected virtual void OnMove(ConfigureEventArgs e)
-    {
-        Move?.Invoke(this, e);
-    }
-
-    private bool widgetRealized;
     private void Widget_Realized(object? sender, EventArgs e)
     {
         if (widgetRealized == false)
@@ -192,69 +218,64 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-        private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
-        {
-            if (o is Widget { Window: not null } owidget)
-            {
-                var result = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
-                else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
-                else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
-
-                owidget.Window.GetOrigin(out var x, out var y);// Avoiding event penetration errors
-            if (MouseDown != null)
-                {
-                    MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                }
-            }
-        }
-        private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-        {
-            if (o is Widget { Window: not null } owidget)
-            {
-                var result = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
-                else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
-                else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
-                owidget.Window.GetOrigin(out var x, out var y);
-                if (MouseUp != null)
-                {
-                    MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                }
-                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-                {
-                    if (MouseDoubleClick != null)
-                        MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                    if (DoubleClick != null)
-                        DoubleClick(this, EventArgs.Empty);
-                }
-                else
-                {
-                    if (Click != null)
-                        Click(this, EventArgs.Empty);
-                    if (MouseClick != null)
-                        MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                }
-                if (ContextMenuStrip != null)
-                {
-                    if (args.Event.Button == 3)
-                    {
-                        ContextMenuStrip.Widget.ShowAll();
-                        ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
-                    }
-                }
-            }
-        }
-
-    protected virtual void OnDoubleClick(EventArgs e)
+    private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
     {
-        DoubleClick?.Invoke(this, e);
+        if (o is Widget { Window: not null } owidget)
+        {
+            var result = MouseButtons.None;
+            if (args.Event.Button == 1)
+                result = MouseButtons.Left;
+            else if (args.Event.Button == 2)
+                result = MouseButtons.Middle;
+            else if (args.Event.Button == 3)
+                result = MouseButtons.Right;
+
+            owidget.Window.GetOrigin(out var x, out var y);// Avoiding event penetration errors
+            if (MouseDown != null)
+            {
+                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            }
+        }
+    }
+    private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+    {
+        if (o is Widget { Window: not null } owidget)
+        {
+            var result = MouseButtons.None;
+            if (args.Event.Button == 1)
+                result = MouseButtons.Left;
+            else if (args.Event.Button == 2)
+                result = MouseButtons.Middle;
+            else if (args.Event.Button == 3)
+                result = MouseButtons.Right;
+            owidget.Window.GetOrigin(out var x, out var y);
+            if (MouseUp != null)
+            {
+                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            }
+            if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+            {
+                if (MouseDoubleClick != null)
+                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                if (DoubleClick != null)
+                    DoubleClick(this, EventArgs.Empty);
+            }
+            else
+            {
+                if (Click != null)
+                    Click(this, EventArgs.Empty);
+                if (MouseClick != null)
+                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            }
+            if (ContextMenuStrip != null)
+            {
+                if (args.Event.Button == 3)
+                {
+                    ContextMenuStrip.Widget.ShowAll();
+                    ((Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                }
+            }
+        }
     }
 
     private void Widget_EnterNotifyEvent(object? o, EnterNotifyEventArgs args)
@@ -284,30 +305,10 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         OnMouseHover(args);
     }
 
-    protected virtual void OnMouseHover(EnterNotifyEventArgs e)
-    {
-        MouseHover?.Invoke(this, e);
-    }
-
-    protected virtual void OnMouseEnter(EnterNotifyEventArgs e)
-    {
-        MouseEnter?.Invoke(this, e);
-    }
-
-    protected virtual void OnEnter(EnterNotifyEventArgs e)
-    {
-        Enter?.Invoke(this, e);
-    }
-
     private void Widget_MotionNotifyEvent(object? o, MotionNotifyEventArgs args)
     {
         var eventArgs = new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0);
         OnMouseMove(eventArgs);
-    }
-
-    protected virtual void OnMouseMove(MouseEventArgs e)
-    {
-        MouseMove?.Invoke(this, e);
     }
 
     private void Widget_LeaveNotifyEvent(object? o, LeaveNotifyEventArgs args)
@@ -321,69 +322,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         OnMouseLeave(args);
     }
 
-    protected virtual void OnMouseLeave(LeaveNotifyEventArgs e)
-    {
-        MouseLeave?.Invoke(this, e);
-    }
-
-    protected virtual void OnLeave(LeaveNotifyEventArgs e)
-    {
-        Leave?.Invoke(this, e);
-    }
-
     private void Widget_ScrollEvent(object? o, Gtk.ScrollEventArgs args)
     {
         var eventArgs = new MouseEventArgs(MouseButtons.None, 0, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY);
         OnMouseWheel(eventArgs);
     }
 
-    protected virtual void OnMouseWheel(MouseEventArgs e)
-    {
-        MouseWheel?.Invoke(this, e);
-    }
-
-    private void Widget_FocusInEvent(object? o, FocusInEventArgs args)
-    {
-        OnGotFocus(args);
-    }
-
-    protected virtual void OnGotFocus(FocusInEventArgs e)
-    {
-        GotFocus?.Invoke(this, e);
-    }
-
     private void Widget_FocusOutEvent(object? o, FocusOutEventArgs args)
     {
         OnLostFocus(args);
 
+        var cancelEventArgs = new CancelEventArgs(false);
         OnValidating(cancelEventArgs);
         if (Validated != null && cancelEventArgs.Cancel == false)
             OnValidated(cancelEventArgs);
-    }
-
-    protected virtual void OnValidated(CancelEventArgs e)
-    {
-        Validated?.Invoke(this, e);
-    }
-
-    protected virtual void OnValidating(CancelEventArgs e)
-    {
-        Validating?.Invoke(this, e);
-    }
-
-    protected virtual void OnTextChanged(EventArgs e)
-    {
-        TextChanged?.Invoke(this, e);
-    }
-
-    protected internal virtual void OnLoad(EventArgs e)
-    {
-        Load?.Invoke(this, e);
-    }
-
-    protected virtual void OnLostFocus(FocusOutEventArgs e)
-    {
-        LostFocus?.Invoke(this, e);
     }
 
     private void Widget_KeyPressEvent(object? o, Gtk.KeyPressEventArgs args)
@@ -422,12 +374,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnKeyPress(KeyPressEventArgs e)
-    {
-        KeyPress?.Invoke(this, e);
-    }
-
-    //===================
     protected virtual void InitStyle(Widget widget)
     {
         SetStyle(widget);
@@ -446,6 +392,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         if (Widget is { IsMapped: true })
             Self.Override.OnAddClass();
     }
+
     protected virtual void SetStyle(Widget widget)
     {
         var style = new StringBuilder();
@@ -644,15 +591,18 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             }
         }
     }
+
     protected virtual void SetStyle(ControlStyles styles, bool value)
     {
         controlStyle = value ? controlStyle | styles : controlStyle & ~styles;
     }
 
     public virtual Image? Image { get; set; }
+
     public virtual ContentAlignment ImageAlign { get; set; }
 
     public virtual bool UseVisualStyleBackColor { get; set; } = true;
+
     public virtual Color VisualStyleBackColor { get; set; }
 
     public virtual ImageLayout BackgroundImageLayout
@@ -672,11 +622,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnBackgroundImageLayoutChanged(EventArgs e)
-    {
-        BackgroundImageLayoutChanged?.Invoke(this, e);
-    }
-
     public virtual Image? BackgroundImage
     {
         get => Self == null ? null : Self.Override.BackgroundImage;
@@ -693,11 +638,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 }
             }
         }
-    }
-
-    protected virtual void OnBackgroundImageChanged(EventArgs e)
-    {
-        BackgroundImageChanged?.Invoke(this, e);
     }
 
     public virtual Color BackColor
@@ -726,17 +666,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    private void OnBackColorChanged(EventArgs e)
-    {
-        BackColorChanged?.Invoke(this, e);
-    }
-
-    public event PaintEventHandler? Paint
-    {
-        add => Self.Override.Paint += value;
-        remove => Self.Override.Paint -= value;
-    }
-
     public virtual AccessibleObject? AccessibilityObject
     {
         get
@@ -744,15 +673,30 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             IsHandleCreated = true;
             return accessibilityObject;
         }
-        set => accessibilityObject = value;
+        set
+        {
+            accessibilityObject = value;
+            IsHandleCreated = true;
+        }
     }
 
-    public virtual string? AccessibleDefaultActionDescription { get; set; }
+    public virtual string? AccessibleDefaultActionDescription
+    {
+        get => accessibleDefaultActionDescription;
+        set
+        {
+            accessibleDefaultActionDescription = value;
+        }
+    }
+
     public virtual string? AccessibleDescription { get; set; }
+
     public virtual string? AccessibleName { get; set; }
+
     public virtual AccessibleRole AccessibleRole { get; set; }
+
     public virtual bool AllowDrop { get; set; }
-    private AnchorStyles _anchor;
+
     public virtual AnchorStyles Anchor
     {
         get => _anchor;
@@ -763,11 +707,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
             OnAnchorChanged(EventArgs.Empty);
         }
-    }
-
-    protected virtual void OnAnchorChanged(EventArgs e)
-    {
-        AnchorChanged?.Invoke(this, e);
     }
 
     private void SetAnchorStyles(Widget widget, AnchorStyles anchorStyles)
@@ -807,7 +746,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
     public virtual Point AutoScrollOffset { get; set; }
-    private bool _autoSize;
+
     public virtual bool AutoSize
     {
         get => _autoSize;
@@ -820,11 +759,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 OnAutoSizeChanged(EventArgs.Empty);
             }
         }
-    }
-
-    protected virtual void OnAutoSizeChanged(EventArgs e)
-    {
-        AutoSizeChanged?.Invoke(this, e);
     }
 
     internal bool bindingContextSet;
@@ -844,11 +778,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected void OnBindingContextChanged(EventArgs e)
-    {
-        BindingContextChanged?.Invoke(this, e);
-    }
-
     public virtual Rectangle Bounds
     {
         get => new(Widget.Clip.X, Widget.Clip.Y, Widget.Clip.Width, Widget.Clip.Height);
@@ -865,16 +794,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 OnClientSizeChanged(EventArgs.Empty);
             }
         }
-    }
-
-    protected virtual void OnClientSizeChanged(EventArgs e)
-    {
-        ClientSizeChanged?.Invoke(this, e);
-    }
-
-    protected virtual void OnLayout(LayoutEventArgs e)
-    {
-        Layout?.Invoke(this, e);
     }
 
     public virtual bool CanFocus => Widget.CanFocus;
@@ -906,11 +825,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnCausesValidationChanged(EventArgs e)
-    {
-        CausesValidationChanged?.Invoke(this, e);
-    }
-
     public virtual string? CompanyName { get; set; }
 
     public virtual bool ContainsFocus { get; set; }
@@ -927,11 +841,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 OnContextMenuStripChanged(EventArgs.Empty);
             }
         }
-    }
-
-    protected virtual void OnContextMenuStripChanged(EventArgs e)
-    {
-        ContextMenuStripChanged?.Invoke(this, e);
     }
 
     public virtual ControlCollection Controls { get; set; } = null!;
@@ -951,11 +860,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                 OnCursorChanged(EventArgs.Empty);
             }
         }
-    }
-
-    protected virtual void OnCursorChanged(EventArgs e)
-    {
-        CursorChanged?.Invoke(this, e);
     }
 
     public virtual ControlBindingsCollection? DataBindings { get; set; }
@@ -1009,11 +913,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnDockChanged(EventArgs e)
-    {
-        DockChanged?.Invoke(this, e);
-    }
-
     public virtual bool Enabled
     {
         get => Widget.Sensitive;
@@ -1033,11 +932,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnEnabledChanged(EventArgs e)
-    {
-        EnabledChanged?.Invoke(this, e);
-    }
-
     public virtual bool Focused => Widget.IsFocus;
     private Font? font;
     public virtual Font? Font
@@ -1046,9 +940,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             if (font == null)
             {
-                var fontdes = Widget.PangoContext.FontDescription;
-                var size = Convert.ToInt32(fontdes.Size / Pango.Scale.PangoScale);
-                return new Font(new FontFamily(fontdes.Family), size);
+                var fontdes = Widget.PangoContext?.FontDescription;
+                var size = Convert.ToInt32((fontdes?.Size ?? 0) / Pango.Scale.PangoScale);
+                if (fontdes != null)
+                {
+                    return new Font(new FontFamily(fontdes.Family), size);
+                }
             }
 
             return font;
@@ -1066,29 +963,21 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnFontChanged(EventArgs e)
-    {
-        FontChanged?.Invoke(this, e);
-    }
-
     private Color foreColor;
+
     public virtual Color ForeColor
     {
         get => foreColor;
         set
         {
             var foreColorValue = foreColor;
-            foreColor = value; UpdateStyle();
+            foreColor = value;
+            UpdateStyle();
             if (foreColorValue != value)
             {
                 OnForeColorChanged(EventArgs.Empty);
             }
         }
-    }
-
-    protected virtual void OnForeColorChanged(EventArgs e)
-    {
-        ForeColorChanged?.Invoke(this, e);
     }
 
     public virtual bool HasChildren { get; set; }
@@ -1107,11 +996,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    private void OnImeModeChanged(EventArgs e)
-    {
-        ImeModeChanged?.Invoke(this, e);
-    }
-
     public virtual bool InvokeRequired { get; set; }
 
     public virtual bool IsAccessible { get; set; }
@@ -1120,14 +1004,36 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual bool IsHandleCreated
     {
-        get => this.Widget.IsRealized;
-        set => this.Widget.IsRealized = value;
+        get => Widget?.IsRealized ?? isHandleCreated;
+        set
+        {
+            if (Widget != null)
+            {
+                Widget.IsRealized = value;
+            }
+            else
+            {
+                isHandleCreated = value;
+            }
+        }
     }
 
     public virtual bool IsMirrored { get; internal set; }
     public virtual LayoutEngine? LayoutEngine { get; set; }
 
-    public virtual string Text { get; set; } = string.Empty;
+    public virtual string Text
+    {
+        get => text;
+        set
+        {
+            var s = text;
+            text = value;
+            if (s != value)
+            {
+                OnTextChanged(EventArgs.Empty);
+            }
+        }
+    }
 
     public virtual int Top
     {
@@ -1173,11 +1079,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnMove(EventArgs e)
-    {
-        Move?.Invoke(this, e);
-    }
-
     public virtual int Right => Widget.MarginEnd;
 
     public virtual int Bottom => Widget.MarginBottom;
@@ -1194,15 +1095,15 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             }
         }
     }
-    public virtual string? Name
+    public virtual string Name
     {
-        get => Widget.Name;
+        get => Widget.Name ?? string.Empty;
         set
         {
             var widget = Widget;
             if (widget != null)
             {
-                widget.Name = value;
+                widget.Name = value ?? string.Empty;
             }
         }
     }
@@ -1214,13 +1115,49 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual bool RecreatingHandle { get; set; }
     public virtual Region? Region { get; set; }
 
-    public virtual RightToLeft RightToLeft { get; set; }
+    public virtual RightToLeft RightToLeft
+    {
+        get => rightToLeft;
+        set
+        {
+            var toLeft = rightToLeft;
+            var b = toLeft != value;
+            rightToLeft = value;
+            if (b)
+            {
+                OnRightToLeftChanged(EventArgs.Empty);
+            }
+        }
+    }
+
     private Size _size;
+    private object? gtkControl;
+    private RightToLeft rightToLeft;
+    private int tabIndex;
+    private bool tabStop;
+    private string text = string.Empty;
+
+    internal IntPtr FakeHandle
+    {
+        get => fakeHandle;
+        set
+        {
+            fakeHandle = value;
+            OnBindingContextChanged(EventArgs.Empty);
+        }
+    }
+
+    private object? tag;
+    private IntPtr fakeHandle;
+    private bool isHandleCreated;
+    private string? accessibleDefaultActionDescription;
+
     public virtual Size Size
     {
         get => _size;
         set
         {
+            var b = _size != value;
             _size = value;
             if (AutoSize == false)
             {
@@ -1235,12 +1172,50 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                     Height = value.Height;
                 }
             }
+
+            if (b)
+            {
+                OnLayout(new LayoutEventArgs(this, nameof(Size)));
+                OnResize(EventArgs.Empty);
+                OnSizeChanged(EventArgs.Empty);
+            }
         }
     }
 
-    public virtual int TabIndex { get; set; }
-    public virtual bool TabStop { get; set; }
-    public object? Tag { get; set; }
+    public virtual int TabIndex
+    {
+        get => tabIndex;
+        set
+        {
+            var index = tabIndex;
+            var b = index != value;
+            tabIndex = value;
+            if (b)
+            {
+                OnTabIndexChanged(EventArgs.Empty);
+            }
+        }
+    }
+
+    public virtual bool TabStop
+    {
+        get => tabStop;
+        set
+        {
+            var stop = tabStop;
+            tabStop = value;
+            if (stop != value)
+            {
+                OnTabStopChanged(EventArgs.Empty);
+            }
+        }
+    }
+
+    public object? Tag
+    {
+        get => tag ?? DBNull.Value;
+        set => tag = value;
+    }
 
     public virtual int Height
     {
@@ -1254,11 +1229,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
         set
         {
-            Widget.HeightRequest = Math.Max(-1, value);
+            var heightRequest = Widget.HeightRequest;
+            var max = Math.Max(-1, value);
+            var b = heightRequest != max;
+            Widget.HeightRequest = max;
             if (DockChanged != null)
                 OnDockChanged(EventArgs.Empty);
             if (AnchorChanged != null)
                 OnAnchorChanged(EventArgs.Empty);
+            if (b)
+            {
+                OnResize(EventArgs.Empty);
+                OnSizeChanged(EventArgs.Empty);
+                OnLayout(new LayoutEventArgs(this, nameof(Height)));
+            }
         }
     }
     public virtual int Width
@@ -1271,10 +1255,26 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             }
             return Widget.WidthRequest == -1 ? Widget.AllocatedWidth : Widget.WidthRequest;
         }
-        set => Widget.WidthRequest = value;
+        set
+        {
+            var request = Widget.WidthRequest;
+            var max = Math.Max(-1, value);
+            var b = request != max;
+            Widget.WidthRequest = max;
+            if (DockChanged != null)
+                OnDockChanged(EventArgs.Empty);
+            if (AnchorChanged != null)
+                OnAnchorChanged(EventArgs.Empty);
+            if (b)
+            {
+                OnResize(EventArgs.Empty);
+                OnSizeChanged(EventArgs.Empty);
+            }
+        }
     }
 
     public virtual Control? TopLevelControl { get; internal set; }
+
     public virtual bool UseWaitCursor { get; set; }
 
     public virtual bool Visible
@@ -1298,123 +1298,65 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
 
     protected virtual Size DefaultSize { get; set; }
+
     protected virtual Padding DefaultPadding { get; set; }
+
     protected virtual Size DefaultMinimumSize { get; set; }
+
     protected virtual Padding DefaultMargin { get; set; }
+
     protected virtual Cursor? DefaultCursor { get; set; }
+
     protected virtual bool DoubleBuffered { get; set; }
+
     protected int FontHeight { get; set; }
+
     protected virtual Size DefaultMaximumSize { get; set; }
+
     protected virtual ImeMode ImeModeBase { get; set; }
+
     protected virtual ImeMode DefaultImeMode { get; set; }
+
     protected virtual bool CanEnableIme { get; set; }
+
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual bool ScaleChildren { get; set; }
+
     protected bool ResizeRedraw { get; set; }
+
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected internal virtual bool ShowFocusCues { get; set; }
+
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected internal virtual bool ShowKeyboardCues { get; set; }
 
-
     public virtual IWindowTarget? WindowTarget { get; set; }
-    public event EventHandler? AutoSizeChanged;
-    public event EventHandler? BackColorChanged;
-    public event EventHandler? BackgroundImageChanged;
-    public event EventHandler? BackgroundImageLayoutChanged;
-    public event EventHandler? BindingContextChanged;
-    public event EventHandler? CausesValidationChanged;
-    public event UiCuesEventHandler? ChangeUiCues;
-    public event EventHandler? Click;
-    public event EventHandler? ClientSizeChanged;
-    public event EventHandler? ContextMenuStripChanged;
-    public event ControlEventHandler? ControlAdded;
-    public event ControlEventHandler? ControlRemoved;
-    public event EventHandler? CursorChanged;
-    public event EventHandler? DockChanged;
-    public event EventHandler? AnchorChanged;
-    public event EventHandler? DoubleClick;
-    public event EventHandler? DpiChangedAfterParent;
-    public event EventHandler? DpiChangedBeforeParent;
-    public event DragEventHandler? DragDrop;
-    public event DragEventHandler? DragEnter;
-    public event EventHandler? DragLeave;
-    public event DragEventHandler? DragOver;
-    public event EventHandler? EnabledChanged;
-    public event EventHandler? Enter;
-    public event EventHandler? FontChanged;
-    public event EventHandler? ForeColorChanged;
-    public event GiveFeedbackEventHandler? GiveFeedback;
-    public event EventHandler? GotFocus;
-    public event EventHandler? HandleCreated;
-    public event EventHandler? HandleDestroyed;
-    public event HelpEventHandler? HelpRequested;
-    public event EventHandler? ImeModeChanged;
-    public event InvalidateEventHandler? Invalidated;
-    public event KeyEventHandler? KeyDown;
-    public event KeyPressEventHandler? KeyPress;
-    public event KeyEventHandler? KeyUp;
-    public event LayoutEventHandler? Layout;
-    public event EventHandler? Leave;
-    public event EventHandler? LocationChanged;
-    public event EventHandler? LostFocus;
-    public event EventHandler? MarginChanged;
-    public event EventHandler? MouseCaptureChanged;
-    public event MouseEventHandler? MouseClick;
-    public event MouseEventHandler? MouseDoubleClick;
-    public event MouseEventHandler? MouseDown;
-    public event EventHandler? MouseEnter;
-    public event EventHandler? MouseHover;
-    public event EventHandler? MouseLeave;
-    public event MouseEventHandler? MouseMove;
-    public event MouseEventHandler? MouseUp;
-    public event MouseEventHandler? MouseWheel;
-    public event EventHandler? Move;
-    public event EventHandler? PaddingChanged;
-    //public event PaintEventHandler? Paint;
-    public event EventHandler? ParentChanged;
-    public event PreviewKeyDownEventHandler? PreviewKeyDown;
-    public event QueryAccessibilityHelpEventHandler? QueryAccessibilityHelp;
-    public event QueryContinueDragEventHandler? QueryContinueDrag;
-    public event EventHandler? RegionChanged;
-    public event EventHandler? Resize;
-    public event EventHandler? RightToLeftChanged;
-    public event EventHandler? SizeChanged;
-    public event EventHandler? StyleChanged;
-    public event EventHandler? SystemColorsChanged;
-    public event EventHandler? TabIndexChanged;
-    public event EventHandler? TabStopChanged;
-    public event EventHandler? TextChanged;
-    public event EventHandler? PropertyChanged;
 
-    readonly CancelEventArgs cancelEventArgs = new(false);
-    public event EventHandler? Validated;
-    public event CancelEventHandler? Validating;
-    public event EventHandler? VisibleChanged;
-    public event EventHandler? PreLoad;
-    public event EventHandler? Load;
     public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
     {
         var task = Task.Factory.StartNew(state =>
         {
-            method.DynamicInvoke((object[])state);
+            method.DynamicInvoke((object[]?)state);
         }, args);
 
         return task;
     }
+
     public virtual IAsyncResult BeginInvoke(Delegate method)
     {
         return BeginInvoke(method, []);
     }
+
     public virtual IAsyncResult BeginInvoke(Action method)
     {
         var task = Task.Factory.StartNew(method);
         return task;
     }
+
     public virtual object EndInvoke(IAsyncResult asyncResult)
     {
         if (asyncResult is Task task)
@@ -1441,9 +1383,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         created = true;
     }
 
-    ImageSurface? image;
-    Surface? surface;
-    Context? context;
     public virtual Graphics CreateGraphics()
     {
         try
@@ -1455,17 +1394,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             surface = image.CreateSimilar(Content.ColorAlpha, Widget.AllocatedWidth, Widget.AllocatedHeight);
             context?.Dispose();
             context = new Context(surface);
+            IsHandleCreated = true;
             return new Graphics(Widget, context, Widget.Allocation);
         }
         catch (Exception ex)
         {
-            Console.WriteLine("画版创建失败：" + ex.Message);
+            Trace.WriteLine(@"Failed to create graphics：" + ex.Message);
             throw;
         }
     }
 
-    private void Override_PaintGraphics(Context? cr, Rectangle rec)
+    private void Override_PaintGraphics(object sender, PaintGraphicsEventArgs e)
     {
+        var cr = e.Context;
+        var rec = e.Rectangle;
         if (surface != null && cr != null)
         {
             cr.Save();
@@ -1596,7 +1538,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             if (Self != null)
                 Self.Override.OnAddClass();
-            Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+            Widget.Window?.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
             if (invalidateChildren && Widget is Gtk.Container container)
             {
                 foreach (var child in container.Children)
@@ -1746,6 +1688,11 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
                     child.QueueDraw();
             }
         }
+
+        if (Visible && (Handle != IntPtr.Zero || FakeHandle != IntPtr.Zero))
+        {
+            OnInvalidated(new InvalidateEventArgs(default));
+        }
     }
 
     public virtual void ResetBackColor()
@@ -1797,6 +1744,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         created = true;
     }
+
     public virtual void Scale(float ratio)
     {
 
@@ -1870,6 +1818,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             Widget.SetClip(rect);
         }
     }
+
     public virtual Rectangle ClientRectangle { get { Widget.GetAllocatedSize(out var allocation, out _); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } }
 
     public virtual Size ClientSize
@@ -1893,19 +1842,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         get
         {
-            OnHandleCreated(EventArgs.Empty);
+            if (FakeHandle == IntPtr.Zero)
+            {
+                FakeHandle = (IntPtr)int.MaxValue;
+            }
+            if (Widget.Handle != IntPtr.Zero || FakeHandle != IntPtr.Zero)
+            {
+                OnHandleCreated(EventArgs.Empty);
+            }
             return Widget.Handle;
         }
-        set => OnHandleCreated(EventArgs.Empty);
-    }
-
-
-    protected virtual void OnHandleCreated(EventArgs e)
-    {
-        if (!IsHandleCreated)
+        set
         {
-            IsHandleCreated = true;
-            HandleCreated?.Invoke(this, e);
+            FakeHandle = value;
+            OnHandleCreated(EventArgs.Empty);
         }
     }
 
@@ -1923,20 +1873,16 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual void OnMarginChanged(EventArgs e)
-    {
-        MarginChanged?.Invoke(this, e);
-    }
-
     public virtual Size MaximumSize { get; set; }
+
     public virtual Size MinimumSize { get; set; }
-    private BorderStyle _BorderStyle;
+
     public virtual BorderStyle BorderStyle
     {
-        get => _BorderStyle;
+        get => _borderStyle;
         set
         {
-            _BorderStyle = value;
+            _borderStyle = value;
             if (value == BorderStyle.FixedSingle)
             {
                 Widget.StyleContext.RemoveClass("BorderFixed3D");
@@ -1970,14 +1916,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         Widget?.ShowAll();
     }
-    protected virtual void OnPaint(PaintEventArgs e)
-    {
-        Self.Override.OnPaint(e);
-    }
-    protected virtual void OnParentChanged(EventArgs e)
-    {
-        ParentChanged?.Invoke(this, e);
-    }
 
     public virtual void SuspendLayout()
     {
@@ -2008,37 +1946,29 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
 
     }
+
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public virtual void EndInit()
     {
 
     }
 
-    public new virtual event EventHandler? Disposed;
-    public event CancelEventHandler? Disposing;
-
     public new virtual void Dispose()
     {
-        var eventArgs = new CancelEventArgs();
-        OnDisposing(eventArgs);
-        if (eventArgs.Cancel)
+        if (!IsDisposed)
         {
-            return;
+            var eventArgs = new CancelEventArgs();
+            OnDisposing(eventArgs);
+            if (eventArgs.Cancel)
+            {
+                return;
+            }
+            Dispose(true);
+            base.Dispose();
+            IsHandleCreated = false;
+            OnDisposed(EventArgs.Empty);
+
         }
-        Dispose(true);
-        base.Dispose();
-        IsHandleCreated = false;
-        OnDisposed(EventArgs.Empty);
-    }
-
-    protected virtual void OnDisposing(CancelEventArgs e)
-    {
-        Disposing?.Invoke(this, e);
-    }
-
-    protected virtual void OnDisposed(EventArgs e)
-    {
-        Disposed?.Invoke(this, e);
     }
 
     protected override void Dispose(bool disposing)
@@ -2065,11 +1995,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         OnHandleDestroyed(EventArgs.Empty);
     }
 
-    protected virtual void OnHandleDestroyed(EventArgs e)
-    {
-        HandleDestroyed?.Invoke(this, e);
-    }
-
     protected virtual CreateParams CreateParams
     {
         get
@@ -2086,67 +2011,15 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-        private ArrangedElementCollection? arrangedElementCollection;
-        public ArrangedElementCollection? Children => arrangedElementCollection;
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnResize(EventArgs e)
-        {
-            this.Widget?.QueueResize();
-            Resize?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnClick(EventArgs e)
-        {
-            Click?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseDoubleClick(MouseEventArgs e)
-        {
-            MouseDoubleClick?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseClick(MouseEventArgs e)
-        {
-            MouseClick?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseDown(MouseEventArgs e)
-        {
-            MouseDown?.Invoke(this, e);
-        }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        protected virtual void OnMouseUp(MouseEventArgs e)
-        {
-            MouseUp?.Invoke(this, e);
-        }
-        protected virtual void OnKeyDown(KeyEventArgs e)
-        {
-            KeyDown?.Invoke(this, e);
-        }
-        protected virtual void OnKeyUp(KeyEventArgs e)
-        {
-            KeyUp?.Invoke(this, e);
-        }
-        protected virtual void OnVisibleChanged(EventArgs e)
-        {
+    public ArrangedElementCollection? Children => arrangedElementCollection;
 
-        }
-        protected virtual void OnSizeChanged(EventArgs e)
-        {
-            SizeChanged?.Invoke(this, e);
-        }
-        protected virtual void Select(bool directed, bool forward)
-        {
-
-    }
-    protected virtual void OnGotFocus(EventArgs e)
+    protected virtual void Select(bool directed, bool forward)
     {
-        GotFocus?.Invoke(this, e);
+
     }
 
     protected virtual void WndProc(ref Message m)
     {
-        //Console.WriteLine($"HWnd:{m.HWnd},WParam:{m.WParam},LParam:{m.LParam},Msg:{m.Msg}");
     }
 
     public void SetBounds(Rectangle bounds, BoundsSpecified specified)
@@ -2157,13 +2030,4 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
     }
 
-    protected virtual void OnPropertyChanged(EventArgs e)
-    {
-        PropertyChanged?.Invoke(this, e);
-    }
-
-    protected virtual void OnPreLoad(EventArgs e)
-    {
-        PreLoad?.Invoke(this, e);
-    }
 }

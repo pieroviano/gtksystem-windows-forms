@@ -26,6 +26,7 @@
 //	Jonathan Pobst (monkey@jpobst.com)
 //
 
+using GtkTests.Helpers;
 using System.Windows.Forms;
 
 namespace GtkTests.System.Windows.Forms;
@@ -36,12 +37,14 @@ public class InputLanguageTest : TestHelper
     [Test]
     public void Test ()
     {
+        Application.Init();
         InputLanguage.CurrentInputLanguage = InputLanguage.DefaultInputLanguage;
     }
 
     [Test]
     public void InstalledInputLanguages_HasAtLeastOneLanguage ()
     {
+        Application.Init();
         Assert.IsTrue (InputLanguage.InstalledInputLanguages.Count > 0);
     }
 }

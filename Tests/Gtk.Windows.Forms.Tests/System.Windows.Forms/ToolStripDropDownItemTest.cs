@@ -41,13 +41,13 @@ public class ToolStripDropDownItemTest
         var tool_strip = new ToolStrip ();
         tool_strip.Items.Add (dropdown_item);
 
-        Assert.AreEqual (tool_strip.Font, dropdown_item.Font, "#A1");
+        Assert.That((object?)dropdown_item.Font, Is.EqualTo(tool_strip.Font));
 
         tool_strip.Font = new Font (tool_strip.Font, FontStyle.Bold);
-        Assert.AreEqual (tool_strip.Font, dropdown_item.Font, "#B1");
+        Assert.That((object?)dropdown_item.Font, Is.EqualTo(tool_strip.Font));
 
 
         tool_strip.Font = new Font (tool_strip.Font, FontStyle.Italic);
-        Assert.AreEqual (tool_strip.Font, dropdown_item.Font, "#D1");
+        Assert.That((object?)dropdown_item.Font, Is.EqualTo(tool_strip.Font));
     }
 }

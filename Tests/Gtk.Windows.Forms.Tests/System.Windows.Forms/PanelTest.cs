@@ -7,6 +7,7 @@
 // (C) 2007 Novell, Inc.
 //
 
+using GtkTests.Helpers;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -20,10 +21,11 @@ public class PanelTest : TestHelper
     {
         var p = new Panel ();
 
-        Assert.AreEqual (false, p.AutoSize, "A1");
-        Assert.AreEqual (BorderStyle.None, p.BorderStyle, "A3");
-        Assert.AreEqual (false, p.TabStop, "A4");
-        Assert.AreEqual (string.Empty, p.Text, "A5");
+        Assert.That((object?)p.AutoSize, Is.EqualTo(false));
+        Assert.That((object?)p.BorderStyle, Is.EqualTo(BorderStyle.None));
+        Assert.That((object?)p.TabStop, Is.EqualTo(false));
+        object expected = string.Empty;
+        Assert.That((object?)p.Text, Is.EqualTo(expected));
     }
 
     [Test]
@@ -43,12 +45,15 @@ public class PanelTest : TestHelper
 
         f.Show ();
 
-        Assert.AreEqual (new Size (403, 403), p.ClientSize, "A1");
+        object expected = new Size (403, 403);
+        Assert.That((object?)p.ClientSize, Is.EqualTo(expected));
 			
         p.Controls.Remove (b);
-        Assert.AreEqual (new Size (200, 100), p.ClientSize, "A2");
-			
-        Assert.AreEqual (new Size (0, 0), p.ClientSize, "A3");
+        object expected1 = new Size (200, 100);
+        Assert.That((object?)p.ClientSize, Is.EqualTo(expected1));
+
+        object expected2 = new Size (0, 0);
+        Assert.That((object?)p.ClientSize, Is.EqualTo(expected2));
         f.Dispose ();
     }
 }

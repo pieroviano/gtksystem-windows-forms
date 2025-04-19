@@ -2,7 +2,7 @@
  * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
+ * author: chenhongjin
  */
 
 using Gtk;
@@ -12,7 +12,7 @@ using System.ComponentModel;
 namespace System.Windows.Forms;
 
 [ListBindable(false)]
-public class DataGridViewRowCollection : IList
+public partial class DataGridViewRowCollection : IList
 {
     private readonly ArrayList items = new();
     private readonly DataGridView? dataGridView;
@@ -38,7 +38,13 @@ public class DataGridViewRowCollection : IList
         for (var i = cells.Count; i < ncolumns; i++)
             cells.Add(new DataGridViewTextBoxCell());
         for (var i = 0; i < ncolumns; i++)
-            cells[i].ColumnIndex = i;
+        {
+            var dataGridViewCell = cells[i];
+            if (dataGridViewCell != null)
+            {
+                dataGridViewCell.ColumnIndex = i;
+            }
+        }
 
         if (ncolumns == cells.Count)
             return dataGridView!.Store.AppendValues(cells.ConvertAll(o => o).ToArray<object>());
@@ -54,7 +60,14 @@ public class DataGridViewRowCollection : IList
         for (var i = cells.Count; i < ncolumns; i++)
             cells.Add(new DataGridViewTextBoxCell());
         for (var i = 0; i < ncolumns; i++)
-            cells[i].ColumnIndex = i;
+        {
+            var dataGridViewCell = cells[i];
+            if (dataGridViewCell != null)
+            {
+                dataGridViewCell.ColumnIndex = i;
+            }
+        }
+
         if (ncolumns == cells.Count)
             return dataGridView!.Store.AppendValues(parent, cells.ConvertAll(o => o).ToArray<object>());
         return dataGridView!.Store.AppendValues(parent, cells.ConvertAll(o => o).Take(ncolumns).ToArray<object>());
@@ -138,7 +151,14 @@ public class DataGridViewRowCollection : IList
         for (var i = cells.Count; i < ncolumns; i++)
             cells.Add(new DataGridViewTextBoxCell());
         for (var i = 0; i < ncolumns; i++)
-            cells[i].ColumnIndex = i;
+        {
+            var dataGridViewCell = cells[i];
+            if (dataGridViewCell != null)
+            {
+                dataGridViewCell.ColumnIndex = i;
+            }
+        }
+
         if (ncolumns == cells.Count)
             return dataGridView!.Store.InsertWithValues(rowIndex, cells.ConvertAll(o => o).ToArray<object>());
         return dataGridView!.Store.InsertWithValues(rowIndex, cells.ConvertAll(o => o).Take(ncolumns ?? 0).ToArray<object>());
@@ -170,12 +190,16 @@ public class DataGridViewRowCollection : IList
 
         for (var i = idx; i < items.Count; i++)
         {
-            ((DataGridViewRow)items[i]).Index = idx;
+            var dataGridViewRow = (DataGridViewRow?)items[i];
+            if (dataGridViewRow != null)
+            {
+                dataGridViewRow.Index = idx;
+            }
         }
     }
 
 
-    public DataGridViewRow this[int index]
+    public DataGridViewRow? this[int index]
     {
         get
         {
@@ -205,8 +229,6 @@ public class DataGridViewRowCollection : IList
         get => items[index];
         set => throw new NotSupportedException();
     }
-
-    public event CollectionChangeEventHandler? CollectionChanged;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public virtual int Add()
@@ -311,7 +333,7 @@ public class DataGridViewRowCollection : IList
         var idx = -1;
         for (var i = 0; i < items.Count; i++)
         {
-            if (((DataGridViewRow)items[i]).State == includeFilter)
+            if (((DataGridViewRow?)items[i])?.State == includeFilter)
             {
                 idx = i;
                 break;
@@ -326,8 +348,8 @@ public class DataGridViewRowCollection : IList
         var idx = -1;
         for (var i = 0; i < items.Count; i++)
         {
-            if (((DataGridViewRow)items[i]).State == includeFilter ||
-                ((DataGridViewRow)items[i]).State == excludeFilter)
+            if (((DataGridViewRow?)items[i])?.State == includeFilter ||
+                ((DataGridViewRow?)items[i])?.State == excludeFilter)
             {
                 idx = i;
                 break;
@@ -342,7 +364,7 @@ public class DataGridViewRowCollection : IList
         var idx = -1;
         for (var i = 0; i < items.Count; i++)
         {
-            if (((DataGridViewRow)items[i]).State == includeFilter)
+            if (((DataGridViewRow?)items[i])?.State == includeFilter)
             {
                 idx = i;
             }
@@ -356,7 +378,7 @@ public class DataGridViewRowCollection : IList
         var idx = -1;
         for (var i = indexStart - 1; i < items.Count; i++)
         {
-            if (((DataGridViewRow)items[i]).State == includeFilter)
+            if (((DataGridViewRow?)items[i])?.State == includeFilter)
             {
                 idx = i;
                 break;
@@ -372,8 +394,8 @@ public class DataGridViewRowCollection : IList
         var idx = -1;
         for (var i = indexStart - 1; i < items.Count; i++)
         {
-            if (((DataGridViewRow)items[i]).State == includeFilter ||
-                ((DataGridViewRow)items[i]).State == excludeFilter)
+            if (((DataGridViewRow?)items[i])?.State == includeFilter ||
+                ((DataGridViewRow?)items[i])?.State == excludeFilter)
             {
                 idx = i;
                 break;
@@ -389,8 +411,8 @@ public class DataGridViewRowCollection : IList
         var idx = -1;
         for (var i = indexStart - 1; i > -1; i--)
         {
-            if (((DataGridViewRow)items[i]).State == includeFilter ||
-                ((DataGridViewRow)items[i]).State == excludeFilter)
+            if (((DataGridViewRow?)items[i])?.State == includeFilter ||
+                ((DataGridViewRow?)items[i])?.State == excludeFilter)
             {
                 idx = i;
                 break;
@@ -405,7 +427,7 @@ public class DataGridViewRowCollection : IList
         var idx = -1;
         for (var i = indexStart - 1; i > -1; i--)
         {
-            if (((DataGridViewRow)items[i]).State == includeFilter)
+            if (((DataGridViewRow?)items[i])?.State == includeFilter)
             {
                 idx = i;
                 break;
@@ -439,16 +461,16 @@ public class DataGridViewRowCollection : IList
         {
             if ((GetRowState(i) & includeFilter) == includeFilter)
             {
-                num += ((DataGridViewRow)items[i]).GetHeight(i);
+                num += ((DataGridViewRow?)items[i])?.GetHeight(i) ?? 0;
             }
         }
 
         return num;
     }
 
-    public virtual DataGridViewElementStates GetRowState(int rowIndex)
+    public virtual DataGridViewElementStates? GetRowState(int rowIndex)
     {
-        return ((DataGridViewRow)items[rowIndex]).State;
+        return ((DataGridViewRow?)items[rowIndex])?.State;
     }
 
     public int IndexOf(DataGridViewRow dataGridViewRow)
@@ -526,35 +548,33 @@ public class DataGridViewRowCollection : IList
         //reset id
         for (var i = 0; i < items.Count; i++)
         {
-            ((DataGridViewRow)items[i]).Index = i;
+            var dataGridViewRow = ((DataGridViewRow?)items[i]);
+            if (dataGridViewRow != null)
+            {
+                dataGridViewRow.Index = i;
+            }
         }
     }
 
-    public DataGridViewRow SharedRow(int rowIndex)
+    public DataGridViewRow? SharedRow(int rowIndex)
     {
         if (dataGridView != null)
         {
             var hasiter = dataGridView.Store.GetIter(out var iter, new TreePath([rowIndex]));
             if (hasiter)
             {
-                foreach (DataGridViewRow item in items)
+                foreach (DataGridViewRow? item in items)
                 {
-                    if (item.TreeIter.Equals(iter.UserData))
+                    if (item?.TreeIter.Equals(iter.UserData) ?? false)
                         return item;
                 }
             }
         }
 
-        return (DataGridViewRow)SharedList[rowIndex];
+        return (DataGridViewRow?)SharedList[rowIndex];
     }
 
     //**************************************
-    protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
-    {
-        if (CollectionChanged != null)
-            CollectionChanged(dataGridView, e);
-    }
-
     int IList.Add(object? value)
     {
         if (value is DataGridViewRow dataGridViewRow)

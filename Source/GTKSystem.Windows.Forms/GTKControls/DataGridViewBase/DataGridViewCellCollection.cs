@@ -18,7 +18,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
 
     public bool IsFixedSize => false;
 
-    object IList.this[int index]
+    object? IList.this[int index]
     {
         get => this[index];
         set
@@ -30,9 +30,9 @@ public class DataGridViewCellCollection : BaseCollection, IList
         }
     }
 
-    public DataGridViewCell this[int index]
+    public DataGridViewCell? this[int index]
     {
-        get => (DataGridViewCell)items[index];
+        get => (DataGridViewCell?)items[index];
         set
         {
             if (value == null)
@@ -44,7 +44,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
         }
     }
 
-    public DataGridViewCell this[string columnName]
+    public DataGridViewCell? this[string columnName]
     {
         get
         {
@@ -59,7 +59,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
                 throw new ArgumentException(@"DataGridViewColumnCollection_ColumnNotFound", "columnName");
             }
 
-            return (DataGridViewCell)items[dataGridViewColumn.Index];
+            return (DataGridViewCell?)items[dataGridViewColumn.Index];
         }
         set
         {
@@ -280,8 +280,12 @@ public class DataGridViewCellCollection : BaseCollection, IList
             throw new InvalidOperationException("DataGridViewCellCollection_OwningRowAlreadyBelongsToDataGridView");
         }
 
-        var dataGridViewCell = (DataGridViewCell)items[index];
-        dataGridViewCell.OwningRowInternal = null;
+        var dataGridViewCell = (DataGridViewCell?)items[index];
+        if (dataGridViewCell != null)
+        {
+            dataGridViewCell.OwningRowInternal = null;
+        }
+
         items.RemoveAt(index);
     }
 }
