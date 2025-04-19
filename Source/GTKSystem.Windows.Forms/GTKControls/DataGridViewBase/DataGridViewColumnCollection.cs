@@ -22,7 +22,7 @@ public partial class DataGridViewColumnCollection : List<DataGridViewColumn>
 
     public virtual DataGridViewColumn this[string columnName]
     {
-        get { return Find(m => m.Name == columnName); }
+        get { return Find(m => m.Name?.ToLower() == columnName?.ToLower()); }
     }
 
     protected DataGridView? DataGridView => owner;

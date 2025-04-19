@@ -25,14 +25,14 @@
 //		Andreia Gaita	(avidigal@novell.com)
 //  		Gary Barnett	(gary.barnett.mono@gmail.com)
 
-using System.Reflection;
-using System.Drawing;
-using System.Resources;
 using System.Collections;
-using GtkTests.TypeResolutionService_;
+using System.Drawing;
+using System.Reflection;
+using System.Resources;
 using GtkTests.Resources;
+using GtkTests.TypeResolutionService;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class ResXDataNodeTest : ResourcesTestHelper

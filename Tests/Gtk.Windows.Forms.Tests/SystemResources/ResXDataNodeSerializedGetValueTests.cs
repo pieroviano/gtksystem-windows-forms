@@ -26,10 +26,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Reflection;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
+using GtkTests.TypeResolutionService;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class ResXDataNodeSerializedGetValueTests : ResourcesTestHelper

@@ -40,10 +40,10 @@ public abstract class DataGridViewCell
     public Size PreferredSize => default;
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public DataGridViewRow? OwningRow => default;
+    public DataGridViewRow? OwningRow { get; set; }
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public DataGridViewColumn? OwningColumn => default;
+    public DataGridViewColumn? OwningColumn { get; set; }
 
     public bool IsInEditMode => default;
 

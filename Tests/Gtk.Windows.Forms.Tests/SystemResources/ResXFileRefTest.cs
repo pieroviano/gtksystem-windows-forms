@@ -5,13 +5,13 @@
 //     Gert Driesen <drieseng@users.sourceforge.net>
 //
 
-using GtkTests.Helpers;
 using System.ComponentModel;
 using System.Drawing;
 using System.Resources;
 using System.Text;
+using GtkTests.Helpers;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class ResXFileRefTest : TestHelper

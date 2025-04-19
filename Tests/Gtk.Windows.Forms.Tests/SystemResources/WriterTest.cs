@@ -5,7 +5,6 @@
 //     Robert Jordan <robertj@gmx.net>
 //     Gary Barnett <gary.barnett.mono@gmail.com>
 
-using GtkTests.Helpers;
 using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
@@ -13,8 +12,9 @@ using System.Drawing;
 using System.Globalization;
 using System.Resources;
 using System.Text;
+using GtkTests.Helpers;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class WriterTest : TestHelper

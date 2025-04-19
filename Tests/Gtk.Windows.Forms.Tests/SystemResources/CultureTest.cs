@@ -5,12 +5,12 @@
 //     Robert Jordan <robertj@gmx.net>
 //
 
-using System.Globalization;
 using System.Drawing;
+using System.Globalization;
 using System.Resources;
 using GtkTests.Helpers;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class CultureTest : TestHelper

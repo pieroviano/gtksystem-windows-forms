@@ -30,7 +30,7 @@ using System.ComponentModel.Design;
 using System.Reflection;
 using GtkTests.Resources;
 
-namespace GtkTests.TypeResolutionService_;
+namespace GtkTests.TypeResolutionService;
 
 public class DummyITRS : ITypeResolutionService
 {

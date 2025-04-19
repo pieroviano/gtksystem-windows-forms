@@ -8,15 +8,15 @@
 
 using System.Collections;
 using System.Globalization;
+using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Xml;
-using System.Reflection;
 using GtkTests.Helpers;
-using GtkTests.TypeResolutionService_;
 using GtkTests.Resources;
+using GtkTests.TypeResolutionService;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class ResXResourceReaderTest : TestHelper
@@ -142,7 +142,7 @@ public class ResXResourceReaderTest : TestHelper
     [Test]
     public void Close_FileName()
     {
-        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.System.Resources.compat_1_1.resx");
+        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.SystemResources.compat_1_1.resx");
 
         var r1 = new ResXResourceReader(fileName);
         r1.GetEnumerator();
@@ -158,7 +158,7 @@ public class ResXResourceReaderTest : TestHelper
     [Test]
     public void Close_Reader()
     {
-        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.System.Resources.compat_1_1.resx");
+        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.SystemResources.compat_1_1.resx");
 
         using (var sr = new StreamReader(fileName))
         {
@@ -187,7 +187,7 @@ public class ResXResourceReaderTest : TestHelper
     [Test]
     public void Close_Stream()
     {
-        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.System.Resources.compat_1_1.resx");
+        var fileName = TestResourceHelper.GetFullPathOfResource("GtkTests.SystemResources.compat_1_1.resx");
 
         using (var fs = File.OpenRead(fileName))
         {

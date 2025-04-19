@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Resources;
 using GtkTests.Resources;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class ResXDataNodeFileRefGetValueTests : ResourcesTestHelper

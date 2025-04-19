@@ -56,7 +56,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
 
             if (dataGridViewColumn == null)
             {
-                throw new ArgumentException(@"DataGridViewColumnCollection_ColumnNotFound", "columnName");
+                throw new ArgumentNullException("columnName");
             }
 
             return (DataGridViewCell?)items[dataGridViewColumn.Index];
@@ -71,7 +71,7 @@ public class DataGridViewCellCollection : BaseCollection, IList
 
             if (dataGridViewColumn == null)
             {
-                throw new ArgumentException(@"DataGridViewColumnCollection_ColumnNotFound", "columnName");
+                throw new ArgumentNullException("columnName");
             }
 
             this[dataGridViewColumn.Index] = value;

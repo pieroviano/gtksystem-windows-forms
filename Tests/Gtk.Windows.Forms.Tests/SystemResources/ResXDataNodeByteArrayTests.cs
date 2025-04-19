@@ -1,5 +1,6 @@
-﻿//
-// ResXDataNodeTypeConverterGetValueTypeNameTests.cs
+//
+// ResXDataNodeByteArrayTests.cs : Tests how ResXDataNode handles byte[]
+// type resources.
 // 
 // Author:
 //	Gary Barnett (gary.barnett.mono@gmail.com)
@@ -25,20 +26,41 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Resources;
 using System.ComponentModel.Design;
 using GtkTests.Resources;
-using GtkTests.TypeResolutionService_;
+using GtkTests.TypeResolutionService;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
-public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelper
+public class ResXDataNodeByteArrayTests : ResourcesTestHelper
 {
+
     [Test]
-    public void ITRSUsedWithNodeFromReader()
+    public void GetValueITRSNotUsedWhenNodeReturnedFromReader()
     {
-        var originalNode = new ResXDataNode("aNumber", 23L);
+        var originalNode = GetNodeEmdeddedBytes1To10();
+        var returnedNode = GetNodeFromResXReader(originalNode);
+
+        Assert.IsNotNull(returnedNode);
+        var val = returnedNode.GetValue(new ReturnIntITRS());
+        Assert.True(typeof(byte[]) == val?.GetType());
+    }
+
+    [Test]
+    public void GetValueITRSNotTouchedWhenNodeCreatedNew()
+    {
+        var node = GetNodeEmdeddedBytes1To10();
+
+        //would raise exception if param used
+        var obj = node.GetValue(new ExceptionalITRS());
+        Assert.True(typeof(byte[]) == obj?.GetType());
+    }
+
+    [Test]
+    public void GetValueTypeNameITRSIsUsedWithNodeFromReader()
+    {
+        var originalNode = GetNodeEmdeddedBytes1To10();
         var returnedNode = GetNodeFromResXReader(originalNode);
 
         Assert.IsNotNull(returnedNode);
@@ -48,28 +70,25 @@ public class ResXDataNodeTypeConverterGetValueTypeNameTests : ResourcesTestHelpe
     }
 
     [Test]
-    public void ITRSUsedEachTimeWhenNodeFromReader()
+    public void GetValueTypeNameITRSIsUsedAfterGetValueCalledWithNodeFromReader()
     {
-        var originalNode = new ResXDataNode("aNumber", 23L);
+        var originalNode = GetNodeEmdeddedBytes1To10();
         var returnedNode = GetNodeFromResXReader(originalNode);
 
         Assert.IsNotNull(returnedNode);
-        var newType = returnedNode.GetValueTypeName(new ReturnIntITRS());
-        object? expected = typeof(int).AssemblyQualifiedName;
-        Assert.That((object?)newType, Is.EqualTo(expected));
-        var origType = returnedNode.GetValueTypeName((ITypeResolutionService?)null);
-        object? expected1 = typeof(long).AssemblyQualifiedName;
-        Assert.That((object?)origType, Is.EqualTo(expected1));
-    }
-
-    [Test]
-    public void ITRSNotUsedWhenNodeCreatedNew()
-    {
-        var node = new ResXDataNode("along", 34L);
-
-        var returnedType = node.GetValueTypeName(new ReturnIntITRS());
-        object? expected = (typeof(long)).AssemblyQualifiedName;
+        var obj = returnedNode.GetValue((ITypeResolutionService?)null);
+        var returnedType = returnedNode.GetValueTypeName(new ReturnIntITRS());
+        object? expected = (typeof(int)).AssemblyQualifiedName;
         Assert.That((object?)returnedType, Is.EqualTo(expected));
     }
 
+    [Test]
+    public void GetValueTypeNameITRSNotUsedWhenNodeCreatedNew()
+    {
+        var node = GetNodeEmdeddedBytes1To10();
+
+        var returnedType = node.GetValueTypeName(new ReturnIntITRS());
+        object? expected = (typeof(byte[])).AssemblyQualifiedName;
+        Assert.That((object?)returnedType, Is.EqualTo(expected));
+    }
 }

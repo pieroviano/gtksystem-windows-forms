@@ -197,10 +197,7 @@ public partial class DataGridView : ScrollableControl
         set
         {
             _DataSource = value;
-            if (GridView.IsVisible)
-            {
-                OnSetDataSource();
-            }
+            OnSetDataSource();
         }
     }
     private void OnSetDataSource()
@@ -253,11 +250,15 @@ public partial class DataGridView : ScrollableControl
             foreach (DataRow dr in dt.Rows)
             {
                 var newRow = new DataGridViewRow();
-                foreach (var col in _columns)
+                for (var index = 0; index < _columns.Count; index++)
                 {
+                    var col = _columns[index];
                     var cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
-                    newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
+                    var dataGridViewCell = col.NewCell(cellvalue, col.ValueType);
+                    dataGridViewCell.OwningColumn = Columns[index];
+                    newRow.Cells.Add(dataGridViewCell);
                 }
+
                 _rows.Add(newRow);
             }
         }

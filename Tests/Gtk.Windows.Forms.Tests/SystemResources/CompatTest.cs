@@ -7,7 +7,7 @@
 
 using GtkTests.Helpers;
 
-namespace GtkTests.System.Resources;
+namespace GtkTests.SystemResources;
 
 [TestFixture]
 public class CompatTest : TestHelper
@@ -15,12 +15,12 @@ public class CompatTest : TestHelper
     [Test]
     public void TestReader ()
     {
-        CompatTestHelper.TestReader (TestResourceHelper.GetFullPathOfResource ("GtkTests.System.Resources.compat_1_1.resx"));
+        CompatTestHelper.TestReader (TestResourceHelper.GetFullPathOfResource ("GtkTests.SystemResources.compat_1_1.resx"));
     }
 
     [Test]
     public void TestReader_2_0 ()
     {
-        CompatTestHelper.TestReader (TestResourceHelper.GetFullPathOfResource ("GtkTests.System.Resources.compat_2_0.resx"));
+        CompatTestHelper.TestReader (TestResourceHelper.GetFullPathOfResource ("GtkTests.SystemResources.compat_2_0.resx"));
     }
 }
