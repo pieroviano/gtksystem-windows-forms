@@ -98,6 +98,12 @@
         <Compile Include="GTKControls\Atrribute\KeysConverter.cs" Link="GTKControls\Converters\%(Filename)%(Extension)" />
         <Compile Include="GTKControls\Atrribute\OpacityConverter.cs" Link="GTKControls\Converters\%(Filename)%(Extension)" />
         <Compile Include="GTKControls\Drawing\Printing\PrintDocument.cs" />
+        <Compile Update="GTKControls\ListViewBase\ListViewGroup.Events.cs">
+            <DependentUpon>ListViewGroup.cs</DependentUpon>
+        </Compile>
+        <Compile Update="GTKControls\ListViewBase\ListViewGroup.On.cs">
+            <DependentUpon>ListViewGroup.cs</DependentUpon>
+        </Compile>
         <Compile Update="GTKControls\ToolStrip.Events.cs">
             <DependentUpon>ToolStrip.cs</DependentUpon>
         </Compile>

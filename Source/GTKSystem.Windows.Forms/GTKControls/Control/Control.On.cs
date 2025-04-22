@@ -6,7 +6,7 @@ namespace System.Windows.Forms;
 public partial class Control
 {
     private IEventInvoker? _eventInvoker;
-    private bool _onLoadFired;
+    protected bool _onLoadFired;
 
     internal IEventInvoker EventInvoker
     {

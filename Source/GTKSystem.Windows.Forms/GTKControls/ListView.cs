@@ -117,11 +117,17 @@ public partial class ListView : ContainerControl
         self.ShowAll();
     }
     public bool Sorted { get; set; }
+
     public SortOrder Sorting { get; set; }
+
     public ListViewAlignment Alignment { get; set; }
+
     public bool AllowColumnReorder { get; set; }
+
     public bool GridLines { get; set; } = true;
+
     public ImageList? GroupImageList { get; set; }
+
     public ColumnHeaderStyle HeaderStyle { get; set; } = ColumnHeaderStyle.Clickable;
 
     public bool HideSelection { get; set; }
@@ -1003,6 +1009,7 @@ public partial class ListView : ContainerControl
             OnItemSelectionChanged(new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
         }
     }
+
     public void Sort()
     {
         foreach (var group in GetAllGroups())
@@ -1087,22 +1094,34 @@ public partial class ListView : ContainerControl
             }
         }
 
+        public new virtual void RemoveAt(int index)
+        {
+            _owner.Columns[index]._listView = null;
+            base.RemoveAt(index);
+        }
+
         public bool IsReadOnly => false;
 
         public new virtual bool Remove(ColumnHeader item)
         {
+            item._listView = null;
             var index = IndexOf(item);
             if (index >= 0)
             {
                 RemoveAt(index);
-                item.displayIndex = -1;
                 for (var i = 0; i < _owner.Columns.Count; i++)
                 {
+                    if (_owner.Columns[i]._index >= item._index)
+                    {
+                        _owner.Columns[i]._index--;
+                    }
                     if (_owner.Columns[i].displayIndex >= item.displayIndex)
                     {
                         _owner.Columns[i].displayIndex--;
                     }
                 }
+                item._index = -1;
+                item.displayIndex = -1;
                 return true;
             }
 
@@ -1118,6 +1137,13 @@ public partial class ListView : ContainerControl
         }
         public new void Clear()
         {
+            if (_owner.Columns != null)
+            {
+                foreach (var col in _owner.Columns)
+                {
+                    col._listView = null;
+                }
+            }
             base.Clear();
             _owner.NativeHeaderClear();
         }
@@ -1134,6 +1160,7 @@ public partial class ListView : ContainerControl
         {
             item._listView = _owner;
             base.Add(item);
+            item._index = Count - 1;
             item.displayIndex = Count - 1;
             item.ImageList = _owner.smallImageList;
         }
@@ -1266,9 +1293,33 @@ public partial class ListView : ContainerControl
     }
 
     [ListBindable(false)]
-    public class ListViewItemCollection : List<ListViewItem>, IList
+    public partial class ListViewItemCollection : List<ListViewItem>, IList
     {
-        private readonly ListView _owner;
+        private ListView? _owner;
+
+        public event EventHandler<ListViewEventArgs>? ListViewSet;
+
+        internal ListView? Owner
+        {
+            get => _owner;
+            set
+            {
+                if (_owner != value && value!=null)
+                {
+                    var e = new ListViewEventArgs(value);
+                    OnListViewSet(e);
+                }
+                _owner = value;
+            }
+        }
+
+        protected virtual void OnListViewSet(ListViewEventArgs e)
+        {
+            ListViewSet?.Invoke(this, e);
+        }
+
+        public ListViewGroup? ListViewGroup { get; set; }
+
         public virtual ListViewItem this[string key]
         {
             get
@@ -1277,7 +1328,7 @@ public partial class ListView : ContainerControl
             }
         }
 
-        public ListViewItemCollection(ListView owner)
+        public ListViewItemCollection(ListView? owner)
         {
             _owner = owner;
         }
@@ -1323,14 +1374,32 @@ public partial class ListView : ContainerControl
         }
         private void AddCore(ListViewItem item, int position)
         {
-            item._listView = _owner;
+            item._listView = Owner;
             item.Index = Count;
-            if (item.Group == null)
-                item.Group = _owner.DefaultGroup;
+            if (item.Group == null && Owner != null)
+            {
+                item.Group = Owner.DefaultGroup;
+            }
+            else
+            {
+                item.Group = ListViewGroup;
+
+                void OnEventHandler(object _, ListViewEventArgs e)
+                {
+                    ListViewSet -= OnEventHandler;
+                    item.Group = e.ListView.DefaultGroup;
+                }
+
+                ListViewSet += OnEventHandler;
+            }
 
             base.Add(item);
-            _owner.NativeAdd(item, position);
+            if (Owner != null)
+            {
+                Owner.NativeAdd(item, position);
+            }
         }
+
         public void AddRange(ListViewItem[] items)
         {
             foreach (var item in items)
@@ -1408,8 +1477,8 @@ public partial class ListView : ContainerControl
         }
         public new void Clear()
         {
-            if (_owner != null)
-                _owner.NativeItemsClear();
+            if (Owner != null)
+                Owner.NativeItemsClear();
 
             foreach (var item in this)
             {
@@ -1447,7 +1516,13 @@ public partial class ListView : ContainerControl
         get
         {
             var selecteditems = new CheckedListViewItemCollection(this);
-            foreach (var item in Items)
+            IEnumerable<ListViewItem> listViewItems = Items;
+            if (_onLoadFired)
+            {
+                listViewItems = SortOrder.Descending == Sorting ? Items.OrderByDescending(i => i.Text) : Items.OrderBy(i => i.Text);
+            }
+
+            foreach (var item in listViewItems)
             {
                 if (item.Checked)
                 {
@@ -1463,7 +1538,11 @@ public partial class ListView : ContainerControl
 
     public ListViewGroupCollection Groups => _groups;
 
-    public ListViewItemCollection Items => _items;
+    public ListViewItemCollection Items
+    {
+        get { return _items; }
+        internal set => _items = value;
+    }
 
     public IComparer? ListViewItemSorter
     {

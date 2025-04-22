@@ -23,7 +23,7 @@
     <BuildAllPackagesVersion>2.1.0</BuildAllPackagesVersion>
     <BusNetSharedBaseVersion>1.0.0</BusNetSharedBaseVersion>
     <BusNetVersion>1.0.0</BusNetVersion>
-    <CefSharpLibraryVersion>2.4.0</CefSharpLibraryVersion>
+    <CefSharpLibraryVersion>2.4.2</CefSharpLibraryVersion>
     <CertificateLibraryVersion>1.0.0</CertificateLibraryVersion>
     <CodeDomExtVersion>2.2.0</CodeDomExtVersion>
     <CodeDomModifierVersion>1.0.0</CodeDomModifierVersion>
@@ -195,8 +195,8 @@
     <SqlParametersToVariableDefinitionsVersion>1.0.0</SqlParametersToVariableDefinitionsVersion>
     <StarbCommonVersion>2.0.0</StarbCommonVersion>
     <StarbNet8Version>30.0.0</StarbNet8Version>
-    <StarbookAppBackEndVersion>1.0.0</StarbookAppBackEndVersion>
-    <StarbookAppVersion>1.0.0</StarbookAppVersion>
+    <StarbookAppBackEndVersion>1.0.1</StarbookAppBackEndVersion>
+    <StarbookAppVersion>1.0.1</StarbookAppVersion>
     <StarbVersion>30.0.0</StarbVersion>
     <SystemCodeDom5Version>5.0.0</SystemCodeDom5Version>
     <SystemCodeDom6Version>6.0.0</SystemCodeDom6Version>

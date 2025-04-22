@@ -115,9 +115,8 @@ public partial class ColumnHeader : Component, ICloneable
     [Browsable(false)]
     public ListView? ListView
     {
-        [CompilerGenerated]
-        get;
-        set;
+        get => _listView;
+        set => _listView = value;
     }
 
     [Browsable(false)]

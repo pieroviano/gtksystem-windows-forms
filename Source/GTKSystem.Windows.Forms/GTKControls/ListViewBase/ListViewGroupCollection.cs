@@ -5,12 +5,13 @@ namespace System.Windows.Forms;
 [ListBindable(false)]
 public class ListViewGroupCollection : List<ListViewGroup>
 {
-    private readonly ListView _listView;
+    public ListView? ListView { get; internal set; }
+
     public ListViewGroup this[string key]
     {
         get
         {
-            return Find(w=>w.Name == key);
+            return Find(w => w.Name == key);
         }
         set
         {
@@ -21,29 +22,43 @@ public class ListViewGroupCollection : List<ListViewGroup>
         }
     }
 
-    internal ListViewGroupCollection(ListView listView)
+    internal ListViewGroupCollection(ListView? listView)
     {
-        _listView = listView;
+        ListView = listView;
+    }
 
-        }
-        public new int Add(ListViewGroup group)
+    public new int Add(ListViewGroup group)
+    {
+        if (ListView != null)
         {
-            AddCore(group);
-			return Count;
+            group.ListView = ListView;
         }
-        public ListViewGroup Add(string key, string headerText)
-		{
-			var group = new ListViewGroup(key, headerText);
-            Add(group);
-			return group;
-		}
+
+        foreach (var item in group.Items)
+        {
+            item.ListView = ListView;
+        }
+
+        AddCore(group);
+        return Count;
+    }
+    public ListViewGroup Add(string key, string headerText)
+    {
+        var group = new ListViewGroup(key, headerText);
+        Add(group);
+        return group;
+    }
 
 
     public void AddRange(ListViewGroup?[] groups)
     {
         foreach (var group in groups)
         {
-            AddCore(group);
+            if (group != null)
+            {
+                group.ListView = ListView;
+                AddCore(group);
+            }
         }
     }
 
@@ -51,7 +66,11 @@ public class ListViewGroupCollection : List<ListViewGroup>
     {
         foreach (var group in groups)
         {
-            AddCore(group);
+            if (group != null)
+            {
+                group.ListView = ListView;
+                AddCore(group);
+            }
         }
     }
     private void AddCore(ListViewGroup? group)
@@ -63,17 +82,23 @@ public class ListViewGroupCollection : List<ListViewGroup>
 
         if (group != null)
         {
-            group.ListView = _listView;
+            group.ListView = ListView;
             base.Add(group);
 
-            _listView?.NativeGroupAdd(group, -1);
+            ListView?.NativeGroupAdd(group, -1);
         }
     }
+
     public new void Clear()
     {
-        _listView.NativeGroupsClear();
+        foreach (var group in this)
+        {
+            group.ListView = null;
+        }
+        ListView?.NativeGroupsClear();
         base.Clear();
     }
+
     public bool Contains(string name)
     {
         return FindIndex(w => w.Name == name) > -1;

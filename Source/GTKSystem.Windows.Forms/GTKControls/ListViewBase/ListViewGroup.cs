@@ -4,12 +4,13 @@ using System.Runtime.Serialization;
 
 namespace System.Windows.Forms;
 
-public sealed class ListViewGroup : ISerializable
+public partial class ListViewGroup : ISerializable
 {
     public readonly string serialGuid = Guid.NewGuid().ToString();
     public static readonly string defaultListViewGroupKey = "_DefaultListViewGroup_";
     internal Box? Groupbox { get; set; }
-    public static ListViewGroup CreateDefaultListViewGroup() {
+    public static ListViewGroup CreateDefaultListViewGroup()
+    {
         var _defaultGroup = new ListViewGroup("default", HorizontalAlignment.Left)
         {
             Header = "default",
@@ -39,6 +40,9 @@ public sealed class ListViewGroup : ISerializable
 
     }
     internal readonly FlowBox FlowBox = new() { Orientation = Gtk.Orientation.Horizontal, Name = Guid.NewGuid().ToString() };
+    private ListView? listView;
+    private ListView.ListViewItemCollection? listViewItemCollection;
+
     public string Header
     {
         get;
@@ -57,65 +61,95 @@ public sealed class ListViewGroup : ISerializable
         set;
     }
 
-		
-		
+
+
     public HorizontalAlignment FooterAlignment
     {
         get;
         set;
     }
-		 
-		
+
+
     public ListViewGroupCollapsedState CollapsedState
     {
         get;
         set;
     }
 
-		
-		
+
+
     public string? Subtitle
     {
         get;
         set;
     }
 
-		
-		
+
+
     public string? TaskLink
     {
         get;
         set;
     }
- 
+
     public int TitleImageIndex
     {
         get;
         set;
     }
- 
+
     public string? TitleImageKey
     {
         get;
         set;
     }
-		 
+
     public ListView.ListViewItemCollection Items
     {
         get
         {
-            var coll = new ListView.ListViewItemCollection(ListView);
-            var all = ListView.Items.FindAll(m => m.Group?.serialGuid == serialGuid);
-            coll.AddRange(all);
-            return coll;
+            var b = listViewItemCollection == null;
+            if (b)
+            {
+                listViewItemCollection = new ListView.ListViewItemCollection(ListView);
+            }
+            listViewItemCollection!.ListViewGroup = this;
+            if (ListView != null)
+            {
+                var all = ListView.Items.FindAll(m => m.Group?.serialGuid == serialGuid);
+                listViewItemCollection.AddRange(all);
+            }
+            else if(b)
+            {
+                void OnEventHandler(object _, ListViewSetEventArgs e)
+                {
+                    ListViewSet -= OnEventHandler;
+                    if (e.ListView != null)
+                    {
+                        var all = e.ListView.Items.FindAll(m => m.Group?.serialGuid == serialGuid);
+                        listViewItemCollection.AddRange(all);
+                    }
+                }
+
+                ListViewSet += OnEventHandler;
+            }
+            return listViewItemCollection;
         }
     }
 
-    public ListView ListView
+    public ListView? ListView
     {
-        get;
-        internal set;
-    } = null!;
+        get => listView;
+        internal set
+        {
+            var b = listView != value && value != null;
+            listView = value;
+            if (b)
+            {
+                OnListViewSet(new ListViewSetEventArgs(value!));
+            }
+        }
+    }
 
     public string Name
     {
@@ -131,6 +165,6 @@ public sealed class ListViewGroup : ISerializable
 
     void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
     {
-			
+
     }
 }

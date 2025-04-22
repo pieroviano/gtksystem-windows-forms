@@ -38,19 +38,19 @@ public class ListViewItemTest : TestHelper
     {
         var fnt = new Font("Arial", 12);
         var item1 = new ListViewItem("Hello folks");
-        Assert.That((object?)item1.Text, Is.EqualTo("Hello folks"), "Constructor#1");
+        Assert.That((object?)item1.Text, Is.EqualTo("Hello folks"));
 
         var item2 = new ListViewItem(["Element1", "Element2"],
             -1, Color.Blue, Color.Red, fnt);
 
-        Assert.That((object?)Color.Blue, Is.EqualTo(item2.ForeColor), "Constructor#2");
-        Assert.That((object?)Color.Red, Is.EqualTo(item2.BackColor), "Constructor#3");
+        Assert.That((object?)Color.Blue, Is.EqualTo(item2.ForeColor));
+        Assert.That((object?)Color.Red, Is.EqualTo(item2.BackColor));
 
-        Assert.That((object?)item2.SubItems.Count, Is.EqualTo(2), "Constructor#4");
-        Assert.That((object?)item2.SubItems[0].ForeColor, Is.EqualTo(Color.Blue), "Constructor#5");
-        Assert.That((object?)item2.SubItems[0].BackColor, Is.EqualTo(Color.Red), "Constructor#6");
-        Assert.That((object?)item2.SubItems[0].Font, Is.EqualTo(fnt), "Constructor#7");
-        Assert.That((object?)item2.SubItems[0].Text, Is.EqualTo("Element1"), "Constructor#8");
+        Assert.That((object?)item2.SubItems.Count, Is.EqualTo(2));
+        Assert.That((object?)item2.SubItems[0].ForeColor, Is.EqualTo(Color.Blue));
+        Assert.That((object?)item2.SubItems[0].BackColor, Is.EqualTo(Color.Red));
+        Assert.That((object?)item2.SubItems[0].Font, Is.EqualTo(fnt));
+        Assert.That((object?)item2.SubItems[0].Text, Is.EqualTo("Element1"));
         Assert.That((object?)item2.SubItems[1].Text, Is.EqualTo("Element2"), "Constructor#12");
 
         var item3 = new ListViewItem((string?)null);
@@ -297,16 +297,16 @@ public class ListViewItemTest : TestHelper
     {
         var item = new ListViewItem();
 
-        Assert.IsFalse(item.Focused, "DefaultValues#3");
-        Assert.IsFalse(item.Checked, "DefaultValues#4");
+        Assert.IsFalse(item.Focused);
+        Assert.IsFalse(item.Checked);
         object expected = string.Empty;
-        Assert.That((object?)item.Text, Is.EqualTo(expected), "DefaultValues#5");
-        Assert.IsTrue(item.UseItemStyleForSubItems, "DefaultValues#6");
-        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1), "DefaultValues#7");
+        Assert.That((object?)item.Text, Is.EqualTo(expected));
+        Assert.IsTrue(item.UseItemStyleForSubItems);
+        Assert.That((object?)item.ImageIndex, Is.EqualTo(-1));
         object expected1 = string.Empty;
-        Assert.That((object?)item.Name, Is.EqualTo(expected1), "DefaultValues#8");
+        Assert.That((object?)item.Name, Is.EqualTo(expected1));
         object expected2 = string.Empty;
-        Assert.That((object?)item.ImageKey, Is.EqualTo(expected2), "DefaultValues#9");
+        Assert.That((object?)item.ImageKey, Is.EqualTo(expected2));
         object expected3 = string.Empty;
         Assert.That((object?)item.ToolTipText, Is.EqualTo(expected3), "DefaultValues#10");
         Assert.That((object?)item.IndentCount, Is.EqualTo(0), "DefaultValues#11");
@@ -320,16 +320,16 @@ public class ListViewItemTest : TestHelper
         var lv = new ListView();
         lv.Items.Add(item);
         lv.BackColor = Color.Orange;
-        Assert.That((object?)item.BackColor, Is.EqualTo(lv.BackColor), "BackColor#1");
-        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(lv.BackColor), "BackColor#2");
+        Assert.That((object?)item.BackColor, Is.EqualTo(lv.BackColor));
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(lv.BackColor));
 
         item.BackColor = Color.Navy;
-        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Navy), "BackColor#3");
-        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(Color.Navy), "BackColor#4");
+        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Navy));
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(Color.Navy));
 
         item.SubItems[0].BackColor = Color.Green;
-        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Green), "BackColor#5");
-        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(Color.Green), "BackColor#6");
+        Assert.That((object?)item.BackColor, Is.EqualTo(Color.Green));
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(Color.Green));
     }
 
     [Test]
@@ -340,16 +340,16 @@ public class ListViewItemTest : TestHelper
         var lv = new ListView();
         lv.Items.Add(item);
         lv.ForeColor = Color.Orange;
-        Assert.That((object?)item.ForeColor, Is.EqualTo(lv.ForeColor), "ForeColor#1");
-        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(lv.ForeColor), "ForeColor#2");
+        Assert.That((object?)item.ForeColor, Is.EqualTo(lv.ForeColor));
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(lv.ForeColor));
 
         item.ForeColor = Color.Navy;
-        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Navy), "ForeColor#3");
-        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(Color.Navy), "ForeColor#4");
+        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Navy));
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(Color.Navy));
 
         item.SubItems[0].ForeColor = Color.Green;
-        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Green), "ForeColor#5");
-        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(Color.Green), "ForeColor#6");
+        Assert.That((object?)item.ForeColor, Is.EqualTo(Color.Green));
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(Color.Green));
     }
 
     [Test]
@@ -572,17 +572,17 @@ public class ListViewItemTest : TestHelper
         var subitem0_back_color = subitem0.BackColor = Color.Black;
         var subitem0_fore_color = subitem0.ForeColor = Color.White;
 
-        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(subitem0_back_color), "UseItemStyleForSubItems#1");
-        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(subitem0_fore_color), "UseItemStyleForSubItems#2");
-        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(item.BackColor), "UseItemStyleForSubItems#3");
-        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(item.ForeColor), "UseItemStyleForSubItems#4");
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(subitem0_back_color));
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(subitem0_fore_color));
+        Assert.That((object?)item.SubItems[0].BackColor, Is.EqualTo(item.BackColor));
+        Assert.That((object?)item.SubItems[0].ForeColor, Is.EqualTo(item.ForeColor));
 
         var subitem1 = item.SubItems.Add("SubItem");
         var subitem1_back_color = subitem1.BackColor = Color.Blue;
         var subitem1_fore_color = subitem1.ForeColor = Color.Gray;
 
-        Assert.That((object?)subitem1.BackColor, Is.EqualTo(subitem1_back_color), "UseItemStyleForSubItem#5");
-        Assert.That((object?)subitem1.ForeColor, Is.EqualTo(subitem1_fore_color), "UseItemStyleForSubItem#6");
+        Assert.That((object?)subitem1.BackColor, Is.EqualTo(subitem1_back_color));
+        Assert.That((object?)subitem1.ForeColor, Is.EqualTo(subitem1_fore_color));
     }
 
     [Test]
@@ -628,20 +628,20 @@ public class ListViewItemTest : TestHelper
         };
 
         object expected = string.Empty;
-        Assert.That((object?)item1.ImageKey, Is.EqualTo(expected), "ImageIndex#1");
+        Assert.That((object?)item1.ImageKey, Is.EqualTo(expected));
 
         item1.ImageIndex = 0;
         item1.ImageKey = "Key1";
-        Assert.That((object?)item1.ImageIndex, Is.EqualTo(-1), "ImageIndex#2");
+        Assert.That((object?)item1.ImageIndex, Is.EqualTo(-1));
 
         item1.ImageKey = "Key1";
         item1.ImageIndex = -1;
         object expected1 = string.Empty;
-        Assert.That((object?)item1.ImageKey, Is.EqualTo(expected1), "ImageIndex#3");
+        Assert.That((object?)item1.ImageKey, Is.EqualTo(expected1));
 
         item1.ImageIndex = 0;
         item1.ImageKey = string.Empty;
-        Assert.That((object?)item1.ImageIndex, Is.EqualTo(-1), "ImageIndex#4");
+        Assert.That((object?)item1.ImageIndex, Is.EqualTo(-1));
     }
 
     [Test]
@@ -652,7 +652,7 @@ public class ListViewItemTest : TestHelper
             ToolTipText = null
         };
         object expected = string.Empty;
-        Assert.That((object?)item1.ToolTipText, Is.EqualTo(expected), "ToolTipText#1");
+        Assert.That((object?)item1.ToolTipText, Is.EqualTo(expected));
     }
 
     [TestCase(CheckState.Checked, CheckState.Unchecked, CheckState.Unchecked)]

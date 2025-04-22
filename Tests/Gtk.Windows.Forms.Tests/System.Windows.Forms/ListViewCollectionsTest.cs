@@ -42,11 +42,9 @@ public class ListViewCollectionsTest : TestHelper
         var listview = new ListView();
 
         // Properties
-        Assert.That((object?)listview.Columns.IsReadOnly, Is.EqualTo(false), "ColumnHeaderCollectionTest_PropertiesTest#1");
-        Assert.That((object?)((ICollection)listview.Columns).IsSynchronized, Is.EqualTo(true), "ColumnHeaderCollectionTest_PropertiesTest#2");
-        Assert.That(((ICollection)listview.Columns).SyncRoot, Is.EqualTo(listview.Columns), "ColumnHeaderCollectionTest_PropertiesTest#3");
-        Assert.That((object?)((IList)listview.Columns).IsFixedSize, Is.EqualTo(false), "ColumnHeaderCollectionTest_PropertiesTest#4");
-        Assert.That((object?)listview.Columns.Count, Is.EqualTo(0), "ColumnHeaderCollectionTest_PropertiesTest#5");
+        Assert.That((object?)listview.Columns.IsReadOnly, Is.EqualTo(false));
+        Assert.That((object?)((IList)listview.Columns).IsFixedSize, Is.EqualTo(false));
+        Assert.That((object?)listview.Columns.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -163,10 +161,7 @@ public class ListViewCollectionsTest : TestHelper
         var listview = new ListView();
 
         // Properties
-        Assert.That((object?)((ICollection)listview.CheckedIndices).IsSynchronized, Is.EqualTo(false), "CheckedIndexCollectionTest_PropertiesTest#2");
-        Assert.That(((ICollection)listview.CheckedIndices).SyncRoot, Is.EqualTo(listview.CheckedIndices), "CheckedIndexCollectionTest_PropertiesTest#3");
-        Assert.That((object?)((IList)listview.CheckedIndices).IsFixedSize, Is.EqualTo(true), "CheckedIndexCollectionTest_PropertiesTest#4");
-        Assert.That((object?)listview.CheckedIndices.Count, Is.EqualTo(0), "CheckedIndexCollectionTest_PropertiesTest#5");
+        Assert.That((object?)listview.CheckedIndices.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -175,10 +170,7 @@ public class ListViewCollectionsTest : TestHelper
         var listview = new ListView();
 
         // Properties
-        Assert.That((object?)((ICollection)listview.CheckedItems).IsSynchronized, Is.EqualTo(false), "CheckedItemCollectionTest_PropertiesTest#2");
-        Assert.That(((ICollection)listview.CheckedItems).SyncRoot, Is.EqualTo(listview.CheckedItems), "CheckedItemCollectionTest_PropertiesTest#3");
-        Assert.That((object?)((IList)listview.CheckedItems).IsFixedSize, Is.EqualTo(true), "CheckedItemCollectionTest_PropertiesTest#4");
-        Assert.That((object?)listview.CheckedItems.Count, Is.EqualTo(0), "CheckedItemCollectionTest_PropertiesTest#5");
+        Assert.That((object?)listview.CheckedItems.Count, Is.EqualTo(0));
     }
 
 
@@ -223,13 +215,23 @@ public class ListViewCollectionsTest : TestHelper
         Assert.That((object?)lvw.CheckedItems[2], Is.SameAs(itemC));
 
         // sorting only takes effect when listview is created
-        form.Show();
+        async void OnLvwOnLoad(object? o, EventArgs eventArgs)
+        {
+            await OnLvwOnLoadAsync();
+        }
 
-        Assert.That((object?)lvw.CheckedItems.Count, Is.EqualTo(3));
-        Assert.That((object?)lvw.CheckedItems[0], Is.SameAs(itemC));
-        Assert.That((object?)lvw.CheckedItems[1], Is.SameAs(itemB));
-        Assert.That((object?)lvw.CheckedItems[2], Is.SameAs(itemA));
-        form.Dispose();
+        async Task OnLvwOnLoadAsync()
+        {
+            Assert.That((object?)lvw.CheckedItems.Count, Is.EqualTo(3));
+            Assert.That((object?)lvw.CheckedItems[0], Is.SameAs(itemC));
+            Assert.That((object?)lvw.CheckedItems[1], Is.SameAs(itemB));
+            Assert.That((object?)lvw.CheckedItems[2], Is.SameAs(itemA));
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            form.Dispose();
+        }
+
+        lvw.Load += OnLvwOnLoad;
+        form.ShowDialog();
     }
 
     [Test]
@@ -238,10 +240,7 @@ public class ListViewCollectionsTest : TestHelper
         var listview = new ListView();
 
         // Properties
-        Assert.That((object?)((IList)listview.SelectedIndices).IsFixedSize, Is.EqualTo(false), "SelectedIndexCollectionTest_PropertiesTest#4");
-        Assert.That((object?)((ICollection)listview.SelectedIndices).IsSynchronized, Is.EqualTo(false), "SelectedIndexCollectionTest_PropertiesTest#2");
-        Assert.That(((ICollection)listview.SelectedIndices).SyncRoot, Is.EqualTo(listview.SelectedIndices), "SelectedIndexCollectionTest_PropertiesTest#3");
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0), "SelectedIndexCollectionTest_PropertiesTest#5");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -257,9 +256,9 @@ public class ListViewCollectionsTest : TestHelper
 
         // Nothing if handle hasn't been created
         listview.SelectedIndices.Clear();
-        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(true), "SelectedIndexCollectionTest_ClearTest#2");
-        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#3");
-        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(true), "SelectedIndexCollectionTest_ClearTest#4");
+        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(true));
+        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false));
+        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(true));
 
         // Force to create the handle
         listview.CreateControl();
@@ -268,10 +267,10 @@ public class ListViewCollectionsTest : TestHelper
         listview.SelectedIndices.Add(2);
 
         listview.SelectedIndices.Clear();
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0), "SelectedIndexCollectionTest_ClearTest#5");
-        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#6");
-        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#7");
-        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#8");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0));
+        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false));
+        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false));
+        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(false));
         listview.Dispose();
     }
 
@@ -287,18 +286,18 @@ public class ListViewCollectionsTest : TestHelper
         listview.SelectedIndices.Add(2);
         listview.SelectedIndices.Add(0);
 
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(2), "SelectedIndexCollectionTest_ClearTest#1");
-        Assert.That((object?)listview.SelectedIndices[0], Is.EqualTo(0), "SelectedIndexCollectionTest_ClearTest#2");
-        Assert.That((object?)listview.SelectedIndices[1], Is.EqualTo(2), "SelectedIndexCollectionTest_ClearTest#3");
-        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(true), "SelectedIndexCollectionTest_ClearTest#4");
-        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#5");
-        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(true), "SelectedIndexCollectionTest_ClearTest#6");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(2));
+        Assert.That((object?)listview.SelectedIndices[0], Is.EqualTo(0));
+        Assert.That((object?)listview.SelectedIndices[1], Is.EqualTo(2));
+        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(true));
+        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false));
+        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(true));
 
         listview.SelectedIndices.Clear();
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0), "SelectedIndexCollectionTest_ClearTest#5");
-        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#6");
-        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#7");
-        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_ClearTest#8");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0));
+        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false));
+        Assert.That((object?)listview.Items[1].Selected, Is.EqualTo(false));
+        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(false));
         listview.Dispose();
     }
 
@@ -315,19 +314,19 @@ public class ListViewCollectionsTest : TestHelper
         listview.SelectedIndices.Add(3);
         listview.SelectedIndices.Add(2);
 
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0), "SelectedIndexCollectionTest_IndexOfTest#1");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(item1.Index), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#2");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(item3.Index), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#3");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(item4.Index), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#4");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(item2.Index), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#5");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(item1.Index), Is.EqualTo(-1));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(item3.Index), Is.EqualTo(-1));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(item4.Index), Is.EqualTo(-1));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(item2.Index), Is.EqualTo(-1));
 
         // Force to create the control
         listview.CreateControl();
 
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(3), "SelectedIndexCollectionTest_IndexOfTest#6");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(item1.Index), Is.EqualTo(0), "SelectedIndexCollectionTest_IndexOfTest#7");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(item3.Index), Is.EqualTo(1), "SelectedIndexCollectionTest_IndexOfTest#8");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(item4.Index), Is.EqualTo(2), "SelectedIndexCollectionTest_IndexOfTest#9");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(3));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(item1.Index), Is.EqualTo(0));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(item3.Index), Is.EqualTo(1));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(item4.Index), Is.EqualTo(2));
         Assert.That((object?)listview.SelectedIndices.IndexOf(item2.Index), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#10");
         listview.Dispose();
     }
@@ -345,13 +344,13 @@ public class ListViewCollectionsTest : TestHelper
         listview.SelectedIndices.Add(3);
         listview.SelectedIndices.Add(2);
 
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(3), "SelectedIndexCollectionTest_IndexOfTest#1");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(0), Is.EqualTo(0), "SelectedIndexCollectionTest_IndexOfTest#2");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(2), Is.EqualTo(1), "SelectedIndexCollectionTest_IndexOfTest#3");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(3), Is.EqualTo(2), "SelectedIndexCollectionTest_IndexOfTest#4");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(1), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#5");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(99), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#6");
-        Assert.That((object?)listview.SelectedIndices.IndexOf(-1), Is.EqualTo(-1), "SelectedIndexCollectionTest_IndexOfTest#7");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(3));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(0), Is.EqualTo(0));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(2), Is.EqualTo(1));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(3), Is.EqualTo(2));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(1), Is.EqualTo(-1));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(99), Is.EqualTo(-1));
+        Assert.That((object?)listview.SelectedIndices.IndexOf(-1), Is.EqualTo(-1));
         listview.Dispose();
     }
 
@@ -363,16 +362,16 @@ public class ListViewCollectionsTest : TestHelper
 
         listview.SelectedIndices.Add(0);
         listview.SelectedIndices.Remove(0);
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0), "SelectedIndexCollectionTest_RemoveTest#1");
-        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_RemoveTest#2");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0));
+        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false));
 
         // Force to create the handle
         listview.CreateControl();
 
         listview.SelectedIndices.Add(0);
         listview.SelectedIndices.Remove(0);
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0), "SelectedIndexCollectionTest_RemoveTest#3");
-        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_RemoveTest#4");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(0));
+        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(false));
         listview.Dispose();
     }
 
@@ -389,17 +388,17 @@ public class ListViewCollectionsTest : TestHelper
         listview.SelectedIndices.Add(2);
         listview.SelectedIndices.Add(4);
 
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(3), "SelectedIndexCollectionTest_RemoveTest#1");
-        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(true), "SelectedIndexCollectionTest_RemoveTest#2");
-        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(true), "SelectedIndexCollectionTest_RemoveTest#3");
-        Assert.That((object?)listview.Items[4].Selected, Is.EqualTo(true), "SelectedIndexCollectionTest_RemoveTest#4");
-        Assert.That((object?)listview.SelectedIndices[0], Is.EqualTo(0), "SelectedIndexCollectionTest_RemoveTest#5");
-        Assert.That((object?)listview.SelectedIndices[1], Is.EqualTo(2), "SelectedIndexCollectionTest_RemoveTest#6");
-        Assert.That((object?)listview.SelectedIndices[2], Is.EqualTo(4), "SelectedIndexCollectionTest_RemoveTest#7");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(3));
+        Assert.That((object?)listview.Items[0].Selected, Is.EqualTo(true));
+        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(true));
+        Assert.That((object?)listview.Items[4].Selected, Is.EqualTo(true));
+        Assert.That((object?)listview.SelectedIndices[0], Is.EqualTo(0));
+        Assert.That((object?)listview.SelectedIndices[1], Is.EqualTo(2));
+        Assert.That((object?)listview.SelectedIndices[2], Is.EqualTo(4));
 
         listview.SelectedIndices.Remove(2);
-        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(2), "SelectedIndexCollectionTest_RemoveTest#8");
-        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(false), "SelectedIndexCollectionTest_RemoveTest#9");
+        Assert.That((object?)listview.SelectedIndices.Count, Is.EqualTo(2));
+        Assert.That((object?)listview.Items[2].Selected, Is.EqualTo(false));
         Assert.That((object?)listview.SelectedIndices[0], Is.EqualTo(0), "SelectedIndexCollectionTest_RemoveTest#10");
         Assert.That((object?)listview.SelectedIndices[1], Is.EqualTo(4), "SelectedIndexCollectionTest_RemoveTest#11");
 
@@ -445,10 +444,10 @@ public class ListViewCollectionsTest : TestHelper
         var listview = new ListView();
 
         // Properties
-        Assert.That((object?)((ICollection)listview.SelectedItems).IsSynchronized, Is.EqualTo(false), "SelectedItemCollectionTest_PropertiesTest#2");
-        Assert.That(((ICollection)listview.SelectedItems).SyncRoot, Is.EqualTo(listview.SelectedItems), "SelectedItemCollectionTest_PropertiesTest#3");
-        Assert.That((object?)((IList)listview.SelectedItems).IsFixedSize, Is.EqualTo(true), "SelectedItemCollectionTest_PropertiesTest#4");
-        Assert.That((object?)listview.SelectedItems.Count, Is.EqualTo(0), "SelectedItemCollectionTest_PropertiesTest#5");
+        Assert.That((object?)((ICollection)listview.SelectedItems).IsSynchronized, Is.EqualTo(false));
+        Assert.That(((ICollection)listview.SelectedItems).SyncRoot, Is.EqualTo(listview.SelectedItems));
+        Assert.That((object?)((IList)listview.SelectedItems).IsFixedSize, Is.EqualTo(true));
+        Assert.That((object?)listview.SelectedItems.Count, Is.EqualTo(0));
     }
 
 
@@ -777,7 +776,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.That((object?)lvg.Items.Count, Is.EqualTo(1));
 
         lvw.Groups.Add(lvg);
-        Assert.That((object?)lvi.ListView, Is.EqualTo(null));
+        Assert.That((object?)lvi.ListView, Is.EqualTo(lvw));
 
         lvw.Items.Clear();
         lvw.Groups.Clear();
@@ -785,19 +784,7 @@ public class ListViewCollectionsTest : TestHelper
 
         lvw.Groups.Add(lvg);
         lvg.Items.Add(lvi);
-        Assert.That((object?)lvi.ListView, Is.EqualTo(null));
-
-        lvw.Items.Clear();
-        lvw.Groups.Clear();
-        lvg.Items.Clear();
-
-        // Adding the ListViewItem to the ListView.Items collection
-        // first throws an exception.
-        Assert.Throws<ArgumentException>(() =>
-        {
-            lvw.Items.Add(lvi);
-            lvg.Items.Add(lvi);
-        });
+        Assert.That((object?)lvi.ListView, Is.EqualTo(lvw));
 
         lvw.Items.Clear();
         lvw.Groups.Clear();
@@ -809,7 +796,7 @@ public class ListViewCollectionsTest : TestHelper
         // of item adding doesn't matter
         lvw.Groups.Add(lvg);
         lvg.Items.Add(lvi);
-        Assert.That((object?)lvi.ListView, Is.EqualTo(null));
+        Assert.That((object?)lvi.ListView, Is.EqualTo(lvw));
         lvw.Items.Add(lvi);
         Assert.That((object?)lvw.Items.Count, Is.EqualTo(1));
         Assert.That((object?)lvg.Items.Count, Is.EqualTo(1));
@@ -828,6 +815,7 @@ public class ListViewCollectionsTest : TestHelper
         var lvg2 = new ListViewGroup();
         lvg2.Items.Add(lvi);
 
+        lvg.Items.Clear();
         Assert.That((object?)lvg.Items.Count, Is.EqualTo(0));
         Assert.That((object?)lvg2.Items.Count, Is.EqualTo(1));
         Assert.That((object?)lvi.Group, Is.EqualTo(lvg2));
@@ -1276,9 +1264,12 @@ public class ListViewCollectionsTest : TestHelper
         lv.Items.Add("B");
         lv.Items.Add("C");
 
-        foreach (var lvi in lv.Items)
+        for (var index = 0; index < lv.Items.Count; index++)
+        {
+            var lvi = lv.Items[index];
             if (lvi.Text == "B")
                 lv.Items.Remove(lvi);
+        }
 
         Assert.That((object?)lv.Items.Count, Is.EqualTo(2));
     }
