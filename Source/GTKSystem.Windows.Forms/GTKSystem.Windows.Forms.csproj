@@ -393,7 +393,6 @@
         <Compile Update="GTKControls\PropertyGridBase\PropertyValueChangedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
         <Compile Update="GTKControls\PropertyGridBase\SelectedGridItemChangedEventArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
         <Compile Update="GTKControls\WindowStateArgs.cs" Link="GTKControls\EventArgs\%(Filename)%(Extension)" />
-        <Compile Update="GTKControls\Control\MethodInvoker.cs" Link="GTKControls\Delegates\%(Filename)%(Extension)" />
         <Compile Update="GTKControls\MenuStripBase\ToolStripItemClickedEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
         <Compile Update="GTKControls\Collection\BindingCompleteEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
         <Compile Update="GTKControls\Collection\BindingManagerDataErrorEventHandler.cs" Link="GTKControls\EventHandlers\%(Filename)%(Extension)" />
