@@ -6,21 +6,21 @@ public partial class ToolStripItem
 {
     protected virtual void OnClick(EventArgs e)
     {
-        GtkApplication.EventInvoke(() => Click?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => Click?.Invoke(this, e));
     }
 
     protected virtual void OnCheckedChanged(EventArgs e)
     {
-        GtkApplication.EventInvoke(() => CheckedChanged?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => CheckedChanged?.Invoke(this, e));
     }
 
     protected virtual void OnCheckStateChanged(EventArgs e)
     {
-        GtkApplication.EventInvoke(() => CheckStateChanged?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => CheckStateChanged?.Invoke(this, e));
     }
 
     protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs e)
     {
-        GtkApplication.EventInvoke(() => DropDownItemClicked?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => DropDownItemClicked?.Invoke(this, e));
     }
 }

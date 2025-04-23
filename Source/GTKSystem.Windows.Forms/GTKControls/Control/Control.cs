@@ -160,9 +160,9 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             Self.Shown += (_, _) =>
             {
-                var useAsyncInvokeArgs = new UseAsyncInvokeArgs(System.Windows.Forms.Application.UseAsyncInvoke);
-                OnSetUseAsyncInvoke(useAsyncInvokeArgs);
-                UseAsyncInvoke = useAsyncInvokeArgs.UseAsyncInvoke;
+                var useAsyncLoadArgs = new UseAsyncLoadArgs(System.Windows.Forms.Application.UseAsyncLoad);
+                OnSetUseAsyncLoad(useAsyncLoadArgs);
+                UseAsyncLoad = useAsyncLoadArgs.UseAsyncLoad;
                 FakeHandle = (IntPtr)int.MaxValue;
             };
         }

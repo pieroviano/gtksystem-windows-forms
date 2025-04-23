@@ -11,7 +11,7 @@ public partial class Control
         remove => Self.Override.Paint -= value;
     }
 
-    public event EventHandler<UseAsyncInvokeArgs>? SetUseAsyncInvoke;
+    public event EventHandler<UseAsyncLoadArgs>? SetUseAsyncLoad;
 
     public event EventHandler? AutoSizeChanged;
 

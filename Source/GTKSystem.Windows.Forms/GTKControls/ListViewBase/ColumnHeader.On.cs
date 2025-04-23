@@ -6,7 +6,7 @@ public partial class ColumnHeader
 {
     protected virtual void OnDisplayIndexChanged(EventArgs e)
     {
-        GtkApplication.EventInvoke(() => DisplayIndexChanged?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => DisplayIndexChanged?.Invoke(this, e));
     }
 
 }

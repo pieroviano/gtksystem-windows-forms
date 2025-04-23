@@ -8,7 +8,7 @@ public partial class FileDialog
 {
     protected virtual void OnFileOk(CancelEventArgs e)
     {
-        GtkApplication.EventInvoke(() => FileOK?.Invoke(this, e), GtkApplication.UseAsyncInvoke);
+        GtkApplication.EventInvoke(() => FileOK?.Invoke(this, e), GtkApplication.UseAsyncLoad);
     }
 
 }

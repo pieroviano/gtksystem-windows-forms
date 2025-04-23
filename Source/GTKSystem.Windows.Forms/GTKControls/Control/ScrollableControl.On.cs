@@ -7,7 +7,7 @@ public partial class ScrollableControl
         EventInvoke(() =>
         {
             scrollbase?.OnScroll(e);
-        }, false);
+        });
     }
 }
 

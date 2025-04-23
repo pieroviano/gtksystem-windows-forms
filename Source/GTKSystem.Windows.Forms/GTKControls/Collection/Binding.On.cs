@@ -34,7 +34,7 @@ public partial class Binding
                     _inOnBindingComplete = false;
                 }
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.Binding.Format" /> event.</summary>
@@ -48,7 +48,7 @@ public partial class Binding
             {
                 e.Value = Convert.ChangeType(e.Value, e.DesiredType, CultureInfo.CurrentCulture);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.Binding.Parse" /> event.</summary>
@@ -62,7 +62,7 @@ public partial class Binding
             {
                 e.Value = Convert.ChangeType(e.Value, e.DesiredType, CultureInfo.CurrentCulture);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
 }

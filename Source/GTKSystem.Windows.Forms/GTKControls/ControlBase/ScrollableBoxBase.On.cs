@@ -6,7 +6,7 @@ public abstract partial class ScrollableBoxBase
 {
     protected virtual void OnScroll(ScrollEventArgs e)
     {
-        GtkApplication.EventInvoke(() => Scroll?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => Scroll?.Invoke(this, e));
     }
 
 }

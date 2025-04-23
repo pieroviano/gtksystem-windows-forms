@@ -4,12 +4,12 @@ public abstract partial class ScrollBar
 {
     protected virtual void OnScroll(ScrollEventArgs e)
     {
-        EventInvoke(() => Scroll?.Invoke(this, e), false);
+        EventInvoke(() => Scroll?.Invoke(this, e));
     }
 
     protected virtual void OnValueChanged(EventArgs e)
     {
-        EventInvoke(() => ValueChanged?.Invoke(this, e), false);
+        EventInvoke(() => ValueChanged?.Invoke(this, e));
     }
 
 }

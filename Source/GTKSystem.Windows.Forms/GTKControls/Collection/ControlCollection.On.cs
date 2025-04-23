@@ -10,6 +10,6 @@ internal partial class ArrangedElementWidget
         GtkApplication.EventInvoke(() =>
         {
             Disposed?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 }

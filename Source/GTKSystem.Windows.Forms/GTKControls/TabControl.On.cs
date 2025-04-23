@@ -6,14 +6,14 @@ public partial class TabControl
 {
     protected virtual void OnSelectedIndexChanged(EventArgs e)
     {
-            EventInvoke(() => SelectedIndexChanged?.Invoke(this, e), false);
+            EventInvoke(() => SelectedIndexChanged?.Invoke(this, e));
     }
 
     public new partial class ControlCollection
     {
         protected virtual void OnDrawItem(DrawItemEventArgs e)
         {
-            GtkApplication.EventInvoke(() => _owner.DrawItem?.Invoke(this, e), false);
+            GtkApplication.EventInvoke(() => _owner.DrawItem?.Invoke(this, e));
         }
 
     }

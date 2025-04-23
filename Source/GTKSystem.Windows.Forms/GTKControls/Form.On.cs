@@ -4,12 +4,12 @@ public partial class Form
 {
     protected void OnFormClosed(FormClosedEventArgs e)
     {
-        EventInvoke(() => FormClosed?.Invoke(this, e), false);
+        EventInvoke(() => FormClosed?.Invoke(this, e));
     }
 
     protected virtual void OnFormClosing(FormClosingEventArgs e)
     {
-        EventInvoke(() => FormClosing?.Invoke(this, e), false);
+        EventInvoke(() => FormClosing?.Invoke(this, e));
     }
 
     protected internal virtual void OnShown(EventArgs e)
@@ -26,6 +26,6 @@ public partial class Form
             {
                 control.OnLoad(e);
             }
-        }, UseAsyncInvoke);
+        }, UseAsyncLoad);
     }
 }

@@ -4,6 +4,6 @@ public partial class NumericUpDown
 {
     protected virtual void OnValueChanged(EventArgs e)
     {
-        EventInvoke(() => ValueChanged?.Invoke(this, e), false);
+        EventInvoke(() => ValueChanged?.Invoke(this, e));
     }
 }

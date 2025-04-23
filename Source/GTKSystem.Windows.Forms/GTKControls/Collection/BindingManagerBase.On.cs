@@ -13,7 +13,7 @@ public abstract partial class BindingManagerBase
         GtkApplication.EventInvoke(() =>
         {
             _bindingCompleteEventHandler?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     protected internal abstract void OnCurrentChanged(EventArgs e);
@@ -25,7 +25,7 @@ public abstract partial class BindingManagerBase
         GtkApplication.EventInvoke(() =>
         {
             _dataError?.Invoke(this, new BindingManagerDataErrorEventArgs(e));
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public abstract partial class BindingManagerBase
 
                     break;
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     protected virtual void OnBindingsCollectionChanging(object? sender, CollectionChangeEventArgs e)
@@ -81,7 +81,7 @@ public abstract partial class BindingManagerBase
             {
                 bi.BindingComplete -= Binding_BindingComplete;
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 }
 

@@ -7,6 +7,6 @@ public partial class ComboBox
         EventInvoke(() =>
         {
             DropDown?.Invoke(this, e);
-        }, false);
+        });
     }
 }

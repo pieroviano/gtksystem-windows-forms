@@ -52,10 +52,10 @@ public static class Application
         get => NonStaticApplication.Instance.App;
     }
 
-    public static bool UseAsyncInvoke
+    public static bool UseAsyncLoad
     {
-        get => NonStaticApplication.Instance.UseAsyncInvoke;
-        set => NonStaticApplication.Instance.UseAsyncInvoke = value;
+        get => NonStaticApplication.Instance.UseAsyncLoad;
+        set => NonStaticApplication.Instance.UseAsyncLoad = value;
     }
 
     public static void DoEvents()
@@ -103,8 +103,8 @@ public static class Application
         NonStaticApplication.Instance.ExitThread();
     }
 
-    public static void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
+    public static void EventInvoke(Action eventToInvoke, bool useAsyncLoad = false)
     {
-        NonStaticApplication.Instance.EventInvoke(eventToInvoke, useAsyncInvoke);
+        NonStaticApplication.Instance.EventInvoke(eventToInvoke, useAsyncLoad);
     }
 }

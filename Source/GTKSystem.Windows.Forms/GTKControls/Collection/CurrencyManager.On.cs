@@ -10,7 +10,7 @@ public partial class CurrencyManager
         GtkApplication.EventInvoke(() =>
         {
             OnCurrentChangedHandler?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <param name="e">The <see cref="T:System.EventArgs" /> that contains the event data.</param>
@@ -19,7 +19,7 @@ public partial class CurrencyManager
         GtkApplication.EventInvoke(() =>
         {
             OnCurrentItemChangedHandler?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.CurrencyManager.ItemChanged" /> event.</summary>
@@ -45,7 +45,7 @@ public partial class CurrencyManager
             {
                 OnPositionChanged(EventArgs.Empty);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     protected virtual void OnListChanged(ListChangedEventArgs e)
@@ -53,7 +53,7 @@ public partial class CurrencyManager
         GtkApplication.EventInvoke(() =>
         {
             _listChanged?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.CurrencyManager.MetaDataChanged" /> event.</summary>
@@ -63,7 +63,7 @@ public partial class CurrencyManager
         GtkApplication.EventInvoke(() =>
         {
             _metaDataChanged?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingManagerBase.PositionChanged" /> event.</summary>
@@ -80,6 +80,6 @@ public partial class CurrencyManager
             {
                 OnDataError(exception);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 }

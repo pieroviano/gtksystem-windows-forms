@@ -8,6 +8,6 @@ public partial class AutoCompleteStringCollection
 {
     protected void OnCollectionChanged(CollectionChangeEventArgs e)
     {
-        GtkApplication.EventInvoke(() => CollectionChanged?.Invoke(this, e), GtkApplication.UseAsyncInvoke);
+        GtkApplication.EventInvoke(() => CollectionChanged?.Invoke(this, e), GtkApplication.UseAsyncLoad);
     }
 }

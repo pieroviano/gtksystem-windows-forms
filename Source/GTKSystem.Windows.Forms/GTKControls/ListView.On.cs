@@ -5,35 +5,35 @@ public partial class ListView
 
     protected virtual void OnColumnClick(ColumnClickEventArgs e)
     {
-        EventInvoke(() => ColumnClick?.Invoke(this, e), false);
+        EventInvoke(() => ColumnClick?.Invoke(this, e));
     }
 
     protected internal virtual void OnItemCheck(ItemCheckEventArgs e)
     {
-        EventInvoke(() => ItemCheck?.Invoke(this, e), false);
+        EventInvoke(() => ItemCheck?.Invoke(this, e));
     }
 
     protected virtual void OnColumnReordered(ColumnReorderedEventArgs e)
     {
-        EventInvoke(() => ColumnReordered?.Invoke(this, e), false);
+        EventInvoke(() => ColumnReordered?.Invoke(this, e));
     }
 
 
 
     protected internal virtual void OnSelectedIndexChanged(EventArgs e)
     {
-        EventInvoke(() => SelectedIndexChanged?.Invoke(this, e), false);
+        EventInvoke(() => SelectedIndexChanged?.Invoke(this, e));
     }
 
     protected virtual void OnItemSelectionChanged(
         ListViewItemSelectionChangedEventArgs e)
     {
-        EventInvoke(() => ItemSelectionChanged?.Invoke(this, e), false);
+        EventInvoke(() => ItemSelectionChanged?.Invoke(this, e));
     }
 
     protected internal virtual void OnItemActivate(EventArgs e)
     {
-        EventInvoke(() => ItemActivate?.Invoke(this, e), false);
+        EventInvoke(() => ItemActivate?.Invoke(this, e));
     }
 
 }

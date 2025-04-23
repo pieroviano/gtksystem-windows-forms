@@ -10,7 +10,7 @@ public partial class ListViewGroup
         GtkApplication.EventInvoke(() =>
         {
             ListViewSet?.Invoke(this, e);
-        }, false);
+        });
     }
 
 }

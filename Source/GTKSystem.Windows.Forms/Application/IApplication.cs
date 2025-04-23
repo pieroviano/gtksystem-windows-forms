@@ -14,7 +14,7 @@ public interface IApplication
     InputLanguage CurrentInputLanguage { get; set; }
     FormCollection OpenForms { get; }
     Gtk.Application? App { get; }
-    bool UseAsyncInvoke { get; set; }
+    bool UseAsyncLoad { get; set; }
     void DoEvents();
     Gtk.Application Init();
     bool SetHighDpiMode(HighDpiMode highDpiMode);
@@ -24,5 +24,5 @@ public interface IApplication
     void Exit();
     void Exit(CancelEventArgs? e);
     void ExitThread();
-    void EventInvoke(Action eventToInvoke, bool useAsyncInvoke);
+    void EventInvoke(Action eventToInvoke, bool useAsyncLoad = false);
 }

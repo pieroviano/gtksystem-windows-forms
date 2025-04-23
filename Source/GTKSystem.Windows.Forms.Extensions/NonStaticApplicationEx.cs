@@ -17,19 +17,20 @@ public class NonStaticApplicationEx: NonStaticApplication
             if (_eventInvoker == null)
             {
                 _eventInvoker = new EventInvokerEx();
-                var useAsyncInvoke = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("UseAsyncInvoke")) ? "false" : Environment.GetEnvironmentVariable("UseAsyncInvoke");
-                bool.TryParse(useAsyncInvoke, out var useResult);
-                _eventInvoker.UseAsyncInvoke = useResult;
+                var environmentVariable = Environment.GetEnvironmentVariable("UseAsyncLoad");
+                var useAsyncLoad = string.IsNullOrEmpty(environmentVariable) ? "false" : environmentVariable;
+                bool.TryParse(useAsyncLoad, out var useResult);
+                _eventInvoker.UseAsyncLoad = useResult;
             }
             return _eventInvoker;
         }
     }
 
-    public override bool UseAsyncInvoke { get => EventInvoker.UseAsyncInvoke; set => EventInvoker.UseAsyncInvoke = value; }
+    public override bool UseAsyncLoad { get => EventInvoker.UseAsyncLoad; set => EventInvoker.UseAsyncLoad = value; }
 
-    public override void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
+    public override void EventInvoke(Action eventToInvoke, bool useAsyncLoad = false)
     {
-        EventInvoker.EventInvoke(eventToInvoke, useAsyncInvoke);
+        EventInvoker.EventInvoke(eventToInvoke, useAsyncLoad);
     }
 
 }

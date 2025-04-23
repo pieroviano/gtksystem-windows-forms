@@ -386,9 +386,9 @@ public class NonStaticApplication : IApplication
         }
     }
 
-    public virtual bool UseAsyncInvoke { get; set; }
+    public virtual bool UseAsyncLoad { get; set; }
 
-    public virtual void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
+    public virtual void EventInvoke(Action eventToInvoke, bool useAsyncLoad = false)
     {
         eventToInvoke.Invoke();
     }

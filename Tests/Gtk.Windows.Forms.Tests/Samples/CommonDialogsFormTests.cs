@@ -28,9 +28,9 @@ public class CommonDialogsFormTests
         Application.SetCompatibleTextRenderingDefault(false);
         NonStaticApplicationEx.Init();
         var mainForm = new CommonDialogsForm();
-        mainForm.SetUseAsyncInvoke += (_, e) =>
+        mainForm.SetUseAsyncLoad += (_, e) =>
         {
-            e.UseAsyncInvoke = true;
+            e.UseAsyncLoad = true;
         };
         mainForm.Tag = dialogType;
         var taskCompletionSource = new TaskCompletionSource<string>();

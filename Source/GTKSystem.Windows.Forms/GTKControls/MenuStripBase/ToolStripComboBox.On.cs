@@ -6,12 +6,12 @@ public partial class ToolStripComboBox
 {
     protected virtual void OnSelectedValueChanged(EventArgs e)
     {
-        GtkApplication.EventInvoke(() => SelectedValueChanged?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => SelectedValueChanged?.Invoke(this, e));
     }
 
     protected virtual void OnSelectedIndexChanged(EventArgs e)
     {
-        GtkApplication.EventInvoke(() => SelectedIndexChanged?.Invoke(this, e), false);
+        GtkApplication.EventInvoke(() => SelectedIndexChanged?.Invoke(this, e));
     }
 
 }

@@ -14,9 +14,9 @@ public class AutoClodingMessageBoxTests
         Application.SetCompatibleTextRenderingDefault(false);
         var mainForm = new Form();
         NonStaticApplicationEx.Init();
-        mainForm.SetUseAsyncInvoke += (_, e) =>
+        mainForm.SetUseAsyncLoad += (_, e) =>
         {
-            e.UseAsyncInvoke = true;
+            e.UseAsyncLoad = true;
         };
 
         // Act & Assert

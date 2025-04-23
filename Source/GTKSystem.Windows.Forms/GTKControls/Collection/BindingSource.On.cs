@@ -14,7 +14,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.BindingComplete" /> event. </summary>
@@ -28,7 +28,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.CurrentChanged" /> event.</summary>
@@ -44,7 +44,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.CurrentItemChanged" /> event.</summary>
@@ -58,7 +58,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.DataError" /> event.</summary>
@@ -71,7 +71,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.DataMemberChanged" /> event.</summary>
@@ -84,7 +84,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.DataSourceChanged" /> event.</summary>
@@ -97,7 +97,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     private void OnInitialized()
@@ -109,7 +109,7 @@ public partial class BindingSource
             {
                 item(this, EventArgs.Empty);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.ListChanged" /> event.</summary>
@@ -127,7 +127,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     /// <summary>Raises the <see cref="E:System.Windows.Forms.BindingSource.PositionChanged" /> event.</summary>
@@ -141,7 +141,7 @@ public partial class BindingSource
             {
                 item(this, e);
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     private void OnSimpleListChanged(ListChangedType listChangedType, int newIndex)
@@ -152,7 +152,7 @@ public partial class BindingSource
             {
                 OnListChanged(new ListChangedEventArgs(listChangedType, newIndex));
             }
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
 }

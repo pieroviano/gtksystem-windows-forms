@@ -2,18 +2,34 @@
 
 internal partial class NonStaticMessageBox
 {
-    public bool UseAsyncInvoke { get; set; } = true;
+    private IEventInvoker? _eventInvoker;
 
-    public void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
+    public NonStaticMessageBox()
     {
-        if (useAsyncInvoke)
+        UseAsyncLoad = true;
+    }
+
+    internal IEventInvoker EventInvoker
+    {
+        get
         {
-            Task.Run(eventToInvoke);
+            if (_eventInvoker == null)
+            {
+                _eventInvoker = Control.CreateEventInvoker();
+            }
+            return _eventInvoker;
         }
-        else
-        {
-            eventToInvoke();
-        }
+    }
+
+    public bool UseAsyncLoad
+    {
+        get => EventInvoker.UseAsyncLoad;
+        set => EventInvoker.UseAsyncLoad = value;
+    }
+
+    public void EventInvoke(Action eventToInvoke, bool useAsyncLoad = false)
+    {
+        EventInvoker.EventInvoke(eventToInvoke, useAsyncLoad);
     }
 
     protected virtual void OnDialogAvailable(DialogEventArgs e)
@@ -21,7 +37,7 @@ internal partial class NonStaticMessageBox
         EventInvoke(() =>
         {
             DialogAvailable?.Invoke(this, e);
-        }, UseAsyncInvoke);
+        }, UseAsyncLoad);
     }
 }
 

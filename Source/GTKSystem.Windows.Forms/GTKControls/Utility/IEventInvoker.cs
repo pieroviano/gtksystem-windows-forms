@@ -1,5 +1,5 @@
 ﻿public interface IEventInvoker
 {
-    bool UseAsyncInvoke { get; set; }
-    void EventInvoke(Action eventToInvoke, bool useAsyncInvoke);
+    bool UseAsyncLoad { get; set; }
+    void EventInvoke(Action eventToInvoke, bool useAsyncLoad = false);
 }

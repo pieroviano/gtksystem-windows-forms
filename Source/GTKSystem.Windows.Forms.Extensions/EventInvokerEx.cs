@@ -7,11 +7,11 @@ public class EventInvokerEx : IEventInvoker
 
     }
 
-    public bool UseAsyncInvoke { get; set; }
+    public bool UseAsyncLoad { get; set; }
 
-    public void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
+    public void EventInvoke(Action eventToInvoke, bool useAsyncLoad = false)
     {
-        if (useAsyncInvoke)
+        if (useAsyncLoad)
         {
             Task.Run(eventToInvoke);
         }

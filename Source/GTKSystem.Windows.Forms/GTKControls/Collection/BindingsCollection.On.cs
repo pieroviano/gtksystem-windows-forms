@@ -10,7 +10,7 @@ public partial class BindingsCollection
         GtkApplication.EventInvoke(() =>
         {
             _collectionChanging?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
     protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
@@ -18,7 +18,7 @@ public partial class BindingsCollection
         GtkApplication.EventInvoke(() =>
         {
             _collectionChanged?.Invoke(this, e);
-        }, GtkApplication.UseAsyncInvoke);
+        }, GtkApplication.UseAsyncLoad);
     }
 
 }
