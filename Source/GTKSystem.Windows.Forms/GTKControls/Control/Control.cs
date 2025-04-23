@@ -1,5 +1,5 @@
 ﻿/*
- * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control windows form interface.
  * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author: chenhongjin
@@ -1338,12 +1338,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
     {
-        var task = Task.Factory.StartNew(state =>
+        var taskCompletionSource = new TaskCompletionSource<object>();
+        GLib.Idle.Add(() =>
         {
-            method.DynamicInvoke((object[]?)state);
-        }, args);
-
-        return task;
+            var r = method.DynamicInvoke(args);
+            taskCompletionSource.SetResult(r);
+            return false;
+        });
+        return taskCompletionSource.Task;
     }
 
     public virtual IAsyncResult BeginInvoke(Delegate method)
@@ -1353,8 +1355,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual IAsyncResult BeginInvoke(Action method)
     {
-        var task = Task.Factory.StartNew(method);
-        return task;
+        var taskCompletionSource = new TaskCompletionSource<object>();
+        GLib.Idle.Add(() =>
+        {
+            method.Invoke();
+            taskCompletionSource.SetResult(string.Empty);
+            return false;
+        });
+        return taskCompletionSource.Task;
     }
 
     public virtual object EndInvoke(IAsyncResult asyncResult)
@@ -1574,31 +1582,62 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             throw new InvalidOperationException();
         }
-        GLib.Idle.Add(() =>
+        using var mre = new ManualResetEvent(false);
+        try
         {
-            result = method.DynamicInvoke(args);
-            return false;
-        });
+            GLib.Idle.Add(() =>
+            {
+                result = method.DynamicInvoke(args);
+                return false;
+            });
+        }
+        finally
+        {
+            mre.Set(); // signal that we're done
+        }
         return result;
     }
-    public virtual void Invoke(Action method)
+    public static void Invoke(Action action)
     {
+        using var mre = new ManualResetEvent(false);
         GLib.Idle.Add(() =>
         {
-            method.Invoke();
-            return false;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                mre.Set(); // signal that we're done
+            }
+
+            return false; // run only once
         });
+
+        mre.WaitOne(); // block current thread until signaled
     }
     public virtual TEntry? Invoke<TEntry>(Func<TEntry> method)
     {
         var result = default(TEntry);
+        using var mre = new ManualResetEvent(false);
         GLib.Idle.Add(() =>
         {
-            result = method.Invoke();
-            return false;
+            try
+            {
+                result = method.Invoke();
+            }
+            finally
+            {
+                mre.Set(); // signal that we're done
+            }
+
+            return false; // run only once
         });
+
+        mre.WaitOne(); // block current thread until signaled
         return result;
     }
+
     public virtual int LogicalToDeviceUnits(int value)
     {
         return value;
