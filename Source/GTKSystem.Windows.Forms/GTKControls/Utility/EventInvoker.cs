@@ -6,14 +6,7 @@ public class EventInvoker : IEventInvoker
 
     public void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
     {
-        if (useAsyncInvoke)
-        {
-            Task.Run(eventToInvoke);
-        }
-        else
-        {
-            eventToInvoke();
-        }
+        eventToInvoke();
     }
 
 }

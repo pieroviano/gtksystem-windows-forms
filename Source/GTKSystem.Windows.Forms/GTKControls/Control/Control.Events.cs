@@ -162,5 +162,4 @@ public partial class Control
     public new virtual event EventHandler? Disposed;
 
     public event CancelEventHandler? Disposing;
-
 }

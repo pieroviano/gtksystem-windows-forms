@@ -26,6 +26,7 @@ public class CommonDialogsFormTests
         Application.SetHighDpiMode(HighDpiMode.SystemAware);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
+        NonStaticApplicationEx.Init();
         var mainForm = new CommonDialogsForm();
         mainForm.SetUseAsyncInvoke += (_, e) =>
         {

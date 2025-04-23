@@ -8,13 +8,24 @@ public partial class Control
     private IEventInvoker? _eventInvoker;
     protected bool _onLoadFired;
 
+    static Control()
+    {
+        CreateEventInvoker = () => new EventInvoker();
+    }
+
+    public static Func<IEventInvoker> CreateEventInvoker
+    {
+        get;
+        set;
+    }
+
     internal IEventInvoker EventInvoker
     {
         get
         {
             if (_eventInvoker == null)
             {
-                _eventInvoker = new EventInvoker();
+                _eventInvoker = CreateEventInvoker();
             }
             return _eventInvoker;
         }
@@ -23,22 +34,12 @@ public partial class Control
     public bool UseAsyncInvoke
     {
         get => EventInvoker.UseAsyncInvoke;
-        set
-        {
-            EventInvoker.UseAsyncInvoke = value;
-        }
+        set => EventInvoker.UseAsyncInvoke = value;
     }
 
     public void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
     {
-        if (useAsyncInvoke)
-        {
-            Task.Run(eventToInvoke);
-        }
-        else
-        {
-            eventToInvoke();
-        }
+        EventInvoker.EventInvoke(eventToInvoke, useAsyncInvoke);
     }
 
     protected virtual void OnSetUseAsyncInvoke(UseAsyncInvokeArgs e)

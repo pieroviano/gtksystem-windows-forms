@@ -6,14 +6,21 @@ using System.Text;
 
 namespace System.Windows.Forms;
 
-public sealed class Application
+public class NonStaticApplication : IApplication
 {
-    static Application()
+    static NonStaticApplication()
     {
-        Init();
+        Instance = new NonStaticApplication();
+        Instance.Init();
     }
 
-    private static string AppDataDirectory
+    protected NonStaticApplication()
+    {
+    }
+
+    public static IApplication Instance { get; protected set; }
+
+    private string AppDataDirectory
     {
         get
         {
@@ -24,13 +31,13 @@ public sealed class Application
         }
     }
 
-    public static string CommonAppDataPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), AppDataDirectory);
+    public string CommonAppDataPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), AppDataDirectory);
 
-    public static string UserAppDataPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppDataDirectory);
+    public string UserAppDataPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppDataDirectory);
 
-    public static string LocalUserAppDataPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppDataDirectory);
+    public string LocalUserAppDataPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppDataDirectory);
 
-    public static string ExecutablePath
+    public string ExecutablePath
     {
         get
         {
@@ -40,22 +47,22 @@ public sealed class Application
             return module?.FileName ?? string.Empty;
         }
     }
-    public static string StartupPath => Directory.GetCurrentDirectory();
+    public string StartupPath => Directory.GetCurrentDirectory();
 
-    internal static readonly object InternalSyncObject = new();
+    internal readonly object InternalSyncObject = new();
 
-    public static CultureInfo CurrentCulture
+    public CultureInfo CurrentCulture
     {
         get => Thread.CurrentThread.CurrentCulture;
         set => Thread.CurrentThread.CurrentCulture = value;
     }
 
-    public static InputLanguage CurrentInputLanguage
+    public InputLanguage CurrentInputLanguage
     {
         get => InputLanguage.CurrentInputLanguage;
         set => InputLanguage.CurrentInputLanguage = value;
     }
-    public static FormCollection OpenForms
+    public FormCollection OpenForms
     {
         get
         {
@@ -68,15 +75,19 @@ public sealed class Application
         }
     }
 
-    public static void DoEvents()
+    public void DoEvents()
     {
         while (Gtk.Application.EventsPending())
             Gtk.Application.RunIteration(false);
     }
-    public static Gtk.Application? App { get; private set; }
+    public Gtk.Application? App { get; private set; }
 
-    public static Gtk.Application Init()
+    public Gtk.Application Init()
     {
+        if (Form.ThreadInitialized)
+        {
+            return App!;
+        }
         Form.ThreadInitialized = true;
         if (App == null)
         {
@@ -308,48 +319,48 @@ public sealed class Application
         return App;
     }
 
-    private static void QuitActivated(object? sender, EventArgs e)
+    private void QuitActivated(object? sender, EventArgs e)
     {
         Gtk.Application.Quit();
     }
 
-    private static void App_Shutdown(object? sender, EventArgs e)
+    private void App_Shutdown(object? sender, EventArgs e)
     {
         Console.WriteLine(@"App_Shutdown");
         Gtk.Application.Quit();
     }
 
-    public static bool SetHighDpiMode(HighDpiMode highDpiMode)
+    public bool SetHighDpiMode(HighDpiMode highDpiMode)
     {
         return true;
     }
 
-    public static void EnableVisualStyles()
+    public void EnableVisualStyles()
     {
     }
 
-    public static void SetCompatibleTextRenderingDefault(bool defaultValue)
+    public void SetCompatibleTextRenderingDefault(bool defaultValue)
     {
     }
 
-    public static void Run(Form mainForm)
+    public void Run(Form mainForm)
     {
         mainForm.self.Destroyed += Control_Destroyed;
         mainForm.Show();
         Gtk.Application.Run();
     }
-    private static void Control_Destroyed(object? sender, EventArgs e)
+    private void Control_Destroyed(object? sender, EventArgs e)
     {
         ExitThread();
     }
 
-    public static void Exit()
+    public void Exit()
     {
         ExitThread();
     }
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public static void Exit(CancelEventArgs? e)
+    public void Exit(CancelEventArgs? e)
     {
         lock (InternalSyncObject)
         {
@@ -367,7 +378,7 @@ public sealed class Application
         }
     }
 
-    public static void ExitThread()
+    public void ExitThread()
     {
         lock (InternalSyncObject)
         {
@@ -375,35 +386,11 @@ public sealed class Application
         }
     }
 
-    private static IEventInvoker? _eventInvoker;
+    public virtual bool UseAsyncInvoke { get; set; }
 
-    internal static IEventInvoker EventInvoker
+    public virtual void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
     {
-        get
-        {
-            if (_eventInvoker == null)
-            {
-                _eventInvoker = new EventInvoker();
-                var useAsyncInvoke = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("UseAsyncInvoke")) ? "false" : Environment.GetEnvironmentVariable("UseAsyncInvoke");
-                bool.TryParse(useAsyncInvoke, out var useResult);
-                _eventInvoker.UseAsyncInvoke = useResult;
-            }
-            return _eventInvoker;
-        }
-    }
-
-    public static bool UseAsyncInvoke { get => EventInvoker.UseAsyncInvoke; set => EventInvoker.UseAsyncInvoke = value; }
-
-    public static void EventInvoke(Action eventToInvoke, bool useAsyncInvoke)
-    {
-        if (useAsyncInvoke)
-        {
-            Task.Run(eventToInvoke);
-        }
-        else
-        {
-            eventToInvoke();
-        }
+        eventToInvoke.Invoke();
     }
 
 }
