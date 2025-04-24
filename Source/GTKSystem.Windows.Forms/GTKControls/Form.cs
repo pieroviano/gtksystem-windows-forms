@@ -236,10 +236,20 @@ public partial class Form : ContainerControl, IWin32Window
 
     public override void Show()
     {
-        Show(null);
+        _ = ShowAsync(null);
+    }
+
+    internal async Task ShowAsync(bool isShownFromApplication = false)
+    {
+        await ShowAsync(null, isShownFromApplication);
     }
 
     public void Show(IWin32Window? owner)
+    {
+        _ = ShowAsync(owner);
+    }
+
+    internal async Task ShowAsync(IWin32Window? owner, bool isShownFromApplication = false)
     {
         if (owner == this)
         {
@@ -283,52 +293,72 @@ public partial class Form : ContainerControl, IWin32Window
                 self.Iconify();
             }
 
-            if (self.IsMapped == false)
-            {
-                try
-                {
-                    if (ShowIcon)
-                    {
-                        if (Icon != null)
-                        {
-                            if (Icon.Pixbuf != null)
-                                self.Icon = Icon.Pixbuf;
-                            else if (Icon.PixbufData != null)
-                                self.Icon = new Gdk.Pixbuf(Icon.PixbufData);
-                            else if (Icon.FileName != null && File.Exists(Icon.FileName))
-                                self.SetIconFromFile(Icon.FileName);
-                            else if (Icon.FileName != null && File.Exists("Resources\\" + Icon.FileName))
-                                self.SetIconFromFile("Resources\\" + Icon.FileName);
-                        }
-
-                        var titlebar = (HeaderBar)self.Titlebar;
-                        var flag = new Image(self.Icon);
-                        flag.Visible = true;
-                        titlebar.PackStart(flag);
-                    }
-                    else
-                    {
-                        self.Icon = new Gdk.Pixbuf(GetType().Assembly,
-                            "System.Windows.Forms.Resources.System.view-more.png");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Trace.Write(ex);
-                }
-            }
-
-            FakeHandle = (IntPtr)int.MaxValue;
+            HandleIsMapped();
         }
 
         OnLoad(EventArgs.Empty);
         OnBindingContextChanged(EventArgs.Empty);
         SetFakeHandle(Controls);
-        GLib.Idle.Add(() =>
+        if (!IsClosed)
         {
-            self.ShowAll();
-            return false;
-        });
+            var taskCompletionSource = new TaskCompletionSource<string>();
+            GLib.Idle.Add(() =>
+            {
+                self.ShowAll();
+                taskCompletionSource.SetResult(string.Empty);
+                return false;
+            });
+            await taskCompletionSource.Task;
+        }
+        else
+        {
+            if (isShownFromApplication)
+            {
+                Gtk.Application.Invoke(delegate {
+                    Gtk.Application.Quit();
+                });
+            }
+        }
+    }
+
+    private void HandleIsMapped()
+    {
+        if (self.IsMapped == false)
+        {
+            try
+            {
+                if (ShowIcon)
+                {
+                    if (Icon != null)
+                    {
+                        if (Icon.Pixbuf != null)
+                            self.Icon = Icon.Pixbuf;
+                        else if (Icon.PixbufData != null)
+                            self.Icon = new Gdk.Pixbuf(Icon.PixbufData);
+                        else if (Icon.FileName != null && File.Exists(Icon.FileName))
+                            self.SetIconFromFile(Icon.FileName);
+                        else if (Icon.FileName != null && File.Exists("Resources\\" + Icon.FileName))
+                            self.SetIconFromFile("Resources\\" + Icon.FileName);
+                    }
+
+                    var titlebar = (HeaderBar)self.Titlebar;
+                    var flag = new Image(self.Icon);
+                    flag.Visible = true;
+                    titlebar.PackStart(flag);
+                }
+                else
+                {
+                    self.Icon = new Gdk.Pixbuf(GetType().Assembly,
+                        "System.Windows.Forms.Resources.System.view-more.png");
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.Write(ex);
+            }
+        }
+
+        FakeHandle = (IntPtr)int.MaxValue;
     }
 
     private void SetFakeHandle(IEnumerable collection)
@@ -365,7 +395,7 @@ public partial class Form : ContainerControl, IWin32Window
             throw new InvalidOperationException("ShowDialogOnDisabled");
         }
 
-        Show(owner);
+        _ = ShowAsync(owner);
         self.Run();
 
         return DialogResult;
@@ -498,6 +528,7 @@ public partial class Form : ContainerControl, IWin32Window
     public MenuStrip? MainMenuStrip { get; set; }
 
     public override IntPtr Handle => self.Handle;
+    public bool IsClosed { get; set; }
 
     public class ObjectCollection : ControlCollection
     {

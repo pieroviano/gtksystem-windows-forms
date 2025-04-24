@@ -79,10 +79,17 @@ public partial class Control
 
     protected internal virtual void OnLoadComplete(EventArgs e)
     {
-        Invoke(() =>
+        if (UseAsyncLoad)
+        {
+            Invoke(() =>
+            {
+                LoadComplete?.Invoke(this, e);
+            });
+        }
+        else
         {
             LoadComplete?.Invoke(this, e);
-        });
+        }
     }
 
     protected virtual void OnAnchorChanged(EventArgs e)

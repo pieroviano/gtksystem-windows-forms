@@ -5,6 +5,13 @@ public partial class Form
     protected void OnFormClosed(FormClosedEventArgs e)
     {
         EventInvoke(() => FormClosed?.Invoke(this, e));
+        IsClosed = true;
+    }
+
+    protected override void OnDisposed(EventArgs e)
+    {
+        base.OnDisposed(e);
+        IsClosed = true;
     }
 
     protected virtual void OnFormClosing(FormClosingEventArgs e)
