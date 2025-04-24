@@ -4,7 +4,7 @@ public partial class DataGridView
 {
     protected virtual void OnSelectionChanged(EventArgs e)
     {
-        EventInvoke(() => SelectionChanged?.Invoke(this, e));
+        SelectionChanged?.Invoke(this, e);
     }
 
 }

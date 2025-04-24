@@ -2,6 +2,7 @@
 
 public partial class Form
 {
+    public event EventHandler? LoadComplete;
     public event EventHandler<WindowStateArgs>? WindowStateChanging;
     public event EventHandler? Shown;
     public event FormClosingEventHandler? FormClosing;

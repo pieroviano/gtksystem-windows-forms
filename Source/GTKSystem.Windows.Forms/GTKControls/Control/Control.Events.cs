@@ -11,8 +11,6 @@ public partial class Control
         remove => Self.Override.Paint -= value;
     }
 
-    public event EventHandler<UseAsyncLoadArgs>? SetUseAsyncLoad;
-
     public event EventHandler? AutoSizeChanged;
 
     public event EventHandler? BackColorChanged;
@@ -153,11 +151,7 @@ public partial class Control
 
     public event EventHandler? VisibleChanged;
 
-    public event EventHandler? PreLoad;
-
     public event EventHandler? Load;
-
-    public event EventHandler? LoadComplete;
 
     public new virtual event EventHandler? Disposed;
 

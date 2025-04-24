@@ -7,6 +7,6 @@ public partial class PropertyGrid
 {
     protected virtual void OnComComponentNameChanged(ComponentRenameEventArgs e)
     {
-        EventInvoke(() => ComComponentNameChanged?.Invoke(this, e));
+        ComComponentNameChanged?.Invoke(this, e);
     }
 }

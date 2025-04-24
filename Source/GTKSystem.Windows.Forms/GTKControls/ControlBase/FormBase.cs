@@ -7,7 +7,7 @@ public partial class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32W
 {
     public new Window? Parent { get; set; }
 
-    public readonly ScrolledWindow ScrollView = new();
+    public readonly ScrolledWindow ScrollView;
 
     public IGtkControlOverride Override { get; set; }
 
@@ -37,6 +37,7 @@ public partial class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32W
 
     public FormBase(Window? parent = null) : base("title", ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
     {
+        ScrollView = new ScrolledWindow();
         Override = new GtkControlOverride(this);
         Override.AddClass("Form");
         WindowPosition = WindowPosition.Center;

@@ -13,11 +13,6 @@ public class AutoClodingMessageBoxTests
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         var mainForm = new Form();
-        NonStaticApplicationEx.Init();
-        mainForm.SetUseAsyncLoad += (_, e) =>
-        {
-            e.UseAsyncLoad = true;
-        };
 
         // Act & Assert
         mainForm.LoadComplete += (_, _) =>

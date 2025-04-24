@@ -26,12 +26,7 @@ public class CommonDialogsFormTests
         Application.SetHighDpiMode(HighDpiMode.SystemAware);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        NonStaticApplicationEx.Init();
         var mainForm = new CommonDialogsForm();
-        mainForm.SetUseAsyncLoad += (_, e) =>
-        {
-            e.UseAsyncLoad = true;
-        };
         mainForm.Tag = dialogType;
         var taskCompletionSource = new TaskCompletionSource<string>();
         mainForm.Tag = taskCompletionSource;

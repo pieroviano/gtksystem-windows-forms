@@ -4,10 +4,10 @@ public partial class ScrollableControl
 {
     protected virtual void OnScroll(ScrollEventArgs e)
     {
-        EventInvoke(() =>
+        ((Action)(() =>
         {
             scrollbase?.OnScroll(e);
-        });
+        }))();
     }
 }
 

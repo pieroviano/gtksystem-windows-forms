@@ -4,6 +4,6 @@ public partial class LinkLabel
 {
     protected internal virtual void OnLinkClicked(LinkLabelLinkClickedEventArgs e)
     {
-        EventInvoke(() => LinkClicked?.Invoke(this, e));
+        LinkClicked?.Invoke(this, e);
     }
 }

@@ -160,9 +160,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             Self.Shown += (_, _) =>
             {
-                var useAsyncLoadArgs = new UseAsyncLoadArgs(System.Windows.Forms.Application.UseAsyncLoad);
-                OnSetUseAsyncLoad(useAsyncLoadArgs);
-                UseAsyncLoad = useAsyncLoadArgs.UseAsyncLoad;
                 FakeHandle = (IntPtr)int.MaxValue;
             };
         }
@@ -1338,6 +1335,10 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
     {
+        if (FakeHandle == (IntPtr)int.MaxValue)
+        {
+            throw new InvalidOperationException("BeginInvoke can be called after the parent form event LoadComplete. Before that event use: 'Task.Factory.StartNew'");
+        }
         var taskCompletionSource = new TaskCompletionSource<object>();
         GLib.Idle.Add(() =>
         {
@@ -1355,6 +1356,10 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual IAsyncResult BeginInvoke(Action method)
     {
+        if (FakeHandle == (IntPtr)int.MaxValue)
+        {
+            throw new InvalidOperationException("BeginInvoke can be called after the parent form event LoadComplete. Before that event use: 'Task.Factory.StartNew'");
+        }
         var taskCompletionSource = new TaskCompletionSource<object>();
         GLib.Idle.Add(() =>
         {

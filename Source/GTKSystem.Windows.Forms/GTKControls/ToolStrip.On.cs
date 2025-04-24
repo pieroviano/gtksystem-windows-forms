@@ -15,16 +15,16 @@ public partial class ToolStrip : Control
 {
     protected virtual void OnCheckStateChanged(EventArgs e)
     {
-        EventInvoke(() => CheckStateChanged?.Invoke(this, e));
+        CheckStateChanged?.Invoke(this, e);
     }
 
     protected virtual void OnCheckedChanged(EventArgs e)
     {
-        EventInvoke(() => CheckedChanged?.Invoke(this, e));
+        CheckedChanged?.Invoke(this, e);
     }
 
     protected virtual void OnDropDownItemClicked(ToolStripItemClickedEventArgs e)
     {
-        EventInvoke(() => DropDownItemClicked?.Invoke(this, e));
+        DropDownItemClicked?.Invoke(this, e);
     }
 }

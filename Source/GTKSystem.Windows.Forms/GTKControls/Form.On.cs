@@ -4,10 +4,14 @@ public partial class Form
 {
     protected void OnFormClosed(FormClosedEventArgs e)
     {
-        EventInvoke(() => FormClosed?.Invoke(this, e));
+        FormClosed?.Invoke(this, e);
         IsClosed = true;
     }
 
+    protected internal virtual void OnLoadComplete(EventArgs e)
+    {
+        LoadComplete?.Invoke(this, e);
+    }
     protected override void OnDisposed(EventArgs e)
     {
         base.OnDisposed(e);
@@ -16,12 +20,12 @@ public partial class Form
 
     protected virtual void OnFormClosing(FormClosingEventArgs e)
     {
-        EventInvoke(() => FormClosing?.Invoke(this, e));
+        FormClosing?.Invoke(this, e);
     }
 
     protected internal virtual void OnShown(EventArgs e)
     {
-        EventInvoke(() =>
+        Action eventToInvoke = () =>
         {
             Shown?.Invoke(this, e);
             if (!bindingContextSet)
@@ -33,6 +37,7 @@ public partial class Form
             {
                 control.OnLoad(e);
             }
-        }, UseAsyncLoad);
+        };
+        eventToInvoke();
     }
 }

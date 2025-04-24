@@ -298,23 +298,22 @@ public partial class Form : ContainerControl, IWin32Window
 
         OnLoad(EventArgs.Empty);
         OnBindingContextChanged(EventArgs.Empty);
-        SetFakeHandle(Controls);
-        if (!IsClosed)
+        var taskCompletionSource = new TaskCompletionSource<string>();
+        GLib.Idle.Add(() =>
         {
-            var taskCompletionSource = new TaskCompletionSource<string>();
-            GLib.Idle.Add(() =>
-            {
-                self.ShowAll();
-                taskCompletionSource.SetResult(string.Empty);
-                return false;
-            });
-            await taskCompletionSource.Task;
-        }
-        else
+            self.ShowAll();
+            taskCompletionSource.SetResult(string.Empty);
+            return false;
+        });
+        await taskCompletionSource.Task;
+        OnLoadComplete(EventArgs.Empty);
+        SetFakeHandle(Controls);
+        if (IsClosed)
         {
             if (isShownFromApplication)
             {
-                Gtk.Application.Invoke(delegate {
+                Gtk.Application.Invoke(delegate
+                {
                     Gtk.Application.Quit();
                 });
             }

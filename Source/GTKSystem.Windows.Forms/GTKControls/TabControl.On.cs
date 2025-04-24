@@ -6,7 +6,7 @@ public partial class TabControl
 {
     protected virtual void OnSelectedIndexChanged(EventArgs e)
     {
-            EventInvoke(() => SelectedIndexChanged?.Invoke(this, e));
+            SelectedIndexChanged?.Invoke(this, e);
     }
 
     public new partial class ControlCollection

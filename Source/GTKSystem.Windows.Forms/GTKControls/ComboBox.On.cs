@@ -4,9 +4,9 @@ public partial class ComboBox
 {
     protected virtual void OnDropDown(EventArgs e)
     {
-        EventInvoke(() =>
+        ((Action)(() =>
         {
             DropDown?.Invoke(this, e);
-        });
+        }))();
     }
 }

@@ -4,7 +4,7 @@ public partial class TrackBar
 {
     protected virtual void OnScroll(EventArgs e)
     {
-        EventInvoke(() => Scroll?.Invoke(this, e));
+        Scroll?.Invoke(this, e);
     }
 
 }
