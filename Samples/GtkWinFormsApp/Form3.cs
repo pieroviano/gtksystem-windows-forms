@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GTKWinFormsApp.Properties;
 
@@ -109,7 +110,7 @@ public partial class GtkMainForm : Form
             }
         }
 
-        var result = this.BeginInvoke(MethodInvoker);
+        Task.Factory.StartNew(MethodInvoker);
     }
 
     private void panel3_Paint(object? sender, PaintEventArgs e)
