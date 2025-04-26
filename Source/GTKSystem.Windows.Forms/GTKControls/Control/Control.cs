@@ -40,6 +40,8 @@ using Point = Drawing.Point;
 [ToolboxItemFilter("System.Windows.Forms")]
 public partial class Control : Component, IControl, ISynchronizeInvoke, ISupportInitialize, IArrangedElement, IBindableComponent
 {
+    internal static readonly IntPtr FakeHandleValue = (IntPtr)int.MaxValue;
+
     public Gtk.Application Application { get; }
 
     public string? UniqueKey { get; protected set; }
@@ -160,7 +162,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             Self.Shown += (_, _) =>
             {
-                FakeHandle = (IntPtr)int.MaxValue;
+                FakeHandle = FakeHandleValue;
             };
         }
         Visible = true;
@@ -1335,7 +1337,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
     {
-        if (FakeHandle == (IntPtr)int.MaxValue)
+        if (FakeHandle == FakeHandleValue)
         {
             throw new InvalidOperationException("BeginInvoke can be called after the parent form event LoadComplete. Before that event use: 'Task.Factory.StartNew'");
         }
@@ -1356,7 +1358,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual IAsyncResult BeginInvoke(Action method)
     {
-        if (FakeHandle == (IntPtr)int.MaxValue)
+        if (FakeHandle == FakeHandleValue)
         {
             throw new InvalidOperationException("BeginInvoke can be called after the parent form event LoadComplete. Before that event use: 'Task.Factory.StartNew'");
         }
@@ -1888,7 +1890,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             if (FakeHandle == IntPtr.Zero)
             {
-                FakeHandle = (IntPtr)int.MaxValue;
+                FakeHandle = FakeHandleValue;
             }
             if (Widget.Handle != IntPtr.Zero || FakeHandle != IntPtr.Zero)
             {

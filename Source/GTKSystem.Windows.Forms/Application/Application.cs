@@ -346,7 +346,8 @@ public class NonStaticApplication : IApplication
     public void Run(Form mainForm)
     {
         mainForm.self.Destroyed += Control_Destroyed;
-        _ = mainForm.ShowAsync(true);
+        mainForm.PrepareShowAsync(null, out var taskCompletionSource);
+        _ = mainForm.AwaitGlibIdleAsync(true, taskCompletionSource);
         Gtk.Application.Run();
     }
     private void Control_Destroyed(object? sender, EventArgs e)

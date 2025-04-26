@@ -20,6 +20,7 @@ using SdSystemColors = System.Drawing.
 using SdSize = System.Drawing.Size;
 using SdSizeF = System.Drawing.SizeF;
 using GtkApplication = System.Windows.Forms.Application;
+using System.Threading.Tasks;
 
 namespace System.Windows.Forms;
 using SdColor = Drawing.Color;
@@ -236,20 +237,33 @@ public partial class Form : ContainerControl, IWin32Window
 
     public override void Show()
     {
-        _ = ShowAsync(null);
-    }
-
-    internal async Task ShowAsync(bool isShownFromApplication = false)
-    {
-        await ShowAsync(null, isShownFromApplication);
+        PrepareShowAsync(null, out var taskCompletionSource);
+        _ = AwaitGlibIdleAsync(false, taskCompletionSource);
     }
 
     public void Show(IWin32Window? owner)
     {
-        _ = ShowAsync(owner);
+        PrepareShowAsync(owner, out var taskCompletionSource);
+        _ = AwaitGlibIdleAsync(false, taskCompletionSource);
     }
 
-    internal async Task ShowAsync(IWin32Window? owner, bool isShownFromApplication = false)
+    internal async Task AwaitGlibIdleAsync(bool isShownFromApplication, TaskCompletionSource<string> taskCompletionSource)
+    {
+        await taskCompletionSource.Task;
+        OnLoadComplete(EventArgs.Empty);
+        if (IsClosed)
+        {
+            if (isShownFromApplication)
+            {
+                Gtk.Application.Invoke(delegate
+                {
+                    Gtk.Application.Quit();
+                });
+            }
+        }
+    }
+
+    internal void PrepareShowAsync(IWin32Window? owner, out TaskCompletionSource<string> taskCompletionSource)
     {
         if (owner == this)
         {
@@ -296,27 +310,25 @@ public partial class Form : ContainerControl, IWin32Window
             HandleIsMapped();
         }
 
+        FakeHandle = FakeHandleValue;
+        SetFakeHandle(Controls);
         OnLoad(EventArgs.Empty);
         OnBindingContextChanged(EventArgs.Empty);
-        var taskCompletionSource = new TaskCompletionSource<string>();
-        GLib.Idle.Add(() =>
+        taskCompletionSource = new TaskCompletionSource<string>();
+        new GlibHelper(self, taskCompletionSource).AddIdle();
+    }
+
+    private class GlibHelper(FormBase self, TaskCompletionSource<string> taskCompletionSource)
+    {
+        public void AddIdle()
         {
-            self.ShowAll();
-            taskCompletionSource.SetResult(string.Empty);
-            return false;
-        });
-        await taskCompletionSource.Task;
-        OnLoadComplete(EventArgs.Empty);
-        SetFakeHandle(Controls);
-        if (IsClosed)
-        {
-            if (isShownFromApplication)
+            GLib.Idle.Add(() =>
             {
-                Gtk.Application.Invoke(delegate
-                {
-                    Gtk.Application.Quit();
-                });
-            }
+                self.ShowAll();
+                taskCompletionSource.SetResult(string.Empty);
+                return false;
+            });
+
         }
     }
 
@@ -356,8 +368,6 @@ public partial class Form : ContainerControl, IWin32Window
                 Trace.Write(ex);
             }
         }
-
-        FakeHandle = (IntPtr)int.MaxValue;
     }
 
     private void SetFakeHandle(IEnumerable collection)
@@ -366,7 +376,7 @@ public partial class Form : ContainerControl, IWin32Window
         {
             if (item is Control control)
             {
-                control.FakeHandle = (IntPtr)int.MaxValue;
+                control.FakeHandle = FakeHandleValue;
                 SetFakeHandle(control.Controls);
             }
         }
@@ -394,7 +404,8 @@ public partial class Form : ContainerControl, IWin32Window
             throw new InvalidOperationException("ShowDialogOnDisabled");
         }
 
-        _ = ShowAsync(owner);
+        PrepareShowAsync(owner, out var taskCompletionSource);
+        _ = AwaitGlibIdleAsync(false, taskCompletionSource);
         self.Run();
 
         return DialogResult;
@@ -526,7 +537,27 @@ public partial class Form : ContainerControl, IWin32Window
 
     public MenuStrip? MainMenuStrip { get; set; }
 
-    public override IntPtr Handle => self.Handle;
+    public override IntPtr Handle
+    {
+        get
+        {
+            if (FakeHandle == IntPtr.Zero)
+            {
+                FakeHandle = FakeHandleValue;
+            }
+            if (self.Handle != IntPtr.Zero || FakeHandle != IntPtr.Zero)
+            {
+                OnHandleCreated(EventArgs.Empty);
+            }
+            return self.Handle;
+        }
+        set
+        {
+            FakeHandle = value;
+            OnHandleCreated(EventArgs.Empty);
+        }
+    }
+
     public bool IsClosed { get; set; }
 
     public class ObjectCollection : ControlCollection
