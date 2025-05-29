@@ -23,7 +23,7 @@
 	<ItemGroup>
 		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sd" PrivateAssets="All" IncludeAssets="All"  Condition="'$(TargetFramework)'!='net462' and '$(TargetFramework)'!='net47' and '$(TargetFramework)'!='net471' and '$(TargetFramework)'!='net472' and '$(TargetFramework)'!='net48' and '$(TargetFramework)'!='net481'"/>
 		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" Aliases="sre" PrivateAssets="All" IncludeAssets="All" />
-		<PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.4" Condition="$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0'" />
+		<PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.4" Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0'" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="$(MSBuildThisFileDirectory)../content/System.ComponentModel.cs" Link="System.ComponentModel.cs" />

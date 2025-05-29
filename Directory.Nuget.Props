@@ -42,8 +42,8 @@
     <CoreLibraryVersion>2.5.0</CoreLibraryVersion>
     <CreateHiddenProcessVersion>1.2.0</CreateHiddenProcessVersion>
     <CSharpParserVersion>1.0.0</CSharpParserVersion>
-    <DapperLibrariesVersion>1.4.0</DapperLibrariesVersion>
-    <DapperLibraryVersion>1.4.0</DapperLibraryVersion>
+    <DapperLibrariesVersion>1.4.1</DapperLibrariesVersion>
+    <DapperLibraryVersion>1.4.1</DapperLibraryVersion>
     <DataAccessLibraryVersion>2.3.0</DataAccessLibraryVersion>
     <DatabaseEditorLibraryVersion>1.26.0</DatabaseEditorLibraryVersion>
     <DatabaseSchemaLibraryVersion>1.26.0</DatabaseSchemaLibraryVersion>
@@ -72,8 +72,8 @@
     <FreeImageDotnetCoreVersion>4.5.0</FreeImageDotnetCoreVersion>
     <GtkSharpVersion>3.24.24</GtkSharpVersion>
     <GtkWindowsFormsExtensionVersion>1.4.2463</GtkWindowsFormsExtensionVersion>
-    <GtkWindowsFormsVersion>1.4.2463</GtkWindowsFormsVersion>
-    <GTKWinFormsAppVersion>1.4.2463</GTKWinFormsAppVersion>
+    <GtkWindowsFormsVersion>1.4.2464</GtkWindowsFormsVersion>
+    <GTKWinFormsAppVersion>1.4.2464</GTKWinFormsAppVersion>
     <HardcodetNotifyIconWpfVersion>1.1.0</HardcodetNotifyIconWpfVersion>
     <HostAppInPanelVersion>1.2.0</HostAppInPanelVersion>
     <HostProcessLibrary>1.0.0</HostProcessLibrary>
@@ -235,7 +235,7 @@
     <UpdateLibraryPoCVersion>1.30.0</UpdateLibraryPoCVersion>
     <UpdateLibraryVersion>1.32.0</UpdateLibraryVersion>
     <UploadPackagesVersion>1.2.0</UploadPackagesVersion>
-    <UtilityLibraryVersion>1.5.0</UtilityLibraryVersion>
+    <UtilityLibraryVersion>1.5.1</UtilityLibraryVersion>
     <ValuesFromSelectVersion>2.2.0</ValuesFromSelectVersion>
     <VbHelpersVersion>1.2.0</VbHelpersVersion>
     <ViewCodeDomVersion>1.0.0</ViewCodeDomVersion>
@@ -245,7 +245,7 @@
     <WhenTheVersionVersion>1.2.0</WhenTheVersionVersion>
     <WiaScannerLibraryVersion>1.26.0</WiaScannerLibraryVersion>
     <Win32InteropVersion>1.1.0</Win32InteropVersion>
-    <Win32LibraryVersion>1.5.0</Win32LibraryVersion>
+    <Win32LibraryVersion>1.5.1</Win32LibraryVersion>
     <WindowsAPICodePackVersion>1.2.0</WindowsAPICodePackVersion>
     <WindowsFormsApp1Version>1.0.0</WindowsFormsApp1Version>
     <WindowsLibraryVersion>1.1.0</WindowsLibraryVersion>
